@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* VERSION SELECTOR */
+.version-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.version-btn {
+  flex: 1; padding: 12px;
+  background: var(--input-bg); border: 2px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--mono); font-size: 1rem;
+  font-weight: 700; cursor: pointer; text-align: center;
+  transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.version-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.version-label { font-size: 0.7rem; color: var(--cinza); text-align: center; margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none; background: var(--ouro-claro); border: 1px solid var(--ouro);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 0.875rem; color: var(--ouro); align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro); color: oklch(0.10 0.02 260); border: none;
+  padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap;
+}
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+
+/* PROGRESS BAR */
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
+.progress-seg {
+  height: 6px; background: var(--cinza-claro);
+  border-radius: var(--r-sm); transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
+.progress-seg.parcial { background: var(--ouro); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 16px; margin-bottom: 28px;
+}
+.id-form label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.id-form input, .id-form select {
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  color: var(--texto); padding: 8px 10px; font-family: var(--font);
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+}
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 20px; margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro);
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
+
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* MC ALTERNATIVES */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  text-align: left; width: 100%; font-family: var(--font);
+  font-size: 0.9rem; color: var(--texto); line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; }
+.alt-btn.correct { border-color: var(--verde); background: var(--verde-claro); }
+.alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.alt-btn.correct-answer { border-color: var(--verde); }
+.alt-letra {
+  font-family: var(--mono); font-weight: 700; color: var(--cinza);
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correct .alt-letra { color: var(--verde); }
+.alt-btn.incorrect .alt-letra { color: var(--erro); }
+
+/* MM CHECKBOXES */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.check-item:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.check-item.selected { background: var(--azul-bg); border-color: var(--azul); }
+.check-item.locked { cursor: default; }
+.check-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.check-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.check-item.missed { border-color: var(--ouro); border-style: dashed; }
+.check-box {
+  width: 18px; height: 18px; border: 2px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; margin-top: 2px;
+}
+.check-item.selected .check-box { border-color: var(--azul); color: var(--azul-claro); }
+.check-item.correct .check-box { border-color: var(--verde); color: var(--verde); }
+.check-item.incorrect .check-box { border-color: var(--erro); color: var(--erro); }
+
+/* VF STATEMENTS */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; transition: border-color 0.2s;
+}
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn {
+  width: 36px; height: 36px; border: 2px solid var(--cinza-borda);
+  background: transparent; color: var(--cinza); font-family: var(--mono);
+  font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.vf-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.locked { cursor: default; }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+.vf-resultado { font-family: var(--mono); font-size: 0.75rem; margin-top: 4px; }
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-top: 8px; -webkit-overflow-scrolling: touch; }
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px;
+}
+.matrix-table th {
+  background: oklch(0.18 0.02 260); border: 1px solid var(--cinza-borda);
+  padding: 8px 6px; font-family: var(--mono); font-size: 0.7rem;
+  font-weight: 600; text-align: center; color: var(--azul-claro); vertical-align: bottom;
+}
+.matrix-table th:first-child { text-align: left; min-width: 130px; font-size: 0.72rem; }
+.matrix-table td {
+  border: 1px solid var(--cinza-borda); padding: 8px 6px;
+  text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-size: 0.84rem; }
+.matrix-table tbody tr:hover td { background: var(--hover-bg); }
+.matrix-table input[type="radio"] {
+  width: 18px; height: 18px; accent-color: var(--azul); cursor: pointer;
+}
+.matrix-table tr.row-correct td { background: var(--verde-claro); }
+.matrix-table tr.row-incorrect td { background: var(--erro-claro); }
+.matrix-table td.cell-correct-answer { outline: 2px solid var(--verde); outline-offset: -2px; }
+.matrix-table input[type="radio"]:disabled { cursor: default; }
+
+/* FEEDBACK */
+.q-feedback {
+  display: none; margin-top: 12px; padding: 12px 14px;
+  font-size: 0.85rem; line-height: 1.6; border-left: 3px solid;
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+.q-feedback.parcial { border-color: var(--ouro); background: var(--ouro-claro); color: var(--ouro); }
+.fb-title { font-weight: 700; margin-bottom: 6px; }
+.fb-level { margin-bottom: 4px; font-size: 0.82rem; }
+.fb-level strong { font-weight: 700; }
+.q-score-detail { font-family: var(--mono); font-size: 0.78rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid; opacity: 0.8; }
+
+/* SCORE BOX */
+.score-box {
+  display: none; background: var(--superficie); border: 2px solid var(--ouro);
+  padding: 24px; margin-bottom: 20px; text-align: center;
+}
+.score-box.show { display: block; }
+.score-value { font-family: var(--mono); font-size: 3rem; font-weight: 700; color: var(--ouro); }
+.score-label {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
+}
+.score-breakdown {
+  display: flex; justify-content: center; gap: 16px; margin-top: 12px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+}
+.score-breakdown span { display: flex; align-items: center; gap: 4px; }
+.score-breakdown .dot { width: 8px; height: 8px; display: inline-block; }
+.score-breakdown .dot-ok { background: var(--verde); }
+.score-breakdown .dot-nok { background: var(--erro); }
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  padding: 12px 24px; border: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+
+/* TOAST */
+.toast-container {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px;
+  color: var(--texto); border: 1px solid; max-width: 320px;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn, .check-item { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .vf-item { flex-direction: column; gap: 8px; }
+  .vf-toggles { align-self: flex-start; }
+  .matrix-table { font-size: 0.75rem; }
+  .matrix-table th { font-size: 0.65rem; padding: 6px 4px; }
+  .matrix-table td { padding: 6px 4px; }
+  .version-btn { padding: 10px 8px; font-size: 0.9rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector, .version-label { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn, .check-item { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct, .check-item.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect, .check-item.incorrect { border-color: #c00; background: #fbe9e7; }
+  .q-feedback { display: block !important; }
+  .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
+  .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
+  .score-box { display: block !important; border-color: #333; background: #fff; }
+  .score-value { color: #111; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono); font-size: 1.05rem; font-weight: 700; color: var(--ouro); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro); }
+.coleta-btn { background: var(--ouro); color: #000; border: none; font-family: var(--mono); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde); color: var(--verde); }
+.coleta-status.falha { border-color: var(--erro); color: var(--erro); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro); color: var(--erro); font-family: var(--mono); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- RESTORATION BANNER -->
+  <div class="restore-banner" id="restoreBanner">
+    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T01</span> &middot; Física, uma linguagem básica da ciência</h1>
+      <span class="badge">Testinho (TN)</span>
+    </div>
+    <div class="header-sub">5 questões &middot; 10 pontos &middot; 10 min</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+  </div>
+
+  <!-- VERSION SELECTOR -->
+  <div class="version-label">Selecione sua versão</div>
+  <div class="version-selector" id="versionSelector">
+    <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
+    <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
+    <button class="version-btn" data-v="C" onclick="switchVersion('C')">Versão C</button>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg" id="prog-0"></div>
+    <div class="progress-seg" id="prog-1"></div>
+    <div class="progress-seg" id="prog-2"></div>
+    <div class="progress-seg" id="prog-3"></div>
+    <div class="progress-seg" id="prog-4"></div>
+  </div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option>
+        <option value="FISI-MIN2-26">MIN2</option>
+        <option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- SCORE BOX -->
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue">0/10</div>
+    <div class="score-label">Pontuação Final</div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
+  </div>
+
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+  <div class="fecho-acao">Não esqueça de fazer a <strong>TAREFA MÍNIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+<script>
+/* ============================================================
+   BANCO DE QUESTÕES — 3 VERSÕES (A, B, C) × 5 QUESTÕES
+   ============================================================ */
+
+const BANCO = {
+  A: [
+    /* ── Q1-A: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B1-A', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'No Resumo em Áudio (MD), Sofia estimou o volume e a massa do pedestal de granito na Praça Tiradentes. O áudio diz que "Física é dar nome e número às coisas do mundo". <strong>O que caracteriza uma grandeza física?</strong>',
+      opcoes:[
+        {letra:'A', texto:'É uma propriedade que pode ser quantificada e expressa em unidades padronizadas.'},
+        {letra:'B', texto:'É qualquer coisa que se pode observar com os cinco sentidos.'},
+        {letra:'C', texto:'É uma propriedade que pode ser quantificada, comparada e expressa em unidades padronizadas pelo SI.'},
+        {letra:'D', texto:'É o nome científico dado a objetos encontrados na natureza.'}
+      ],
+      correta:'C',
+      feedbacks:{
+        C:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Grandeza física é propriedade mensurável com unidade SI — exatamente o que o Resumo em Áudio (MD) descreve.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração, cada grandeza medida (massa de minério, pressão de bomba) precisa de unidade SI para comunicação técnica.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, você verá como medir grandezas com instrumentos reais do laboratório.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Faltou "comparada" e "pelo SI". Quantificar sem padrão não é suficiente — cada laboratório teria seus próprios números.</div><div class="fb-level"><strong>② ERRO E3:</strong> Interpretação literal. Você leu parte da definição e parou antes do trecho essencial.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 1, trecho sobre "dar nome e número às coisas do mundo" — note que o SI é o padrão.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Observar com os sentidos é percepção, não medição. "Bonito" não é grandeza; "2 700 kg/m³" é grandeza.</div><div class="fb-level"><strong>② ERRO E14:</strong> Confusão qualitativo/quantitativo. Você trocou observação subjetiva por medição objetiva.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 1 — Sofia não apenas olhou o pedestal, ela calculou 0,20 m³ e 540 kg.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Grandeza física não é nome de objeto, é propriedade mensurável. "Granito" é nome de rocha; "massa do granito" é grandeza.</div><div class="fb-level"><strong>② ERRO E14:</strong> Confusão qualitativo/quantitativo. Você confundiu classificação com quantificação.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Volte ao MD Bloco 1 e identifique quais NÚMEROS Sofia obteve — esses são grandezas.</div>'}
+      }
+    },
+    /* ── Q2-A: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T01-TN-B2-A', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Resumo em Áudio (MD) descreve que "a Física se divide em cinco grandes áreas e todas aparecem numa mina ao mesmo tempo". <strong>Selecione todas as áreas da Física mencionadas no Resumo em Áudio (MD) como presentes em uma mina.</strong>',
+      opcoes:[
+        {key:'mecanica', texto:'Mecânica (blocos de rocha, correias, força e energia cinética)', correta:true},
+        {key:'astronomia', texto:'Astronomia (movimento dos planetas e estrelas)', correta:false},
+        {key:'termologia', texto:'Termologia (calor nas galerias, gradiente geotérmico)', correta:true},
+        {key:'optica', texto:'Óptica (raios X para análise de minério)', correta:true},
+        {key:'acustica', texto:'Acústica (propagação de som em galerias)', correta:false}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> O Resumo em Áudio (MD) cita Mecânica, Termologia, Óptica, Eletromagnetismo e Física Moderna como as 5 áreas.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração do Quadrilátero Ferrífero, todas operam simultaneamente.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, exploraremos exemplos de cada área em processos reais.</div>',
+      feedbackErros:{
+        astronomia:'<strong>Astronomia:</strong> É área real da Física, mas o Resumo em Áudio (MD) não a cita no contexto de mineração. <em>Erro E12 — transferência para contexto errado.</em>',
+        acustica:'<strong>Acústica:</strong> É plausível em galerias, mas o Resumo em Áudio (MD) não a menciona entre as 5 áreas da mina. <em>Erro E10 — contextualização falsa.</em>'
+      }
+    },
+    /* ── Q3-A: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T01-TN-B3-A', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'O Resumo em Áudio (MD) apresenta cálculos feitos por Sofia na Praça Tiradentes e processos físicos em minas. Com base no que você estudou, <strong>selecione se estas afirmações são verdadeiras ou falsas.</strong>',
+      afirmacoes:[
+        {texto:'A densidade do granito (2 700 kg/m³) é uma propriedade intensiva — não depende do tamanho do bloco.', correta:'V', just:'Definição correta de propriedade intensiva.'},
+        {texto:'O erro relativo de 3% em uma mina que movimenta 500 t/dia representa 15 toneladas de diferença.', correta:'V', just:'500 × 0,03 = 15 t — transferência correta do modelo.'},
+        {texto:'Se a densidade de um minério é 5 000 kg/m³ e o volume é 0,10 m³, a massa é 500 kg.', correta:'V', just:'m = ρ × V = 5 000 × 0,10 = 500 kg.'},
+        {texto:'A pressão hidrostática em uma galeria a 40 m de profundidade é aproximadamente 4 atmosferas.', correta:'V', just:'P<sub>h</sub> = 1 000 × 9,8 × 40 = 392 000 Pa ≈ 3,9 atm ≈ 4 atm.'},
+        {texto:'A Física experimental sozinha, sem modelo teórico, já constitui ciência completa.', correta:'F', just:'Teoria sem experimento é hipótese; experimento sem teoria é dado bruto — nenhum dos dois é Física sozinho.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — aplicar modelos do Resumo em Áudio (MD) a dados novos. Revise: MD Blocos 1 e 2.'
+    },
+    /* ── Q4-A: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B4-A', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual T01 apresenta cinco processos da mineração, cada um governado por uma lei física. Uma bomba de drenagem em uma galeria subterrânea precisa vencer a pressão da coluna de água. <strong>Qual equação governa o dimensionamento dessa bomba?</strong>',
+      opcoes:[
+        {letra:'A', texto:'P = F × v (potência mecânica da correia)'},
+        {letra:'B', texto:'E<sub>r</sub> = |V<sub>m</sub> − V<sub>t</sub>| / V<sub>t</sub> × 100% (erro relativo)'},
+        {letra:'C', texto:'P<sub>h</sub> = ρ × g × h (pressão hidrostática)'},
+        {letra:'D', texto:'FS = forças resistentes / forças atuantes (fator de segurança do talude)'}
+      ],
+      correta:'C',
+      feedbacks:{
+        C:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> A pressão hidrostática (P<sub>h</sub> = ρgh) determina a força que a bomba precisa superar.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na Mina de Passagem (Mariana), galerias a 80 m exigem bombas que vencem quase 8 atm.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, calcularemos a pressão para diferentes profundidades reais.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> P = F × v é a potência da correia transportadora, não da bomba de drenagem.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa. Você associou a equação ao processo errado.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) Área 5 — cada processo tem sua equação específica.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> E<sub>r</sub> é erro relativo (comparação teoria vs. experimento), não pressão.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas. Pressão e erro são grandezas completamente diferentes.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) Área 2 (erro relativo) vs. Área 5 (pressão hidrostática).</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> FS é o fator de segurança de taludes, não de bombas de drenagem.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa. Você trocou o processo de estabilidade pelo de drenagem.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) Área 5 — identifique qual equação pertence a qual processo.</div>'}
+      }
+    },
+    /* ── Q5-A: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T01-TN-B5-A', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'O Mapa Conceitual T01 apresenta cinco processos da mineração, cada um com uma equação física. <strong>Associe cada processo à sua equação correta.</strong>',
+      linhas:['Transporte por correia','Drenagem de galerias','Ventilação','Controle de qualidade','Queda de blocos em talude'],
+      colunas:['P = F × v','P<sub>h</sub> = ρgh','Q = A × v','E<sub>r</sub> = |V<sub>m</sub>−V<sub>t</sub>|/V<sub>t</sub> × 100%','E<sub>c</sub> = mv²/2'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização — mapeamento processo × equação. Erros típicos: trocar Drenagem ↔ Ventilação (ambas lidam com fluidos) ou E<sub>c</sub> ↔ P (ambas envolvem velocidade). Revise: MC Área 5.'
+    }
+  ],
+
+  B: [
+    /* ── Q1-B: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B1-B', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'No Resumo em Áudio (MD), Sofia calculou o volume do pedestal usando comprimento, largura e altura. <strong>Qual das opções abaixo é uma grandeza derivada?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Comprimento'},
+        {letra:'B', texto:'Temperatura'},
+        {letra:'C', texto:'Densidade'},
+        {letra:'D', texto:'Tempo'}
+      ],
+      correta:'C',
+      feedbacks:{
+        C:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Densidade = massa ÷ volume = kg/m³ — combina duas grandezas fundamentais.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração, a densidade identifica o tipo de minério sem precisar de análise química.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, você verá como a densidade do granito (2 700 kg/m³) difere da do minério de ferro (5 000 kg/m³).</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Comprimento, temperatura e tempo são grandezas FUNDAMENTAIS do SI — não podem ser decompostas.</div><div class="fb-level"><strong>② ERRO E11:</strong> Definição parcial. Você identificou corretamente que são grandezas, mas confundiu fundamental com derivada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 1 — as 7 grandezas fundamentais estão listadas.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Comprimento, temperatura e tempo são grandezas FUNDAMENTAIS do SI — não podem ser decompostas.</div><div class="fb-level"><strong>② ERRO E11:</strong> Definição parcial. Você identificou corretamente que são grandezas, mas confundiu fundamental com derivada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 1 — as 7 grandezas fundamentais estão listadas.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Comprimento, temperatura e tempo são grandezas FUNDAMENTAIS do SI — não podem ser decompostas.</div><div class="fb-level"><strong>② ERRO E11:</strong> Definição parcial. Você identificou corretamente que são grandezas, mas confundiu fundamental com derivada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 1 — as 7 grandezas fundamentais estão listadas.</div>'}
+      }
+    },
+    /* ── Q2-B: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T01-TN-B2-B', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Resumo em Áudio (MD) explica que na mineração "as quatro ciências trabalham juntas no mesmo metro quadrado de rocha". <strong>Selecione todas as ciências que o Resumo em Áudio (MD) associa diretamente a processos de mineração.</strong>',
+      opcoes:[
+        {key:'fisica', texto:'Física (calcula força e pressão)', correta:true},
+        {key:'quimica', texto:'Química (analisa reação de flotação)', correta:true},
+        {key:'biologia', texto:'Biologia (monitora rio contaminado)', correta:true},
+        {key:'matematica', texto:'Matemática (calcula volume por decomposição)', correta:false},
+        {key:'geologia', texto:'Geologia (identifica o mineral)', correta:true}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> O Resumo em Áudio (MD) cita Física, Química, Biologia e Geologia como as 4 ciências da natureza na mineração.</div><div class="fb-level"><strong>② REFORÇO:</strong> No Bloco 3, as quatro ciências trabalham juntas "no mesmo metro quadrado de rocha".</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, veremos exemplos concretos de cada ciência em processos de mineração.</div>',
+      feedbackErros:{
+        matematica:'<strong>Matemática:</strong> É citada nas Conexões, não no Bloco 3 como ciência da natureza. O Bloco 3 trata de ciências da NATUREZA. <em>Erro E12 — transferência para contexto errado.</em>'
+      }
+    },
+    /* ── Q3-B: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T01-TN-B3-B', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'Com base no que você estudou no Resumo em Áudio (MD), <strong>selecione se estas afirmações são verdadeiras ou falsas.</strong>',
+      afirmacoes:[
+        {texto:'Uma correia transportadora com tração de 3 000 N a 1,5 m/s consome 4 500 W de potência mecânica.', correta:'V', just:'P = F × v = 3 000 × 1,5 = 4 500 W.'},
+        {texto:'O erro relativo mede a diferença absoluta entre dois valores, em quilogramas.', correta:'F', just:'Erro relativo é percentual (adimensional), não em quilogramas. Erro E5 — modelo mental incorreto.'},
+        {texto:'A temperatura nas galerias de uma mina aumenta cerca de 3 graus Celsius a cada 100 metros de profundidade.', correta:'V', just:'Gradiente geotérmico médio ≈ 3 °C / 100 m.'},
+        {texto:'Teoria sem experimento já é Física completa, segundo o Resumo em Áudio (MD).', correta:'F', just:'O MD diz que teoria sem experimento é hipótese, e experimento sem teoria é dado bruto. Erro E5 — modelo mental incorreto.'},
+        {texto:'A vazão de ar em uma galeria com seção de 3 m² e velocidade de 2 m/s é 6 m³/s.', correta:'V', just:'Q = A × v = 3 × 2 = 6 m³/s.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — cálculos com dados novos. Revise: MD Blocos 2 e 5.'
+    },
+    /* ── Q4-B: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B4-B', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual (MC) T01 apresenta que projetos de mineração exigem fator de segurança (FS) maior que 1,3 para taludes. <strong>O que acontece se FS for menor que 1,0?</strong>',
+      opcoes:[
+        {letra:'A', texto:'A mina funciona normalmente mas com restrição de horário.'},
+        {letra:'B', texto:'O talude está em risco de ruptura iminente.'},
+        {letra:'C', texto:'A bomba de drenagem precisa ser desligada.'},
+        {letra:'D', texto:'O minério passa a ter densidade inferior a 1 000 kg/m³.'}
+      ],
+      correta:'B',
+      feedbacks:{
+        B:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> FS &lt; 1,0 significa que as forças atuantes superam as resistentes — ruptura iminente.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração real, taludes com FS &lt; 1,3 já são considerados de alto risco.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, analisaremos fatores de segurança para diferentes configurações de talude.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Com FS &lt; 1,0, a mina NÃO pode funcionar — há risco de desabamento.</div><div class="fb-level"><strong>② ERRO E5:</strong> Modelo mental incorreto — subestimou a gravidade de FS &lt; 1,0.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) Área 5 — FS mínimo de 1,3 para operação segura.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Bomba de drenagem é outro processo (P<sub>h</sub> = ρgh). FS se refere à estabilidade de taludes.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa — trocou o processo.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) Área 5 — cada processo tem seu parâmetro.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Densidade do minério não tem relação com fator de segurança de taludes.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas — FS e densidade são grandezas independentes.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC) — FS mede estabilidade, não composição.</div>'}
+      }
+    },
+    /* ── Q5-B: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T01-TN-B5-B', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'O Mapa Conceitual (MC) T01 organiza a Física em cinco áreas. <strong>Associe cada fenômeno de mineração à área da Física que o governa.</strong>',
+      linhas:['Correia transportadora em movimento','Calor crescente nas galerias profundas','Raios X analisando minério','Bombas elétricas de drenagem','Radioatividade de rochas uraníferas'],
+      colunas:['Mecânica','Termologia','Óptica','Eletromagnetismo','Física Moderna'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização — fenômeno × área da Física. Erros típicos: trocar Óptica ↔ Eletromagnetismo (raios X são ondas eletromagnéticas, mas classificados em Óptica no contexto do MD). Revise: MD Bloco 4, MC Área 4.'
+    }
+  ],
+
+  C: [
+    /* ── Q1-C: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B1-C', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Resumo em Áudio (MD) descreve que ao comparar o valor calculado com o medido, a diferença percentual tem um nome específico. <strong>Como se chama essa diferença?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Erro absoluto'},
+        {letra:'B', texto:'Erro relativo'},
+        {letra:'C', texto:'Desvio padrão'},
+        {letra:'D', texto:'Incerteza instrumental'}
+      ],
+      correta:'B',
+      feedbacks:{
+        B:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Erro relativo é a diferença percentual entre valor calculado e valor medido.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração, controlar o erro relativo garante precisão em contratos de venda.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, você calculará erros relativos com dados reais de uma balança de campo.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Erro absoluto é a diferença em valor, não em percentual. Erro relativo expressa essa diferença como fração do valor teórico.</div><div class="fb-level"><strong>② ERRO E11:</strong> Definição parcial — você confundiu erro absoluto com relativo.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 2 — o trecho sobre a diferença de 3%.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Desvio padrão é um conceito de Estatística, não o nome da diferença percentual descrita no Resumo em Áudio (MD).</div><div class="fb-level"><strong>② ERRO E12:</strong> Transferência para contexto errado.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 2 — a diferença percentual tem nome próprio na Física.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Incerteza instrumental refere-se à limitação do instrumento, não à comparação entre teoria e medida.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD) Bloco 2 — a diferença entre calculado e medido é o erro relativo.</div>'}
+      }
+    },
+    /* ── Q2-C: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T01-TN-B2-C', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Resumo em Áudio (MD) descreve cinco processos de mineração governados pela Física. <strong>Selecione todos os processos citados no Resumo em Áudio (MD).</strong>',
+      opcoes:[
+        {key:'detonacao', texto:'Detonação (pressão do explosivo)', correta:true},
+        {key:'flotacao', texto:'Flotação de minério', correta:false},
+        {key:'drenagem', texto:'Drenagem de galerias (pressão hidrostática)', correta:true},
+        {key:'ventilacao', texto:'Ventilação (vazão de ar conforme NR-22)', correta:true},
+        {key:'transporte', texto:'Transporte por correia (potência mecânica)', correta:true}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> O Resumo em Áudio (MD) cita Detonação, Drenagem, Ventilação e Transporte como processos governados pela Física.</div><div class="fb-level"><strong>② REFORÇO:</strong> Cada processo usa uma equação física diferente, aplicada diariamente na mineração.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, exploraremos cada equação com dados reais de minas do Quadrilátero Ferrífero.</div>',
+      feedbackErros:{
+        flotacao:'<strong>Flotação:</strong> É processo químico, não citado no Bloco 5 como processo governado pela Física. <em>Erro E10 — contextualização falsa.</em>'
+      }
+    },
+    /* ── Q3-C: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T01-TN-B3-C', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'Com base no Resumo em Áudio (MD), <strong>selecione se estas afirmações são verdadeiras ou falsas.</strong>',
+      afirmacoes:[
+        {texto:'Um bloco de hematita com 0,15 m³ e densidade 5 000 kg/m³ tem massa de 750 kg.', correta:'V', just:'m = ρ × V = 5 000 × 0,15 = 750 kg.'},
+        {texto:'O erro relativo é dado por (V<sub>m</sub> − V<sub>t</sub>) / V<sub>m</sub> × 100% — com o valor medido no denominador.', correta:'F', just:'O denominador correto é V<sub>t</sub> (valor teórico), não V<sub>m</sub> (valor medido). Erro E2 — erro de cálculo.'},
+        {texto:'A pressão hidrostática a 60 m de profundidade é cerca de 588 kPa.', correta:'V', just:'P<sub>h</sub> = 1 000 × 9,8 × 60 = 588 000 Pa = 588 kPa.'},
+        {texto:'A Física se divide em exatamente três áreas: Mecânica, Termologia e Óptica.', correta:'F', just:'São cinco áreas: Mecânica, Termologia, Óptica, Eletromagnetismo e Física Moderna. Erro E9 — memória sem transferência.'},
+        {texto:'A NR-22 exige valores mínimos de vazão de ar por trabalhador em galerias.', correta:'V', just:'A NR-22 regulamenta a ventilação mínima em minas subterrâneas.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — cálculo e julgamento com dados novos. Revise: MD Blocos 1, 2, 5.'
+    },
+    /* ── Q4-C: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T01-TN-B4-C', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual (MC) T01 mostra que a ventilação de galerias é governada por Q = A × v. Uma galeria com seção de 5 m² precisa de vazão mínima de 10 m³/s conforme a NR-22. <strong>Qual deve ser a velocidade mínima do ar?</strong>',
+      opcoes:[
+        {letra:'A', texto:'50 m/s'},
+        {letra:'B', texto:'0,5 m/s'},
+        {letra:'C', texto:'2 m/s'},
+        {letra:'D', texto:'15 m/s'}
+      ],
+      correta:'C',
+      feedbacks:{
+        C:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> v = Q / A = 10 / 5 = 2 m/s — a velocidade mínima do ar.</div><div class="fb-level"><strong>② REFORÇO:</strong> A NR-22 estabelece vazão mínima para garantir a segurança dos trabalhadores em galerias.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, calcularemos velocidades para diferentes configurações de galeria.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> 50 m/s resulta de multiplicar Q × A. O correto é dividir: v = Q / A.</div><div class="fb-level"><strong>② ERRO E2:</strong> Erro de cálculo — operação invertida.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise: Q = A × v → v = Q / A = 10 / 5 = 2 m/s.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> 0,5 m/s está uma ordem de grandeza abaixo do correto (2 m/s).</div><div class="fb-level"><strong>② ERRO E8:</strong> Ordem de grandeza errada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Recalcule: v = Q / A = 10 / 5 = 2 m/s.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> 15 m/s resulta de somar Q + A. O correto é dividir: v = Q / A.</div><div class="fb-level"><strong>② ERRO E2:</strong> Erro de cálculo — operação errada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise: Q = A × v → v = Q / A = 10 / 5 = 2 m/s.</div>'}
+      }
+    },
+    /* ── Q5-C: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T01-TN-B5-C', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'O Mapa Conceitual (MC) T01 traz âncoras com cálculos reais de mineração. <strong>Associe cada âncora ao resultado numérico correto.</strong>',
+      linhas:['Massa do pedestal de granito','Erro relativo da balança de campo','Força para deslocar o bloco (0,5 m/s²)','Pressão em galeria a 80 m','Vazão de ar (4 m² × 1,5 m/s)'],
+      colunas:['540 kg','3,0%','270 N','784 kPa','6,0 m³/s'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização — âncoras × resultados numéricos. Erros típicos: trocar Força ↔ Massa (confusão entre 270 N e 540 kg) ou Pressão ↔ Vazão (unidades diferentes). Revise: MC Áreas 1-5.'
+    }
+  ]
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const PREFIX = 'ifmg_fc1_t01_tn_';
+let currentVersion = null;
+let respostas = {};
+let submitted = false;
+let saveTimer = null;
+
+/* ── Coleta state ── */
+const COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+const ARQUIVO_FONTE = 'T01-TN-v19-estudante.html';
+const ALUNO_KEY = PREFIX + 'aluno';
+const COMPROVANTE_KEY = PREFIX + 'comprovante';
+let aluno = null;            /* {ra, nome, turma} confirmado via endpoint */
+let alunoPendente = null;    /* aguardando confirmacao "Sou eu" */
+let coletaEnviando = false;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  setupInputListeners();
+  checkLocalStorage();
+  initColeta();
+});
+
+/* ============================================================
+   VERSION SELECTOR
+   ============================================================ */
+function switchVersion(v) {
+  if (submitted) return;
+  if (currentVersion === v) return;
+
+  /* Save current version state before switching */
+  if (currentVersion) saveToLocalStorage();
+
+  currentVersion = v;
+
+  /* Update buttons */
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === v);
+  });
+
+  /* Try to restore this version's state */
+  const saved = loadVersionState(v);
+  if (saved) {
+    respostas = saved.respostas || {};
+    if (saved.nome) document.getElementById('inputNome').value = saved.nome;
+    if (saved.turma) document.getElementById('inputTurma').value = saved.turma;
+    if (saved.data) document.getElementById('inputData').value = saved.data;
+    if (saved.submitted) {
+      buildQuestions();
+      submitQuiz(true);
+      return;
+    }
+  } else {
+    respostas = {};
+  }
+
+  buildQuestions();
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ============================================================
+   BUILD QUESTIONS
+   ============================================================ */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+
+  qs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomMap = {'L1-L2':'Bloom L1-L2','L2-L3':'Bloom L2-L3','L3':'Bloom L3','L4':'Bloom L4','L3-L4':'Bloom L3-L4'};
+    const bloomLabel = bloomMap[q.bloom] || q.bloom;
+
+    let bodyHTML = '';
+
+    switch (q.tipo) {
+      case 'MC':
+        bodyHTML = buildMC(q);
+        break;
+      case 'MM':
+        bodyHTML = buildMM(q);
+        break;
+      case 'VF':
+        bodyHTML = buildVF(q);
+        break;
+      case 'MATRIZ':
+        bodyHTML = buildMATRIZ(q);
+        break;
+    }
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${q.num}</div>
+        <div class="q-tags">
+          <span class="tag tag-bloom">${bloomLabel}</span>
+          <span class="tag tag-pts">${q.pts} pt</span>
+          <span class="tag tag-tipo">${q.tipoLabel}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.enunciado}</div>
+      ${bodyHTML}
+      <div class="q-feedback" id="fb-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  /* Restore visual state for answers already in respostas */
+  restoreVisualState();
+}
+
+/* ── MC builder ── */
+function buildMC(q) {
+  return `<div class="alt-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <button class="alt-btn" data-qid="${q.id}" data-letra="${o.letra}" onclick="selectMC('${q.id}','${o.letra}')">
+        <span class="alt-letra">${o.letra}.</span>
+        <span>${o.texto}</span>
+      </button>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MM builder ── */
+function buildMM(q) {
+  return `<div class="check-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <div class="check-item" data-qid="${q.id}" data-key="${o.key}" onclick="toggleMM('${q.id}','${o.key}')">
+        <div class="check-box" id="cb-${q.id}-${o.key}"></div>
+        <span>${o.texto}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── VF builder ── */
+function buildVF(q) {
+  return `<div class="vf-list" id="alts-${q.id}">
+    ${q.afirmacoes.map((af, i) => `
+      <div class="vf-item" id="vf-${q.id}-${i}">
+        <div class="vf-toggles">
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="V" onclick="selectVF('${q.id}',${i},'V')">V</button>
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="F" onclick="selectVF('${q.id}',${i},'F')">F</button>
+        </div>
+        <div class="vf-texto">${af.texto}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MATRIZ builder ── */
+function buildMATRIZ(q) {
+  return `<div class="matrix-wrap"><table class="matrix-table" id="alts-${q.id}">
+    <thead><tr>
+      <th>Processo / Âncora</th>
+      ${q.colunas.map(c => `<th>${c}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${q.linhas.map((l, ri) => `<tr id="mrow-${q.id}-${ri}">
+        <td>${l}</td>
+        ${q.colunas.map((_, ci) => `<td>
+          <input type="radio" name="mat-${q.id}-${ri}" value="${ci}"
+            onchange="selectMATRIZ('${q.id}',${ri},${ci})">
+        </td>`).join('')}
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ============================================================
+   INTERACTION HANDLERS
+   ============================================================ */
+function selectMC(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function toggleMM(qid, key) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [];
+  const idx = respostas[qid].indexOf(key);
+  if (idx >= 0) respostas[qid].splice(idx, 1);
+  else respostas[qid].push(key);
+
+  const item = document.querySelector(`[data-qid="${qid}"][data-key="${key}"]`);
+  item.classList.toggle('selected', idx < 0);
+  const cb = document.getElementById('cb-' + qid + '-' + key);
+  cb.textContent = idx < 0 ? '✓' : '';
+
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectVF(qid, idx, val) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][idx] = val;
+
+  document.querySelectorAll(`[data-qid="${qid}"][data-idx="${idx}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.val === val);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectMATRIZ(qid, row, col) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][row] = col;
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+/* ============================================================
+   RESTORE VISUAL STATE (after buildQuestions)
+   ============================================================ */
+function restoreVisualState() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach(q => {
+    const r = respostas[q.id];
+    if (r == null) return;
+
+    switch (q.tipo) {
+      case 'MC':
+        document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+          b.classList.toggle('selected', b.dataset.letra === r);
+        });
+        break;
+      case 'MM':
+        if (Array.isArray(r)) {
+          r.forEach(key => {
+            const item = document.querySelector(`[data-qid="${q.id}"][data-key="${key}"]`);
+            if (item) { item.classList.add('selected'); }
+            const cb = document.getElementById('cb-' + q.id + '-' + key);
+            if (cb) cb.textContent = '✓';
+          });
+        }
+        break;
+      case 'VF':
+        if (Array.isArray(r)) {
+          r.forEach((val, i) => {
+            if (val) {
+              document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+                b.classList.toggle('selected', b.dataset.val === val);
+              });
+            }
+          });
+        }
+        break;
+      case 'MATRIZ':
+        if (Array.isArray(r)) {
+          r.forEach((col, row) => {
+            if (col != null) {
+              const radio = document.querySelector(`input[name="mat-${q.id}-${row}"][value="${col}"]`);
+              if (radio) radio.checked = true;
+            }
+          });
+        }
+        break;
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+function updateProgress() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      const sc = questionScore(q);
+      if (sc >= q.pts) seg.classList.add('certo');
+      else if (sc > 0) seg.classList.add('parcial');
+      else if (isAnswered(q)) seg.classList.add('errado');
+    } else if (isAnswered(q)) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+function isAnswered(q) {
+  const r = respostas[q.id];
+  if (r == null) return false;
+  switch (q.tipo) {
+    case 'MC': return !!r;
+    case 'MM': return Array.isArray(r) && r.length > 0;
+    case 'VF': return Array.isArray(r) && r.every(v => v != null);
+    case 'MATRIZ': return Array.isArray(r) && r.every(v => v != null);
+  }
+  return false;
+}
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function questionScore(q) {
+  const r = respostas[q.id];
+  if (r == null) return 0;
+
+  switch (q.tipo) {
+    case 'MC':
+      return r === q.correta ? q.pts : 0;
+
+    case 'MM': {
+      if (!Array.isArray(r)) return 0;
+      const nCorretas = q.opcoes.filter(o => o.correta).length;
+      let acertos = 0, erros = 0;
+      q.opcoes.forEach(o => {
+        const sel = r.includes(o.key);
+        if (sel && o.correta) acertos++;
+        else if (sel && !o.correta) erros++;
+      });
+      return Math.max(0, Math.min(q.pts, (acertos * q.pts / nCorretas) - (erros * 0.5)));
+    }
+
+    case 'VF': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.afirmacoes.forEach((af, i) => {
+        if (r[i] === af.correta) acertos++;
+      });
+      return acertos * q.pts / q.afirmacoes.length;
+    }
+
+    case 'MATRIZ': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.gabarito.forEach((g, i) => {
+        if (r[i] === g) acertos++;
+      });
+      return acertos * q.pts / q.gabarito.length;
+    }
+  }
+  return 0;
+}
+
+function totalScore() {
+  if (!currentVersion) return 0;
+  let total = 0;
+  BANCO[currentVersion].forEach(q => { total += questionScore(q); });
+  return Math.round(total * 10) / 10;
+}
+
+/* ============================================================
+   SUBMIT CHECK
+   ============================================================ */
+function checkSubmitReady() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const turma = document.getElementById('inputTurma').value;
+  if (!currentVersion || !nome || !turma) {
+    document.getElementById('btnSubmit').disabled = true;
+    return;
+  }
+  const allAnswered = BANCO[currentVersion].every(q => isAnswered(q));
+  document.getElementById('btnSubmit').disabled = !allAnswered;
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function submitQuiz(isRestore) {
+  if (submitted && !isRestore) return;
+  submitted = true;
+
+  /* Lock inputs */
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+  document.querySelectorAll('.version-btn').forEach(b => b.classList.add('locked'));
+
+  const qs = BANCO[currentVersion];
+  let score = totalScore();
+
+  qs.forEach(q => {
+    const sc = questionScore(q);
+    switch (q.tipo) {
+      case 'MC': showFeedbackMC(q); break;
+      case 'MM': showFeedbackMM(q, sc); break;
+      case 'VF': showFeedbackVF(q, sc); break;
+      case 'MATRIZ': showFeedbackMATRIZ(q, sc); break;
+    }
+  });
+
+  /* Score box */
+  const scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + '/10';
+
+  /* Breakdown */
+  const bd = document.getElementById('scoreBreakdown');
+  bd.innerHTML = qs.map(q => {
+    const sc = questionScore(q);
+    const pct = Math.round(sc / q.pts * 100);
+    return `<span>Q${q.num}: ${sc.toFixed(1)}/${q.pts}</span>`;
+  }).join('');
+
+  updateProgress();
+
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnExport').classList.add('show');
+
+  saveToLocalStorage();
+
+  if (!isRestore) { toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`); enviarColeta(); }
+  else { restaurarComprovante(); }
+}
+
+/* ── MC feedback ── */
+function showFeedbackMC(q) {
+  const chosen = respostas[q.id];
+  const isCorrect = chosen === q.correta;
+
+  document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+    b.classList.add('locked');
+    b.classList.remove('selected');
+    if (b.dataset.letra === q.correta) b.classList.add('correct');
+    if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+    if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const fbData = q.feedbacks[chosen] || q.feedbacks[q.correta];
+  fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+  fb.innerHTML = fbData.html;
+}
+
+/* ── MM feedback ── */
+function showFeedbackMM(q, sc) {
+  const selected = respostas[q.id] || [];
+  let hasError = false;
+  let errorTexts = [];
+
+  q.opcoes.forEach(o => {
+    const item = document.querySelector(`[data-qid="${q.id}"][data-key="${o.key}"]`);
+    const cb = document.getElementById('cb-' + q.id + '-' + o.key);
+    item.classList.add('locked');
+    item.classList.remove('selected');
+
+    const sel = selected.includes(o.key);
+    if (sel && o.correta) {
+      item.classList.add('correct');
+      cb.textContent = '✓';
+    } else if (sel && !o.correta) {
+      item.classList.add('incorrect');
+      cb.textContent = '✗';
+      hasError = true;
+      if (q.feedbackErros && q.feedbackErros[o.key]) {
+        errorTexts.push(q.feedbackErros[o.key]);
+      }
+    } else if (!sel && o.correta) {
+      item.classList.add('missed');
+      cb.textContent = '—';
+      hasError = true;
+    } else {
+      cb.textContent = '';
+    }
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  if (perfect) {
+    fb.className = 'q-feedback show ok';
+    fb.innerHTML = q.feedbackOk;
+  } else {
+    fb.className = 'q-feedback show ' + (sc > 0 ? 'parcial' : 'nok');
+    let html = '<div class="fb-title">' + (sc > 0 ? '⚠ Parcialmente correto' : '❌ Atenção!') + '</div>';
+    if (errorTexts.length) {
+      html += errorTexts.map(t => '<div class="fb-level">' + t + '</div>').join('');
+    }
+    html += `<div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+    fb.innerHTML = html;
+  }
+}
+
+/* ── VF feedback ── */
+function showFeedbackVF(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.afirmacoes.forEach((af, i) => {
+    const item = document.getElementById('vf-' + q.id + '-' + i);
+    const correct = answers[i] === af.correta;
+    item.classList.add(correct ? 'correct' : 'incorrect');
+
+    /* Color the buttons */
+    document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.val === af.correta) b.classList.add('correct');
+      if (b.dataset.val === answers[i] && !correct) b.classList.add('incorrect');
+    });
+
+    /* Add justification */
+    const justDiv = document.createElement('div');
+    justDiv.className = 'vf-resultado';
+    justDiv.style.color = correct ? 'var(--verde)' : 'var(--erro)';
+    justDiv.innerHTML = (correct ? '✓ ' : '✗ ') + af.just;
+    item.appendChild(justDiv);
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ── MATRIZ feedback ── */
+function showFeedbackMATRIZ(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.linhas.forEach((_, ri) => {
+    const row = document.getElementById('mrow-' + q.id + '-' + ri);
+    const correct = answers[ri] === q.gabarito[ri];
+    row.classList.add(correct ? 'row-correct' : 'row-incorrect');
+
+    /* Disable radios and mark correct cell */
+    document.querySelectorAll(`input[name="mat-${q.id}-${ri}"]`).forEach(r => {
+      r.disabled = true;
+    });
+
+    /* Highlight the correct cell */
+    const correctCell = row.children[q.gabarito[ri] + 1];
+    if (correctCell) correctCell.classList.add('cell-correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ============================================================
+   EXPORT JSON
+   ============================================================ */
+function montarPacote() {
+  const now = new Date();
+  const qs = BANCO[currentVersion];
+  return {
+    schema: 'ifmg-fc1-testinho-v4',
+    trilha: 'T01',
+    tipo: 'TN',
+    versao: currentVersion,
+    arquivo: ARQUIVO_FONTE,
+    timestamp: now.toISOString(),
+    ra: aluno ? aluno.ra : null,
+    turma_suap: aluno ? aluno.turma : null,
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: qs.map(q => {
+      const sc = questionScore(q);
+      return {
+        id: q.id,
+        bloom: q.bloom,
+        tipo: q.tipo,
+        pts_max: q.pts,
+        pts_obtidos: Math.round(sc * 100) / 100,
+        resposta: respostas[q.id] || null,
+        gabarito: q.tipo === 'MC' ? q.correta : (q.tipo === 'MM' ? q.opcoes.filter(o=>o.correta).map(o=>o.key) : (q.tipo === 'VF' ? q.afirmacoes.map(a=>a.correta) : q.gabarito)),
+        acertou: sc >= q.pts
+      };
+    }),
+    pontuacao: totalScore(),
+    total: 10
+  };
+}
+
+function exportJSON() {
+  const now = new Date();
+  const ts = now.toISOString().replace(/[:.]/g, '-');
+  const data = montarPacote();
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
+  a.download = `T01-TN-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'JSON exportado com sucesso');
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+function resetQuiz() {
+  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================ */
+function storageKey() {
+  return PREFIX + 'v' + currentVersion;
+}
+
+function saveToLocalStorage() {
+  if (!currentVersion) return;
+  try {
+    const state = {
+      versao: currentVersion,
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(storageKey(), JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', currentVersion);
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function loadVersionState(v) {
+  try {
+    const raw = localStorage.getItem(PREFIX + 'v' + v);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function clearLocalStorage() {
+  ['A','B','C'].forEach(v => localStorage.removeItem(PREFIX + 'v' + v));
+  localStorage.removeItem(PREFIX + 'lastVersion');
+}
+
+function checkLocalStorage() {
+  try {
+    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+    if (lastV) {
+      const state = loadVersionState(lastV);
+      if (state) {
+        document.getElementById('restoreBanner').classList.add('show');
+        return;
+      }
+    }
+    /* Check all versions */
+    for (const v of ['A','B','C']) {
+      if (loadVersionState(v)) {
+        document.getElementById('restoreBanner').classList.add('show');
+        return;
+      }
+    }
+  } catch(e) {}
+}
+
+function restoreData() {
+  document.getElementById('restoreBanner').classList.remove('show');
+  try {
+    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+    let targetV = null;
+
+    if (lastV && loadVersionState(lastV)) {
+      targetV = lastV;
+    } else {
+      for (const v of ['A','B','C']) {
+        if (loadVersionState(v)) { targetV = v; break; }
+      }
+    }
+
+    if (targetV) {
+      switchVersion(targetV);
+      toast('info', 'Dados restaurados — Versão ' + targetV);
+    }
+  } catch(e) {
+    toast('error', 'Erro ao restaurar dados');
+  }
+}
+
+function discardData() {
+  clearLocalStorage();
+  document.getElementById('restoreBanner').classList.remove('show');
+  toast('info', 'Dados anteriores descartados');
+}
+
+/* ============================================================
+   INPUT LISTENERS & DEBOUNCED SAVE
+   ============================================================ */
+function setupInputListeners() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', () => { checkSubmitReady(); debouncedSave(); });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveToLocalStorage(), 1500);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(type, msg) {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (Fase 1)
+   Sem COLETA_URL configurada, o OA funciona 100% offline
+   (identificacao manual, sem overlay, sem envio).
+   ============================================================ */
+function initColeta() {
+  if (!COLETA_URL) return;
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(() => document.getElementById('coletaRA').focus(), 50);
+}
+
+function coletaMostrarErro(msg) {
+  const el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  const raw = document.getElementById('coletaRA').value.trim();
+  const ra = raw.replace(/\D/g, '').padStart(7, '0');
+  if (raw.length === 0 || ra.length !== 7) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  const btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(r => r.json())
+    .then(res => {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA não encontrado. Confira os dígitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Você é <strong>' + res.nome + '</strong> — turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(() => coletaMostrarErro('Falha de conexão. Verifique sua internet e tente de novo.'))
+    .finally(() => { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(() => document.getElementById('coletaRA').focus(), 50);
+}
+
+function aplicarAluno() {
+  const n = document.getElementById('inputNome');
+  n.value = aluno.nome; n.disabled = true;
+  const t = document.getElementById('inputTurma');
+  if (![...t.options].some(o => o.value === aluno.turma)) {
+    const o = document.createElement('option');
+    o.value = aluno.turma; o.textContent = aluno.turma;
+    t.appendChild(o);
+  }
+  t.value = aluno.turma; t.disabled = true;
+  const d = document.getElementById('inputData');
+  if (!d.value) d.value = new Date().toISOString().slice(0, 10);
+  checkSubmitReady();
+}
+
+function coletaStatusUI(estado, msg) {
+  const box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  const c = localStorage.getItem(COMPROVANTE_KEY);
+  if (c) coletaStatusUI('ok', '✓ Respostas registradas — comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  const payload = montarPacote();
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(r => r.json())
+    .then(res => {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '✓ Respostas registradas — comprovante ' + res.comprovante);
+    })
+    .catch(() => {
+      coletaStatusUI('falha', 'Não foi possível enviar. Suas respostas estão salvas neste aparelho — tente novamente ou use "Exportar JSON".');
+    })
+    .finally(() => { coletaEnviando = false; });
+}
+</script>
+</body>
+</html>
