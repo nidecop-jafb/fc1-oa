@@ -361,6 +361,7 @@ body {
 }
 /* ── Coleta (login RA + envio) ── */
 .coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
 .coleta-card { background: #101010; border: 2px solid var(--ouro); max-width: 440px; width: 100%; padding: 28px 24px; }
 .coleta-titulo { font-family: var(--mono); font-size: 1.05rem; font-weight: 700; color: var(--ouro); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
 .coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
