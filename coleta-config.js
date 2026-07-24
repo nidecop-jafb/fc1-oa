@@ -9,5 +9,5 @@
    identico ao comportamento original.
    ============================================================ */
 window.COLETA = {
-  url: ""
+  url: "https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec"
 };
