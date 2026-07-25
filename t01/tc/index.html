@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --shadow: 0 1px 0 oklch(0.3 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none;
+  background: var(--ouro-claro);
+  border: 1px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  color: var(--ouro);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.restore-banner .btn-discard {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  margin-bottom: 24px;
+}
+.progress-seg {
+  height: 6px;
+  background: var(--cinza-claro);
+  border-radius: var(--r-sm);
+  transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 16px;
+  margin-bottom: 28px;
+  border-radius: var(--r);
+}
+.id-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.id-form input,
+.id-form select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.id-form input:focus,
+.id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled,
+.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg);
+  border: 2px solid var(--azul);
+  color: var(--azul-claro);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-diff { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
+
+/* TEXTO-BASE */
+.texto-base {
+  background: oklch(0.16 0.02 260);
+  border-left: 3px solid var(--ouro);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: oklch(0.82 0 0);
+}
+.texto-base p { margin-bottom: 8px; }
+.texto-base p:last-child { margin-bottom: 0; }
+.texto-base table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 0.85rem;
+  overflow-x: auto;
+  display: block;
+}
+.texto-base th, .texto-base td {
+  border: 1px solid var(--cinza-borda);
+  padding: 6px 10px;
+  text-align: center;
+}
+.texto-base th {
+  background: oklch(0.20 0.02 260);
+  font-weight: 700;
+  color: var(--ouro);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.texto-base td {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+.texto-base .formula {
+  font-family: var(--mono);
+  background: oklch(0.20 0.02 260);
+  padding: 2px 6px;
+  font-size: 0.85rem;
+  color: var(--azul-claro);
+}
+
+/* ENUNCIADO */
+.q-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: var(--texto);
+  font-weight: 600;
+}
+.q-text strong { color: var(--ouro); font-weight: 700; }
+
+/* ALTERNATIVES */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--texto);
+  line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; }
+.alt-btn.correct { border-color: var(--verde); background: var(--verde-claro); }
+.alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.alt-btn.correct-answer { border-color: var(--verde); }
+.alt-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--cinza);
+  min-width: 20px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correct .alt-letra { color: var(--verde); }
+.alt-btn.incorrect .alt-letra { color: var(--erro); }
+
+/* FEEDBACK */
+.q-feedback {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border-left: 3px solid;
+  border-radius: var(--r);
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+
+/* SCORE DISPLAY */
+.score-box {
+  display: none;
+  background: var(--superficie);
+  border: 2px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.score-box.show { display: block; }
+.score-value {
+  font-family: var(--mono);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--ouro);
+}
+.score-label {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--r);
+  transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* TOAST */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  color: var(--texto);
+  border: 1px solid;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  max-width: 320px;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .texto-base { padding: 10px 12px; font-size: 0.85rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .texto-base { background: #f5f5f5; border-color: #999; color: #111; }
+  .texto-base th { background: #eee; color: #333; }
+  .texto-base td { color: #111; }
+  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect { border-color: #c00; background: #fbe9e7; }
+  .alt-letra { color: #333; }
+  .q-feedback { display: block !important; }
+  .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
+  .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
+  .score-box { display: block !important; border-color: #333; background: #fff; }
+  .score-value { color: #111; }
+  .score-label { color: #555; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- RESTORATION BANNER -->
+  <div class="restore-banner" id="restoreBanner">
+    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+      <span class="badge">Tarefa Complementar (TC)</span>
+    </div>
+    <div class="header-sub">5 quest&otilde;es ENEM-style &middot; Bloom L4&ndash;L5 &middot; 30&ndash;40 min</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option>
+        <option value="FISI-MIN2-26">MIN2</option>
+        <option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- SCORE BOX -->
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue">0/10</div>
+    <div class="score-label">Pontua&ccedil;&atilde;o Final</div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+const BANCO = [
+  {
+    id: 'T01-TC-Q1', bloom: 'L4', comp: 'C4', pts: 2, diff: 'médio',
+    textoBase: '<p>Sofia coletou 4 amostras minerais em uma saída de campo no Quadrilátero Ferrífero. No laboratório da Escola de Minas, mediu a massa e o volume de cada amostra usando balança analítica e proveta graduada. Os resultados estão na tabela:</p>' +
+      '<table><tr><th>Amostra</th><th>Massa (g)</th><th>Volume (cm³)</th><th>Densidade (g/cm³)</th></tr>' +
+      '<tr><td>I</td><td>130,0</td><td>50,0</td><td>2,60</td></tr>' +
+      '<tr><td>II</td><td>258,0</td><td>50,0</td><td>5,16</td></tr>' +
+      '<tr><td>III</td><td>150,0</td><td>50,0</td><td>3,00</td></tr>' +
+      '<tr><td>IV</td><td>394,0</td><td>50,0</td><td>7,88</td></tr></table>' +
+      '<p>Dados de referência: quartzo (ρ = 2,65 g/cm³), hematita (ρ = 5,26 g/cm³), calcita (ρ = 2,71 g/cm³), magnetita (ρ = 5,18 g/cm³), pirita (ρ = 5,01 g/cm³).</p>',
+    enunciado: 'Analisando os dados da tabela e comparando com os valores de referência, qual conclusão é correta?',
+    alternativas: [
+      {letra:'A', texto:'A amostra IV é provavelmente hematita, pois possui a maior massa entre todas.'},
+      {letra:'B', texto:'A amostra I é quartzo porque seu volume é igual ao das demais amostras.'},
+      {letra:'C', texto:'A amostra III é magnetita, pois 3,00 g/cm³ está próximo de 5,18 g/cm³.'},
+      {letra:'D', texto:'A amostra II é mais provavelmente magnetita ou hematita, pois sua densidade (5,16 g/cm³) está na faixa 5,01–5,26 g/cm³ desses minerais.'},
+      {letra:'E', texto:'A amostra I é calcita porque possui a menor densidade da tabela.'}
+    ],
+    correta: 'D',
+    feedbacks: {
+      A: {ok:false, texto:'Confundir massa com densidade: a maior massa não identifica o mineral quando todos os volumes são iguais (50,0 cm³). O critério correto é a razão m/V (densidade).'},
+      B: {ok:false, texto:'O volume igual (50,0 cm³) é apenas a condição experimental padronizada. A identificação depende da densidade (m/V), não do volume isolado.'},
+      C: {ok:false, texto:'3,00 g/cm³ está 72% abaixo de 5,18 g/cm³ — essa diferença é grande demais para considerar os valores “próximos”.'},
+      D: {ok:true, texto:'Correto! A densidade da amostra II (5,16 g/cm³) está entre pirita (5,01), magnetita (5,18) e hematita (5,26), sendo mais consistente com magnetita ou hematita.'},
+      E: {ok:false, texto:'A densidade 2,60 g/cm³ da amostra I está mais próxima de quartzo (2,65) do que de calcita (2,71). Leitura atenta da tabela de referência é essencial.'}
+    }
+  },
+  {
+    id: 'T01-TC-Q2', bloom: 'L4-L5', comp: 'C3', pts: 2, diff: 'médio',
+    textoBase: '<p>Na Praça Tiradentes, Sofia estimou o volume do pedestal de granito do monumento usando uma trena (medição direta das dimensões) e calculou <span class="formula">V = c × l × h</span>. No laboratório, para medir o volume de uma amostra irregular do mesmo granito, usou o método do transbordo: mergulhou a amostra em uma proveta com água e mediu o deslocamento do nível (medição indireta do volume).</p>' +
+      '<p>O Prof. Julio explicou: “Na mineração, muitas grandezas não podem ser medidas diretamente — a densidade de um minério <em>in situ</em>, a pressão no fundo de uma barragem, a força em um cabo de aço. Usamos modelos matemáticos que relacionam grandezas mensuráveis à grandeza desejada.”</p>',
+    enunciado: 'Qual alternativa avalia corretamente a diferença entre medição direta e indireta no contexto da mineração?',
+    alternativas: [
+      {letra:'A', texto:'A medição indireta depende de um modelo matemático que relaciona a grandeza desejada a outras grandezas que podem ser medidas diretamente; por isso, seu resultado carrega a incerteza de todas as medições envolvidas.'},
+      {letra:'B', texto:'A medição direta é sempre mais precisa que a indireta, pois não depende de cálculos intermediários.'},
+      {letra:'C', texto:'A medição indireta é uma estimativa sem base científica, útil apenas quando não há instrumentos disponíveis.'},
+      {letra:'D', texto:'No laboratório de mineração, todas as grandezas podem ser medidas diretamente com instrumentos adequados, tornando a medição indireta desnecessária.'},
+      {letra:'E', texto:'A medição indireta usa fórmulas para substituir a medição, eliminando a necessidade de instrumentos.'}
+    ],
+    correta: 'A',
+    feedbacks: {
+      A: {ok:true, texto:'Correto! A medição indireta usa modelo matemático que combina medições diretas. Cada medição direta carrega sua própria incerteza, e essas se propagam no resultado final.'},
+      B: {ok:false, texto:'A precisão não depende de ser direta ou indireta. Instrumentos diretos também têm incerteza — uma régua, por exemplo, tem resolução limitada.'},
+      C: {ok:false, texto:'A medição indireta é um método científico rigoroso, não uma estimativa sem base. Usa modelos matemáticos validados experimentalmente.'},
+      D: {ok:false, texto:'Na prática da mineração, muitas grandezas (densidade <em>in situ</em>, pressão subterrânea) não podem ser medidas diretamente. A medição indireta é essencial.'},
+      E: {ok:false, texto:'A medição indireta usa fórmulas, mas não elimina instrumentos — ela depende de medições diretas de outras grandezas para alimentar o modelo.'}
+    }
+  },
+  {
+    id: 'T01-TC-Q3', bloom: 'L4', comp: 'C5', pts: 2, diff: 'médio',
+    textoBase: '<p>Em uma planta de britagem no Quadrilátero Ferrífero, o técnico Pedro calibrou a granulometria de saída do britador cônico para produzir brita com diâmetro nominal de 25,0 mm. Após uma hora de operação, coletou 5 amostras e mediu os diâmetros reais: 24,2 mm; 25,8 mm; 24,5 mm; 26,1 mm; 24,9 mm. O valor médio medido foi 25,1 mm.</p>' +
+      '<p>A NR-22 exige que o erro relativo percentual da granulometria esteja abaixo de 5% para que o produto seja aceito no controle de qualidade.</p>' +
+      '<p>A fórmula do erro relativo percentual é: <span class="formula">E<sub>r</sub> = |V<sub>m</sub> − V<sub>t</sub>| / V<sub>t</sub> × 100%</span></p>',
+    enunciado: 'Considerando os dados acima, qual afirmação é correta sobre o controle de qualidade da britagem?',
+    alternativas: [
+      {letra:'A', texto:'O erro relativo é 25,1%, pois Eᵣ = 25,1 / 100 × 100%.'},
+      {letra:'B', texto:'O erro relativo é 0,1 mm, indicando que a britagem está dentro da norma.'},
+      {letra:'C', texto:'O erro relativo é 0,4%, valor inferior ao limite de 5% da NR-22, portanto a brita atende ao controle de qualidade.'},
+      {letra:'D', texto:'O erro relativo é 4%, pois Eᵣ = (25,1 − 25,0) / 25,0 × 100 = 4%.'},
+      {letra:'E', texto:'O erro relativo não pode ser calculado porque as 5 medições são diferentes entre si.'}
+    ],
+    correta: 'C',
+    feedbacks: {
+      A: {ok:false, texto:'Erro de cálculo: 25,1% resulta de dividir o valor medido (25,1) por 100, em vez de aplicar a fórmula Eᵣ = |Vₘ − Vₜ| / Vₜ × 100%.'},
+      B: {ok:false, texto:'0,1 mm é o erro absoluto (|25,1 − 25,0|), não o erro relativo. O erro relativo é uma grandeza adimensional expressa em porcentagem.'},
+      C: {ok:true, texto:'Correto! Eᵣ = |25,1 − 25,0| / 25,0 × 100% = 0,1/25,0 × 100% = 0,4%. Como 0,4% < 5%, a brita atende à NR-22.'},
+      D: {ok:false, texto:'O cálculo (0,1/25,0) está correto, mas a multiplicação deve ser por 100, não por 1000. O resultado correto é 0,4%, não 4%.'},
+      E: {ok:false, texto:'As medições individuais variam, mas o conceito de valor médio (25,1 mm) permite calcular o erro relativo a partir dessa média.'}
+    }
+  },
+  {
+    id: 'T01-TC-Q4', bloom: 'L4-L5', comp: 'C5', pts: 2, diff: 'difícil',
+    textoBase: '<p>Na mineração, correias transportadoras movem minério britado entre etapas do beneficiamento. A NR-22 exige proteção contra projeção de fragmentos. Um fragmento de minério de 0,5 kg se solta da correia a uma velocidade de 4,0 m/s. A energia cinética é dada por <span class="formula">E<sub>c</sub> = m × v² / 2</span>.</p>' +
+      '<p>Para comparação: um objeto com energia cinética acima de 1,0 J pode causar lesão ao atingir uma pessoa; acima de 10 J, a lesão é considerada grave pela engenharia de segurança.</p>',
+    enunciado: 'Analisando a situação descrita e integrando conceitos de Física e segurança do trabalho, qual afirmação é correta?',
+    alternativas: [
+      {letra:'A', texto:'A energia cinética do fragmento é 1,0 J, portanto está no limite mínimo de lesão e não requer proteção adicional.'},
+      {letra:'B', texto:'A energia cinética do fragmento é 4,0 J, valor intermediário entre o limiar de lesão (1,0 J) e o de lesão grave (10 J), justificando as proteções exigidas pela NR-22.'},
+      {letra:'C', texto:'Dobrar a velocidade da correia dobraria a energia cinética, exigindo proteção proporcional.'},
+      {letra:'D', texto:'A energia cinética depende apenas da massa, portanto fragmentos menores são sempre seguros independente da velocidade.'},
+      {letra:'E', texto:'A energia cinética do fragmento é 40 J, classificada como lesão grave.'}
+    ],
+    correta: 'B',
+    feedbacks: {
+      A: {ok:false, texto:'E₂ = m × v²/2 = 0,5 × (4,0)²/2 = 0,5 × 16/2 = 4,0 J, não 1,0 J. O erro comum é esquecer o quadrado da velocidade (calcular m × v / 2).'},
+      B: {ok:true, texto:'Correto! E₂ = 0,5 × (4,0)²/2 = 0,5 × 16/2 = 4,0 J. Como 1,0 J < 4,0 J < 10 J, o fragmento pode causar lesão (não grave), justificando as proteções da NR-22.'},
+      C: {ok:false, texto:'Dobrar a velocidade quadruplica a energia cinética (E₂ ∝ v²), não dobra. A relação não é linear — é quadrática.'},
+      D: {ok:false, texto:'A energia cinética depende tanto da massa quanto da velocidade (E₂ = m × v²/2). Fragmentos pequenos em alta velocidade podem ser muito perigosos.'},
+      E: {ok:false, texto:'E₂ = 0,5 × (4,0)²/2 = 4,0 J, não 40 J. Verifique o cálculo: 0,5 × 16 = 8, dividido por 2 = 4,0 J.'}
+    }
+  },
+  {
+    id: 'T01-TC-Q5', bloom: 'L5', comp: 'C4', pts: 2, diff: 'difícil',
+    textoBase: '<p>Galileu Galilei afirmou que “o livro da natureza está escrito na linguagem da matemática”. No século XVII, essa ideia revolucionou a ciência ao propor que fenômenos naturais poderiam ser descritos por relações quantitativas, não apenas por observações qualitativas.</p>' +
+      '<p>Na mineração moderna, essa visão se concretiza: a NR-22 exige que todo parâmetro operacional (pressão, vazão, concentração, granulometria) seja expresso numericamente com unidade e incerteza. Um relatório que diga apenas “a pressão está alta” não tem validade técnica.</p>',
+    enunciado: 'Considerando a afirmação de Galileu e o contexto da mineração, qual alternativa identifica corretamente a contribuição da quantificação para a segurança operacional?',
+    alternativas: [
+      {letra:'A', texto:'A quantificação é importante apenas para registros burocráticos, sem impacto direto na segurança dos trabalhadores.'},
+      {letra:'B', texto:'A linguagem matemática substituiu completamente a observação qualitativa na mineração moderna, tornando-a desnecessária.'},
+      {letra:'C', texto:'A expressão numérica de grandezas físicas é útil apenas na Física teórica, não tendo aplicação prática em operações de campo.'},
+      {letra:'D', texto:'A quantificação permite prever fenômenos naturais com certeza absoluta, eliminando riscos em operações de mineração.'},
+      {letra:'E', texto:'A expressão numérica de grandezas físicas com unidade e incerteza permite comparar medições com limites normativos (como os da NR-22), detectar desvios antes que se tornem riscos e fundamentar decisões operacionais com evidência.'}
+    ],
+    correta: 'E',
+    feedbacks: {
+      A: {ok:false, texto:'A quantificação vai muito além de registros burocráticos — permite detectar desvios operacionais e prevenir acidentes antes que aconteçam.'},
+      B: {ok:false, texto:'A observação qualitativa continua essencial na mineração (inspeção visual de fraturas, avaliação de ruídos anômalos). A matemática complementa, não substitui.'},
+      C: {ok:false, texto:'A expressão numérica é fundamental nas operações de campo — a NR-22 exige que todo parâmetro operacional seja expresso com unidade e incerteza.'},
+      D: {ok:false, texto:'A quantificação não oferece certeza absoluta — toda medição carrega incerteza. O objetivo é reduzir riscos com evidência, não eliminá-los.'},
+      E: {ok:true, texto:'Correto! A expressão numérica com unidade e incerteza permite: (1) comparar com limites normativos, (2) detectar desvios precoces, e (3) fundamentar decisões com evidência — exatamente o que a NR-22 exige.'}
+    }
+  }
+];
+
+/* ---- STATE ---- */
+const PREFIX = 'ifmg_fc1_t01_tc_';
+const TOTAL_PTS = 10;
+const NUM_QUESTIONS = 5;
+let respostas = {};
+let submitted = false;
+let saveTimer = null;
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  buildProgressBar();
+  buildQuestions();
+  checkLocalStorage();
+  setupDebouncedSave();
+  // Set today's date as default
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('inputData').value = today;
+});
+
+/* ---- PROGRESS BAR ---- */
+function buildProgressBar() {
+  const bar = document.getElementById('progressBar');
+  for (let i = 0; i < NUM_QUESTIONS; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.id = 'prog-' + i;
+    bar.appendChild(seg);
+  }
+}
+
+function updateProgress() {
+  BANCO.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      if (respostas[q.id] === q.correta) seg.classList.add('certo');
+      else if (respostas[q.id]) seg.classList.add('errado');
+    } else if (respostas[q.id]) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+/* ---- BUILD QUESTIONS ---- */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  BANCO.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomLabels = {
+      'L3': 'Bloom L3 — Aplicar',
+      'L4': 'Bloom L4 — Analisar',
+      'L4-L5': 'Bloom L4–L5',
+      'L5': 'Bloom L5 — Avaliar'
+    };
+    const bloomLabel = bloomLabels[q.bloom] || q.bloom;
+
+    card.innerHTML =
+      '<div class="q-header">' +
+        '<div class="q-num">' + (idx + 1) + '</div>' +
+        '<div class="q-tags">' +
+          '<span class="tag tag-bloom">' + bloomLabel + '</span>' +
+          '<span class="tag tag-pts">' + q.pts + ' pts</span>' +
+          '<span class="tag tag-diff">' + q.diff + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="texto-base">' + q.textoBase + '</div>' +
+      '<div class="q-text">' + q.enunciado + '</div>' +
+      '<div class="alt-list" id="alts-' + q.id + '">' +
+        q.alternativas.map(function(a) {
+          return '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+            '<span class="alt-letra">' + a.letra + '.</span>' +
+            '<span>' + a.texto + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+      '<div class="q-feedback" id="fb-' + q.id + '"></div>';
+
+    container.appendChild(card);
+  });
+}
+
+/* ---- SELECT ALTERNATIVE ---- */
+function selectAlt(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
+  btns.forEach(function(b) {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ---- SUBMIT CHECK ---- */
+function checkSubmitReady() {
+  var nome = document.getElementById('inputNome').value.trim();
+  var turma = document.getElementById('inputTurma').value;
+  var allAnswered = BANCO.every(function(q) { return respostas[q.id]; });
+  document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
+}
+
+/* ---- SUBMIT ---- */
+function submitQuiz() {
+  if (submitted) return;
+  submitted = true;
+
+  // Lock inputs
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+
+  var score = 0;
+
+  BANCO.forEach(function(q) {
+    var chosen = respostas[q.id];
+    var isCorrect = chosen === q.correta;
+    if (isCorrect) score += q.pts;
+
+    // Mark alternatives
+    var btns = document.querySelectorAll('[data-qid="' + q.id + '"]');
+    btns.forEach(function(b) {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.letra === q.correta) b.classList.add('correct');
+      if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+      if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+    });
+
+    // Show feedback for the chosen alternative
+    var fb = document.getElementById('fb-' + q.id);
+    var fbData = q.feedbacks[chosen];
+    fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+    fb.innerHTML = fbData.texto;
+  });
+
+  // Show score
+  var scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + '/' + TOTAL_PTS;
+
+  // Update progress
+  updateProgress();
+
+  // Update buttons
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnExport').classList.add('show');
+
+  // Save state
+  saveToLocalStorage();
+
+  toast(score >= 7 ? 'success' : 'info', 'Pontuação: ' + score + '/' + TOTAL_PTS);
+  enviarColeta();
+}
+
+/* ---- EXPORT JSON ---- */
+function montarPacote() {
+  var now = new Date();
+  return {
+    schema: 'ifmg-fc1-tarefa-complementar-v3',
+    trilha: 'T01',
+    tipo: 'TC',
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: BANCO.map(function(q) {
+      return {
+        id: q.id,
+        bloom: q.bloom,
+        comp: q.comp,
+        pts: q.pts,
+        diff: q.diff,
+        resposta: respostas[q.id] || null,
+        correta: q.correta,
+        acertou: respostas[q.id] === q.correta
+      };
+    }),
+    pontuacao: BANCO.reduce(function(acc, q) {
+      return acc + (respostas[q.id] === q.correta ? q.pts : 0);
+    }, 0),
+    total: TOTAL_PTS
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T01-TC-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0, 30) + '-' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'JSON exportado com sucesso');
+}
+
+/* ---- RESET ---- */
+function resetQuiz() {
+  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ---- LOCAL STORAGE ---- */
+function saveToLocalStorage() {
+  try {
+    var state = {
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function clearLocalStorage() {
+  localStorage.removeItem(PREFIX + 'state');
+}
+
+function checkLocalStorage() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (raw) {
+      document.getElementById('restoreBanner').classList.add('show');
+    }
+  } catch(e) {}
+}
+
+function restoreData() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (!raw) return;
+    var state = JSON.parse(raw);
+
+    document.getElementById('inputNome').value = state.nome || '';
+    document.getElementById('inputTurma').value = state.turma || '';
+    document.getElementById('inputData').value = state.data || '';
+    respostas = state.respostas || {};
+
+    // Restore visual selections
+    Object.keys(respostas).forEach(function(qid) {
+      var letra = respostas[qid];
+      var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
+      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === letra); });
+    });
+
+    if (state.submitted) {
+      submitQuiz();
+    } else {
+      updateProgress();
+      checkSubmitReady();
+    }
+
+    toast('info', 'Dados restaurados');
+  } catch(e) {
+    toast('error', 'Erro ao restaurar dados');
+  }
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+function discardData() {
+  clearLocalStorage();
+  document.getElementById('restoreBanner').classList.remove('show');
+  toast('info', 'Dados anteriores descartados');
+}
+
+/* ---- DEBOUNCED SAVE ---- */
+function setupDebouncedSave() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+    document.getElementById(id).addEventListener('change', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
+}
+
+/* ---- TOAST ---- */
+function toast(type, msg) {
+  var container = document.getElementById('toastContainer');
+  var el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T01-TC-v3-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T01-TC-v3-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var COMPROVANTE_KEY = PREFIX + 'comprovante';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(COMPROVANTE_KEY);
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+</script>
+</body>
+</html>

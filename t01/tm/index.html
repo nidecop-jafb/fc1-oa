@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --shadow: 0 1px 0 oklch(0.3 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+
+/* EPIGRAPH */
+.epigrafe {
+  border-left: 3px solid var(--ouro);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background: oklch(0.14 0.02 260);
+}
+.epigrafe p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--texto);
+  margin-bottom: 4px;
+}
+.epigrafe cite {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--cinza);
+  font-style: normal;
+}
+
+/* VERSION SELECTOR */
+.version-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+}
+.version-label {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.version-btn {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  border: 2px solid var(--cinza-borda);
+  background: var(--input-bg);
+  color: var(--texto);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.version-btn:hover:not(.locked):not(.active) { background: var(--hover-bg); border-color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { cursor: default; opacity: 0.5; }
+.version-btn.locked.active { opacity: 1; }
+.version-info {
+  font-size: 0.78rem;
+  color: var(--cinza);
+  margin-left: auto;
+  font-family: var(--mono);
+}
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none;
+  background: var(--ouro-claro);
+  border: 1px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  color: var(--ouro);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.restore-banner .btn-discard {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  margin-bottom: 24px;
+}
+.progress-seg {
+  height: 6px;
+  background: var(--cinza-claro);
+  border-radius: var(--r-sm);
+  transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 16px;
+  margin-bottom: 28px;
+  border-radius: var(--r);
+}
+.id-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.id-form input,
+.id-form select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.id-form input:focus,
+.id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled,
+.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg);
+  border: 2px solid var(--azul);
+  color: var(--azul-claro);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo-r { background: oklch(0.22 0.04 45); color: oklch(0.72 0.18 45); border: 1px solid oklch(0.55 0.15 45); }
+.tag-tipo-f { background: oklch(0.22 0.04 95); color: oklch(0.80 0.16 95); border: 1px solid oklch(0.65 0.14 95); }
+.tag-tipo-u { background: oklch(0.22 0.04 150); color: oklch(0.68 0.14 150); border: 1px solid oklch(0.55 0.12 150); }
+
+.q-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: var(--texto);
+}
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* ALTERNATIVES */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--texto);
+  line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; }
+.alt-btn.correct { border-color: var(--verde); background: var(--verde-claro); }
+.alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.alt-btn.correct-answer { border-color: var(--verde); }
+.alt-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--cinza);
+  min-width: 20px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correct .alt-letra { color: var(--verde); }
+.alt-btn.incorrect .alt-letra { color: var(--erro); }
+
+/* FEEDBACK */
+.q-feedback {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border-left: 3px solid;
+  border-radius: var(--r);
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+
+/* SCORE DISPLAY */
+.score-box {
+  display: none;
+  background: var(--superficie);
+  border: 2px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.score-box.show { display: block; }
+.score-value {
+  font-family: var(--mono);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--ouro);
+}
+.score-label {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--r);
+  transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* HIDDEN SECTIONS */
+.hidden { display: none; }
+
+/* TOAST */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  color: var(--texto);
+  border: 1px solid;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  max-width: 320px;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .version-selector { flex-wrap: wrap; }
+  .version-info { margin-left: 0; width: 100%; margin-top: 4px; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect { border-color: #c00; background: #fbe9e7; }
+  .alt-letra { color: #333; }
+  .q-feedback { display: block !important; }
+  .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
+  .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
+  .score-box { display: block !important; border-color: #333; background: #fff; }
+  .score-value { color: #111; }
+  .score-label { color: #555; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+  .epigrafe { border-color: #999; background: #f9f9f9; }
+  .epigrafe p { color: #111; }
+  .epigrafe cite { color: #555; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- RESTORATION BANNER -->
+  <div class="restore-banner" id="restoreBanner">
+    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+      <span class="badge">Tarefa M&iacute;nima (TM)</span>
+    </div>
+    <div class="header-sub">8 quest&otilde;es por vers&atilde;o &middot; 3 vers&otilde;es A/B/C &middot; banco de 12 quest&otilde;es</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+  </div>
+
+  <!-- EPIGRAPH -->
+  <blockquote class="epigrafe">
+    <p>&ldquo;O livro da natureza est&aacute; escrito na linguagem da matem&aacute;tica.&rdquo;</p>
+    <cite>&mdash; Galileu Galilei (1564&ndash;1642)</cite>
+  </blockquote>
+
+  <!-- VERSION SELECTOR -->
+  <div class="version-selector" id="versionSelector">
+    <span class="version-label">Vers&atilde;o:</span>
+    <button class="version-btn" data-versao="A" onclick="selectVersion('A')">A</button>
+    <button class="version-btn" data-versao="B" onclick="selectVersion('B')">B</button>
+    <button class="version-btn" data-versao="C" onclick="selectVersion('C')">C</button>
+    <span class="version-info" id="versionInfo">Selecione sua vers&atilde;o para come&ccedil;ar</span>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar hidden" id="progressBar"></div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form hidden" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option>
+        <option value="FISI-MIN2-26">MIN2</option>
+        <option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- SCORE BOX -->
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue">0/15</div>
+    <div class="score-label">Pontua&ccedil;&atilde;o Final</div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions hidden" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recome&ccedil;ar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+/* ===== BANCO DE 12 QUESTOES ===== */
+var BANCO = {
+  R1: {
+    id:'T01-TM-R1', bloco:'R', blocoLabel:'R — Revisão', bloom:'L1-L2', pts:1,
+    enunciado:'Sobre o Sistema Internacional de Unidades (SI), suas grandezas fundamentais e derivadas, assinale a alternativa correta.',
+    alternativas:[
+      {letra:'A', texto:'O SI define sete grandezas fundamentais, e a velocidade é uma delas, pois está presente em diversas equações da Mecânica.'},
+      {letra:'B', texto:'O SI define sete grandezas fundamentais — comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria. A velocidade é grandeza derivada, pois resulta da combinação de comprimento e tempo.'},
+      {letra:'C', texto:'O SI define apenas cinco grandezas fundamentais; massa e intensidade luminosa são consideradas derivadas.'},
+      {letra:'D', texto:'O SI define sete grandezas fundamentais, e entre elas está a densidade, que é a razão entre massa e volume.'}
+    ],
+    correta:'B',
+    feedbacks:{
+      B:{ok:true, texto:'Correto! O SI organiza toda a Física em 7 grandezas-raiz; as demais (velocidade, força, energia…) são combinações dessas sete.'},
+      A:{ok:false, texto:'A velocidade não é grandeza fundamental — ela é derivada de comprimento e tempo (v = d/t). Releia o Tópico 1.'},
+      C:{ok:false, texto:'O SI define exatamente 7 grandezas fundamentais, incluindo massa e intensidade luminosa.'},
+      D:{ok:false, texto:'A densidade não é grandeza fundamental — ela é derivada (ρ = m/V). As 7 fundamentais são: comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria.'}
+    }
+  },
+  R2: {
+    id:'T01-TM-R2', bloco:'R', blocoLabel:'R — Revisão', bloom:'L1-L2', pts:1,
+    enunciado:'Um técnico de mineração estima teoricamente que um bloco de calcário tem massa de <strong>800 kg</strong>. Ao pesá-lo no campo, a balança indica <strong>820 kg</strong>. Qual é o erro relativo dessa medição?',
+    alternativas:[
+      {letra:'A', texto:'0,25%'},
+      {letra:'B', texto:'1,0%'},
+      {letra:'C', texto:'2,5%'},
+      {letra:'D', texto:'20,0%'}
+    ],
+    correta:'C',
+    feedbacks:{
+      C:{ok:true, texto:'Correto! Eᵣ = |Vₘ − Vₜ| / Vₜ × 100% = 20/800 × 100% = 2,5%. Um erro dessa magnitude afeta contratos e segurança na mineração.'},
+      A:{ok:false, texto:'Verificou 20/800, mas esqueceu de multiplicar por 100%. Revise a Equação 3 do TT.'},
+      B:{ok:false, texto:'Calculou 820/800 − 1 = 0,025, mas converteu errado para %. Multiplique por 100%.'},
+      D:{ok:false, texto:'Dividiu a diferença pelo valor medido (20/820), e não pelo teórico. Use o valor teórico no denominador.'}
+    }
+  },
+  R3: {
+    id:'T01-TM-R3', bloco:'R', blocoLabel:'R — Revisão', bloom:'L1-L2', pts:1,
+    enunciado:'Segundo o Tópico 3 do Texto Temático, cada ciência da natureza tem sua pergunta típica. Assinale a alternativa que associa corretamente as ciências às suas perguntas.',
+    alternativas:[
+      {letra:'A', texto:'A Física pergunta “de que a pedra é feita?” e a Química pergunta “qual força é necessária para mover essa pedra?”'},
+      {letra:'B', texto:'A Física pergunta “como as coisas se movem e interagem?” e a Química pergunta “de que as coisas são feitas?”'},
+      {letra:'C', texto:'A Biologia pergunta “como os objetos se movem?” e a Física pergunta “como os seres vivos funcionam?”'},
+      {letra:'D', texto:'A Geologia pergunta “qual força move a pedra?” e a Física pergunta “como as rochas se formaram?”'}
+    ],
+    correta:'B',
+    feedbacks:{
+      B:{ok:true, texto:'Correto! A Física estuda movimento e interações (forças); a Química, composição e transformações da matéria. O Quadro 2 do TT detalha a pergunta de cada ciência.'},
+      A:{ok:false, texto:'As perguntas estão invertidas! A Física pergunta sobre forças e movimento; a Química, sobre composição. Releia o Quadro 2 do Tópico 3.'},
+      C:{ok:false, texto:'Os objetos de estudo estão trocados. A Biologia estuda seres vivos, não movimento de objetos. Releia o Quadro 2.'},
+      D:{ok:false, texto:'A Geologia estuda formação de rochas, não forças — e a Física estuda movimento e interações, não formação geológica.'}
+    }
+  },
+  R4: {
+    id:'T01-TM-R4', bloco:'R', blocoLabel:'R — Revisão', bloom:'L1-L2', pts:1,
+    enunciado:'Em galerias subterrâneas profundas, a temperatura aumenta cerca de 3 °C a cada 100 m de profundidade — fenômeno conhecido como <strong>gradiente geotérmico</strong>. Esse fenômeno pertence principalmente a qual área da Física?',
+    alternativas:[
+      {letra:'A', texto:'Mecânica'},
+      {letra:'B', texto:'Óptica'},
+      {letra:'C', texto:'Física Moderna'},
+      {letra:'D', texto:'Termologia / Termodinâmica'}
+    ],
+    correta:'D',
+    feedbacks:{
+      D:{ok:true, texto:'Correto! Calor, temperatura e fluxo de energia térmica são objeto da Termologia e da Termodinâmica — conforme o Quadro 3 do Tópico 4 do TT.'},
+      A:{ok:false, texto:'A Mecânica estuda forças, movimento e equilíbrio. O gradiente térmico é um fenômeno de transporte de energia calorífica — área da Termodinâmica.'},
+      B:{ok:false, texto:'A Óptica estuda luz e radiação eletromagnética visível. Fenômenos térmicos subterrâneos pertencem à Termodinâmica.'},
+      C:{ok:false, texto:'A Física Moderna estuda fenômenos atômicos, nucleares e relativísticos. O gradiente geotérmico é um fenômeno termodinâmico clássico.'}
+    }
+  },
+  R5: {
+    id:'T01-TM-R5', bloco:'R', blocoLabel:'R — Revisão', bloom:'L1-L2', pts:1,
+    enunciado:'Sobre a relação entre potência mecânica (P), força de tração (F) e velocidade (v) em uma correia transportadora, descrita pela equação P = F × v, assinale a alternativa correta.',
+    alternativas:[
+      {letra:'A', texto:'Se a força de tração aumentar e a velocidade se mantiver, a potência necessária diminui.'},
+      {letra:'B', texto:'Se a velocidade da correia aumentar e a força se mantiver, a potência necessária diminui.'},
+      {letra:'C', texto:'A potência é diretamente proporcional tanto à força quanto à velocidade: aumentando qualquer uma (mantendo a outra constante), a potência também aumenta.'},
+      {letra:'D', texto:'A potência depende apenas da velocidade, sendo independente da força de tração aplicada.'}
+    ],
+    correta:'C',
+    feedbacks:{
+      C:{ok:true, texto:'Correto! P = F × v — a potência é diretamente proporcional a ambas. Aumentar a velocidade da correia sem mudar a força exige mais potência do motor.'},
+      A:{ok:false, texto:'Se F aumenta e v se mantém, P = F × v aumenta (proporcionalidade direta). Releia a Equação 7.'},
+      B:{ok:false, texto:'Se v aumenta e F se mantém, P = F × v aumenta. As grandezas são diretamente proporcionais.'},
+      D:{ok:false, texto:'P = F × v depende tanto da força quanto da velocidade. Ambos fatores influenciam a potência.'}
+    }
+  },
+  F1: {
+    id:'T01-TM-F1', bloco:'F', blocoLabel:'F — Pense e Faça', bloom:'L3', pts:2,
+    enunciado:'Considere a equação m = ρ × V, usada para estimar a massa de um bloco de granito. Das sete grandezas fundamentais do SI, quais aparecem — diretamente ou como base de grandezas derivadas — nesse cálculo?',
+    alternativas:[
+      {letra:'A', texto:'Massa e tempo — pois o volume depende do tempo de formação da rocha.'},
+      {letra:'B', texto:'Comprimento e massa — pois o volume V = c × l × h é derivado de comprimento, e a massa aparece diretamente.'},
+      {letra:'C', texto:'Comprimento, massa e velocidade — pois a densidade depende da velocidade de sedimentação.'},
+      {letra:'D', texto:'Massa, temperatura e corrente elétrica — pois a densidade varia com a temperatura e a condutividade.'}
+    ],
+    correta:'B',
+    feedbacks:{
+      B:{ok:true, texto:'Correto! No cálculo m = ρ × V, a massa (m) é fundamental direta, e o volume V = c × l × h é derivado de comprimento. A densidade ρ = m/V combina ambas. (TT v19 · Tópico 1)'},
+      A:{ok:false, texto:'O tempo não aparece em m = ρ × V. O volume depende apenas de comprimento (V = c × l × h).'},
+      C:{ok:false, texto:'Velocidade não é grandeza fundamental e não participa de m = ρ × V. Apenas comprimento e massa estão envolvidos.'},
+      D:{ok:false, texto:'Temperatura e corrente elétrica não participam de m = ρ × V. Apenas comprimento e massa.'}
+    }
+  },
+  F2: {
+    id:'T01-TM-F2', bloco:'F', blocoLabel:'F — Pense e Faça', bloom:'L3', pts:2,
+    enunciado:'O Tópico 2 do TT ilustra a diferença entre Física teórica e Física experimental com o exemplo do monumento ao Tiradentes. Assinale a alternativa que descreve corretamente essa diferença e o exemplo.',
+    alternativas:[
+      {letra:'A', texto:'A Física teórica constrói modelos matemáticos para prever resultados (Sofia calculou m = ρ × V = 540 kg); a Física experimental testa esses modelos por medição (a balança poderia indicar 556 kg, revelando erro relativo de ~3%).'},
+      {letra:'B', texto:'A Física teórica observa fenômenos sem usar equações, enquanto a experimental cria modelos matemáticos em laboratório.'},
+      {letra:'C', texto:'Física teórica e experimental são a mesma abordagem, diferindo apenas no local de trabalho (escritório vs. campo).'},
+      {letra:'D', texto:'A Física experimental sempre confirma a teoria; quando há divergência, a medição está errada.'}
+    ],
+    correta:'A',
+    feedbacks:{
+      A:{ok:true, texto:'Correto! A Física teórica prevê (cálculo em prancheta) e a experimental verifica (medição no campo). A diferença entre os valores é quantificada pelo erro relativo. (TT v19 · Tópico 2 · Quadro 1)'},
+      B:{ok:false, texto:'A Física teórica usa equações e modelos matemáticos para prever resultados. É a experimental que mede e verifica.'},
+      C:{ok:false, texto:'São abordagens complementares e distintas: uma prevê (teoria), a outra testa (experimento). A interação entre elas é cíclica.'},
+      D:{ok:false, texto:'Quando há divergência, pode ser o modelo que precisa de revisão — não necessariamente a medição. O ciclo teórico-experimental permite refinamento contínuo.'}
+    }
+  },
+  F3: {
+    id:'T01-TM-F3', bloco:'F', blocoLabel:'F — Pense e Faça', bloom:'L3', pts:2,
+    enunciado:'O Tópico 5 do TT apresenta cinco processos industriais da mineração. Assinale a alternativa que associa corretamente <strong>dois</strong> desses processos à área da Física e à equação correspondente.',
+    alternativas:[
+      {letra:'A', texto:'Transporte por correia → Mecânica → P = F × v; e Drenagem de galerias → Mecânica dos Fluidos → Pₕ = ρ × g × h.'},
+      {letra:'B', texto:'Transporte por correia → Óptica → v = λ × f; e Ventilação → Acústica → I = P/A.'},
+      {letra:'C', texto:'Perfuração → Mecânica → F = m × a; e Estabilidade de talude → Eletromagnetismo → E = F/q.'},
+      {letra:'D', texto:'Ventilação → Termodinâmica → ΔS = Q/T; e Drenagem → Óptica → n₁ sin θ₁ = n₂ sin θ₂.'}
+    ],
+    correta:'A',
+    feedbacks:{
+      A:{ok:true, texto:'Correto! O Tópico 5 do TT associa cada processo à sua área e equação: correia/Mecânica/P = F × v e drenagem/Mecânica dos Fluidos/Pₕ = ρ × g × h. (TT v19 · Tópico 5 · Equações 7 e 8)'},
+      B:{ok:false, texto:'Óptica e Acústica não são as áreas dos processos de correia e ventilação. Releia o Tópico 5.'},
+      C:{ok:false, texto:'Estabilidade de talude não pertence ao Eletromagnetismo. Releia as equações 6 a 10 do Tópico 5.'},
+      D:{ok:false, texto:'Nenhum desses processos pertence à Óptica. Ventilação é Mecânica dos Fluidos (Q = A × v) e Drenagem também (Pₕ = ρ × g × h).'}
+    }
+  },
+  F4: {
+    id:'T01-TM-F4', bloco:'F', blocoLabel:'F — Pense e Faça', bloom:'L3', pts:2,
+    enunciado:'O rompimento da barragem de Fundão (Mariana, 2015) é citado no TT como exemplo de interseção entre ciências. Para esse evento, qual alternativa associa corretamente a pergunta típica da Física, da Química e da Biologia?',
+    alternativas:[
+      {letra:'A', texto:'Física: “Com que velocidade e força o rejeito fluiu?”; Química: “Qual a composição dos minerais no rejeito?”; Biologia: “Como o rejeito afetou a fauna e os ecossistemas?”'},
+      {letra:'B', texto:'Física: “Qual a composição química do rejeito?”; Química: “Com que velocidade o rejeito se moveu?”; Biologia: “Qual era a temperatura do rejeito?”'},
+      {letra:'C', texto:'Física: “Quais espécies foram afetadas pelo rejeito?”; Química: “Qual a força do impacto?”; Biologia: “De que material é feita a barragem?”'},
+      {letra:'D', texto:'Física: “Como as plantas reagiram ao rejeito?”; Química: “Qual a velocidade de escoamento?”; Biologia: “Qual a pressão na barragem?”'}
+    ],
+    correta:'A',
+    feedbacks:{
+      A:{ok:true, texto:'Correto! Cada ciência tem seu objeto: Física → forças e movimento; Química → composição e reações; Biologia → ecossistemas e seres vivos. (TT v19 · Tópico 3 · Quadro 2)'},
+      B:{ok:false, texto:'As perguntas de Física e Química estão trocadas. A Física pergunta sobre forças e velocidade; a Química, sobre composição.'},
+      C:{ok:false, texto:'Todas as perguntas estão associadas à ciência errada. Física ≠ espécies; Química ≠ força; Biologia ≠ material.'},
+      D:{ok:false, texto:'Todas as perguntas estão associadas à ciência errada. Plantas = Biologia; Velocidade = Física; Pressão = Física.'}
+    }
+  },
+  U1: {
+    id:'T01-TM-U1', bloco:'U', blocoLabel:'U — Pense e Use', bloom:'L3', pts:3,
+    enunciado:'Na usina de beneficiamento da Mineração Passagem (Mariana-MG), uma correia transportadora movimenta minério de ferro britado. Dados: força de tração = <strong>7 500 N</strong>; velocidade de operação = <strong>2,5 m/s</strong>. Usando P = F × v, qual é a potência mecânica mínima necessária?',
+    alternativas:[
+      {letra:'A', texto:'P = 3 000 W = 3,0 kW'},
+      {letra:'B', texto:'P = 10 000 W = 10,0 kW'},
+      {letra:'C', texto:'P = 18 750 W ≈ 18,8 kW'},
+      {letra:'D', texto:'P = 75 000 W = 75,0 kW'}
+    ],
+    correta:'C',
+    feedbacks:{
+      C:{ok:true, texto:'Correto! P = F × v = 7 500 N × 2,5 m/s = 18 750 W ≈ 18,8 kW. (TT v19 · Tópico 5 · Equação 7)'},
+      A:{ok:false, texto:'Você dividiu 7 500 por 2,5 = 3 000. Cuidado: P = F × v é multiplicação, não divisão.'},
+      B:{ok:false, texto:'Confira a operação: P = 7 500 × 2,5 = 18 750 W, não 10 000 W.'},
+      D:{ok:false, texto:'Verificou 7 500 × 10 = 75 000? Confira a velocidade: é 2,5 m/s, não 10 m/s.'}
+    }
+  },
+  U2: {
+    id:'T01-TM-U2', bloco:'U', blocoLabel:'U — Pense e Use', bloom:'L3', pts:3,
+    enunciado:'Uma equipe do IFMG-OP coletou um bloco de itabirito para análise de teor. Dados: comprimento = <strong>1,0 m</strong>; largura = <strong>0,4 m</strong>; altura = <strong>0,3 m</strong>; densidade do itabirito = <strong>3 800 kg/m³</strong>. Usando V = c × l × h e m = ρ × V, qual é o volume e a massa do bloco?',
+    alternativas:[
+      {letra:'A', texto:'V = 0,012 m³ e m = 45,6 kg'},
+      {letra:'B', texto:'V = 0,12 m³ e m = 456 kg'},
+      {letra:'C', texto:'V = 1,2 m³ e m = 4 560 kg'},
+      {letra:'D', texto:'V = 0,12 m³ e m = 380 kg'}
+    ],
+    correta:'B',
+    feedbacks:{
+      B:{ok:true, texto:'Correto! V = 1,0 × 0,4 × 0,3 = 0,12 m³; m = 3 800 × 0,12 = 456 kg. (TT v19 · Tópico 1 · Equações 1 e 2)'},
+      A:{ok:false, texto:'Erro de potência de 10 no volume. V = 1,0 × 0,4 × 0,3 = 0,12 m³ (não 0,012 m³).'},
+      C:{ok:false, texto:'Erro de potência de 10 no volume. V = 1,0 × 0,4 × 0,3 = 0,12 m³ (não 1,2 m³).'},
+      D:{ok:false, texto:'Volume correto (0,12 m³), mas usou densidade errada. ρ = 3 800 kg/m³, logo m = 3 800 × 0,12 = 456 kg.'}
+    }
+  },
+  U3: {
+    id:'T01-TM-U3', bloco:'U', blocoLabel:'U — Pense e Use', bloom:'L3', pts:3,
+    enunciado:'A Mina de Passagem (Mariana-MG) possui galerias a grande profundidade. Dados: profundidade = <strong>150 m</strong>; ρ<sub>água</sub> = <strong>1 000 kg/m³</strong>; g = <strong>9,8 m/s²</strong>. Usando P<sub>h</sub> = ρ × g × h, qual a pressão hidrostática que a bomba precisa vencer?',
+    alternativas:[
+      {letra:'A', texto:'Pₕ = 147 000 Pa ≈ 1,47 atm'},
+      {letra:'B', texto:'Pₕ = 1 470 000 Pa ≈ 14,7 atm'},
+      {letra:'C', texto:'Pₕ = 14 700 Pa ≈ 0,147 atm'},
+      {letra:'D', texto:'Pₕ = 14 700 000 Pa ≈ 147 atm'}
+    ],
+    correta:'B',
+    feedbacks:{
+      B:{ok:true, texto:'Correto! Pₕ = 1 000 × 9,8 × 150 = 1 470 000 Pa ≈ 14,7 atm. Essa pressão corresponde a quase 15 vezes a pressão atmosférica! (TT v19 · Tópico 5 · Equação 8)'},
+      A:{ok:false, texto:'Erro de potência de 10. Confira: 1 000 × 9,8 × 150 = 1 470 000 Pa, não 147 000 Pa.'},
+      C:{ok:false, texto:'Erro de potência de 10. Use h = 150 m (não 1,5 m). Pₕ = 1 470 000 Pa.'},
+      D:{ok:false, texto:'Erro de potência de 10. Pₕ = 1 000 × 9,8 × 150 = 1 470 000 Pa, não 14 700 000 Pa.'}
+    }
+  }
+};
+
+/* ===== VERSOES ===== */
+var VERSOES = {
+  A: ['R1','R2','R3','F1','F2','F3','U1','U2'],
+  B: ['R2','R3','R4','F2','F3','F4','U2','U3'],
+  C: ['R3','R4','R5','F3','F4','F1','U3','U1']
+};
+
+/* ===== STATE ===== */
+var PREFIX = 'ifmg_fc1_t01_tm_';
+var versaoAtual = null;
+var questoesAtivas = [];
+var respostas = {};
+var submitted = false;
+var saveTimer = null;
+
+/* ===== INIT ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  var hoje = new Date();
+  var dd = String(hoje.getDate()).padStart(2,'0');
+  var mm = String(hoje.getMonth()+1).padStart(2,'0');
+  var yyyy = hoje.getFullYear();
+  document.getElementById('inputData').value = yyyy + '-' + mm + '-' + dd;
+  checkLocalStorage();
+  setupDebouncedSave();
+});
+
+/* ===== VERSION SELECTOR ===== */
+function selectVersion(v) {
+  if (submitted) return;
+  if (versaoAtual && Object.keys(respostas).length > 0) {
+    if (!confirm('Trocar de versão apagará suas respostas atuais. Continuar?')) return;
+  }
+  versaoAtual = v;
+  questoesAtivas = VERSOES[v];
+  respostas = {};
+
+  var btns = document.querySelectorAll('.version-btn');
+  btns.forEach(function(b) {
+    b.classList.remove('active');
+    if (b.dataset.versao === v) b.classList.add('active');
+  });
+  document.getElementById('versionInfo').textContent = 'Versão ' + v + ' — 8 questões — 15 pontos';
+
+  document.getElementById('progressBar').classList.remove('hidden');
+  document.getElementById('idForm').classList.remove('hidden');
+  document.getElementById('actionsBar').classList.remove('hidden');
+
+  buildProgressBar();
+  buildQuestions();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ===== PROGRESS BAR ===== */
+function buildProgressBar() {
+  var bar = document.getElementById('progressBar');
+  bar.innerHTML = '';
+  for (var i = 0; i < 8; i++) {
+    var seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.id = 'prog-' + i;
+    bar.appendChild(seg);
+  }
+}
+
+function updateProgress() {
+  questoesAtivas.forEach(function(code, i) {
+    var seg = document.getElementById('prog-' + i);
+    if (!seg) return;
+    seg.className = 'progress-seg';
+    var q = BANCO[code];
+    if (submitted) {
+      if (respostas[q.id] === q.correta) seg.classList.add('certo');
+      else if (respostas[q.id]) seg.classList.add('errado');
+    } else if (respostas[q.id]) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+/* ===== BUILD QUESTIONS ===== */
+function buildQuestions() {
+  var container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  questoesAtivas.forEach(function(code, idx) {
+    var q = BANCO[code];
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    var bloomLabel = q.bloom === 'L1-L2' ? 'Bloom L1–L2' : 'Bloom ' + q.bloom + ' — Aplicar';
+    var tipoClass = 'tag-tipo-' + q.bloco.toLowerCase();
+
+    card.innerHTML =
+      '<div class="q-header">' +
+        '<div class="q-num">' + (idx + 1) + '</div>' +
+        '<div class="q-tags">' +
+          '<span class="tag ' + tipoClass + '">' + q.blocoLabel + '</span>' +
+          '<span class="tag tag-bloom">' + bloomLabel + '</span>' +
+          '<span class="tag tag-pts">' + q.pts + ' pt' + (q.pts > 1 ? 's' : '') + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="q-text">' + q.enunciado + '</div>' +
+      '<div class="alt-list" id="alts-' + q.id + '">' +
+        q.alternativas.map(function(a) {
+          return '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+            '<span class="alt-letra">' + a.letra + '.</span>' +
+            '<span>' + a.texto + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+      '<div class="q-feedback" id="fb-' + q.id + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+/* ===== SELECT ALTERNATIVE ===== */
+function selectAlt(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
+  btns.forEach(function(b) {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ===== SUBMIT CHECK ===== */
+function checkSubmitReady() {
+  var nome = document.getElementById('inputNome').value.trim();
+  var turma = document.getElementById('inputTurma').value;
+  var allAnswered = questoesAtivas.every(function(code) {
+    return respostas[BANCO[code].id];
+  });
+  document.getElementById('btnSubmit').disabled = !(nome && turma && versaoAtual && allAnswered);
+}
+
+/* ===== SUBMIT ===== */
+function submitQuiz() {
+  if (submitted) return;
+  submitted = true;
+
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+
+  var btns = document.querySelectorAll('.version-btn');
+  btns.forEach(function(b) { b.classList.add('locked'); });
+
+  var score = 0;
+  var maxScore = 0;
+
+  questoesAtivas.forEach(function(code) {
+    var q = BANCO[code];
+    var chosen = respostas[q.id];
+    var isCorrect = chosen === q.correta;
+    if (isCorrect) score += q.pts;
+    maxScore += q.pts;
+
+    var altBtns = document.querySelectorAll('[data-qid="' + q.id + '"]');
+    altBtns.forEach(function(b) {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.letra === q.correta) b.classList.add('correct');
+      if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+      if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+    });
+
+    var fb = document.getElementById('fb-' + q.id);
+    var fbData = q.feedbacks[chosen] || (isCorrect ? q.feedbacks[q.correta] : {ok:false, texto:'Resposta incorreta. Revise o Tópico correspondente no TT.'});
+    fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+    fb.innerHTML = fbData.texto;
+  });
+
+  var scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + '/' + maxScore;
+
+  updateProgress();
+
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnExport').classList.add('show');
+
+  saveToLocalStorage();
+
+  var pct = Math.round(score / maxScore * 100);
+  toast(pct >= 60 ? 'success' : 'info', 'Pontuação: ' + score + '/' + maxScore + ' (' + pct + '%)');
+  enviarColeta();
+}
+
+/* ===== EXPORT JSON ===== */
+function montarPacote() {
+  var now = new Date();
+  return {
+    schema: 'ifmg-fc1-tarefa-minima-v4',
+    trilha: 'T01',
+    tipo: 'TM',
+    versao: versaoAtual,
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: questoesAtivas.map(function(code) {
+      var q = BANCO[code];
+      return {
+        id: q.id,
+        bloco: q.bloco,
+        bloom: q.bloom,
+        pts: q.pts,
+        resposta: respostas[q.id] || null,
+        correta: q.correta,
+        acertou: respostas[q.id] === q.correta,
+        pontos_obtidos: respostas[q.id] === q.correta ? q.pts : 0
+      };
+    }),
+    pontuacao: questoesAtivas.reduce(function(acc, code) {
+      var q = BANCO[code];
+      return acc + (respostas[q.id] === q.correta ? q.pts : 0);
+    }, 0),
+    total: 15
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T01-TM-v' + versaoAtual + '-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0, 30) + '-' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'JSON exportado com sucesso');
+}
+
+/* ===== RESET ===== */
+function resetQuiz() {
+  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ===== LOCAL STORAGE ===== */
+function saveToLocalStorage() {
+  try {
+    var state = {
+      versao: versaoAtual,
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function clearLocalStorage() {
+  localStorage.removeItem(PREFIX + 'state');
+}
+
+function checkLocalStorage() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (raw) {
+      document.getElementById('restoreBanner').classList.add('show');
+    }
+  } catch(e) {}
+}
+
+function restoreData() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (!raw) return;
+    var state = JSON.parse(raw);
+
+    if (state.versao) {
+      selectVersion(state.versao);
+    }
+
+    document.getElementById('inputNome').value = state.nome || '';
+    document.getElementById('inputTurma').value = state.turma || '';
+    document.getElementById('inputData').value = state.data || '';
+    respostas = state.respostas || {};
+
+    Object.entries(respostas).forEach(function(entry) {
+      var qid = entry[0];
+      var letra = entry[1];
+      var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
+      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === letra); });
+    });
+
+    if (state.submitted) {
+      submitQuiz();
+    } else {
+      updateProgress();
+      checkSubmitReady();
+    }
+
+    toast('info', 'Dados restaurados');
+  } catch(e) {
+    toast('error', 'Erro ao restaurar dados');
+  }
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+function discardData() {
+  clearLocalStorage();
+  document.getElementById('restoreBanner').classList.remove('show');
+  toast('info', 'Dados anteriores descartados');
+}
+
+/* ===== DEBOUNCED SAVE ===== */
+function setupDebouncedSave() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+    document.getElementById(id).addEventListener('change', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
+}
+
+/* ===== TOAST ===== */
+function toast(type, msg) {
+  var container = document.getElementById('toastContainer');
+  var el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T01-TM-v4-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T01-TM-v4-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var COMPROVANTE_KEY = PREFIX + 'comprovante';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(COMPROVANTE_KEY);
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+</script>
+</body>
+</html>
