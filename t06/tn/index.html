@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<title>T06 · Ordem de Grandeza — Testinho — Estudante</title>
 <style>
 :root {
   --azul: oklch(0.65 0.22 45);
@@ -25,7 +25,6 @@
   --hover-bg: oklch(0.22 0.02 260);
   --r: 0px;
   --r-sm: 0px;
-  --shadow: 0 1px 0 oklch(0.3 0.02 260);
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
   --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
@@ -40,25 +39,13 @@ body {
 }
 .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
 
-/* HEADER */
 .header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
 .header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
 .header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
 .header h1 .trilha-code { color: var(--azul); }
-.badge {
-  display: inline-block;
-  background: var(--azul); color: var(--branco);
-  padding: 4px 12px; border-radius: var(--r-sm);
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 2px;
-}
-.header-sub {
-  max-width: 800px; margin: 4px auto 0;
-  font-size: 0.88rem;
-  color: var(--cinza);
-}
+.badge { display: inline-block; background: var(--azul); color: var(--branco); padding: 4px 12px; border-radius: var(--r-sm); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+.header-sub { max-width: 800px; margin: 4px auto 0; font-size: 0.88rem; color: var(--cinza); }
 
-/* PIAZZI BAR */
 .piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
 .piazzi-bar .piazzi-ref { color:var(--cinza); }
 .piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
@@ -66,394 +53,106 @@ body {
 .piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
 .piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
 
-/* ENCERRAMENTO */
 .encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
 .encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
 .encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
 .encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
 .footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
 
-/* RESTORATION BANNER */
-.restore-banner {
-  display: none;
-  background: var(--ouro-claro);
-  border: 1px solid var(--ouro);
-  border-radius: var(--r);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  font-size: 0.875rem;
-  color: var(--ouro);
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
+.restore-banner { display: none; background: var(--ouro-claro); border: 1px solid var(--ouro); border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px; font-size: 0.875rem; color: var(--ouro); align-items: center; justify-content: space-between; gap: 12px; }
 .restore-banner.show { display: flex; }
-.restore-banner button {
-  background: var(--ouro);
-  color: oklch(0.10 0.02 260);
-  border: none;
-  padding: 6px 14px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.restore-banner .btn-discard {
-  background: transparent;
-  color: var(--ouro);
-  border: 1px solid var(--ouro);
-}
+.restore-banner button { background: var(--ouro); color: oklch(0.10 0.02 260); border: none; padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap; }
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
 
-/* PROGRESS BAR */
-.progress-bar {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 3px;
-  margin-bottom: 24px;
-}
-.progress-seg {
-  height: 6px;
-  background: var(--cinza-claro);
-  border-radius: var(--r-sm);
-  transition: background 0.3s;
-}
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
+.progress-seg { height: 6px; background: var(--cinza-claro); border-radius: var(--r-sm); transition: background 0.3s; }
 .progress-seg.resp { background: var(--azul); }
-.progress-seg.done { background: var(--verde); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
 
-/* STUDENT ID FORM */
-.id-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  padding: 16px;
-  margin-bottom: 28px;
-  border-radius: var(--r);
-}
-.id-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.id-form input,
-.id-form select {
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  color: var(--texto);
-  padding: 8px 10px;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  border-radius: var(--r-sm);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.id-form input:focus,
-.id-form select:focus { border-color: var(--azul); }
-.id-form input:disabled,
-.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+.id-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; background: var(--superficie); border: 1px solid var(--cinza-borda); padding: 16px; margin-bottom: 28px; border-radius: var(--r); }
+.id-form label { display: flex; flex-direction: column; gap: 4px; font-family: var(--mono); font-size: 0.75rem; color: var(--cinza); text-transform: uppercase; letter-spacing: 0.06em; }
+.id-form input, .id-form select { background: var(--input-bg); border: 1px solid var(--cinza-borda); color: var(--texto); padding: 8px 10px; font-family: var(--font); font-size: 0.9rem; border-radius: var(--r-sm); outline: none; transition: border-color 0.2s; }
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* PHASE SEPARATOR */
-.phase-sep {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 32px 0 16px;
-  padding: 10px 16px;
-  background: oklch(0.14 0.02 260);
-  border-left: 4px solid var(--ouro);
-}
-.phase-sep .phase-label {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--ouro);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-.phase-sep .phase-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--texto);
-}
-.phase-sep .phase-range {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--cinza);
-  margin-left: auto;
-  white-space: nowrap;
-}
-
-/* QUESTION CARD */
-.q-card {
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 20px;
-  margin-bottom: 16px;
-}
+.q-card { background: var(--superficie); border: 1px solid var(--cinza-borda); border-radius: var(--r); padding: 20px; margin-bottom: 16px; }
 .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-.q-num {
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--azul-bg);
-  border: 2px solid var(--azul);
-  color: var(--azul-claro);
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  border-radius: 50%;
-}
+.q-num { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro); font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%; }
 .q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.tag {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
+.tag { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); text-transform: uppercase; letter-spacing: 0.04em; }
 .tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
 .tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
 .tag-tipo { background: var(--verde-claro); color: var(--verde); border: 1px solid var(--verde); }
 
-.q-text {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 16px;
-  color: var(--texto);
-}
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
 .q-text strong { color: var(--ouro); font-weight: 700; }
-.q-text em { color: var(--azul-claro); font-style: italic; }
 
-/* TEXTAREA (OPEN QUESTIONS) */
-.q-textarea-wrap { position: relative; }
-.q-textarea {
-  width: 100%;
-  min-height: 120px;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  color: var(--texto);
-  font-family: var(--font);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  padding: 12px 14px 28px;
-  resize: vertical;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.q-textarea:focus { border-color: var(--azul); }
-.q-textarea:disabled { opacity: 0.5; cursor: not-allowed; resize: none; }
-.char-counter {
-  position: absolute;
-  bottom: 6px;
-  right: 10px;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  color: var(--cinza);
-  pointer-events: none;
-}
-
-/* ALTERNATIVES (MC) */
 .alt-list { display: flex; flex-direction: column; gap: 6px; }
-.alt-btn {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 12px 14px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  text-align: left;
-  width: 100%;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  color: var(--texto);
-  line-height: 1.5;
-}
+.alt-btn { display: flex; align-items: flex-start; gap: 12px; background: var(--input-bg); border: 1px solid var(--cinza-borda); border-radius: var(--r); padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s; text-align: left; width: 100%; font-family: var(--font); font-size: 0.9rem; color: var(--texto); line-height: 1.5; }
 .alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
 .alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
 .alt-btn.locked { cursor: default; opacity: 0.7; }
-.alt-letra {
-  font-family: var(--mono);
-  font-weight: 700;
-  color: var(--cinza);
-  min-width: 20px;
-  flex-shrink: 0;
-  padding-top: 1px;
-}
+.alt-btn.certo { background: var(--verde-claro); border-color: var(--verde); opacity: 1; }
+.alt-btn.errado { background: var(--erro-claro); border-color: var(--erro); opacity: 1; }
+.alt-letra { font-family: var(--mono); font-weight: 700; color: var(--cinza); min-width: 20px; flex-shrink: 0; padding-top: 1px; }
 .alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.certo .alt-letra { color: var(--verde); }
+.alt-btn.errado .alt-letra { color: var(--erro); }
 
-/* LIKERT SCALE */
-.likert-wrap {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.likert-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 14px 8px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  text-align: center;
-}
-.likert-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
-.likert-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
-.likert-btn.locked { cursor: default; opacity: 0.7; }
-.likert-level {
-  font-family: var(--mono);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--cinza);
-}
-.likert-btn.selected .likert-level { color: var(--azul-claro); }
-.likert-label {
-  font-size: 0.75rem;
-  color: var(--cinza);
-  line-height: 1.3;
-}
-.likert-btn.selected .likert-label { color: var(--azul-claro); }
+.q-feedback { display: none; margin-top: 12px; padding: 14px; border-left: 3px solid var(--cinza-borda); font-size: 0.88rem; line-height: 1.6; }
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); }
 
-/* CONFIRMATION BOX */
-.confirm-box {
-  display: none;
-  background: var(--superficie);
-  border: 2px solid var(--verde);
-  border-radius: var(--r);
-  padding: 24px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.confirm-box.show { display: block; }
-.confirm-icon {
-  font-size: 2.4rem;
-  margin-bottom: 8px;
-}
-.confirm-title {
-  font-family: var(--mono);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--verde);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.confirm-text {
-  font-size: 0.88rem;
-  color: var(--cinza);
-  margin-top: 6px;
-  line-height: 1.5;
-}
+.score-box { display: none; background: var(--superficie); border: 2px solid var(--verde); border-radius: var(--r); padding: 24px; margin-bottom: 20px; text-align: center; }
+.score-box.show { display: block; }
+.score-value { font-family: var(--mono); font-size: 2.4rem; font-weight: 900; color: var(--verde); }
+.score-label { font-family: var(--mono); font-size: 0.8rem; color: var(--cinza); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+.score-detail { font-size: 0.85rem; color: var(--cinza); margin-top: 8px; }
 
-/* BUTTONS */
 .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-.btn {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-radius: var(--r);
-  transition: opacity 0.2s;
-}
+.btn { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; padding: 12px 24px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; border-radius: var(--r); transition: opacity 0.2s; }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
 .btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
 .btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
 .btn-export.show { display: inline-block; }
-.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
 .btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
 .btn-reset:hover { background: var(--erro-claro); }
 
-/* TOAST */
-.toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.toast {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  padding: 10px 16px;
-  border-radius: var(--r);
-  color: var(--texto);
-  border: 1px solid;
-  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-  max-width: 320px;
-}
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast { font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px; border-radius: var(--r); color: var(--texto); border: 1px solid; animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards; max-width: 320px; }
 .toast-info { background: var(--azul-bg); border-color: var(--azul); }
 .toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
 .toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
 @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
 
-/* RESPONSIVE */
 @media (max-width: 600px) {
   .container { padding: 16px 12px 60px; }
   .header h1 { font-size: 1.2rem; }
   .id-form { grid-template-columns: 1fr; }
   .q-card { padding: 14px; }
   .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
-  .likert-wrap { grid-template-columns: repeat(2, 1fr); }
   .actions { flex-direction: column; }
   .btn { width: 100%; text-align: center; }
   .restore-banner { flex-direction: column; align-items: stretch; }
-  .phase-sep { flex-wrap: wrap; }
-  .phase-sep .phase-range { margin-left: 0; }
 }
 
-/* PRINT */
 @media print {
   body { background: #fff; color: #111; }
   .container { max-width: 100%; padding: 0; }
   .header h1 { color: #111; }
   .badge { border-color: #333; color: #333; }
-  .header-sub { color: #555; }
   .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
-  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; }
   .q-num { border-color: #333; color: #333; background: #eee; }
   .tag { border-color: #999; color: #555; background: #f5f5f5; }
   .q-text { color: #111; }
   .q-text strong { color: #111; }
   .alt-btn { background: #fff; border-color: #ccc; color: #111; }
   .alt-letra { color: #333; }
-  .likert-btn { background: #fff; border-color: #ccc; color: #111; }
-  .likert-level { color: #333; }
-  .likert-label { color: #555; }
-  .q-textarea { background: #fff; border-color: #ccc; color: #111; }
-  .char-counter { color: #999; }
-  .phase-sep { background: #f5f5f5; border-color: #333; }
-  .phase-sep .phase-label { color: #333; }
-  .phase-sep .phase-range { color: #555; }
-  .confirm-box { display: block !important; border-color: #333; background: #fff; }
-  .confirm-title { color: #333; }
-  .confirm-text { color: #555; }
   .id-form { background: #f5f5f5; border-color: #ccc; }
   .id-form label { color: #555; }
   .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
@@ -482,7 +181,6 @@ body {
 <body>
 <div class="container">
 
-  <!-- RESTORATION BANNER -->
   <div class="restore-banner" id="restoreBanner">
     <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
     <div style="display:flex;gap:8px;flex-shrink:0;">
@@ -491,16 +189,14 @@ body {
     </div>
   </div>
 
-  <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
-      <span class="badge">Ponto de Partida (PP)</span>
+      <h1><span class="trilha-code">T06</span> &middot; Ordem de Grandeza</h1>
+      <span class="badge">Testinho (TN)</span>
     </div>
-    <div class="header-sub">5 fases &middot; 10 quest&otilde;es &middot; 7 abertas + 2 MC + 1 Likert</div>
+    <div class="header-sub">5 quest&otilde;es MC &middot; 5 pontos &middot; 15 minutos &middot; tentativa &uacute;nica</div>
   </header>
 
-  <!-- PIAZZI BAR -->
   <div class="piazzi-bar">
     <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
     <span class="piazzi-tag">Ler</span>
@@ -511,39 +207,22 @@ body {
     <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
   </div>
 
-  <!-- PROGRESS BAR -->
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- STUDENT ID -->
   <div class="id-form" id="idForm">
-    <label>
-      Nome
-      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
-    </label>
-    <label>
-      Turma
-      <select id="inputTurma">
-        <option value="">Selecione</option>
-        <option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option>
-      </select>
-    </label>
-    <label>
-      Data
-      <input type="date" id="inputData">
-    </label>
+    <label>Nome<input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off"></label>
+    <label>Turma<select id="inputTurma"><option value="">Selecione</option><option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option></select></label>
+    <label>Data<input type="date" id="inputData"></label>
   </div>
 
-  <!-- CONFIRMATION BOX -->
-  <div class="confirm-box" id="confirmBox">
-    <div class="confirm-icon">&#10003;</div>
-    <div class="confirm-title">Respostas enviadas</div>
-    <div class="confirm-text">Sua participa&ccedil;&atilde;o foi registrada. A nota &eacute; garantida pelo envio &mdash; n&atilde;o h&aacute; certo ou errado neste diagn&oacute;stico.</div>
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue"></div>
+    <div class="score-label">Pontua&ccedil;&atilde;o</div>
+    <div class="score-detail" id="scoreDetail"></div>
   </div>
 
-  <!-- QUESTIONS -->
   <div id="questionsContainer"></div>
 
-  <!-- ACTIONS -->
   <!-- COLETA STATUS -->
   <div class="coleta-status" id="coletaStatus" hidden>
     <span id="coletaStatusMsg"></span>
@@ -551,9 +230,9 @@ body {
   </div>
 
   <div class="actions" id="actionsBar">
-    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitPP()">Enviar Respostas</button>
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitTN()">Enviar Respostas</button>
     <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
-    <button class="btn btn-reset" id="btnReset" onclick="resetPP()">Recome&ccedil;ar</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetTN()">Recome&ccedil;ar</button>
   </div>
 
 </div>
@@ -565,7 +244,7 @@ body {
 </div>
 
 <div class="footer-line">
-  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T06 &middot; J. Azevedo &amp; F. Beato &middot; 2026
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -594,93 +273,99 @@ body {
 <script src="../../coleta-config.js"></script>
 
 <script>
-/* ---- QUESTION DATA ---- */
-var PHASES = [
-  { id:'F1', label:'Fase 1', name:'Situação-Problema', range:'Q1–Q2' },
-  { id:'F2', label:'Fase 2', name:'Conhecimentos Prévios', range:'Q3–Q4' },
-  { id:'F3', label:'Fase 3', name:'Exploração Inicial', range:'Q5–Q7' },
-  { id:'F4', label:'Fase 4', name:'Desenvolvimento Conceitual', range:'Q8–Q9' },
-  { id:'F5', label:'Fase 5', name:'Sistematização', range:'Q10' }
-];
-
 var BANCO = [
   {
-    id:'T01-PP-Q1', num:1, phase:'F1', bloom:'L2–L3', comp:'C1', pts:1,
-    tipo:'ABERTA',
-    enunciado:'Sofia chega à Praça Tiradentes às 7h15 e observa que os veios de quartzo e feldspato no pedestal de granito do monumento ao Tiradentes “acendem” — ficam dourados e reluzentes — por cerca de 30 segundos enquanto o sol rasante da Serra do Itacolomi ilumina a superfície da pedra. Em seguida, o sol sobe um grau e o brilho desaparece completamente, devolvendo o pedestal ao cinza de sempre. Descreva o que você acha que aconteceu: por que o granito brilhou intensamente por alguns instantes e depois voltou ao cinza?'
+    id:'T06-TN-Q1', num:1, bloom:'L1-L2', comp:'C1', pts:1,
+    enunciado:'O MD da Trilha 6 define que "a ordem de grandeza é o número de zeros — não interessa o que está na frente, importa quantas casas decimais." O Mapa Conceitual confirma que OG(x) é a potência de dez mais próxima do número e que OG(350 m) = 2, pois 350 está mais próximo de 10² = 100 do que de 10³ = 1 000 em termos de distância linear. <strong>Usando essa mesma convenção, qual é a ordem de grandeza de 780 m?</strong>',
+    opcoes:[
+      {letra:'A', texto:'OG = 1, pois 780 é menor que 1 000 e portanto está na casa dos 10¹.'},
+      {letra:'B', texto:'OG = 2, pois 780 está entre 100 e 1 000, e a convenção é sempre arredondar para baixo.'},
+      {letra:'C', texto:'OG = 3, pois 780 está mais próximo de 10³ = 1 000 do que de 10² = 100 em termos de distância linear.'},
+      {letra:'D', texto:'OG = 4, pois log₁₀(780) ≈ 2,89 e multiplicando por 1,5 arredonda para 4.'}
+    ],
+    correta:'C',
+    feedbacks:{
+      A:'OG = 1 — Incorreto. OG = 1 corresponderia a um número próximo de 10¹ = 10 (ex.: 7 ou 30). 780 está entre 10² e 10³, não próximo de 10¹.',
+      B:'OG = 2 — Incorreto. Esta seria a resposta se a convenção fosse "sempre arredondar para baixo" (floor do logaritmo), mas o projeto usa distância linear. Para 780: distância até 100 (=680) é maior que distância até 1 000 (=220) → OG = 3, não 2.',
+      C:'OG = 3 — Correto! Distância linear: |780 − 100| = 680; |780 − 1 000| = 220. Como 780 está mais próximo de 1 000 = 10³ (220 < 680), OG = 3. Contraste com 350 m (OG = 2): |350 − 100| = 250 < |350 − 1000| = 650.',
+      D:'OG = 4 — Incorreto. log₁₀(780) ≈ 2,89; a operação "multiplicar por 1,5 e arredondar" não tem base no protocolo do projeto. OG de 780 é 3, não 4. OG = 4 corresponderia a números próximos de 10⁴ = 10 000.'
+    }
   },
   {
-    id:'T01-PP-Q2', num:2, phase:'F1', bloom:'L2–L3', comp:'C1', pts:1,
-    tipo:'ABERTA',
-    enunciado:'O professor Julio pergunta para Sofia: “O pedestal ficou brilhoso, você disse. Ou a luz ficou brilhosa?” Sofia percebe, depois de um momento, que o que mudou foi a <em>interação</em> entre a pedra e a luz — não a pedra por si só. Por que a simples mudança no ângulo de incidência do sol foi suficiente para transformar completamente a aparência visual do granito, sem que a pedra tivesse mudado nada?'
+    id:'T06-TN-Q2', num:2, bloom:'L2-L3', comp:'C2', pts:1,
+    enunciado:'O MD descreve que dois técnicos estimam o teor de ouro de um filão: furo 1 retornou 0,5 g/t (zona encaixante) e furo 2 retornou 5 000 g/t (filão rico). Os valores diferem por fator 10 000 (quatro ordens de grandeza). O MD explica que quando dois extremos diferem em duas ou mais ordens de grandeza, a média geométrica é o critério correto. <strong>Por que a média aritmética seria inadequada como base de projeto nesse caso?</strong>',
+    opcoes:[
+      {letra:'A', texto:'Porque a média aritmética é proibida pelo Guia de Recursos e Reservas Minerais da ANM para cálculos de teor aurífero.'},
+      {letra:'B', texto:'Porque a média aritmética (≈ 2 500 g/t) seria dominada pelo valor extremo superior, representando o filão rico e não o centro real da incerteza geológica entre as duas zonas amostradas.'},
+      {letra:'C', texto:'Porque os dois furos diferem por exatamente 10 000 vezes, o que ultrapassa o limite máximo de variância tolerado pela convenção metodológica do MC T06.'},
+      {letra:'D', texto:'Porque a média aritmética só funciona com grandezas vetoriais, e teor de ouro (em g/t) é uma grandeza escalar adimensional.'}
+    ],
+    correta:'B',
+    feedbacks:{
+      A:'Incorreto. O Guia de Recursos e Reservas Minerais da ANM recomenda a média geométrica em alta variância, mas não proíbe formalmente a aritmética. O problema não é legal, é técnico: a média aritmética produz estimativa não representativa.',
+      B:'Correto! Média aritmética: (0,5 + 5 000)/2 ≈ 2 500 g/t — dominada pelo valor extremo de 5 000 g/t. Não representa o centro real da distribuição. Média geométrica: √(0,5 × 5 000) = 50 g/t — equidistante dos dois extremos no eixo logarítmico.',
+      C:'Incorreto. Não existe "limite máximo de variância" definido no MC como regra numérica absoluta. O critério é qualitativo: dois ou mais ordens de grandeza de diferença → usar geométrica. Aqui são quatro ordens de grandeza, claramente acima do limiar.',
+      D:'Incorreto. Vetorial vs. escalar é uma propriedade geométrica das grandezas (velocidade tem direção, massa não). Teor de ouro é escalar, mas a média aritmética funciona perfeitamente para grandezas escalares na mesma escala logarítmica. O problema é a amplitude das escalas, não o tipo de grandeza.'
+    }
   },
   {
-    id:'T01-PP-Q3', num:3, phase:'F2', bloom:'L1–L2', comp:'C1', pts:1,
-    tipo:'MC',
-    enunciado:'O Sistema Internacional de Unidades (SI) foi adotado internacionalmente em 1960 e estabelece sete grandezas <strong>fundamentais</strong> — aquelas que não podem ser expressas como combinação de outras. Qual das alternativas a seguir lista corretamente três grandezas <strong>fundamentais</strong> do SI?',
-    alternativas:[
-      {letra:'A', texto:'Velocidade, força e pressão'},
-      {letra:'B', texto:'Comprimento, massa e tempo'},
-      {letra:'C', texto:'Volume, densidade e energia'},
-      {letra:'D', texto:'Área, aceleração e trabalho'}
-    ]
+    id:'T06-TN-Q3', num:3, bloom:'L3', comp:'C3', pts:1,
+    enunciado:'O MD descreve a analogia t = Q/I: tanto a vida útil de uma pilha quanto a vida útil de uma mina seguem a mesma estrutura "reserva ÷ taxa". Uma lanterna de mineração usa 2 pilhas AA ligadas em série. Cada pilha AA tem carga de 3 000 C. A lanterna consome 0,8 A de corrente. (Nota: pilhas em série mantêm a mesma carga — a tensão dobra, não a capacidade de carga.) <strong>Qual é a duração aproximada da lanterna, em segundos?</strong>',
+    opcoes:[
+      {letra:'A', texto:'7 500 s'},
+      {letra:'B', texto:'3 750 s'},
+      {letra:'C', texto:'6 000 s'},
+      {letra:'D', texto:'1 875 s'}
+    ],
+    correta:'B',
+    feedbacks:{
+      A:'7 500 s — Incorreto. Resultado de t = 6 000 / 0,8, assumindo carga total = 2 × 3 000 = 6 000 C (como se as pilhas em série dobrassem a carga). Em série, a carga permanece 3 000 C; quem dobra é a tensão (V = 2 × 1,5 V = 3 V).',
+      B:'3 750 s — Correto! Pilhas em série: carga = 3 000 C (sem alteração), tensão = 2 × 1,5 V = 3 V. t = Q/I = 3 000 / 0,8 = 3 750 s ≈ 1,04 h. OG = 10³ s (mesma faixa do exemplo do MD: 6 000 s para 3 000 C / 0,5 A).',
+      C:'6 000 s — Incorreto. Resultado de t = 3 000 / 0,5, usando a corrente do exemplo do MD (0,5 A) em vez dos 0,8 A deste problema. Erro de substituição de dados.',
+      D:'1 875 s — Incorreto. Resultado de t = 3 000 / 1,6, assumindo que ligar em série dobra a corrente consumida para 0,8 × 2 = 1,6 A. A corrente consumida depende da carga, não da configuração das pilhas — a lanterna usa 0,8 A independentemente de a tensão ser 1,5 V ou 3 V.'
+    }
   },
   {
-    id:'T01-PP-Q4', num:4, phase:'F2', bloom:'L2', comp:'C2', pts:1,
-    tipo:'LIKERT',
-    enunciado:'Quão confiante você está na sua resposta anterior?',
-    niveis:[
-      {valor:1, rotulo:'Nada confiante'},
-      {valor:2, rotulo:'Pouco confiante'},
-      {valor:3, rotulo:'Moderadamente confiante'},
-      {valor:4, rotulo:'Muito confiante'}
-    ]
+    id:'T06-TN-Q4', num:4, bloom:'L3-L4', comp:'C4', pts:1,
+    enunciado:'O Mapa Conceitual T06 (ÁREA 3) apresenta que a razão entre duas escalas é dada por razão = 10^(n₂ − n₁), onde n₁ e n₂ são as ordens de grandeza das escalas. Sofia observou no jardim do Museu de Ciência e Técnica da UFOP que: (a) um grão de quartzo na vitrine tem ~1 mm = 10⁻³ m; (b) a extensão urbana de Ouro Preto é ~1 km = 10³ m. <strong>Quantas vezes o grão de quartzo "cabe" na extensão urbana de Ouro Preto?</strong>',
+    opcoes:[
+      {letra:'A', texto:'10³ vezes, pois a diferença dos expoentes é 3 − 3 = 0 e 10⁰ = 1, depois multiplica-se por 10³ por convenção.'},
+      {letra:'B', texto:'10⁶ vezes, pois a razão = 10^(n₂ − n₁) = 10^(3 − (−3)) = 10⁶.'},
+      {letra:'C', texto:'6 vezes, pois a diferença dos expoentes é 3 − (−3) = 6, e esse número é diretamente a razão.'},
+      {letra:'D', texto:'10⁹ vezes, pois subtrai-se n₁ de n₂ e soma-se n₁: 3 − (−3) + 3 = 9.'}
+    ],
+    correta:'B',
+    feedbacks:{
+      A:'Incorreto. A fórmula é razão = 10^(n₂ − n₁), não "diferença e depois multiplica por convenção". O cálculo correto é simplesmente 10^(3−(−3)) = 10^6. Não existe etapa intermediária de "arredondar para 10³".',
+      B:'Correto! n₂ = 3 (extensão de Ouro Preto em km = 10³ m); n₁ = −3 (grão de quartzo em mm = 10⁻³ m). Razão = 10^(3−(−3)) = 10^6 = 1 milhão. Um grão de 1 mm cabe 1 milhão de vezes em 1 km.',
+      C:'Incorreto. A diferença dos expoentes (6) é o expoente da potência de 10, não o valor direto da razão. 10^6 = 1 000 000 — não 6. Confundir o expoente com o valor da razão é o erro conceitual central que a notação científica existe para prevenir.',
+      D:'Incorreto. Não existe razão para somar n₁ após subtrair: 3 − (−3) + 3 = 9. A fórmula é somente razão = 10^(n₂ − n₁), sem termos adicionais.'
+    }
   },
   {
-    id:'T01-PP-Q5', num:5, phase:'F3', bloom:'L2', comp:'C2', pts:1,
-    tipo:'ABERTA',
-    enunciado:'Sofia calculou o volume do bloco de granito como V = 1,0 × 0,5 × 0,4 = 0,20 m³ e a massa como m = 2 700 × 0,20 = 540 kg. Imagine que, ao relançar a medição, ela descobre que a largura do bloco não é 0,5 m mas sim 0,6 m. O que acontece com o volume calculado e com a massa estimada? Calcule os novos valores.'
-  },
-  {
-    id:'T01-PP-Q6', num:6, phase:'F3', bloom:'L2–L3', comp:'C2', pts:1,
-    tipo:'ABERTA',
-    enunciado:'O erro relativo é calculado por Er = |Vm − Vt| / Vt × 100%, onde Vm é o valor medido e Vt é o valor teórico. Se Sofia mediu Vm = 540 kg e o valor real for Vt = 556 kg, Er ≈ 3,0%. O que acontece com o erro relativo à medida que Vm se aproxima de Vt? E quando Vm = Vt, qual é o valor de Er? Explique usando a fórmula.'
-  },
-  {
-    id:'T01-PP-Q7', num:7, phase:'F3', bloom:'L3', comp:'C3', pts:1,
-    tipo:'ABERTA',
-    enunciado:'Diante do pedestal de granito, o professor Julio mostra para Sofia que a Física, a Química, a Geologia e a Biologia fazem perguntas diferentes sobre o mesmo objeto. A Física pergunta “qual força é necessária para mover esse bloco?”; a Química pergunta “de que minerais ele é composto?”; a Geologia pergunta “quando e como essa rocha se formou?”. Por que ciências diferentes fazem perguntas diferentes sobre o mesmo objeto? O que determina o tipo de pergunta que cada ciência faz?'
-  },
-  {
-    id:'T01-PP-Q8', num:8, phase:'F4', bloom:'L3', comp:'C3', pts:1,
-    tipo:'MC',
-    enunciado:'O Processo 3 da mineração (Tópico 5 da trilha) trata da drenagem de galerias subterrâneas. As bombas precisam vencer a pressão da coluna d’água para extrair o líquido que se infiltra. Usando a equação de pressão hidrostática P<sub>h</sub> = ρ × g × h, com ρ<sub>água</sub> = 1 000 kg/m³ e g = 9,8 m/s², qual é a pressão hidrostática que a bomba precisa superar em uma galeria a <strong>80 m</strong> de profundidade abaixo do lençol freático?',
-    alternativas:[
-      {letra:'A', texto:'78 400 Pa (78,4 kPa)'},
-      {letra:'B', texto:'784 000 Pa (784 kPa)'},
-      {letra:'C', texto:'7 840 000 Pa (7 840 kPa)'},
-      {letra:'D', texto:'8 000 Pa (8,0 kPa)'}
-    ]
-  },
-  {
-    id:'T01-PP-Q9', num:9, phase:'F4', bloom:'L3–L4', comp:'C4', pts:1,
-    tipo:'ABERTA',
-    enunciado:'Explique com suas palavras o que é uma grandeza física e por que ela é fundamental para que a Física possa descrever o mundo real.'
-  },
-  {
-    id:'T01-PP-Q10', num:10, phase:'F5', bloom:'L4–L5', comp:'C1', pts:1,
-    tipo:'ABERTA',
-    enunciado:'Quais são as principais características da Física como ciência — o que a define, como ela trabalha e qual é o papel das medições e das equações na sua maneira de entender o mundo?'
+    id:'T06-TN-Q5', num:5, bloom:'L3', comp:'C5', pts:1,
+    enunciado:'O Mapa Conceitual T06 (ÁREA 2) apresenta G = √(a·b) como a média geométrica. Uma pesquisa amostral na bacia de rejeitos histórica de Ouro Preto indica que o volume mínimo de rejeito soterrado é 500 m³ e o máximo é 1 800 000 m³. <strong>Use a calculadora científica. Qual é a média geométrica dessas estimativas, em notação científica, arredondada para 2 algarismos significativos?</strong>',
+    opcoes:[
+      {letra:'A', texto:'9,00 × 10⁵ m³ (média aritmética)'},
+      {letra:'B', texto:'3,0 × 10⁴ m³'},
+      {letra:'C', texto:'3,0 × 10³ m³'},
+      {letra:'D', texto:'3,0 × 10⁵ m³'}
+    ],
+    correta:'B',
+    feedbacks:{
+      A:'9,00 × 10⁵ m³ — Incorreto. Esse é o resultado da média aritmética: (500 + 1 800 000) / 2 ≈ 900 250 ≈ 9 × 10⁵ m³. A média aritmética é dominada pelo valor máximo — inadequada para esta amplitude de 4 ordens de grandeza.',
+      B:'3,0 × 10⁴ m³ — Correto! G = √(500 × 1 800 000) = √(9 × 10⁸) = 3 × 10⁴ m³ = 30 000 m³. Em notação científica normalizada: 3,0 × 10⁴ m³.',
+      C:'3,0 × 10³ m³ — Incorreto. Resultado de 10 vezes menor que o correto. Provável erro: √(9 × 10⁷) = 3 × 10³·⁵, tomando apenas 10⁷ em vez de 10⁸ no produto 500 × 1 800 000.',
+      D:'3,0 × 10⁵ m³ — Incorreto. Resultado de 10 vezes maior que o correto. Provável erro: √(9 × 10¹⁰) = 3 × 10⁵, usando 10¹⁰ em vez de 10⁸ no produto.'
+    }
   }
 ];
 
-/* ---- STATE ---- */
-var PREFIX = 'ifmg_fc1_t01_pp_';
+var PREFIX = 'ifmg_fc1_t06_tn_';
 var respostas = {};
 var submitted = false;
 var saveTimer = null;
 
-/* ---- INIT ---- */
 document.addEventListener('DOMContentLoaded', function() {
   buildProgressBar();
   buildQuestions();
@@ -689,17 +374,15 @@ document.addEventListener('DOMContentLoaded', function() {
   setupDebouncedSave();
 });
 
-/* ---- DEFAULT DATE ---- */
 function setDefaultDate() {
   var d = new Date();
   var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   document.getElementById('inputData').value = iso;
 }
 
-/* ---- PROGRESS BAR ---- */
 function buildProgressBar() {
   var bar = document.getElementById('progressBar');
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 5; i++) {
     var seg = document.createElement('div');
     seg.className = 'progress-seg';
     seg.id = 'prog-' + i;
@@ -712,99 +395,45 @@ function updateProgress() {
     var seg = document.getElementById('prog-' + i);
     seg.className = 'progress-seg';
     if (submitted) {
-      if (respostas[q.id]) seg.classList.add('done');
+      seg.classList.add(respostas[q.id] === q.correta ? 'certo' : (respostas[q.id] ? 'errado' : ''));
     } else if (respostas[q.id]) {
       seg.classList.add('resp');
     }
   });
 }
 
-/* ---- BUILD QUESTIONS ---- */
 function buildQuestions() {
   var container = document.getElementById('questionsContainer');
-  var currentPhase = '';
-
-  BANCO.forEach(function(q, idx) {
-    // Phase separator
-    if (q.phase !== currentPhase) {
-      currentPhase = q.phase;
-      var phaseData = PHASES.filter(function(p){ return p.id === currentPhase; })[0];
-      if (phaseData) {
-        var sep = document.createElement('div');
-        sep.className = 'phase-sep';
-        sep.innerHTML = '<span class="phase-label">' + phaseData.label + '</span>' +
-          '<span class="phase-name">' + phaseData.name + '</span>' +
-          '<span class="phase-range">' + phaseData.range + '</span>';
-        container.appendChild(sep);
-      }
-    }
-
+  BANCO.forEach(function(q) {
     var card = document.createElement('div');
     card.className = 'q-card';
     card.id = 'card-' + q.id;
-
-    var tipoLabel = q.tipo === 'ABERTA' ? 'Aberta' : q.tipo === 'MC' ? 'Múltipla Escolha' : 'Likert';
 
     var headerHTML = '<div class="q-header">' +
       '<div class="q-num">' + q.num + '</div>' +
       '<div class="q-tags">' +
         '<span class="tag tag-bloom">Bloom ' + q.bloom + '</span>' +
         '<span class="tag tag-pts">' + q.pts + ' pt</span>' +
-        '<span class="tag tag-tipo">' + tipoLabel + '</span>' +
-      '</div>' +
-    '</div>';
+        '<span class="tag tag-tipo">Múltipla Escolha</span>' +
+      '</div></div>';
 
     var textHTML = '<div class="q-text">' + q.enunciado + '</div>';
 
-    var inputHTML = '';
+    var inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
+    q.opcoes.forEach(function(a) {
+      inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+        '<span class="alt-letra">' + a.letra + '.</span>' +
+        '<span>' + a.texto + '</span></button>';
+    });
+    inputHTML += '</div>';
 
-    if (q.tipo === 'ABERTA') {
-      inputHTML = '<div class="q-textarea-wrap">' +
-        '<textarea class="q-textarea" id="ta-' + q.id + '" data-qid="' + q.id + '" placeholder="Escreva sua resposta aqui..." oninput="onTextInput(this)"></textarea>' +
-        '<span class="char-counter" id="cc-' + q.id + '">0 caracteres</span>' +
-      '</div>';
-    } else if (q.tipo === 'MC') {
-      inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
-      q.alternativas.forEach(function(a) {
-        inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
-          '<span class="alt-letra">' + a.letra + '.</span>' +
-          '<span>' + a.texto + '</span>' +
-        '</button>';
-      });
-      inputHTML += '</div>';
-    } else if (q.tipo === 'LIKERT') {
-      inputHTML = '<div class="likert-wrap" id="likert-' + q.id + '">';
-      q.niveis.forEach(function(n) {
-        inputHTML += '<button class="likert-btn" data-qid="' + q.id + '" data-valor="' + n.valor + '" onclick="selectLikert(\'' + q.id + '\',' + n.valor + ')">' +
-          '<span class="likert-level">' + n.valor + '</span>' +
-          '<span class="likert-label">' + n.rotulo + '</span>' +
-        '</button>';
-      });
-      inputHTML += '</div>';
-    }
+    var fbHTML = '<div class="q-feedback" id="fb-' + q.id + '"></div>';
 
-    card.innerHTML = headerHTML + textHTML + inputHTML;
+    card.innerHTML = headerHTML + textHTML + inputHTML + fbHTML;
     container.appendChild(card);
   });
 }
 
-/* ---- TEXT INPUT HANDLER ---- */
-function onTextInput(el) {
-  var qid = el.dataset.qid;
-  var val = el.value.trim();
-  if (val.length > 0) {
-    respostas[qid] = val;
-  } else {
-    delete respostas[qid];
-  }
-  var cc = document.getElementById('cc-' + qid);
-  if (cc) cc.textContent = el.value.length + ' caracteres';
-  updateProgress();
-  checkSubmitReady();
-  debouncedSave();
-}
-
-/* ---- SELECT ALTERNATIVE (MC) ---- */
 function selectAlt(qid, letra) {
   if (submitted) return;
   respostas[qid] = letra;
@@ -817,20 +446,6 @@ function selectAlt(qid, letra) {
   debouncedSave();
 }
 
-/* ---- SELECT LIKERT ---- */
-function selectLikert(qid, valor) {
-  if (submitted) return;
-  respostas[qid] = String(valor);
-  var btns = document.querySelectorAll('[data-qid="' + qid + '"].likert-btn');
-  btns.forEach(function(b) {
-    b.classList.toggle('selected', b.dataset.valor === String(valor));
-  });
-  updateProgress();
-  checkSubmitReady();
-  debouncedSave();
-}
-
-/* ---- SUBMIT CHECK ---- */
 function checkSubmitReady() {
   var nome = document.getElementById('inputNome').value.trim();
   var turma = document.getElementById('inputTurma').value;
@@ -838,54 +453,54 @@ function checkSubmitReady() {
   document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
 }
 
-/* ---- SUBMIT ---- */
-function submitPP() {
+function submitTN() {
   if (submitted) return;
   submitted = true;
 
-  // Lock inputs
   document.getElementById('inputNome').disabled = true;
   document.getElementById('inputTurma').disabled = true;
   document.getElementById('inputData').disabled = true;
 
-  // Lock all textareas
-  var tas = document.querySelectorAll('.q-textarea');
-  tas.forEach(function(ta) { ta.disabled = true; });
+  var score = 0;
+  BANCO.forEach(function(q) {
+    var isCorrect = respostas[q.id] === q.correta;
+    if (isCorrect) score += q.pts;
 
-  // Lock all alt buttons
-  var altBtns = document.querySelectorAll('.alt-btn');
-  altBtns.forEach(function(b) { b.classList.add('locked'); });
+    var btns = document.querySelectorAll('[data-qid="' + q.id + '"].alt-btn');
+    btns.forEach(function(b) {
+      b.classList.add('locked');
+      if (b.dataset.letra === q.correta) b.classList.add('certo');
+      if (b.dataset.letra === respostas[q.id] && !isCorrect) b.classList.add('errado');
+    });
 
-  // Lock all likert buttons
-  var likBtns = document.querySelectorAll('.likert-btn');
-  likBtns.forEach(function(b) { b.classList.add('locked'); });
+    var fb = document.getElementById('fb-' + q.id);
+    fb.className = 'q-feedback show ' + (isCorrect ? 'ok' : 'nok');
+    fb.textContent = q.feedbacks[respostas[q.id]] || '';
+  });
 
-  // Show confirmation
-  var confirmBox = document.getElementById('confirmBox');
-  confirmBox.classList.add('show');
-
-  // Update progress
   updateProgress();
 
-  // Update buttons
+  var scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + ' / 5';
+  document.getElementById('scoreDetail').textContent = score + ' de 5 pontos — ' + Math.round(score/5*100) + '%';
+
   document.getElementById('btnSubmit').style.display = 'none';
   document.getElementById('btnExport').classList.add('show');
-
-  // Save state
   saveToLocalStorage();
-
-  toast('success', 'Respostas enviadas com sucesso!');
+  toast('success', 'Respostas enviadas! Nota: ' + score + '/5');
   enviarColeta();
 }
 
-/* ---- EXPORT JSON ---- */
 function montarPacote() {
   var now = new Date();
+  var score = 0;
+  BANCO.forEach(function(q) { if (respostas[q.id] === q.correta) score += q.pts; });
   return {
-    schema: 'ifmg-fc1-ponto-de-partida-v1',
-    trilha: 'T01',
-    tipo: 'PP',
-    versao: 'v14',
+    schema: 'ifmg-fc1-testinho-v3',
+    trilha: 'T06',
+    tipo: 'TN',
+    versao: 'v1',
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
@@ -894,18 +509,13 @@ function montarPacote() {
     },
     questoes: BANCO.map(function(q) {
       return {
-        id: q.id,
-        num: q.num,
-        fase: q.phase,
-        bloom: q.bloom,
-        comp: q.comp,
-        tipo: q.tipo,
-        pts: q.pts,
-        resposta: respostas[q.id] || null
+        id: q.id, num: q.num, bloom: q.bloom, comp: q.comp,
+        pts: q.pts, resposta: respostas[q.id] || null,
+        correta: q.correta, acertou: respostas[q.id] === q.correta
       };
     }),
-    total_respondidas: BANCO.filter(function(q) { return !!respostas[q.id]; }).length,
-    total_questoes: 10
+    nota: score,
+    total: 5
   };
 }
 
@@ -918,45 +528,35 @@ function exportJSON() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'T01-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
+  a.download = 'T06-TN-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'JSON exportado com sucesso');
 }
 
-/* ---- RESET ---- */
-function resetPP() {
+function resetTN() {
   if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
   clearLocalStorage();
   location.reload();
 }
 
-/* ---- LOCAL STORAGE ---- */
 function saveToLocalStorage() {
   try {
     var state = {
       nome: document.getElementById('inputNome').value,
       turma: document.getElementById('inputTurma').value,
       data: document.getElementById('inputData').value,
-      respostas: respostas,
-      submitted: submitted,
+      respostas: respostas, submitted: submitted,
       savedAt: new Date().toISOString()
     };
     localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
-  } catch(e) { /* quota exceeded or private mode */ }
+  } catch(e) {}
 }
 
-function clearLocalStorage() {
-  localStorage.removeItem(PREFIX + 'state');
-}
+function clearLocalStorage() { localStorage.removeItem(PREFIX + 'state'); }
 
 function checkLocalStorage() {
-  try {
-    var raw = localStorage.getItem(PREFIX + 'state');
-    if (raw) {
-      document.getElementById('restoreBanner').classList.add('show');
-    }
-  } catch(e) {}
+  try { if (localStorage.getItem(PREFIX + 'state')) document.getElementById('restoreBanner').classList.add('show'); } catch(e) {}
 }
 
 function restoreData() {
@@ -964,48 +564,20 @@ function restoreData() {
     var raw = localStorage.getItem(PREFIX + 'state');
     if (!raw) return;
     var state = JSON.parse(raw);
-
     document.getElementById('inputNome').value = state.nome || '';
     document.getElementById('inputTurma').value = state.turma || '';
     document.getElementById('inputData').value = state.data || '';
     respostas = state.respostas || {};
 
-    // Restore textareas
-    BANCO.forEach(function(q) {
-      if (q.tipo === 'ABERTA' && respostas[q.id]) {
-        var ta = document.getElementById('ta-' + q.id);
-        if (ta) {
-          ta.value = respostas[q.id];
-          var cc = document.getElementById('cc-' + q.id);
-          if (cc) cc.textContent = ta.value.length + ' caracteres';
-        }
-      }
-    });
-
-    // Restore MC selections
     Object.keys(respostas).forEach(function(qid) {
-      var q = BANCO.filter(function(b){ return b.id === qid; })[0];
-      if (!q) return;
-      if (q.tipo === 'MC') {
-        var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
-        btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
-      } else if (q.tipo === 'LIKERT') {
-        var lbtns = document.querySelectorAll('[data-qid="' + qid + '"].likert-btn');
-        lbtns.forEach(function(b) { b.classList.toggle('selected', b.dataset.valor === String(respostas[qid])); });
-      }
+      var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
     });
 
-    if (state.submitted) {
-      submitPP();
-    } else {
-      updateProgress();
-      checkSubmitReady();
-    }
-
+    if (state.submitted) { submitTN(); }
+    else { updateProgress(); checkSubmitReady(); }
     toast('info', 'Dados restaurados');
-  } catch(e) {
-    toast('error', 'Erro ao restaurar dados');
-  }
+  } catch(e) { toast('error', 'Erro ao restaurar dados'); }
   document.getElementById('restoreBanner').classList.remove('show');
 }
 
@@ -1015,18 +587,11 @@ function discardData() {
   toast('info', 'Dados anteriores descartados');
 }
 
-/* ---- DEBOUNCED SAVE ---- */
 function setupDebouncedSave() {
   ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
     var el = document.getElementById(id);
-    el.addEventListener('input', function() {
-      checkSubmitReady();
-      debouncedSave();
-    });
-    el.addEventListener('change', function() {
-      checkSubmitReady();
-      debouncedSave();
-    });
+    el.addEventListener('input', function() { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', function() { checkSubmitReady(); debouncedSave(); });
   });
 }
 
@@ -1035,7 +600,6 @@ function debouncedSave() {
   saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
 }
 
-/* ---- TOAST ---- */
 function toast(type, msg) {
   var container = document.getElementById('toastContainer');
   var el = document.createElement('div');
@@ -1047,11 +611,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T01-PP-v14-estudante.html
+   Arquivo fonte: T06-TN-v1-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T01-PP-v14-estudante.html';
+var ARQUIVO_FONTE = 'T06-TN-v1-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var COMPROVANTE_KEY = PREFIX + 'comprovante';
 var aluno = null;

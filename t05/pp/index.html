@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<title>T05 · Notação Científica — Estudante</title>
 <style>
 :root {
   --azul: oklch(0.65 0.22 45);
@@ -345,10 +345,7 @@ body {
   text-align: center;
 }
 .confirm-box.show { display: block; }
-.confirm-icon {
-  font-size: 2.4rem;
-  margin-bottom: 8px;
-}
+.confirm-icon { font-size: 2.4rem; margin-bottom: 8px; }
 .confirm-title {
   font-family: var(--mono);
   font-size: 1.1rem;
@@ -494,7 +491,7 @@ body {
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+      <h1><span class="trilha-code">T05</span> &middot; Nota&ccedil;&atilde;o Cient&iacute;fica: A Linguagem da Escala</h1>
       <span class="badge">Ponto de Partida (PP)</span>
     </div>
     <div class="header-sub">5 fases &middot; 10 quest&otilde;es &middot; 7 abertas + 2 MC + 1 Likert</div>
@@ -565,7 +562,7 @@ body {
 </div>
 
 <div class="footer-line">
-  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T05 &middot; J. Azevedo &amp; F. Beato &middot; 2026
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -605,28 +602,28 @@ var PHASES = [
 
 var BANCO = [
   {
-    id:'T01-PP-Q1', num:1, phase:'F1', bloom:'L2–L3', comp:'C1', pts:1,
+    id:'T05-PP-Q1', num:1, phase:'F1', bloom:'L1', comp:'C1', pts:1,
     tipo:'ABERTA',
-    enunciado:'Sofia chega à Praça Tiradentes às 7h15 e observa que os veios de quartzo e feldspato no pedestal de granito do monumento ao Tiradentes “acendem” — ficam dourados e reluzentes — por cerca de 30 segundos enquanto o sol rasante da Serra do Itacolomi ilumina a superfície da pedra. Em seguida, o sol sobe um grau e o brilho desaparece completamente, devolvendo o pedestal ao cinza de sempre. Descreva o que você acha que aconteceu: por que o granito brilhou intensamente por alguns instantes e depois voltou ao cinza?'
+    enunciado:'Pedro vê gravado na parede da Mina do Chico Rei: "Vol. = 4.320 palmos cúbicos". O Prof. Julio escreve ao lado: "4,32 × 10³ palmos³". As duas notações representam o mesmo valor? O que a forma do Prof. Julio comunica de diferente?'
   },
   {
-    id:'T01-PP-Q2', num:2, phase:'F1', bloom:'L2–L3', comp:'C1', pts:1,
+    id:'T05-PP-Q2', num:2, phase:'F1', bloom:'L1', comp:'C1', pts:1,
     tipo:'ABERTA',
-    enunciado:'O professor Julio pergunta para Sofia: “O pedestal ficou brilhoso, você disse. Ou a luz ficou brilhosa?” Sofia percebe, depois de um momento, que o que mudou foi a <em>interação</em> entre a pedra e a luz — não a pedra por si só. Por que a simples mudança no ângulo de incidência do sol foi suficiente para transformar completamente a aparência visual do granito, sem que a pedra tivesse mudado nada?'
+    enunciado:'Por que engenheiros e cientistas preferem escrever "2,348 × 10⁹ toneladas" em vez de "2.348.000.000 toneladas"? Quais são as vantagens práticas da notação científica?'
   },
   {
-    id:'T01-PP-Q3', num:3, phase:'F2', bloom:'L1–L2', comp:'C1', pts:1,
+    id:'T05-PP-Q3', num:3, phase:'F2', bloom:'L2', comp:'C1', pts:1,
     tipo:'MC',
-    enunciado:'O Sistema Internacional de Unidades (SI) foi adotado internacionalmente em 1960 e estabelece sete grandezas <strong>fundamentais</strong> — aquelas que não podem ser expressas como combinação de outras. Qual das alternativas a seguir lista corretamente três grandezas <strong>fundamentais</strong> do SI?',
+    enunciado:'Como se escreve corretamente em notação científica o número 0,00047?',
     alternativas:[
-      {letra:'A', texto:'Velocidade, força e pressão'},
-      {letra:'B', texto:'Comprimento, massa e tempo'},
-      {letra:'C', texto:'Volume, densidade e energia'},
-      {letra:'D', texto:'Área, aceleração e trabalho'}
+      {letra:'A', texto:'4,7 × 10⁴'},
+      {letra:'B', texto:'47 × 10⁻⁵'},
+      {letra:'C', texto:'4,7 × 10⁻⁴'},
+      {letra:'D', texto:'0,47 × 10⁻³'}
     ]
   },
   {
-    id:'T01-PP-Q4', num:4, phase:'F2', bloom:'L2', comp:'C2', pts:1,
+    id:'T05-PP-Q4', num:4, phase:'F2', bloom:'L2', comp:'C2', pts:1,
     tipo:'LIKERT',
     enunciado:'Quão confiante você está na sua resposta anterior?',
     niveis:[
@@ -637,45 +634,45 @@ var BANCO = [
     ]
   },
   {
-    id:'T01-PP-Q5', num:5, phase:'F3', bloom:'L2', comp:'C2', pts:1,
+    id:'T05-PP-Q5', num:5, phase:'F3', bloom:'L2', comp:'C2', pts:1,
     tipo:'ABERTA',
-    enunciado:'Sofia calculou o volume do bloco de granito como V = 1,0 × 0,5 × 0,4 = 0,20 m³ e a massa como m = 2 700 × 0,20 = 540 kg. Imagine que, ao relançar a medição, ela descobre que a largura do bloco não é 0,5 m mas sim 0,6 m. O que acontece com o volume calculado e com a massa estimada? Calcule os novos valores.'
+    enunciado:'O que acontece com o expoente de uma potência de 10 quando multiplicamos dois números em notação científica? (Ex.: o que acontece a 10³ × 10⁵?)'
   },
   {
-    id:'T01-PP-Q6', num:6, phase:'F3', bloom:'L2–L3', comp:'C2', pts:1,
+    id:'T05-PP-Q6', num:6, phase:'F3', bloom:'L2', comp:'C2', pts:1,
     tipo:'ABERTA',
-    enunciado:'O erro relativo é calculado por Er = |Vm − Vt| / Vt × 100%, onde Vm é o valor medido e Vt é o valor teórico. Se Sofia mediu Vm = 540 kg e o valor real for Vt = 556 kg, Er ≈ 3,0%. O que acontece com o erro relativo à medida que Vm se aproxima de Vt? E quando Vm = Vt, qual é o valor de Er? Explique usando a fórmula.'
+    enunciado:'O que muda na escrita de um número em notação científica quando passamos de 4,32 × 10³ para 4,32 × 10⁻³? Qual grandeza física poderia ser representada por cada um?'
   },
   {
-    id:'T01-PP-Q7', num:7, phase:'F3', bloom:'L3', comp:'C3', pts:1,
+    id:'T05-PP-Q7', num:7, phase:'F3', bloom:'L2', comp:'C3', pts:1,
     tipo:'ABERTA',
-    enunciado:'Diante do pedestal de granito, o professor Julio mostra para Sofia que a Física, a Química, a Geologia e a Biologia fazem perguntas diferentes sobre o mesmo objeto. A Física pergunta “qual força é necessária para mover esse bloco?”; a Química pergunta “de que minerais ele é composto?”; a Geologia pergunta “quando e como essa rocha se formou?”. Por que ciências diferentes fazem perguntas diferentes sobre o mesmo objeto? O que determina o tipo de pergunta que cada ciência faz?'
+    enunciado:'Por que é mais fácil comparar 3,06 × 10²¹ e 6,8 × 10¹⁰ em notação científica do que escrevendo todos os zeros? Qual a informação-chave que o expoente carrega?'
   },
   {
-    id:'T01-PP-Q8', num:8, phase:'F4', bloom:'L3', comp:'C3', pts:1,
+    id:'T05-PP-Q8', num:8, phase:'F4', bloom:'L3', comp:'C3', pts:1,
     tipo:'MC',
-    enunciado:'O Processo 3 da mineração (Tópico 5 da trilha) trata da drenagem de galerias subterrâneas. As bombas precisam vencer a pressão da coluna d’água para extrair o líquido que se infiltra. Usando a equação de pressão hidrostática P<sub>h</sub> = ρ × g × h, com ρ<sub>água</sub> = 1 000 kg/m³ e g = 9,8 m/s², qual é a pressão hidrostática que a bomba precisa superar em uma galeria a <strong>80 m</strong> de profundidade abaixo do lençol freático?',
+    enunciado:'Pedro calcula: para extrair <strong>1 kg de ouro</strong> de minério com teor de <strong>15 g por tonelada</strong>, quantas toneladas de rocha precisam ser processadas? (Dado: 1 kg = 1 000 g)',
     alternativas:[
-      {letra:'A', texto:'78 400 Pa (78,4 kPa)'},
-      {letra:'B', texto:'784 000 Pa (784 kPa)'},
-      {letra:'C', texto:'7 840 000 Pa (7 840 kPa)'},
-      {letra:'D', texto:'8 000 Pa (8,0 kPa)'}
+      {letra:'A', texto:'15 toneladas'},
+      {letra:'B', texto:'66,7 toneladas'},
+      {letra:'C', texto:'150 toneladas'},
+      {letra:'D', texto:'6 670 toneladas'}
     ]
   },
   {
-    id:'T01-PP-Q9', num:9, phase:'F4', bloom:'L3–L4', comp:'C4', pts:1,
+    id:'T05-PP-Q9', num:9, phase:'F4', bloom:'L3', comp:'C4', pts:1,
     tipo:'ABERTA',
-    enunciado:'Explique com suas palavras o que é uma grandeza física e por que ela é fundamental para que a Física possa descrever o mundo real.'
+    enunciado:'Explique com suas palavras como funciona a notação científica. Por que o número que acompanha a potência de 10 deve estar entre 1 e 10 (exclusive)?'
   },
   {
-    id:'T01-PP-Q10', num:10, phase:'F5', bloom:'L4–L5', comp:'C1', pts:1,
+    id:'T05-PP-Q10', num:10, phase:'F5', bloom:'L1', comp:'C1', pts:1,
     tipo:'ABERTA',
-    enunciado:'Quais são as principais características da Física como ciência — o que a define, como ela trabalha e qual é o papel das medições e das equações na sua maneira de entender o mundo?'
+    enunciado:'Quais são as principais características e regras da notação científica? Inclua: a forma geral (a × 10ⁿ), as regras de multiplicação e divisão, e pelo menos um exemplo de número muito grande e um muito pequeno do contexto da mineração.'
   }
 ];
 
 /* ---- STATE ---- */
-var PREFIX = 'ifmg_fc1_t01_pp_';
+var PREFIX = 'ifmg_fc1_t05_pp_';
 var respostas = {};
 var submitted = false;
 var saveTimer = null;
@@ -725,7 +722,6 @@ function buildQuestions() {
   var currentPhase = '';
 
   BANCO.forEach(function(q, idx) {
-    // Phase separator
     if (q.phase !== currentPhase) {
       currentPhase = q.phase;
       var phaseData = PHASES.filter(function(p){ return p.id === currentPhase; })[0];
@@ -843,35 +839,27 @@ function submitPP() {
   if (submitted) return;
   submitted = true;
 
-  // Lock inputs
   document.getElementById('inputNome').disabled = true;
   document.getElementById('inputTurma').disabled = true;
   document.getElementById('inputData').disabled = true;
 
-  // Lock all textareas
   var tas = document.querySelectorAll('.q-textarea');
   tas.forEach(function(ta) { ta.disabled = true; });
 
-  // Lock all alt buttons
   var altBtns = document.querySelectorAll('.alt-btn');
   altBtns.forEach(function(b) { b.classList.add('locked'); });
 
-  // Lock all likert buttons
   var likBtns = document.querySelectorAll('.likert-btn');
   likBtns.forEach(function(b) { b.classList.add('locked'); });
 
-  // Show confirmation
   var confirmBox = document.getElementById('confirmBox');
   confirmBox.classList.add('show');
 
-  // Update progress
   updateProgress();
 
-  // Update buttons
   document.getElementById('btnSubmit').style.display = 'none';
   document.getElementById('btnExport').classList.add('show');
 
-  // Save state
   saveToLocalStorage();
 
   toast('success', 'Respostas enviadas com sucesso!');
@@ -883,9 +871,9 @@ function montarPacote() {
   var now = new Date();
   return {
     schema: 'ifmg-fc1-ponto-de-partida-v1',
-    trilha: 'T01',
+    trilha: 'T05',
     tipo: 'PP',
-    versao: 'v14',
+    versao: 'v4',
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
@@ -918,7 +906,7 @@ function exportJSON() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'T01-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
+  a.download = 'T05-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'JSON exportado com sucesso');
@@ -943,7 +931,7 @@ function saveToLocalStorage() {
       savedAt: new Date().toISOString()
     };
     localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
-  } catch(e) { /* quota exceeded or private mode */ }
+  } catch(e) {}
 }
 
 function clearLocalStorage() {
@@ -970,7 +958,6 @@ function restoreData() {
     document.getElementById('inputData').value = state.data || '';
     respostas = state.respostas || {};
 
-    // Restore textareas
     BANCO.forEach(function(q) {
       if (q.tipo === 'ABERTA' && respostas[q.id]) {
         var ta = document.getElementById('ta-' + q.id);
@@ -982,7 +969,6 @@ function restoreData() {
       }
     });
 
-    // Restore MC selections
     Object.keys(respostas).forEach(function(qid) {
       var q = BANCO.filter(function(b){ return b.id === qid; })[0];
       if (!q) return;
@@ -1047,11 +1033,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T01-PP-v14-estudante.html
+   Arquivo fonte: T05-PP-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T01-PP-v14-estudante.html';
+var ARQUIVO_FONTE = 'T05-PP-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var COMPROVANTE_KEY = PREFIX + 'comprovante';
 var aluno = null;
