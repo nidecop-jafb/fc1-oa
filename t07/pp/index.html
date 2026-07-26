@@ -80,11 +80,11 @@ body {
 .intro-box strong { color: var(--ouro); }
 
 /* ENCERRAMENTO */
-.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
-.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
-.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
-.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
-.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
 
 /* RESTORATION BANNER */
 .restore-banner {
@@ -570,16 +570,16 @@ body {
     </label>
   </div>
 
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
   <!-- CONFIRMATION BOX -->
   <div class="confirm-box" id="confirmBox">
     <div class="confirm-icon">&#10003;</div>
     <div class="confirm-title">Respostas enviadas</div>
-    <div class="confirm-text">Sua participa&ccedil;&atilde;o foi registrada &mdash; a nota &eacute; garantida pelo envio. Veja abaixo a corre&ccedil;&atilde;o autom&aacute;tica da Parte II: ela mostra o que voc&ecirc; j&aacute; sabe e o que merece aten&ccedil;&atilde;o na aula.</div>
+    <div class="confirm-text">Sua participa&ccedil;&atilde;o foi registrada &mdash; a nota &eacute; garantida pelo envio. Veja acima a corre&ccedil;&atilde;o autom&aacute;tica da Parte II: ela mostra o que voc&ecirc; j&aacute; sabe e o que merece aten&ccedil;&atilde;o na aula.</div>
     <div class="confirm-score" id="confirmScore"></div>
   </div>
-
-  <!-- QUESTIONS -->
-  <div id="questionsContainer"></div>
 
   <!-- ACTIONS -->
   <!-- COLETA STATUS -->
@@ -598,7 +598,7 @@ body {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-acao">Continue a Pr&eacute;-Aula: leia o <strong>Texto Tem&aacute;tico (TT)</strong> e ou&ccedil;a o <strong>Resumo em &Aacute;udio (MD)</strong> da trilha.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
 </div>
 
@@ -957,6 +957,20 @@ function mostrarCorrecao() {
     (score >= 4 ? 'excelente ponto de partida!' : score >= 2 ? 'bom come&ccedil;o &mdash; a aula vai completar o resto.' : 'sem problema: &eacute; exatamente para isso que serve a aula.');
 }
 
+/* ---- EXPORT JSON: visivel apenas como plano B ----
+   Com o coletor ativo (site), o envio a planilha e automatico — o botao fica
+   oculto para o estudante e so aparece se o envio falhar. Sem coletor
+   (arquivo aberto offline / uso do professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  var btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  var temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  var st = document.getElementById('coletaStatus');
+  var falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
 /* ---- SUBMIT ---- */
 function submitPP() {
   if (submitted) return;
@@ -978,8 +992,11 @@ function submitPP() {
   // Correcao automatica da Parte II
   mostrarCorrecao();
 
-  // Show confirmation
+  // Show confirmation — logo abaixo do status de coleta ("Respostas registradas"),
+  // imediatamente antes da barra de acoes
   var confirmBox = document.getElementById('confirmBox');
+  var actionsBar = document.getElementById('actionsBar');
+  actionsBar.parentNode.insertBefore(confirmBox, actionsBar);
   confirmBox.classList.add('show');
 
   // Update progress
@@ -987,7 +1004,11 @@ function submitPP() {
 
   // Update buttons
   document.getElementById('btnSubmit').style.display = 'none';
-  document.getElementById('btnExport').classList.add('show');
+  atualizarExportVisivel();
+  var st = document.getElementById('coletaStatus');
+  if (st && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(st, { attributes: true, attributeFilter: ['class'] });
+  }
 
   // Save state
   saveToLocalStorage();
@@ -1004,7 +1025,7 @@ function montarPacote() {
     schema: 'ifmg-fc1-ponto-de-partida-v2',
     trilha: 'T07',
     tipo: 'PP',
-    versao: 'v3',
+    versao: 'v4',
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
@@ -1176,11 +1197,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T07-PP-v3-estudante.html
+   Arquivo fonte: T07-PP-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T07-PP-v3-estudante.html';
+var ARQUIVO_FONTE = 'T07-PP-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var COMPROVANTE_KEY = PREFIX + 'comprovante';
 var aluno = null;
