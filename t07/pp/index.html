@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T07 · Referencial, Posição e Tempo — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --shadow: 0 1px 0 oklch(0.3 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* INTRO */
+.intro-box {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-left: 4px solid var(--azul);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--texto);
+}
+.intro-box strong { color: var(--ouro); }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none;
+  background: var(--ouro-claro);
+  border: 1px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  color: var(--ouro);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.restore-banner .btn-discard {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  margin-bottom: 24px;
+}
+.progress-seg {
+  height: 6px;
+  background: var(--cinza-claro);
+  border-radius: var(--r-sm);
+  transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.done { background: var(--verde); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 16px;
+  margin-bottom: 28px;
+  border-radius: var(--r);
+}
+.id-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.id-form input,
+.id-form select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.id-form input:focus,
+.id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled,
+.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* PHASE SEPARATOR */
+.phase-sep {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 32px 0 16px;
+  padding: 10px 16px;
+  background: oklch(0.14 0.02 260);
+  border-left: 4px solid var(--ouro);
+}
+.phase-sep .phase-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ouro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.phase-sep .phase-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto);
+}
+.phase-sep .phase-range {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--cinza);
+  margin-left: auto;
+  white-space: nowrap;
+}
+.phase-desc {
+  font-size: 0.82rem;
+  color: var(--cinza);
+  margin: -8px 0 16px;
+  padding: 0 16px;
+  line-height: 1.5;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg);
+  border: 2px solid var(--azul);
+  color: var(--azul-claro);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--verde-claro); color: var(--verde); border: 1px solid var(--verde); }
+
+.q-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: var(--texto);
+}
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* TEXTAREA (JUSTIFICATIVA OPCIONAL) */
+.q-textarea-wrap { position: relative; margin-top: 12px; }
+.just-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+.q-textarea {
+  width: 100%;
+  min-height: 64px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  color: var(--texto);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 12px 14px 28px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.q-textarea:focus { border-color: var(--azul); }
+.q-textarea:disabled { opacity: 0.5; cursor: not-allowed; resize: none; }
+.char-counter {
+  position: absolute;
+  bottom: 6px;
+  right: 10px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--cinza);
+  pointer-events: none;
+}
+
+/* ALTERNATIVES (MC / AUTOAVALIACAO) */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--texto);
+  line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; opacity: 0.7; }
+.alt-btn.correta { border-color: var(--verde); background: var(--verde-claro); opacity: 1; }
+.alt-btn.errada { border-color: var(--erro); background: var(--erro-claro); opacity: 1; }
+.alt-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--cinza);
+  min-width: 20px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correta .alt-letra { color: var(--verde); }
+.alt-btn.errada .alt-letra { color: var(--erro); }
+
+/* FEEDBACK BOX (POS-ENVIO) */
+.fb-box {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--texto);
+}
+.fb-box.show { display: block; }
+.fb-box.ok { border-color: var(--verde); }
+.fb-box.err { border-color: var(--erro); }
+.fb-titulo {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.fb-box.ok .fb-titulo { color: var(--verde); }
+.fb-box.err .fb-titulo { color: var(--erro); }
+
+/* CONFIRMATION BOX */
+.confirm-box {
+  display: none;
+  background: var(--superficie);
+  border: 2px solid var(--verde);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.confirm-box.show { display: block; }
+.confirm-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+.confirm-title {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--verde);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.confirm-text {
+  font-size: 0.88rem;
+  color: var(--cinza);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.confirm-score {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--verde);
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--r);
+  transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* TOAST */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  color: var(--texto);
+  border: 1px solid;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  max-width: 320px;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .phase-sep { flex-wrap: wrap; }
+  .phase-sep .phase-range { margin-left: 0; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
+  .alt-letra { color: #333; }
+  .q-textarea { background: #fff; border-color: #ccc; color: #111; }
+  .char-counter { color: #999; }
+  .phase-sep { background: #f5f5f5; border-color: #333; }
+  .phase-sep .phase-label { color: #333; }
+  .phase-sep .phase-range { color: #555; }
+  .phase-desc { color: #555; }
+  .intro-box { background: #f5f5f5; border-color: #ccc; color: #111; }
+  .confirm-box { display: block !important; border-color: #333; background: #fff; }
+  .confirm-title { color: #333; }
+  .confirm-text { color: #555; }
+  .fb-box { border-color: #ccc; color: #111; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- RESTORATION BANNER -->
+  <div class="restore-banner" id="restoreBanner">
+    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T07</span> &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</h1>
+      <span class="badge">Ponto de Partida (PP)</span>
+    </div>
+    <div class="header-sub">Parte I &middot; Percep&ccedil;&atilde;o Inicial (5 autoavalia&ccedil;&otilde;es) + Parte II &middot; Conhecimento Pr&eacute;vio (5 MC) &middot; (8 &plusmn; 2) min</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    Ol&aacute;! A nota deste Ponto de Partida &eacute; <strong>garantida pelo simples envio</strong> antes da sua
+    aula presencial, independentemente dos acertos. Na <strong>Parte I</strong>, diga como voc&ecirc; se sente
+    diante de cada assunto da aula (a justificativa &eacute; opcional). Na <strong>Parte II</strong>, responda
+    5 quest&otilde;es de m&uacute;ltipla escolha &mdash; ap&oacute;s o envio, a corre&ccedil;&atilde;o autom&aacute;tica
+    mostra o feedback de cada uma. Sem consulta &middot; Tentativa &uacute;nica.
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- CONFIRMATION BOX -->
+  <div class="confirm-box" id="confirmBox">
+    <div class="confirm-icon">&#10003;</div>
+    <div class="confirm-title">Respostas enviadas</div>
+    <div class="confirm-text">Sua participa&ccedil;&atilde;o foi registrada &mdash; a nota &eacute; garantida pelo envio. Veja abaixo a corre&ccedil;&atilde;o autom&aacute;tica da Parte II: ela mostra o que voc&ecirc; j&aacute; sabe e o que merece aten&ccedil;&atilde;o na aula.</div>
+    <div class="confirm-score" id="confirmScore"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitPP()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetPP()">Recome&ccedil;ar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T07 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+/* ---- QUESTION DATA ---- */
+var PARTES = [
+  { id:'P1', label:'Parte I', name:'Percepção Inicial — Autoavaliação', range:'A1–A5',
+    desc:'Sobre cada assunto que será apresentado na aula presencial, o que você pensa? Não há resposta certa — responda com sinceridade. A justificativa é opcional.' },
+  { id:'P2', label:'Parte II', name:'Conhecimento Prévio — Diagnóstico', range:'Q1–Q5',
+    desc:'5 questões de múltipla escolha com correção automática após o envio. Errar aqui não tira nota — mostra ao professor o que a turma já sabe.' }
+];
+
+var AUTO_OPCOES = [
+  {letra:'A', texto:'Domino o tema'},
+  {letra:'B', texto:'Acho que vai ser fácil'},
+  {letra:'C', texto:'Acho que vai ser difícil'}
+];
+
+var BANCO = [
+  {
+    id:'T07-PP-A1', num:'A1', parte:'P1', bloom:'L1', comp:'C1', pts:1,
+    tipo:'AUTO', topico:'Tópico 1',
+    enunciado:'<strong>Referencial: repouso e movimento dependem de quem observa</strong> — o mesmo caminhão pode estar parado para um observador e em movimento para outro. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T07-PP-A2', num:'A2', parte:'P1', bloom:'L1', comp:'C2', pts:1,
+    tipo:'AUTO', topico:'Tópico 2',
+    enunciado:'<strong>Posição e deslocamento</strong> — descrever onde um corpo está usando um número com sinal (x) e calcular a mudança de posição (Δx = x<sub>f</sub> − x<sub>i</sub>), como nas estacas de uma galeria de mina. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T07-PP-A3', num:'A3', parte:'P1', bloom:'L1', comp:'C3', pts:1,
+    tipo:'AUTO', topico:'Tópico 3',
+    enunciado:'<strong>Instante e intervalo de tempo</strong> — a diferença entre "quando algo aconteceu" (t) e "quanto tempo durou" (Δt = t<sub>f</sub> − t<sub>i</sub>), como as badaladas dos sinos de Ouro Preto. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T07-PP-A4', num:'A4', parte:'P1', bloom:'L1', comp:'C4', pts:1,
+    tipo:'AUTO', topico:'Tópico 4',
+    enunciado:'<strong>Trajetória: distância percorrida × deslocamento</strong> — por que o caminho é sempre maior ou igual à distância em linha reta (ℓ ≥ |Δx|), como na rampa em espiral de uma mina a céu aberto. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T07-PP-A5', num:'A5', parte:'P1', bloom:'L1', comp:'C5', pts:1,
+    tipo:'AUTO', topico:'Tópico 5',
+    enunciado:'<strong>Período, frequência e o tempo como recurso técnico</strong> — do pêndulo (T = 1/f) ao GPS e aos ciclos dos caminhões na mineração moderna. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T07-PP-Q1', num:'Q1', parte:'P2', bloom:'L1–L2', comp:'C1', pts:1,
+    tipo:'MC', funcao:'Terminologia', gabarito:'B',
+    enunciado:'No Largo Marília de Dirceu, Sofia, Pedro e Lucas descreveram a posição do mesmo caminhão de três formas diferentes — e o Prof. Felipe explicou que cada um havia escolhido, sem perceber, um ponto diferente para observar. Na Física, <strong>referencial</strong> é:',
+    alternativas:[
+      {letra:'A', texto:'O caminho que um corpo percorre durante o seu movimento'},
+      {letra:'B', texto:'O corpo ou ponto que o observador adota como fixo para descrever o movimento dos demais'},
+      {letra:'C', texto:'A distância entre o ponto de partida e o ponto de chegada de um corpo'},
+      {letra:'D', texto:'O instante em que o cronômetro é zerado para começar a medida'}
+    ],
+    feedbacks:{
+      A:'Isso é a definição de trajetória — o referencial é de onde se observa, não o caminho observado.',
+      B:'Referencial é o corpo ou ponto adotado como fixo pelo observador. Sofia usou o chafariz, Pedro usou a ponte, Lucas usou a si mesmo — três referenciais, três descrições corretas.',
+      C:'Isso se aproxima da definição de deslocamento — a mudança de posição, não o ponto de observação.',
+      D:'Isso é a origem temporal (instante zero) — a origem no tempo, não o referencial no espaço.'
+    }
+  },
+  {
+    id:'T07-PP-Q2', num:'Q2', parte:'P2', bloom:'L2', comp:'C2', pts:1,
+    tipo:'MC', funcao:'Relação', gabarito:'B',
+    enunciado:'Um minerador parte da boca de uma galeria retilínea (x = 0), caminha até a estaca em x = +40 m e <strong>retorna à boca da galeria</strong>. Sobre o deslocamento (Δx) e a distância percorrida (ℓ) nesse ciclo completo, é correto afirmar:',
+    alternativas:[
+      {letra:'A', texto:'Ambos valem 80 m, pois ele caminhou 40 m para dentro e 40 m para fora'},
+      {letra:'B', texto:'O deslocamento vale 0 m e a distância percorrida vale 80 m'},
+      {letra:'C', texto:'O deslocamento vale 80 m e a distância percorrida vale 0 m'},
+      {letra:'D', texto:'Ambos valem 0 m, pois ele voltou ao ponto de partida'}
+    ],
+    feedbacks:{
+      A:'A distância percorrida é de fato 80 m, mas o deslocamento é Δx = 0 − 0 = 0 m: ele voltou à posição inicial. As duas grandezas não são sinônimos.',
+      B:'Δx = 0 − 0 = 0 m (voltou à origem) e ℓ = 40 + 40 = 80 m (todo o caminho conta). É a diferença que o Quadro 3 do Texto Temático resume.',
+      C:'Inversão dos dois conceitos: o deslocamento é que zera quando o corpo retorna ao ponto de partida; a distância percorrida nunca "desanda".',
+      D:'O deslocamento realmente vale 0 m, mas a distância percorrida acumula todo o caminho: 80 m.'
+    }
+  },
+  {
+    id:'T07-PP-Q3', num:'Q3', parte:'P2', bloom:'L3', comp:'C3', pts:1,
+    tipo:'MC', funcao:'Transferência', gabarito:'C',
+    enunciado:'Numa mina, um operador caminha ao lado de uma correia transportadora carregada de minério, <strong>na mesma velocidade da correia</strong>. Um supervisor observa tudo parado na torre de controle. Para cada observador, o minério sobre a correia está:',
+    alternativas:[
+      {letra:'A', texto:'Em movimento para o operador e em movimento para o supervisor'},
+      {letra:'B', texto:'Em repouso para o operador e em repouso para o supervisor'},
+      {letra:'C', texto:'Em repouso para o operador e em movimento para o supervisor'},
+      {letra:'D', texto:'Em movimento para o operador e em repouso para o supervisor'}
+    ],
+    feedbacks:{
+      A:'Para o operador que acompanha a correia na mesma velocidade, a distância entre ele e o minério não muda — no referencial dele, o minério está em repouso.',
+      B:'Para o supervisor parado na torre, o minério muda de posição a cada instante — no referencial dele, está claramente em movimento.',
+      C:'O estado de movimento depende do referencial: quem acompanha vê repouso; quem observa parado de fora vê movimento. É a cena do caminhão no Largo transferida para a mina — por isso a NR-22 exige identificar o estado real das máquinas antes de intervir.',
+      D:'Inversão dos referenciais: é justamente o contrário — repouso para quem acompanha, movimento para quem observa de fora.'
+    }
+  },
+  {
+    id:'T07-PP-Q4', num:'Q4', parte:'P2', bloom:'L3', comp:'C4', pts:1,
+    tipo:'MC', funcao:'Teoria × Prática', gabarito:'B',
+    enunciado:'Na detonação de uma bancada de mineração, a NR-22 padroniza a sequência de segurança: o alarme soa às 14h29min30s e a detonação ocorre às 14h30min00s — uma espera obrigatória de 30 segundos. Na linguagem da Física, <strong>o momento em que o alarme soa</strong> e <strong>a espera de 30 s</strong> são, respectivamente:',
+    alternativas:[
+      {letra:'A', texto:'Um intervalo de tempo e um instante'},
+      {letra:'B', texto:'Um instante e um intervalo de tempo'},
+      {letra:'C', texto:'Dois instantes'},
+      {letra:'D', texto:'Dois intervalos de tempo'}
+    ],
+    feedbacks:{
+      A:'Inversão dos conceitos: o alarme soa num ponto exato da linha do tempo (instante); os 30 s são uma duração entre dois eventos (intervalo).',
+      B:'O alarme (14h29min30s) é um instante — um ponto no tempo, sem duração, como uma badalada de sino. Os 30 s são um intervalo Δt = t_f − t_i entre o alarme e a detonação. É essa distinção que torna a norma verificável com cronômetro.',
+      C:'O momento do alarme é de fato um instante, mas os 30 s de espera são uma duração entre dois instantes — um intervalo de tempo.',
+      D:'Há um instante (alarme) e um intervalo (espera de 30 s) — não dois intervalos.'
+    }
+  },
+  {
+    id:'T07-PP-Q5', num:'Q5', parte:'P2', bloom:'L3', comp:'C5', pts:1,
+    tipo:'MC', funcao:'Formalização', gabarito:'B',
+    enunciado:'Numa galeria retilínea de uma mina em Mariana, a boca da galeria é a origem (x = 0) e o sentido positivo aponta para dentro. Um topógrafo caminha da posição x<sub>i</sub> = +80 m até a posição x<sub>f</sub> = +260 m para instalar um sensor de ventilação. Usando Δx = x<sub>f</sub> − x<sub>i</sub>, o deslocamento do topógrafo é:',
+    alternativas:[
+      {letra:'A', texto:'+340 m'},
+      {letra:'B', texto:'+180 m'},
+      {letra:'C', texto:'−180 m'},
+      {letra:'D', texto:'+260 m'}
+    ],
+    feedbacks:{
+      A:'Erro de operação: 340 m é a soma das posições (260 + 80). A equação pede a diferença: Δx = x_f − x_i.',
+      B:'Δx = 260 − 80 = +180 m. O sinal positivo indica deslocamento para dentro da mina. Você reencontrará este mesmo cálculo na resolução modelo C5 do Texto Temático.',
+      C:'Inversão da ordem: −180 m resultaria de x_i − x_f (80 − 260). A equação é sempre posição final menos posição inicial.',
+      D:'Confusão entre posição e deslocamento: +260 m é onde o topógrafo está (posição final), não o quanto ele se deslocou.'
+    }
+  }
+];
+
+/* ---- STATE ---- */
+var PREFIX = 'ifmg_fc1_t07_pp_';
+var respostas = {};
+var justifs = {};
+var submitted = false;
+var saveTimer = null;
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', function() {
+  buildProgressBar();
+  buildQuestions();
+  setDefaultDate();
+  checkLocalStorage();
+  setupDebouncedSave();
+});
+
+/* ---- DEFAULT DATE ---- */
+function setDefaultDate() {
+  var d = new Date();
+  var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('inputData').value = iso;
+}
+
+/* ---- PROGRESS BAR ---- */
+function buildProgressBar() {
+  var bar = document.getElementById('progressBar');
+  for (var i = 0; i < 10; i++) {
+    var seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.id = 'prog-' + i;
+    bar.appendChild(seg);
+  }
+}
+
+function updateProgress() {
+  BANCO.forEach(function(q, i) {
+    var seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      if (respostas[q.id]) seg.classList.add('done');
+    } else if (respostas[q.id]) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+/* ---- BUILD QUESTIONS ---- */
+function buildQuestions() {
+  var container = document.getElementById('questionsContainer');
+  var currentParte = '';
+
+  BANCO.forEach(function(q, idx) {
+    // Parte separator
+    if (q.parte !== currentParte) {
+      currentParte = q.parte;
+      var parteData = PARTES.filter(function(p){ return p.id === currentParte; })[0];
+      if (parteData) {
+        var sep = document.createElement('div');
+        sep.className = 'phase-sep';
+        sep.innerHTML = '<span class="phase-label">' + parteData.label + '</span>' +
+          '<span class="phase-name">' + parteData.name + '</span>' +
+          '<span class="phase-range">' + parteData.range + '</span>';
+        container.appendChild(sep);
+        var desc = document.createElement('div');
+        desc.className = 'phase-desc';
+        desc.textContent = parteData.desc;
+        container.appendChild(desc);
+      }
+    }
+
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    var tagsHTML = '';
+    if (q.tipo === 'AUTO') {
+      tagsHTML = '<span class="tag tag-bloom">' + q.topico + '</span>' +
+        '<span class="tag tag-tipo">Autoavaliação</span>' +
+        '<span class="tag tag-pts">' + q.pts + ' pt pelo envio</span>';
+    } else {
+      tagsHTML = '<span class="tag tag-bloom">Bloom ' + q.bloom + '</span>' +
+        '<span class="tag tag-tipo">' + q.funcao + '</span>' +
+        '<span class="tag tag-pts">' + q.pts + ' pt</span>';
+    }
+
+    var headerHTML = '<div class="q-header">' +
+      '<div class="q-num">' + q.num + '</div>' +
+      '<div class="q-tags">' + tagsHTML + '</div>' +
+    '</div>';
+
+    var textHTML = '<div class="q-text">' + q.enunciado + '</div>';
+
+    var inputHTML = '';
+
+    if (q.tipo === 'AUTO') {
+      inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
+      AUTO_OPCOES.forEach(function(a) {
+        inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+          '<span class="alt-letra">' + a.letra + '.</span>' +
+          '<span>' + a.texto + '</span>' +
+        '</button>';
+      });
+      inputHTML += '</div>';
+      inputHTML += '<div class="q-textarea-wrap">' +
+        '<span class="just-label">Justificativa (opcional) — por que você pensa isso?</span>' +
+        '<textarea class="q-textarea" id="ta-' + q.id + '" data-qid="' + q.id + '" placeholder="Escreva aqui, se quiser..." oninput="onJustInput(this)"></textarea>' +
+        '<span class="char-counter" id="cc-' + q.id + '">0 caracteres</span>' +
+      '</div>';
+    } else if (q.tipo === 'MC') {
+      inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
+      q.alternativas.forEach(function(a) {
+        inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+          '<span class="alt-letra">' + a.letra + '.</span>' +
+          '<span>' + a.texto + '</span>' +
+        '</button>';
+      });
+      inputHTML += '</div>';
+      inputHTML += '<div class="fb-box" id="fb-' + q.id + '"></div>';
+    }
+
+    card.innerHTML = headerHTML + textHTML + inputHTML;
+    container.appendChild(card);
+  });
+}
+
+/* ---- JUSTIFICATIVA INPUT HANDLER (opcional — nao trava envio) ---- */
+function onJustInput(el) {
+  var qid = el.dataset.qid;
+  var val = el.value.trim();
+  if (val.length > 0) {
+    justifs[qid] = val;
+  } else {
+    delete justifs[qid];
+  }
+  var cc = document.getElementById('cc-' + qid);
+  if (cc) cc.textContent = el.value.length + ' caracteres';
+  debouncedSave();
+}
+
+/* ---- SELECT ALTERNATIVE (MC / AUTO) ---- */
+function selectAlt(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ---- SCORE (Parte II — correcao automatica) ---- */
+function computeScore() {
+  return BANCO.filter(function(q) {
+    return q.tipo === 'MC' && respostas[q.id] === q.gabarito;
+  }).length;
+}
+
+function rotuloAuto(letra) {
+  var o = AUTO_OPCOES.filter(function(a) { return a.letra === letra; })[0];
+  return o ? o.texto : null;
+}
+
+/* ---- SUBMIT CHECK ---- */
+function checkSubmitReady() {
+  var nome = document.getElementById('inputNome').value.trim();
+  var turma = document.getElementById('inputTurma').value;
+  var allAnswered = BANCO.every(function(q) { return !!respostas[q.id]; });
+  document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
+}
+
+/* ---- CORRECTION DISPLAY (pos-envio) ---- */
+function mostrarCorrecao() {
+  BANCO.forEach(function(q) {
+    if (q.tipo !== 'MC') return;
+    var marcada = respostas[q.id];
+    var acertou = marcada === q.gabarito;
+    var btns = document.querySelectorAll('[data-qid="' + q.id + '"].alt-btn');
+    btns.forEach(function(b) {
+      if (b.dataset.letra === q.gabarito) b.classList.add('correta');
+      else if (b.dataset.letra === marcada) b.classList.add('errada');
+    });
+    var fb = document.getElementById('fb-' + q.id);
+    if (fb) {
+      var titulo = acertou ? '&#10003; Voc&ecirc; acertou' : '&#10007; Voc&ecirc; marcou ' + marcada + ' &mdash; a correta &eacute; ' + q.gabarito;
+      var texto = acertou ? q.feedbacks[q.gabarito]
+        : q.feedbacks[marcada] + ' <br><em>Correta (' + q.gabarito + '):</em> ' + q.feedbacks[q.gabarito];
+      fb.className = 'fb-box show ' + (acertou ? 'ok' : 'err');
+      fb.innerHTML = '<div class="fb-titulo">' + titulo + '</div>' + texto;
+    }
+  });
+  var score = computeScore();
+  document.getElementById('confirmScore').innerHTML =
+    'Diagn&oacute;stico (Parte II): ' + score + ' de 5 &mdash; ' +
+    (score >= 4 ? 'excelente ponto de partida!' : score >= 2 ? 'bom come&ccedil;o &mdash; a aula vai completar o resto.' : 'sem problema: &eacute; exatamente para isso que serve a aula.');
+}
+
+/* ---- SUBMIT ---- */
+function submitPP() {
+  if (submitted) return;
+  submitted = true;
+
+  // Lock inputs
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+
+  // Lock all textareas
+  var tas = document.querySelectorAll('.q-textarea');
+  tas.forEach(function(ta) { ta.disabled = true; });
+
+  // Lock all alt buttons
+  var altBtns = document.querySelectorAll('.alt-btn');
+  altBtns.forEach(function(b) { b.classList.add('locked'); });
+
+  // Correcao automatica da Parte II
+  mostrarCorrecao();
+
+  // Show confirmation
+  var confirmBox = document.getElementById('confirmBox');
+  confirmBox.classList.add('show');
+
+  // Update progress
+  updateProgress();
+
+  // Update buttons
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnExport').classList.add('show');
+
+  // Save state
+  saveToLocalStorage();
+
+  toast('success', 'Respostas enviadas com sucesso!');
+  enviarColeta();
+}
+
+/* ---- EXPORT JSON ---- */
+function montarPacote() {
+  var now = new Date();
+  var score = computeScore();
+  return {
+    schema: 'ifmg-fc1-ponto-de-partida-v2',
+    trilha: 'T07',
+    tipo: 'PP',
+    versao: 'v3',
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: BANCO.map(function(q) {
+      var item = {
+        id: q.id,
+        num: q.num,
+        parte: q.parte === 'P1' ? 'I' : 'II',
+        funcao: q.funcao || 'Autoavaliação',
+        bloom: q.bloom,
+        comp: q.comp,
+        tipo: q.tipo,
+        pts: q.pts,
+        resposta: respostas[q.id] || null
+      };
+      if (q.tipo === 'AUTO') {
+        item.rotulo = rotuloAuto(respostas[q.id]);
+        item.justificativa = justifs[q.id] || null;
+        item.pts_max = q.pts;
+        item.pts_obtidos = respostas[q.id] ? q.pts : 0;
+      } else {
+        item.gabarito = q.gabarito;
+        item.acertou = respostas[q.id] ? (respostas[q.id] === q.gabarito) : null;
+      }
+      return item;
+    }),
+    score_diagnostico: score,
+    total_mc: 5,
+    total_respondidas: BANCO.filter(function(q) { return !!respostas[q.id]; }).length,
+    total_questoes: 10
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T07-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'JSON exportado com sucesso');
+}
+
+/* ---- RESET ---- */
+function resetPP() {
+  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ---- LOCAL STORAGE ---- */
+function saveToLocalStorage() {
+  try {
+    var state = {
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      justifs: justifs,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function clearLocalStorage() {
+  localStorage.removeItem(PREFIX + 'state');
+}
+
+function checkLocalStorage() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (raw) {
+      document.getElementById('restoreBanner').classList.add('show');
+    }
+  } catch(e) {}
+}
+
+function restoreData() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (!raw) return;
+    var state = JSON.parse(raw);
+
+    document.getElementById('inputNome').value = state.nome || '';
+    document.getElementById('inputTurma').value = state.turma || '';
+    document.getElementById('inputData').value = state.data || '';
+    respostas = state.respostas || {};
+    justifs = state.justifs || {};
+
+    // Restore justificativas (textareas)
+    BANCO.forEach(function(q) {
+      if (q.tipo === 'AUTO' && justifs[q.id]) {
+        var ta = document.getElementById('ta-' + q.id);
+        if (ta) {
+          ta.value = justifs[q.id];
+          var cc = document.getElementById('cc-' + q.id);
+          if (cc) cc.textContent = ta.value.length + ' caracteres';
+        }
+      }
+    });
+
+    // Restore selections (MC + AUTO)
+    Object.keys(respostas).forEach(function(qid) {
+      var q = BANCO.filter(function(b){ return b.id === qid; })[0];
+      if (!q) return;
+      var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
+    });
+
+    if (state.submitted) {
+      submitPP();
+    } else {
+      updateProgress();
+      checkSubmitReady();
+    }
+
+    toast('info', 'Dados restaurados');
+  } catch(e) {
+    toast('error', 'Erro ao restaurar dados');
+  }
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+function discardData() {
+  clearLocalStorage();
+  document.getElementById('restoreBanner').classList.remove('show');
+  toast('info', 'Dados anteriores descartados');
+}
+
+/* ---- DEBOUNCED SAVE ---- */
+function setupDebouncedSave() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+    el.addEventListener('change', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
+}
+
+/* ---- TOAST ---- */
+function toast(type, msg) {
+  var container = document.getElementById('toastContainer');
+  var el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T07-PP-v3-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T07-PP-v3-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var COMPROVANTE_KEY = PREFIX + 'comprovante';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(COMPROVANTE_KEY);
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+</script>
+</body>
+</html>
