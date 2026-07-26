@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T07 · Referencial, Posição e Tempo — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* VERSION SELECTOR */
+.version-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.version-btn {
+  flex: 1; padding: 12px;
+  background: var(--input-bg); border: 2px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--mono); font-size: 1rem;
+  font-weight: 700; cursor: pointer; text-align: center;
+  transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.version-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.version-label { font-size: 0.7rem; color: var(--cinza); text-align: center; margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none; background: var(--ouro-claro); border: 1px solid var(--ouro);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 0.875rem; color: var(--ouro); align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro); color: oklch(0.10 0.02 260); border: none;
+  padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap;
+}
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+
+/* PROGRESS BAR */
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
+.progress-seg {
+  height: 6px; background: var(--cinza-claro);
+  border-radius: var(--r-sm); transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
+.progress-seg.parcial { background: var(--ouro); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 16px; margin-bottom: 28px;
+}
+.id-form label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.id-form input, .id-form select {
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  color: var(--texto); padding: 8px 10px; font-family: var(--font);
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+}
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 20px; margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro);
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
+
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* MC ALTERNATIVES */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  text-align: left; width: 100%; font-family: var(--font);
+  font-size: 0.9rem; color: var(--texto); line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; }
+.alt-btn.correct { border-color: var(--verde); background: var(--verde-claro); }
+.alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.alt-btn.correct-answer { border-color: var(--verde); }
+.alt-letra {
+  font-family: var(--mono); font-weight: 700; color: var(--cinza);
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correct .alt-letra { color: var(--verde); }
+.alt-btn.incorrect .alt-letra { color: var(--erro); }
+
+/* MM CHECKBOXES */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.check-item:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.check-item.selected { background: var(--azul-bg); border-color: var(--azul); }
+.check-item.locked { cursor: default; }
+.check-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.check-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.check-item.missed { border-color: var(--ouro); border-style: dashed; }
+.check-box {
+  width: 18px; height: 18px; border: 2px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; margin-top: 2px;
+}
+.check-item.selected .check-box { border-color: var(--azul); color: var(--azul-claro); }
+.check-item.correct .check-box { border-color: var(--verde); color: var(--verde); }
+.check-item.incorrect .check-box { border-color: var(--erro); color: var(--erro); }
+
+/* VF STATEMENTS */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; transition: border-color 0.2s;
+}
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn {
+  width: 36px; height: 36px; border: 2px solid var(--cinza-borda);
+  background: transparent; color: var(--cinza); font-family: var(--mono);
+  font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.vf-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.locked { cursor: default; }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+.vf-resultado { font-family: var(--mono); font-size: 0.75rem; margin-top: 4px; }
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-top: 8px; -webkit-overflow-scrolling: touch; }
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px;
+}
+.matrix-table th {
+  background: oklch(0.18 0.02 260); border: 1px solid var(--cinza-borda);
+  padding: 8px 6px; font-family: var(--mono); font-size: 0.7rem;
+  font-weight: 600; text-align: center; color: var(--azul-claro); vertical-align: bottom;
+}
+.matrix-table th:first-child { text-align: left; min-width: 130px; font-size: 0.72rem; }
+.matrix-table td {
+  border: 1px solid var(--cinza-borda); padding: 8px 6px;
+  text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-size: 0.84rem; }
+.matrix-table tbody tr:hover td { background: var(--hover-bg); }
+.matrix-table input[type="radio"] {
+  width: 18px; height: 18px; accent-color: var(--azul); cursor: pointer;
+}
+.matrix-table tr.row-correct td { background: var(--verde-claro); }
+.matrix-table tr.row-incorrect td { background: var(--erro-claro); }
+.matrix-table td.cell-correct-answer { outline: 2px solid var(--verde); outline-offset: -2px; }
+.matrix-table input[type="radio"]:disabled { cursor: default; }
+
+/* FEEDBACK */
+.q-feedback {
+  display: none; margin-top: 12px; padding: 12px 14px;
+  font-size: 0.85rem; line-height: 1.6; border-left: 3px solid;
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+.q-feedback.parcial { border-color: var(--ouro); background: var(--ouro-claro); color: var(--ouro); }
+.fb-title { font-weight: 700; margin-bottom: 6px; }
+.fb-level { margin-bottom: 4px; font-size: 0.82rem; }
+.fb-level strong { font-weight: 700; }
+.q-score-detail { font-family: var(--mono); font-size: 0.78rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid; opacity: 0.8; }
+
+/* SCORE BOX */
+.score-box {
+  display: none; background: var(--superficie); border: 2px solid var(--ouro);
+  padding: 24px; margin-bottom: 20px; text-align: center;
+}
+.score-box.show { display: block; }
+.score-value { font-family: var(--mono); font-size: 3rem; font-weight: 700; color: var(--ouro); }
+.score-label {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
+}
+.score-breakdown {
+  display: flex; justify-content: center; gap: 16px; margin-top: 12px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+}
+.score-breakdown span { display: flex; align-items: center; gap: 4px; }
+.score-breakdown .dot { width: 8px; height: 8px; display: inline-block; }
+.score-breakdown .dot-ok { background: var(--verde); }
+.score-breakdown .dot-nok { background: var(--erro); }
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  padding: 12px 24px; border: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
+
+/* TOAST */
+.toast-container {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px;
+  color: var(--texto); border: 1px solid; max-width: 320px;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn, .check-item { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .vf-item { flex-direction: column; gap: 8px; }
+  .vf-toggles { align-self: flex-start; }
+  .matrix-table { font-size: 0.75rem; }
+  .matrix-table th { font-size: 0.65rem; padding: 6px 4px; }
+  .matrix-table td { padding: 6px 4px; }
+  .version-btn { padding: 10px 8px; font-size: 0.9rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector, .version-label { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn, .check-item { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct, .check-item.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect, .check-item.incorrect { border-color: #c00; background: #fbe9e7; }
+  .q-feedback { display: block !important; }
+  .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
+  .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
+  .score-box { display: block !important; border-color: #333; background: #fff; }
+  .score-value { color: #111; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- RESTORATION BANNER -->
+  <div class="restore-banner" id="restoreBanner">
+    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T07</span> &middot; Referencial, Posição e Tempo</h1>
+      <span class="badge">Testinho (TN)</span>
+    </div>
+    <div class="header-sub">5 questões &middot; 10 pontos &middot; 10 min</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+  </div>
+
+  <!-- VERSION SELECTOR -->
+  <div class="version-label">Selecione sua versão</div>
+  <div class="version-selector" id="versionSelector">
+    <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
+    <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
+    <button class="version-btn" data-v="C" onclick="switchVersion('C')">Versão C</button>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg" id="prog-0"></div>
+    <div class="progress-seg" id="prog-1"></div>
+    <div class="progress-seg" id="prog-2"></div>
+    <div class="progress-seg" id="prog-3"></div>
+    <div class="progress-seg" id="prog-4"></div>
+  </div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- SCORE BOX -->
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue">0/10</div>
+    <div class="score-label">Pontuação Final</div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+  <div class="fecho-acao">Você concluiu a Pré-Aula desta trilha — nos vemos na <strong>aula presencial</strong>!</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T07 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+/* ============================================================
+   BANCO DE QUESTÕES — 3 VERSÕES (A, B, C) × 5 QUESTÕES
+   ============================================================ */
+
+const BANCO = {
+  A: [
+    /* ── Q1-A: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B1-A', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Resumo em Áudio (MD) afirma que "repouso e movimento só fazem sentido em relação a quê" e cita o Princípio da Relatividade de Galileu. <strong>Qual enunciado expressa corretamente esse princípio?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Todo movimento é absoluto, desde que medido com instrumentos suficientemente precisos.'},
+        {letra:'B', texto:'As leis da Física são as mesmas em qualquer referencial que se mova em linha reta com velocidade constante — não existe movimento absoluto.'},
+        {letra:'C', texto:'O movimento só existe quando há uma força aplicada continuamente sobre o corpo.'},
+        {letra:'D', texto:'O repouso é o estado natural dos corpos, e todo movimento é apenas aparente.'}
+      ],
+      correta:'B',
+      feedbacks:{
+        B:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Dentro do navio de Galileu, nenhum experimento mecânico distingue repouso de movimento retilíneo uniforme — as leis da Física são as mesmas.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na mineração, a NR-22 exige identificar o estado de movimento das máquinas — e isso só tem sentido declarando o referencial.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, o Quadro 1 do Texto Temático (TT) mostra o mesmo caminhão em repouso E em movimento, conforme o observador.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Precisão de instrumento não cria movimento absoluto — a descrição continua dependendo do referencial escolhido.</div><div class="fb-level"><strong>② ERRO E5:</strong> Modelo mental incorreto — a relatividade do movimento não é limitação de medida.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 1 — "não existe movimento absoluto".</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> O princípio de Galileu trata da DESCRIÇÃO do movimento, não de forças — força é assunto da dinâmica, mais adiante no curso.</div><div class="fb-level"><strong>② ERRO E12:</strong> Transferência para contexto errado.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 1 — o navio de Galileu não precisa de força para manter o movimento uniforme.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Essa é a visão aristotélica que Galileu derrubou: não há estado "natural" privilegiado — repouso e movimento uniforme são equivalentes.</div><div class="fb-level"><strong>② ERRO E9:</strong> Memória sem transferência — você lembrou de uma ideia antiga, não do princípio estudado.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 1.</div>'}
+      }
+    },
+    /* ── Q2-A: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T07-TN-B2-A', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Resumo em Áudio (MD) descreve a posição nas galerias da Mina do Chico Rei como "um número com sinal". <strong>Selecione todas as afirmações corretas sobre posição e deslocamento, conforme o MD.</strong>',
+      opcoes:[
+        {key:'sinalorigem', texto:'A posição é um número com sinal, medido a partir de uma origem escolhida.', correta:true},
+        {key:'sinaltamanho', texto:'O sinal da posição indica se o valor é grande ou pequeno.', correta:false},
+        {key:'deslocamento', texto:'O deslocamento é Δx = x_f − x_i e também tem sinal.', correta:true},
+        {key:'iguais', texto:'Deslocamento e distância percorrida são sempre iguais.', correta:false},
+        {key:'origemescolha', texto:'A origem (x = 0) é uma escolha do observador — como a boca da galeria.', correta:true}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Posição = número com sinal a partir de uma origem escolhida; deslocamento = Δx = x_f − x_i, também com sinal.</div><div class="fb-level"><strong>② REFORÇO:</strong> Nas galerias da Mina do Chico Rei, as estacas eram exatamente isso: coordenadas a partir da boca da galeria.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, o Quadro 3 do Texto Temático (TT) compara deslocamento e distância percorrida.</div>',
+      feedbackErros:{
+        sinaltamanho:'<strong>Sinal indica tamanho:</strong> o sinal indica DIREÇÃO em relação à origem (x = −5 m significa 5 m para fora da boca), nunca o tamanho do número. <em>Erro E5 — modelo mental incorreto.</em>',
+        iguais:'<strong>Sempre iguais:</strong> no ciclo ida-e-volta o deslocamento zera e a distância acumula todo o caminho — só coincidem em movimento retilíneo sem inversão. <em>Erro E6 — confusão entre grandezas.</em>'
+      }
+    },
+    /* ── Q3-A: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T07-TN-B3-A', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'Aplique os modelos do Resumo em Áudio (MD) a estes dados novos. <strong>Selecione se cada afirmação é verdadeira ou falsa.</strong>',
+      afirmacoes:[
+        {texto:'Um minerador caminha de x<sub>i</sub> = +15 m até x<sub>f</sub> = +75 m numa galeria retilínea: seu deslocamento é Δx = +60 m.', correta:'V', just:'Δx = 75 − 15 = +60 m — sinal positivo, para dentro da galeria.'},
+        {texto:'Se ele retornar de +75 m para +15 m, o deslocamento é −60 m e a distância percorrida é 60 m.', correta:'V', just:'Δx = 15 − 75 = −60 m (para fora); ℓ = 60 m (sempre positiva).'},
+        {texto:'No ciclo completo +15 → +75 → +15, o deslocamento total é 120 m.', correta:'F', just:'Δx = 15 − 15 = 0 m; os 120 m são a DISTÂNCIA percorrida. Erro E6 — confusão entre grandezas.'},
+        {texto:'Pedro bate palmas em t₁ = 3,2 s e Lucas em t₂ = 8,0 s: o intervalo entre as palmas é Δt = 4,8 s.', correta:'V', just:'Δt = 8,0 − 3,2 = 4,8 s.'},
+        {texto:'Numa trajetória curvilínea, o comprimento percorrido pode ser menor que o módulo do deslocamento.', correta:'F', just:'ℓ ≥ |Δx| SEMPRE — o caminho nunca é mais curto que a linha reta. Erro E5 — modelo mental incorreto.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — aplicar Δx, Δt e ℓ ≥ |Δx| a dados novos. Revise: Resumo em Áudio (MD), Tópicos 2, 3 e 4.'
+    },
+    /* ── Q4-A: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B4-A', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual (MC) traz a distinção crítica: <em>"parado em relação a mim" não é o mesmo que "parado de verdade"</em>. <strong>Por que, antes de intervir numa correia transportadora, a NR-22 exige verificar o estado de movimento da máquina no referencial do solo — e não no referencial do próprio trabalhador?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Porque um trabalhador em movimento pode perceber "repouso aparente" numa máquina que está ligada — e intervir nela pode custar uma vida.'},
+        {letra:'B', texto:'Porque o referencial do solo torna todos os movimentos absolutos e elimina a relatividade.'},
+        {letra:'C', texto:'Porque a NR-22 proíbe o uso de referenciais em ambientes de mina.'},
+        {letra:'D', texto:'Porque no referencial do supervisor na torre a correia está sempre em repouso.'}
+      ],
+      correta:'A',
+      feedbacks:{
+        A:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Quem acompanha a correia no mesmo ritmo a vê "parada" — é a âncora do Mapa Conceitual (MC), Área 1.</div><div class="fb-level"><strong>② REFORÇO:</strong> A norma exige o estado REAL da máquina, medido em relação ao solo — segurança não admite repouso aparente.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, repetiremos a encenação do Largo com três observadores.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> O solo é uma convenção SEGURA de referencial, não um referencial absoluto — a relatividade continua valendo.</div><div class="fb-level"><strong>② ERRO E5:</strong> Modelo mental incorreto.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC), Área 1 — relatividade do movimento.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> A NR-22 não trata de referenciais — ela exige identificar corretamente o estado de movimento antes de intervir.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC), Área 1, âncora da correia transportadora.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> É o contrário — para o supervisor parado na torre, a correia ligada está claramente EM MOVIMENTO.</div><div class="fb-level"><strong>② ERRO E12:</strong> Transferência para contexto errado — inversão dos referenciais.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC), Área 1 — estado de movimento por observador.</div>'}
+      }
+    },
+    /* ── Q5-A: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T07-TN-B5-A', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'O Mapa Conceitual (MC) atribui a cada área uma equação ou característica central. <strong>Associe cada grandeza à sua expressão.</strong>',
+      linhas:['Deslocamento','Intervalo de tempo','Comprimento da trajetória','Período','Estado de movimento'],
+      colunas:['Δx = x<sub>f</sub> − x<sub>i</sub>','Δt = t<sub>f</sub> − t<sub>i</sub>','ℓ ≥ |Δx|','T = 1/f','depende do referencial'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização — grandeza × expressão. Erros típicos: trocar Δx ↔ Δt (mesma estrutura algébrica — distinga espaço de tempo) ou ℓ ↔ T. Revise: Mapa Conceitual (MC), equações centrais das Áreas 1-5.'
+    }
+  ],
+
+  B: [
+    /* ── Q1-B: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B1-B', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Resumo em Áudio (MD) diz que "os sinos das igrejas de Ouro Preto marcavam pontos no tempo, sem duração". <strong>A que grandeza física o MD compara cada badalada do sino?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Intervalo de tempo'},
+        {letra:'B', texto:'Instante'},
+        {letra:'C', texto:'Período'},
+        {letra:'D', texto:'Frequência'}
+      ],
+      correta:'B',
+      feedbacks:{
+        B:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Instante é um ponto na linha do tempo, sem duração — como uma estaca no espaço.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na detonação de uma bancada, o alarme soa num instante; a espera regulamentada é um intervalo.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, o Quadro 2 do Texto Temático (TT) organiza a analogia espaço-tempo.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> O intervalo é a DURAÇÃO entre duas badaladas — a badalada em si é um ponto no tempo.</div><div class="fb-level"><strong>② ERRO E11:</strong> Definição parcial — você trocou o evento pela duração entre eventos.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 3.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Período é o tempo de UMA oscilação completa de um fenômeno repetitivo — não localiza um evento isolado.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópicos 3 e 5.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Frequência conta quantas oscilações cabem em um segundo (Hz) — não marca um ponto no tempo.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópicos 3 e 5.</div>'}
+      }
+    },
+    /* ── Q2-B: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T07-TN-B2-B', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Mapa Conceitual (MC) registra que "posição está para o espaço como o instante está para o tempo". <strong>Selecione todas as analogias espaço-tempo corretas, conforme o MD e o MC.</strong>',
+      opcoes:[
+        {key:'instanteposicao', texto:'O instante localiza no tempo assim como a posição localiza no espaço.', correta:true},
+        {key:'intervalodeslocamento', texto:'O intervalo de tempo mede duração assim como o deslocamento mede mudança de posição.', correta:true},
+        {key:'intervalonegativo', texto:'O intervalo de tempo pode ser negativo, exatamente como o deslocamento.', correta:false},
+        {key:'origemtemporal', texto:'A origem temporal (instante zero do cronômetro) é uma escolha, como a origem espacial (boca da galeria).', correta:true},
+        {key:'simultaneos', texto:'Dois eventos simultâneos têm Δt = 0, assim como um corpo que volta ao ponto de partida tem Δx = 0.', correta:true}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> A analogia espaço-tempo é o fio condutor da trilha: instante↔posição, intervalo↔deslocamento, origem temporal↔origem espacial.</div><div class="fb-level"><strong>② REFORÇO:</strong> É essa analogia que permitirá, na próxima trilha, definir velocidade como razão entre Δx e Δt.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, o Quadro 2 do Texto Temático (TT).</div>',
+      feedbackErros:{
+        intervalonegativo:'<strong>Intervalo negativo:</strong> a analogia quebra exatamente aqui — o tempo só corre numa direção; com t<sub>f</sub> &gt; t<sub>i</sub>, Δt é sempre positivo. <em>Erro E12 — transferência para contexto errado.</em>'
+      }
+    },
+    /* ── Q3-B: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T07-TN-B3-B', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'Aplique os modelos do Resumo em Áudio (MD) a estes dados novos. <strong>Selecione se cada afirmação é verdadeira ou falsa.</strong>',
+      afirmacoes:[
+        {texto:'Um caminhão desce uma rampa helicoidal de ℓ = 720 m entre níveis separados por 90 m na vertical: o caminho percorrido é 8 vezes maior que o desnível.', correta:'V', just:'720 ÷ 90 = 8 — e ℓ > |Δx|, como sempre em trajetória curvilínea.'},
+        {texto:'Num movimento retilíneo sem inversão de sentido, a distância percorrida é igual ao módulo do deslocamento.', correta:'V', just:'É a condição de igualdade ℓ = |Δx| (Equação 5 do TT).'},
+        {texto:'Um pêndulo com período T = 0,5 s tem frequência f = 2 Hz.', correta:'V', just:'f = 1/T = 1/0,5 = 2 Hz.'},
+        {texto:'Uma frequência de 4 Hz corresponde a um período de 4 s.', correta:'F', just:'T = 1/f = 1/4 = 0,25 s. Erro E2 — inversão da operação.'},
+        {texto:'O alarme soa às 14h10min00s e a detonação ocorre às 14h10min30s: esses 30 segundos são um instante.', correta:'F', just:'30 s é um INTERVALO entre dois instantes (alarme e detonação). Erro E6 — confusão entre grandezas.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — ℓ ≥ |Δx| e T = 1/f com dados novos + distinção instante/intervalo. Revise: Resumo em Áudio (MD), Tópicos 3, 4 e 5.'
+    },
+    /* ── Q4-B: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B4-B', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual (MC) traz a âncora: a NR-22 exige 15 min de descanso a cada 90 min de exposição contínua à vibração. Um operador de caminhão inicia a exposição contínua às <strong>9h00</strong>. <strong>A que horas ele deve iniciar o primeiro intervalo de descanso?</strong>',
+      opcoes:[
+        {letra:'A', texto:'9h15'},
+        {letra:'B', texto:'10h30'},
+        {letra:'C', texto:'10h45'},
+        {letra:'D', texto:'11h00'}
+      ],
+      correta:'B',
+      feedbacks:{
+        B:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> t = 9h00 + 90 min = 10h30 — o descanso começa APÓS completar a exposição máxima.</div><div class="fb-level"><strong>② REFORÇO:</strong> É um intervalo de tempo regulamentado que protege a saúde do trabalhador.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, montaremos a linha do tempo completa de um turno com pausas.</div>'},
+        A:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> 15 min é a duração do DESCANSO, não da exposição. A exposição permitida é de 90 min.</div><div class="fb-level"><strong>② ERRO E3:</strong> Interpretação literal — você trocou os dois intervalos da norma.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Mapa Conceitual (MC), Área 5, âncora da NR-22.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Você somou 90 + 15 min antes do primeiro descanso — os 15 min de descanso só entram DEPOIS da exposição.</div><div class="fb-level"><strong>② ERRO E2:</strong> Erro de operação na linha do tempo.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise: 9h00 + 90 min de exposição = 10h30.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> 11h00 seriam 2 h de exposição contínua — violaria o limite de 90 min da norma.</div><div class="fb-level"><strong>② ERRO E2:</strong> Erro de cálculo do intervalo.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise: 90 min = 1h30 → 9h00 + 1h30 = 10h30.</div>'}
+      }
+    },
+    /* ── Q5-B: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T07-TN-B5-B', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'O Mapa Conceitual (MC) ancora cada conceito numa cena da mineração. <strong>Associe cada cenário à grandeza que ele exemplifica.</strong>',
+      linhas:['Estaca marcando +30 m dentro da galeria','A badalada do sino às 6h00 em ponto','Ida e volta à mesma estaca da galeria','Os 480 m percorridos na rampa em espiral','Número de ciclos de caminhão por hora'],
+      colunas:['Posição','Instante','Deslocamento nulo','Comprimento da trajetória','Frequência'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização — cenário × grandeza. Erros típicos: trocar Posição ↔ Deslocamento nulo (a estaca localiza; a ida-e-volta zera o Δx) e Instante ↔ Frequência (um localiza no tempo; a outra conta repetições). Revise: Mapa Conceitual (MC), âncoras das Áreas 1-5.'
+    }
+  ],
+
+  C: [
+    /* ── Q1-C: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B1-C', num:1, bloom:'L1-L2', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Resumo em Áudio (MD) define a posição como "um número com sinal". Numa galeria cuja origem (x = 0) é a boca e cujo sentido positivo aponta para dentro, <strong>o que significa a posição x = −8 m?</strong>',
+      opcoes:[
+        {letra:'A', texto:'O corpo está 8 m para FORA da boca da galeria, no sentido oposto ao positivo.'},
+        {letra:'B', texto:'O corpo está 8 m abaixo do nível do chão da galeria.'},
+        {letra:'C', texto:'Houve um erro de medida — posição não pode ser negativa.'},
+        {letra:'D', texto:'O corpo percorreu 8 m no total desde que começou a se mover.'}
+      ],
+      correta:'A',
+      feedbacks:{
+        A:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> O sinal indica direção em relação à origem — x = −8 m é 8 m para fora da boca, como o exemplo x = −5 m do Texto Temático (TT).</div><div class="fb-level"><strong>② REFORÇO:</strong> A topografia de minas registra posições com sinal a partir da boca da galeria.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, desenharemos o eixo orientado da galeria no quadro.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> O eixo da galeria é horizontal (para dentro/para fora) — o sinal não indica profundidade.</div><div class="fb-level"><strong>② ERRO E12:</strong> Transferência para contexto errado — você trocou o eixo.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 2.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Posição negativa é perfeitamente legítima — significa "do outro lado da origem", no sentido oposto ao positivo.</div><div class="fb-level"><strong>② ERRO E5:</strong> Modelo mental incorreto — o sinal não é defeito, é informação de direção.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópico 2 — "um número com sinal".</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Isso seria a distância percorrida — a posição LOCALIZA o corpo, não acumula caminho.</div><div class="fb-level"><strong>② ERRO E6:</strong> Confusão entre grandezas.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Releia o Resumo em Áudio (MD), Tópicos 2 e 4.</div>'}
+      }
+    },
+    /* ── Q2-C: Opções múltiplas (MM) — 2 pt ── */
+    {
+      id:'T07-TN-B2-C', num:2, bloom:'L2-L3', pts:2, tipo:'MM',
+      tipoLabel:'Múltipla escolha',
+      enunciado:'O Resumo em Áudio (MD) descreve o tempo como "o recurso mais valioso de uma mina". <strong>Selecione todas as afirmações que o MD faz sobre o tempo na mineração moderna.</strong>',
+      opcoes:[
+        {key:'ciclo', texto:'O tempo de ciclo do caminhão (~20 min) define a produtividade da operação.', correta:true},
+        {key:'periodofrequencia', texto:'Período e frequência são grandezas inversas: T = 1/f.', correta:true},
+        {key:'nr22', texto:'A NR-22 exige 15 min de descanso a cada 90 min de exposição à vibração.', correta:true},
+        {key:'gpsdispensa', texto:'O GPS dispensa relógios precisos porque usa satélites.', correta:false},
+        {key:'gradiente', texto:'O gradiente geotérmico das galerias define o tempo de ciclo dos caminhões.', correta:false}
+      ],
+      feedbackOk:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> Tempo de ciclo, T = 1/f e o descanso da NR-22 — os três pilares do Tópico 5 do MD.</div><div class="fb-level"><strong>② REFORÇO:</strong> Na frota sincronizada, atrasos de 2 minutos num caminhão propagam filas em toda a cadeia.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, calcularemos período e frequência de ciclos reais.</div>',
+      feedbackErros:{
+        gpsdispensa:'<strong>GPS dispensa relógios:</strong> é o contrário — o GPS DEPENDE de relógios atômicos com precisão de nanossegundos; sem eles, o erro chegaria a quilômetros. <em>Erro E5 — modelo mental incorreto.</em>',
+        gradiente:'<strong>Gradiente geotérmico:</strong> é o aumento de temperatura com a profundidade — conteúdo de outra trilha; não define tempo de ciclo. <em>Erro E12 — transferência para contexto errado.</em>'
+      }
+    },
+    /* ── Q3-C: Verdadeiro/Falso (VF) — 3 pt ── */
+    {
+      id:'T07-TN-B3-C', num:3, bloom:'L3', pts:3, tipo:'VF',
+      tipoLabel:'Verdadeiro / Falso',
+      enunciado:'Aplique os modelos do Resumo em Áudio (MD) a estes dados novos. Use a calculadora científica. <strong>Selecione se cada afirmação é verdadeira ou falsa.</strong>',
+      afirmacoes:[
+        {texto:'Um topógrafo caminha de x<sub>i</sub> = +120 m para x<sub>f</sub> = +45 m: o deslocamento é Δx = −75 m.', correta:'V', just:'Δx = 45 − 120 = −75 m.'},
+        {texto:'O sinal negativo desse deslocamento indica movimento no sentido de FORA da galeria.', correta:'V', just:'Sentido oposto ao positivo (que aponta para dentro).'},
+        {texto:'Nesse trajeto retilíneo sem inversão, a distância percorrida foi 75 m.', correta:'V', just:'ℓ = |−75| = 75 m — igualdade válida em reta sem inversão.'},
+        {texto:'Um sinal de GPS viaja por Δt = 0,070 s a 3,0 × 10⁸ m/s: a distância satélite-receptor é de 2 100 km.', correta:'F', just:'d = 3,0×10⁸ × 0,070 = 2,1×10⁷ m = 21 000 km — dez vezes mais. Erro E8 — ordem de grandeza.'},
+        {texto:'Como o deslocamento foi negativo, a distância percorrida também é negativa.', correta:'F', just:'ℓ é SEMPRE maior ou igual a zero — só o deslocamento carrega sinal. Erro E5 — modelo mental incorreto.'}
+      ],
+      feedbackGeral:'Função pedagógica: Transferência — Δx com sinal e d = v·Δt com dados novos. Revise: Resumo em Áudio (MD), Tópicos 2 e 3 + trecho do GPS.'
+    },
+    /* ── Q4-C: Opção simples (MC) — 1 pt ── */
+    {
+      id:'T07-TN-B4-C', num:4, bloom:'L4', pts:1, tipo:'MC',
+      tipoLabel:'Opção simples',
+      enunciado:'O Mapa Conceitual (MC) conecta a posição à topografia de minas: origem fixa na boca da galeria e posições registradas com precisão. Segundo o Texto Temático (TT), <strong>por que a topografia subterrânea exige registrar posições com precisão mínima de 1 m?</strong>',
+      opcoes:[
+        {letra:'A', texto:'Porque um erro de poucos metros na posição de um sistema de drenagem pode resultar em inundação catastrófica.'},
+        {letra:'B', texto:'Porque a boca da galeria é o único ponto do subsolo onde o GPS funciona.'},
+        {letra:'C', texto:'Porque posições imprecisas geram valores negativos, proibidos no subsolo.'},
+        {letra:'D', texto:'Porque a NR-22 exige que todas as galerias sejam perfeitamente retilíneas.'}
+      ],
+      correta:'A',
+      feedbacks:{
+        A:{ok:true,html:'<div class="fb-title">✔ Correto!</div><div class="fb-level"><strong>① VALIDAÇÃO:</strong> O Texto Temático (TT) registra: um erro de apenas 5 m na posição da drenagem pode inundar a galeria — por isso a precisão mínima de 1 m.</div><div class="fb-level"><strong>② REFORÇO:</strong> Posição, aqui, é informação de segurança — não apenas de mapa.</div><div class="fb-level"><strong>③ EXTENSÃO:</strong> Na aula, trabalharemos coordenadas reais de topografia subterrânea.</div>'},
+        B:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> O GPS realmente não funciona no subsolo — mas não é essa a razão da precisão exigida no registro de posições.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa — fato verdadeiro usado como justificativa errada.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Texto Temático (TT), Tópico 2, contexto profissional.</div>'},
+        C:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> Posições negativas são legítimas (fora da boca da galeria) — não há proibição.</div><div class="fb-level"><strong>② ERRO E5:</strong> Modelo mental incorreto sobre o sinal da posição.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Resumo em Áudio (MD), Tópico 2.</div>'},
+        D:{ok:false,html:'<div class="fb-title">❌ Atenção!</div><div class="fb-level"><strong>① CORREÇÃO:</strong> A norma não exige galerias retas — exige registro preciso de onde as coisas estão.</div><div class="fb-level"><strong>② ERRO E10:</strong> Contextualização falsa.</div><div class="fb-level"><strong>③ ORIENTAÇÃO:</strong> Revise o Texto Temático (TT), Tópico 2, contexto profissional.</div>'}
+      }
+    },
+    /* ── Q5-C: Matriz (MATRIZ) — 3 pt ── */
+    {
+      id:'T07-TN-B5-C', num:5, bloom:'L3-L4', pts:3, tipo:'MATRIZ',
+      tipoLabel:'Matriz de associação',
+      enunciado:'Use as equações do Mapa Conceitual (MC) e a calculadora científica. <strong>Associe cada situação ao resultado numérico correto.</strong>',
+      linhas:['Δx de x<sub>i</sub> = +20 m até x<sub>f</sub> = +95 m','Δt entre t<sub>i</sub> = 5,5 s e t<sub>f</sub> = 12,5 s','ℓ do ciclo 0 → +50 m → 0 numa galeria retilínea','T de um pêndulo com f = 0,5 Hz','f de um ciclo de caminhão de 15 min, em ciclos por hora'],
+      colunas:['+75 m','7,0 s','100 m','2,0 s','4 ciclos/h'],
+      gabarito:[0,1,2,3,4],
+      feedbackGeral:'Função pedagógica: Formalização com cálculo — dados diferentes dos exemplos do TT/MD. Erros típicos: T = 1/f invertido (E2) e trocar Δx (que zera no ciclo) por ℓ (100 m) — E6. Revise: Mapa Conceitual (MC), equações centrais.'
+    }
+  ]
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const PREFIX = 'ifmg_fc1_t07_tn_';
+let currentVersion = null;
+let respostas = {};
+let submitted = false;
+let saveTimer = null;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  setupInputListeners();
+  checkLocalStorage();
+});
+
+/* ============================================================
+   VERSION SELECTOR
+   ============================================================ */
+function switchVersion(v) {
+  if (submitted) return;
+  if (currentVersion === v) return;
+
+  /* Save current version state before switching */
+  if (currentVersion) saveToLocalStorage();
+
+  currentVersion = v;
+
+  /* Update buttons */
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === v);
+  });
+
+  /* Try to restore this version's state */
+  const saved = loadVersionState(v);
+  if (saved) {
+    respostas = saved.respostas || {};
+    if (saved.nome) document.getElementById('inputNome').value = saved.nome;
+    if (saved.turma) document.getElementById('inputTurma').value = saved.turma;
+    if (saved.data) document.getElementById('inputData').value = saved.data;
+    if (saved.submitted) {
+      buildQuestions();
+      submitQuiz(true);
+      return;
+    }
+  } else {
+    respostas = {};
+  }
+
+  buildQuestions();
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ============================================================
+   BUILD QUESTIONS
+   ============================================================ */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+
+  qs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomMap = {'L1-L2':'Bloom L1-L2','L2-L3':'Bloom L2-L3','L3':'Bloom L3','L4':'Bloom L4','L3-L4':'Bloom L3-L4'};
+    const bloomLabel = bloomMap[q.bloom] || q.bloom;
+
+    let bodyHTML = '';
+
+    switch (q.tipo) {
+      case 'MC':
+        bodyHTML = buildMC(q);
+        break;
+      case 'MM':
+        bodyHTML = buildMM(q);
+        break;
+      case 'VF':
+        bodyHTML = buildVF(q);
+        break;
+      case 'MATRIZ':
+        bodyHTML = buildMATRIZ(q);
+        break;
+    }
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${q.num}</div>
+        <div class="q-tags">
+          <span class="tag tag-bloom">${bloomLabel}</span>
+          <span class="tag tag-pts">${q.pts} pt</span>
+          <span class="tag tag-tipo">${q.tipoLabel}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.enunciado}</div>
+      ${bodyHTML}
+      <div class="q-feedback" id="fb-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  /* Restore visual state for answers already in respostas */
+  restoreVisualState();
+}
+
+/* ── MC builder ── */
+function buildMC(q) {
+  return `<div class="alt-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <button class="alt-btn" data-qid="${q.id}" data-letra="${o.letra}" onclick="selectMC('${q.id}','${o.letra}')">
+        <span class="alt-letra">${o.letra}.</span>
+        <span>${o.texto}</span>
+      </button>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MM builder ── */
+function buildMM(q) {
+  return `<div class="check-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <div class="check-item" data-qid="${q.id}" data-key="${o.key}" onclick="toggleMM('${q.id}','${o.key}')">
+        <div class="check-box" id="cb-${q.id}-${o.key}"></div>
+        <span>${o.texto}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── VF builder ── */
+function buildVF(q) {
+  return `<div class="vf-list" id="alts-${q.id}">
+    ${q.afirmacoes.map((af, i) => `
+      <div class="vf-item" id="vf-${q.id}-${i}">
+        <div class="vf-toggles">
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="V" onclick="selectVF('${q.id}',${i},'V')">V</button>
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="F" onclick="selectVF('${q.id}',${i},'F')">F</button>
+        </div>
+        <div class="vf-texto">${af.texto}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MATRIZ builder ── */
+function buildMATRIZ(q) {
+  return `<div class="matrix-wrap"><table class="matrix-table" id="alts-${q.id}">
+    <thead><tr>
+      <th>Processo / Âncora</th>
+      ${q.colunas.map(c => `<th>${c}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${q.linhas.map((l, ri) => `<tr id="mrow-${q.id}-${ri}">
+        <td>${l}</td>
+        ${q.colunas.map((_, ci) => `<td>
+          <input type="radio" name="mat-${q.id}-${ri}" value="${ci}"
+            onchange="selectMATRIZ('${q.id}',${ri},${ci})">
+        </td>`).join('')}
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ============================================================
+   INTERACTION HANDLERS
+   ============================================================ */
+function selectMC(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function toggleMM(qid, key) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [];
+  const idx = respostas[qid].indexOf(key);
+  if (idx >= 0) respostas[qid].splice(idx, 1);
+  else respostas[qid].push(key);
+
+  const item = document.querySelector(`[data-qid="${qid}"][data-key="${key}"]`);
+  item.classList.toggle('selected', idx < 0);
+  const cb = document.getElementById('cb-' + qid + '-' + key);
+  cb.textContent = idx < 0 ? '✓' : '';
+
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectVF(qid, idx, val) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][idx] = val;
+
+  document.querySelectorAll(`[data-qid="${qid}"][data-idx="${idx}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.val === val);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectMATRIZ(qid, row, col) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][row] = col;
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+/* ============================================================
+   RESTORE VISUAL STATE (after buildQuestions)
+   ============================================================ */
+function restoreVisualState() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach(q => {
+    const r = respostas[q.id];
+    if (r == null) return;
+
+    switch (q.tipo) {
+      case 'MC':
+        document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+          b.classList.toggle('selected', b.dataset.letra === r);
+        });
+        break;
+      case 'MM':
+        if (Array.isArray(r)) {
+          r.forEach(key => {
+            const item = document.querySelector(`[data-qid="${q.id}"][data-key="${key}"]`);
+            if (item) { item.classList.add('selected'); }
+            const cb = document.getElementById('cb-' + q.id + '-' + key);
+            if (cb) cb.textContent = '✓';
+          });
+        }
+        break;
+      case 'VF':
+        if (Array.isArray(r)) {
+          r.forEach((val, i) => {
+            if (val) {
+              document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+                b.classList.toggle('selected', b.dataset.val === val);
+              });
+            }
+          });
+        }
+        break;
+      case 'MATRIZ':
+        if (Array.isArray(r)) {
+          r.forEach((col, row) => {
+            if (col != null) {
+              const radio = document.querySelector(`input[name="mat-${q.id}-${row}"][value="${col}"]`);
+              if (radio) radio.checked = true;
+            }
+          });
+        }
+        break;
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+function updateProgress() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      const sc = questionScore(q);
+      if (sc >= q.pts) seg.classList.add('certo');
+      else if (sc > 0) seg.classList.add('parcial');
+      else if (isAnswered(q)) seg.classList.add('errado');
+    } else if (isAnswered(q)) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+function isAnswered(q) {
+  const r = respostas[q.id];
+  if (r == null) return false;
+  switch (q.tipo) {
+    case 'MC': return !!r;
+    case 'MM': return Array.isArray(r) && r.length > 0;
+    case 'VF': return Array.isArray(r) && r.every(v => v != null);
+    case 'MATRIZ': return Array.isArray(r) && r.every(v => v != null);
+  }
+  return false;
+}
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function questionScore(q) {
+  const r = respostas[q.id];
+  if (r == null) return 0;
+
+  switch (q.tipo) {
+    case 'MC':
+      return r === q.correta ? q.pts : 0;
+
+    case 'MM': {
+      if (!Array.isArray(r)) return 0;
+      const nCorretas = q.opcoes.filter(o => o.correta).length;
+      let acertos = 0, erros = 0;
+      q.opcoes.forEach(o => {
+        const sel = r.includes(o.key);
+        if (sel && o.correta) acertos++;
+        else if (sel && !o.correta) erros++;
+      });
+      return Math.max(0, Math.min(q.pts, (acertos * q.pts / nCorretas) - (erros * 0.5)));
+    }
+
+    case 'VF': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.afirmacoes.forEach((af, i) => {
+        if (r[i] === af.correta) acertos++;
+      });
+      return acertos * q.pts / q.afirmacoes.length;
+    }
+
+    case 'MATRIZ': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.gabarito.forEach((g, i) => {
+        if (r[i] === g) acertos++;
+      });
+      return acertos * q.pts / q.gabarito.length;
+    }
+  }
+  return 0;
+}
+
+function totalScore() {
+  if (!currentVersion) return 0;
+  let total = 0;
+  BANCO[currentVersion].forEach(q => { total += questionScore(q); });
+  return Math.round(total * 10) / 10;
+}
+
+/* ============================================================
+   SUBMIT CHECK
+   ============================================================ */
+function checkSubmitReady() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const turma = document.getElementById('inputTurma').value;
+  if (!currentVersion || !nome || !turma) {
+    document.getElementById('btnSubmit').disabled = true;
+    return;
+  }
+  const allAnswered = BANCO[currentVersion].every(q => isAnswered(q));
+  document.getElementById('btnSubmit').disabled = !allAnswered;
+}
+
+/* ── Exportar JSON: visivel apenas como plano B ──
+   Com o coletor ativo (site), o envio e automatico; o botao so aparece
+   se o envio falhar. Sem coletor (offline/professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  const btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  const temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  const st = document.getElementById('coletaStatus');
+  const falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function submitQuiz(isRestore) {
+  if (submitted && !isRestore) return;
+  submitted = true;
+
+  /* Lock inputs */
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+  document.querySelectorAll('.version-btn').forEach(b => b.classList.add('locked'));
+
+  const qs = BANCO[currentVersion];
+  let score = totalScore();
+
+  qs.forEach(q => {
+    const sc = questionScore(q);
+    switch (q.tipo) {
+      case 'MC': showFeedbackMC(q); break;
+      case 'MM': showFeedbackMM(q, sc); break;
+      case 'VF': showFeedbackVF(q, sc); break;
+      case 'MATRIZ': showFeedbackMATRIZ(q, sc); break;
+    }
+  });
+
+  /* Score box */
+  const scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + '/10';
+
+  /* Breakdown */
+  const bd = document.getElementById('scoreBreakdown');
+  bd.innerHTML = qs.map(q => {
+    const sc = questionScore(q);
+    const pct = Math.round(sc / q.pts * 100);
+    return `<span>Q${q.num}: ${sc.toFixed(1)}/${q.pts}</span>`;
+  }).join('');
+
+  updateProgress();
+
+  /* Placar junto ao envio — abaixo do status de coleta na copia publicada */
+  const actionsBarEl = document.getElementById('actionsBar');
+  actionsBarEl.parentNode.insertBefore(scoreBox, actionsBarEl);
+
+  document.getElementById('btnSubmit').style.display = 'none';
+  atualizarExportVisivel();
+  const stColeta = document.getElementById('coletaStatus');
+  if (stColeta && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(stColeta, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  saveToLocalStorage();
+
+  if (!isRestore) toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`);
+  enviarColeta();
+}
+
+/* ── MC feedback ── */
+function showFeedbackMC(q) {
+  const chosen = respostas[q.id];
+  const isCorrect = chosen === q.correta;
+
+  document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+    b.classList.add('locked');
+    b.classList.remove('selected');
+    if (b.dataset.letra === q.correta) b.classList.add('correct');
+    if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+    if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const fbData = q.feedbacks[chosen] || q.feedbacks[q.correta];
+  fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+  fb.innerHTML = fbData.html;
+}
+
+/* ── MM feedback ── */
+function showFeedbackMM(q, sc) {
+  const selected = respostas[q.id] || [];
+  let hasError = false;
+  let errorTexts = [];
+
+  q.opcoes.forEach(o => {
+    const item = document.querySelector(`[data-qid="${q.id}"][data-key="${o.key}"]`);
+    const cb = document.getElementById('cb-' + q.id + '-' + o.key);
+    item.classList.add('locked');
+    item.classList.remove('selected');
+
+    const sel = selected.includes(o.key);
+    if (sel && o.correta) {
+      item.classList.add('correct');
+      cb.textContent = '✓';
+    } else if (sel && !o.correta) {
+      item.classList.add('incorrect');
+      cb.textContent = '✗';
+      hasError = true;
+      if (q.feedbackErros && q.feedbackErros[o.key]) {
+        errorTexts.push(q.feedbackErros[o.key]);
+      }
+    } else if (!sel && o.correta) {
+      item.classList.add('missed');
+      cb.textContent = '—';
+      hasError = true;
+    } else {
+      cb.textContent = '';
+    }
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  if (perfect) {
+    fb.className = 'q-feedback show ok';
+    fb.innerHTML = q.feedbackOk;
+  } else {
+    fb.className = 'q-feedback show ' + (sc > 0 ? 'parcial' : 'nok');
+    let html = '<div class="fb-title">' + (sc > 0 ? '⚠ Parcialmente correto' : '❌ Atenção!') + '</div>';
+    if (errorTexts.length) {
+      html += errorTexts.map(t => '<div class="fb-level">' + t + '</div>').join('');
+    }
+    html += `<div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+    fb.innerHTML = html;
+  }
+}
+
+/* ── VF feedback ── */
+function showFeedbackVF(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.afirmacoes.forEach((af, i) => {
+    const item = document.getElementById('vf-' + q.id + '-' + i);
+    const correct = answers[i] === af.correta;
+    item.classList.add(correct ? 'correct' : 'incorrect');
+
+    /* Color the buttons */
+    document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.val === af.correta) b.classList.add('correct');
+      if (b.dataset.val === answers[i] && !correct) b.classList.add('incorrect');
+    });
+
+    /* Add justification */
+    const justDiv = document.createElement('div');
+    justDiv.className = 'vf-resultado';
+    justDiv.style.color = correct ? 'var(--verde)' : 'var(--erro)';
+    justDiv.innerHTML = (correct ? '✓ ' : '✗ ') + af.just;
+    item.appendChild(justDiv);
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ── MATRIZ feedback ── */
+function showFeedbackMATRIZ(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.linhas.forEach((_, ri) => {
+    const row = document.getElementById('mrow-' + q.id + '-' + ri);
+    const correct = answers[ri] === q.gabarito[ri];
+    row.classList.add(correct ? 'row-correct' : 'row-incorrect');
+
+    /* Disable radios and mark correct cell */
+    document.querySelectorAll(`input[name="mat-${q.id}-${ri}"]`).forEach(r => {
+      r.disabled = true;
+    });
+
+    /* Highlight the correct cell */
+    const correctCell = row.children[q.gabarito[ri] + 1];
+    if (correctCell) correctCell.classList.add('cell-correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ============================================================
+   EXPORT JSON
+   ============================================================ */
+function montarPacote() {
+  var now = new Date();
+  const qs = BANCO[currentVersion];
+  return {
+    schema: 'ifmg-fc1-testinho-v4',
+    trilha: 'T07',
+    tipo: 'TN',
+    versao: currentVersion,
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: qs.map(q => {
+      const sc = questionScore(q);
+      return {
+        id: q.id,
+        bloom: q.bloom,
+        tipo: q.tipo,
+        pts_max: q.pts,
+        pts_obtidos: Math.round(sc * 100) / 100,
+        resposta: respostas[q.id] || null,
+        gabarito: q.tipo === 'MC' ? q.correta : (q.tipo === 'MM' ? q.opcoes.filter(o=>o.correta).map(o=>o.key) : (q.tipo === 'VF' ? q.afirmacoes.map(a=>a.correta) : q.gabarito)),
+        acertou: sc >= q.pts
+      };
+    }),
+    pontuacao: totalScore(),
+    total: 10
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
+  a.download = `T07-TN-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'JSON exportado com sucesso');
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+function resetQuiz() {
+  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================ */
+function storageKey() {
+  return PREFIX + 'v' + currentVersion;
+}
+
+function saveToLocalStorage() {
+  if (!currentVersion) return;
+  try {
+    const state = {
+      versao: currentVersion,
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(storageKey(), JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', currentVersion);
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function loadVersionState(v) {
+  try {
+    const raw = localStorage.getItem(PREFIX + 'v' + v);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function clearLocalStorage() {
+  ['A','B','C'].forEach(v => localStorage.removeItem(PREFIX + 'v' + v));
+  localStorage.removeItem(PREFIX + 'lastVersion');
+}
+
+function checkLocalStorage() {
+  try {
+    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+    if (lastV) {
+      const state = loadVersionState(lastV);
+      if (state) {
+        document.getElementById('restoreBanner').classList.add('show');
+        return;
+      }
+    }
+    /* Check all versions */
+    for (const v of ['A','B','C']) {
+      if (loadVersionState(v)) {
+        document.getElementById('restoreBanner').classList.add('show');
+        return;
+      }
+    }
+  } catch(e) {}
+}
+
+function restoreData() {
+  document.getElementById('restoreBanner').classList.remove('show');
+  try {
+    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+    let targetV = null;
+
+    if (lastV && loadVersionState(lastV)) {
+      targetV = lastV;
+    } else {
+      for (const v of ['A','B','C']) {
+        if (loadVersionState(v)) { targetV = v; break; }
+      }
+    }
+
+    if (targetV) {
+      switchVersion(targetV);
+      toast('info', 'Dados restaurados — Versão ' + targetV);
+    }
+  } catch(e) {
+    toast('error', 'Erro ao restaurar dados');
+  }
+}
+
+function discardData() {
+  clearLocalStorage();
+  document.getElementById('restoreBanner').classList.remove('show');
+  toast('info', 'Dados anteriores descartados');
+}
+
+/* ============================================================
+   INPUT LISTENERS & DEBOUNCED SAVE
+   ============================================================ */
+function setupInputListeners() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', () => { checkSubmitReady(); debouncedSave(); });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveToLocalStorage(), 1500);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(type, msg) {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T07-TN-v3-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T07-TN-v3-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var COMPROVANTE_KEY = PREFIX + 'comprovante';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(COMPROVANTE_KEY);
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+</script>
+</body>
+</html>
