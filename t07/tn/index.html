@@ -383,12 +383,12 @@ body {
 <body>
 <div class="container">
 
-  <!-- RESTORATION BANNER -->
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
   <div class="restore-banner" id="restoreBanner">
-    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <span id="restoreMsg"></span>
     <div style="display:flex;gap:8px;flex-shrink:0;">
-      <button onclick="restoreData()">Restaurar</button>
-      <button class="btn-discard" onclick="discardData()">Descartar</button>
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
     </div>
   </div>
 
@@ -413,7 +413,7 @@ body {
   </div>
 
   <!-- VERSION SELECTOR -->
-  <div class="version-label">Selecione sua versão</div>
+  <div class="version-label" id="versionLabel">Selecione sua versão</div>
   <div class="version-selector" id="versionSelector">
     <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
     <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
@@ -767,10 +767,36 @@ const BANCO = {
    STATE
    ============================================================ */
 const PREFIX = 'ifmg_fc1_t07_tn_';
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   Default embutido pelo autor; a Equipe de Professores pode sobrescrever via
+   aba `config` da planilha (o coletor injetado chama aplicarConfigOA). ── */
+var OA_ID = { trilha: 'T07', oa: 'TN' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'auto',   /* 'auto' (por RA) | 'A' | 'B' | 'C' | 'livre' */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    const cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema) {
+      if (cache.versao_precarga) OA_CFG.versao_precarga = cache.versao_precarga;
+      if (cache.tentativas) OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+let tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
 let currentVersion = null;
 let respostas = {};
 let submitted = false;
 let saveTimer = null;
+let bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
+let precargaAtiva = false;
 
 /* ============================================================
    INIT
@@ -1143,6 +1169,7 @@ function atualizarExportVisivel() {
 function submitQuiz(isRestore) {
   if (submitted && !isRestore) return;
   submitted = true;
+  esconderBanner();
 
   /* Lock inputs */
   document.getElementById('inputNome').disabled = true;
@@ -1183,6 +1210,8 @@ function submitQuiz(isRestore) {
   actionsBarEl.parentNode.insertBefore(scoreBox, actionsBarEl);
 
   document.getElementById('btnSubmit').style.display = 'none';
+  /* CFG-OA: apos o envio nao ha Recomecar/Descartar — nada e restauravel */
+  document.getElementById('btnReset').style.display = 'none';
   atualizarExportVisivel();
   const stColeta = document.getElementById('coletaStatus');
   if (stColeta && typeof MutationObserver !== 'undefined') {
@@ -1190,6 +1219,7 @@ function submitQuiz(isRestore) {
   }
 
   saveToLocalStorage();
+  avaliarSegundaTentativa();
 
   if (!isRestore) toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`);
   enviarColeta();
@@ -1331,6 +1361,7 @@ function montarPacote() {
     trilha: 'T07',
     tipo: 'TN',
     versao: currentVersion,
+    tentativa: tentativaAtual,
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
@@ -1375,7 +1406,8 @@ function exportJSON() {
    RESET
    ============================================================ */
 function resetQuiz() {
-  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
   location.reload();
 }
@@ -1416,53 +1448,134 @@ function clearLocalStorage() {
   localStorage.removeItem(PREFIX + 'lastVersion');
 }
 
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, PRE-CARGA A/B/C
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function versaoSalva() {
+  const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+  if (lastV && loadVersionState(lastV)) return lastV;
+  for (const v of ['A','B','C']) { if (loadVersionState(v)) return v; }
+  return null;
+}
+
 function checkLocalStorage() {
   try {
-    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
-    if (lastV) {
-      const state = loadVersionState(lastV);
-      if (state) {
-        document.getElementById('restoreBanner').classList.add('show');
-        return;
-      }
-    }
-    /* Check all versions */
-    for (const v of ['A','B','C']) {
-      if (loadVersionState(v)) {
-        document.getElementById('restoreBanner').classList.add('show');
-        return;
-      }
+    const v = versaoSalva();
+    if (!v) return; /* sem estado salvo: pre-carga fica a cargo de aplicarPrecargaOA */
+    const state = loadVersionState(v);
+    if (state.submitted) {
+      /* Envio ja realizado: restaura a visao corrigida (switchVersion chama
+         submitQuiz(true)); avaliarSegundaTentativa decide se ha Restaurar */
+      switchVersion(v);
+    } else {
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      switchVersion(v);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas — Versão ' + v);
     }
   } catch(e) {}
 }
 
-function restoreData() {
-  document.getElementById('restoreBanner').classList.remove('show');
-  try {
-    const lastV = localStorage.getItem(PREFIX + 'lastVersion');
-    let targetV = null;
-
-    if (lastV && loadVersionState(lastV)) {
-      targetV = lastV;
-    } else {
-      for (const v of ['A','B','C']) {
-        if (loadVersionState(v)) { targetV = v; break; }
-      }
-    }
-
-    if (targetV) {
-      switchVersion(targetV);
-      toast('info', 'Dados restaurados — Versão ' + targetV);
-    }
-  } catch(e) {
-    toast('error', 'Erro ao restaurar dados');
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  const msg = document.getElementById('restoreMsg');
+  const btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
   }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
 }
 
 function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
-  document.getElementById('restoreBanner').classList.remove('show');
-  toast('info', 'Dados anteriores descartados');
+  location.reload();
+}
+
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    const v = currentVersion || versaoSalva();
+    const state = loadVersionState(v) || {};
+    state.submitted = false;
+    if (!comRespostas) state.respostas = {};
+    localStorage.setItem(PREFIX + 'v' + v, JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', v);
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.versao_precarga && ['auto','A','B','C','livre'].indexOf(cfg.versao_precarga) !== -1) {
+    OA_CFG.versao_precarga = cfg.versao_precarga;
+  }
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  if (precargaAtiva) travarSeletorVersao();
+  avaliarSegundaTentativa();
+}
+
+/* Pre-carga da versao A/B/C (chamada pelo coletor apos identificar o RA).
+   Estado salvo do estudante SEMPRE prevalece — nunca descartar trabalho. */
+function aplicarPrecargaOA(aluno) {
+  const modo = OA_CFG.versao_precarga;
+  if (modo === 'livre') return;
+  let alvo = null;
+  if (modo === 'A' || modo === 'B' || modo === 'C') alvo = modo;
+  else if (modo === 'auto' && aluno && aluno.ra) alvo = ['A','B','C'][parseInt(aluno.ra, 10) % 3];
+  if (!alvo && !currentVersion) return; /* auto sem RA e sem estado salvo: escolha livre */
+  precargaAtiva = true;
+  if (!currentVersion && alvo) {
+    switchVersion(alvo);
+    toast('info', 'Versão ' + alvo + ' carregada automaticamente para você');
+  }
+  travarSeletorVersao();
+}
+
+function travarSeletorVersao() {
+  if (!precargaAtiva || !currentVersion) return;
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    if (btn.dataset.v !== currentVersion) btn.classList.add('locked');
+  });
+  const lbl = document.getElementById('versionLabel');
+  if (lbl) lbl.textContent = 'Versão definida automaticamente';
 }
 
 /* ============================================================
@@ -1495,19 +1608,36 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T07-TN-v3-estudante.html
+   Arquivo fonte: T07-TN-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T07-TN-v3-estudante.html';
+var ARQUIVO_FONTE = 'T07-TN-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
-var COMPROVANTE_KEY = PREFIX + 'comprovante';
 var aluno = null;
 var alunoPendente = null;
 var coletaEnviando = false;
 
+/* CFG-OA v1: comprovante por tentativa (t1 = chave legada; t2 = sufixo _t2).
+   OAs legados sem oaTentativaAtual() continuam na chave unica. */
+function comprovanteKey_() {
+  var t = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  return PREFIX + 'comprovante' + (t > 1 ? '_t' + t : '');
+}
+
+/* CFG-OA v1: override remoto da Equipe de Professores (aba `config` da planilha).
+   So roda em OAs que expoem OA_ID + aplicarConfigOA; falha de rede e ignorada. */
+function buscarConfigOA() {
+  if (!COLETA_URL || typeof OA_ID === 'undefined' || typeof aplicarConfigOA !== 'function') return;
+  fetch(COLETA_URL + '?cfg=1&trilha=' + encodeURIComponent(OA_ID.trilha) + '&oa=' + encodeURIComponent(OA_ID.oa))
+    .then(function (r) { return r.json(); })
+    .then(function (res) { if (res && res.ok && res.cfg) aplicarConfigOA(res.cfg); })
+    .catch(function () {});
+}
+
 function initColeta() {
   if (!COLETA_URL) return;
+  buscarConfigOA();
   try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
   if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
   document.getElementById('coletaOverlay').hidden = false;
@@ -1575,6 +1705,8 @@ function aplicarAluno() {
     if (!el) return;
     try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
   });
+  /* CFG-OA v1: pre-carga da versao A/B/C apos identificar o RA */
+  if (typeof aplicarPrecargaOA === 'function') { try { aplicarPrecargaOA(aluno); } catch (e) {} }
 }
 
 function coletaStatusUI(estado, msg) {
@@ -1588,19 +1720,20 @@ function coletaStatusUI(estado, msg) {
 
 function restaurarComprovante() {
   if (!COLETA_URL) return;
-  var c = localStorage.getItem(COMPROVANTE_KEY);
+  var c = localStorage.getItem(comprovanteKey_());
   if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
 }
 
 function enviarColeta(isRetry) {
   if (!COLETA_URL || coletaEnviando) return;
-  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  if (localStorage.getItem(comprovanteKey_())) { restaurarComprovante(); return; }
   coletaEnviando = true;
   coletaStatusUI(null, 'Enviando respostas ao professor...');
 
   var payload = montarPacote();
   payload.ra = aluno ? aluno.ra : null;
   payload.turma_suap = aluno ? aluno.turma : null;
+  payload.tentativa = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
   if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
   payload.questoes = (payload.questoes || []).map(function (q) {
     var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
@@ -1623,7 +1756,7 @@ function enviarColeta(isRetry) {
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'rejeitado');
-      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      try { localStorage.setItem(comprovanteKey_(), res.comprovante); } catch (e) {}
       coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
     })
     .catch(function () {
