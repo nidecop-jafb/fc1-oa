@@ -464,7 +464,7 @@ body {
 
   <div class="actions" id="actionsBar">
     <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
-    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
     <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
   </div>
 
@@ -1255,7 +1255,7 @@ function exportJSON() {
   a.download = `T07-PR-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('success', 'JSON exportado com sucesso');
+  toast('success', 'Comprovante exportado com sucesso');
 }
 
 /* ============================================================
@@ -1464,11 +1464,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T07-PR-v3-estudante.html
+   Arquivo fonte: T07-PR-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T07-PR-v3-estudante.html';
+var ARQUIVO_FONTE = 'T07-PR-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;

@@ -590,7 +590,7 @@ body {
 
   <div class="actions" id="actionsBar">
     <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitPP()">Enviar Respostas</button>
-    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
     <button class="btn btn-reset" id="btnReset" onclick="resetPP()">Recome&ccedil;ar</button>
   </div>
 
@@ -1051,7 +1051,7 @@ function montarPacote() {
     schema: 'ifmg-fc1-ponto-de-partida-v2',
     trilha: 'T07',
     tipo: 'PP',
-    versao: 'v5',
+    versao: 'v6',
     tentativa: tentativaAtual,
     timestamp: now.toISOString(),
     estudante: {
@@ -1101,7 +1101,7 @@ function exportJSON() {
   a.download = 'T07-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
   a.click();
   URL.revokeObjectURL(url);
-  toast('success', 'JSON exportado com sucesso');
+  toast('success', 'Comprovante exportado com sucesso');
 }
 
 /* ---- RESET ---- */
@@ -1290,11 +1290,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T07-PP-v5-estudante.html
+   Arquivo fonte: T07-PP-v6-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T07-PP-v5-estudante.html';
+var ARQUIVO_FONTE = 'T07-PP-v6-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
