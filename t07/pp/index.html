@@ -510,12 +510,12 @@ body {
 <body>
 <div class="container">
 
-  <!-- RESTORATION BANNER -->
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
   <div class="restore-banner" id="restoreBanner">
-    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <span id="restoreMsg"></span>
     <div style="display:flex;gap:8px;flex-shrink:0;">
-      <button onclick="restoreData()">Restaurar</button>
-      <button class="btn-discard" onclick="discardData()">Descartar</button>
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
     </div>
   </div>
 
@@ -761,10 +761,33 @@ var BANCO = [
 
 /* ---- STATE ---- */
 var PREFIX = 'ifmg_fc1_t07_pp_';
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   PP e de VERSAO UNICA: so `tentativas` se aplica (versao_precarga: n/a). ── */
+var OA_ID = { trilha: 'T07', oa: 'PP' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'livre',  /* n/a no PP (sem versoes A/B/C) */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    var cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema && cache.tentativas) {
+      OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+var tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
 var respostas = {};
 var justifs = {};
 var submitted = false;
 var saveTimer = null;
+var bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
 
 /* ---- INIT ---- */
 document.addEventListener('DOMContentLoaded', function() {
@@ -975,6 +998,7 @@ function atualizarExportVisivel() {
 function submitPP() {
   if (submitted) return;
   submitted = true;
+  esconderBanner();
 
   // Lock inputs
   document.getElementById('inputNome').disabled = true;
@@ -1002,8 +1026,9 @@ function submitPP() {
   // Update progress
   updateProgress();
 
-  // Update buttons
+  // Update buttons — CFG-OA: apos o envio nao ha Recomecar/Descartar
   document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'none';
   atualizarExportVisivel();
   var st = document.getElementById('coletaStatus');
   if (st && typeof MutationObserver !== 'undefined') {
@@ -1012,6 +1037,7 @@ function submitPP() {
 
   // Save state
   saveToLocalStorage();
+  avaliarSegundaTentativa();
 
   toast('success', 'Respostas enviadas com sucesso!');
   enviarColeta();
@@ -1025,7 +1051,8 @@ function montarPacote() {
     schema: 'ifmg-fc1-ponto-de-partida-v2',
     trilha: 'T07',
     tipo: 'PP',
-    versao: 'v4',
+    versao: 'v5',
+    tentativa: tentativaAtual,
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
@@ -1079,7 +1106,8 @@ function exportJSON() {
 
 /* ---- RESET ---- */
 function resetPP() {
-  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
   location.reload();
 }
@@ -1104,65 +1132,130 @@ function clearLocalStorage() {
   localStorage.removeItem(PREFIX + 'state');
 }
 
-function checkLocalStorage() {
-  try {
-    var raw = localStorage.getItem(PREFIX + 'state');
-    if (raw) {
-      document.getElementById('restoreBanner').classList.add('show');
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, RESTAURAR/DESCARTAR
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function aplicarEstado(state) {
+  document.getElementById('inputNome').value = state.nome || '';
+  document.getElementById('inputTurma').value = state.turma || '';
+  document.getElementById('inputData').value = state.data || '';
+  respostas = state.respostas || {};
+  justifs = state.justifs || {};
+
+  // Restore justificativas (textareas)
+  BANCO.forEach(function(q) {
+    if (q.tipo === 'AUTO' && justifs[q.id]) {
+      var ta = document.getElementById('ta-' + q.id);
+      if (ta) {
+        ta.value = justifs[q.id];
+        var cc = document.getElementById('cc-' + q.id);
+        if (cc) cc.textContent = ta.value.length + ' caracteres';
+      }
     }
-  } catch(e) {}
+  });
+
+  // Restore selections (MC + AUTO)
+  Object.keys(respostas).forEach(function(qid) {
+    var q = BANCO.filter(function(b){ return b.id === qid; })[0];
+    if (!q) return;
+    var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+    btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
+  });
+
+  if (state.submitted) {
+    submitPP();
+  } else {
+    updateProgress();
+    checkSubmitReady();
+  }
 }
 
-function restoreData() {
+function checkLocalStorage() {
   try {
     var raw = localStorage.getItem(PREFIX + 'state');
     if (!raw) return;
     var state = JSON.parse(raw);
-
-    document.getElementById('inputNome').value = state.nome || '';
-    document.getElementById('inputTurma').value = state.turma || '';
-    document.getElementById('inputData').value = state.data || '';
-    respostas = state.respostas || {};
-    justifs = state.justifs || {};
-
-    // Restore justificativas (textareas)
-    BANCO.forEach(function(q) {
-      if (q.tipo === 'AUTO' && justifs[q.id]) {
-        var ta = document.getElementById('ta-' + q.id);
-        if (ta) {
-          ta.value = justifs[q.id];
-          var cc = document.getElementById('cc-' + q.id);
-          if (cc) cc.textContent = ta.value.length + ' caracteres';
-        }
-      }
-    });
-
-    // Restore selections (MC + AUTO)
-    Object.keys(respostas).forEach(function(qid) {
-      var q = BANCO.filter(function(b){ return b.id === qid; })[0];
-      if (!q) return;
-      var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
-      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
-    });
-
     if (state.submitted) {
-      submitPP();
+      /* Envio ja realizado: restaura a visao enviada; avaliarSegundaTentativa
+         decide se o banner com Restaurar aparece (so com 2 envios) */
+      aplicarEstado(state);
     } else {
-      updateProgress();
-      checkSubmitReady();
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      aplicarEstado(state);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas');
     }
+  } catch(e) {}
+}
 
-    toast('info', 'Dados restaurados');
-  } catch(e) {
-    toast('error', 'Erro ao restaurar dados');
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  var msg = document.getElementById('restoreMsg');
+  var btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
   }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
   document.getElementById('restoreBanner').classList.remove('show');
 }
 
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
+}
+
 function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
-  document.getElementById('restoreBanner').classList.remove('show');
-  toast('info', 'Dados anteriores descartados');
+  location.reload();
+}
+
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    var state = JSON.parse(localStorage.getItem(PREFIX + 'state')) || {};
+    state.submitted = false;
+    if (!comRespostas) { state.respostas = {}; state.justifs = {}; }
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  avaliarSegundaTentativa();
 }
 
 /* ---- DEBOUNCED SAVE ---- */
@@ -1197,11 +1290,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T07-PP-v4-estudante.html
+   Arquivo fonte: T07-PP-v5-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T07-PP-v4-estudante.html';
+var ARQUIVO_FONTE = 'T07-PP-v5-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
