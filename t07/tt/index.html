@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T07 · Referencial, Posição e Tempo — Texto Temático v4</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; O Largo Marília de Dirceu ao amanhecer, antes do primeiro olhar</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Três eixos e um cronômetro: o símbolo de quem aprendeu a medir o espaço e o tempo</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; O Gancho: o caminhão sobe a Rua Santa Efigênia; trio e Prof. Felipe</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Sofia, Pedro e Lucas exploram o Chafariz de Marília</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Parado ou em movimento? Na correia, a resposta depende de quem pergunta</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Estacas na escuridão: as primeiras coordenadas nasceram antes da Física</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; O instante do repique: um ponto no tempo, sem duração, preciso como uma estaca</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; A espiral que revela: o caminho é sempre mais longo que a distância em linha reta</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; O tempo como recurso: na sala de operações, cada segundo carrega minério e decisão</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; O fechamento: Prof. Felipe e o trio retornam ao Largo/Chafariz ao entardecer</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas, uma Física: as conexões que a cinemática tece</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado numa resposta</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Escher e a Física: três gravidades num só mundo</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Maurice Ravel &mdash; Boléro</div>
+  <div class="musica-detail">1928 &middot; orquestra &middot; ~15 min</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Ravel+Bolero+orchestra" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T07 &mdash;
+Referencial, Posição e Tempo / Julio
+Cesar Silva Azevedo; colaboração Felipe
+Beato. &mdash; 1. ed. &mdash; Ouro Preto, MG:
+Instituto Federal de Minas Gerais &mdash;
+Campus Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T07)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Cinemática &mdash; Referencial,
+   posição e tempo.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epígrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Tópico 1 &mdash; Relatividade do repouso e do movimento</a>
+  <a href="#topico-2" class="toc-topico">Tópico 2 &mdash; Coordenadas em túneis e galerias</a>
+  <a href="#topico-3" class="toc-topico">Tópico 3 &mdash; Instante e intervalo de tempo</a>
+  <a href="#topico-4" class="toc-topico">Tópico 4 &mdash; Trajetória: o caminho no espaço</a>
+  <a href="#topico-5" class="toc-topico">Tópico 5 &mdash; O tempo como dimensão técnica</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexões Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciência e Arte</a>
+  <a href="#referencias" class="toc-extra">Referências</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T07-IT-00-v3.jpg" alt="Largo Marília de Dirceu ao amanhecer, chafariz colonial na bruma">
+  <div class="capa-label">Trilha de Aprendizagem 07</div>
+  <div class="capa-titulo">Referencial, Posição e Tempo</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T07</span> &middot; Referencial, Posição e Tempo</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~40 min de leitura</div>
+</header>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O espaço absoluto, por sua própria natureza e sem relação com nada externo, permanece sempre semelhante e imóvel.&rdquo;</blockquote>
+  <div class="autor">&mdash; Isaac Newton (1643&ndash;1727)</div>
+
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T07-IT-01-v3.jpg" alt="Símbolo 3D da trilha T07 — três eixos coordenados com cronômetro" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Três eixos e um cronômetro: o símbolo de quem aprendeu a medir, ao mesmo tempo, o espaço e o tempo.</figcaption>
+  </figure>
+
+  <div class="nota"><strong>Isaac Newton</strong> (Woolsthorpe, 1643 &mdash; Londres, 1727). Matemático e físico inglês. Formulou as três leis do movimento e a lei da gravitação universal; inventou o cálculo diferencial; presidiu a Royal Society por 24 anos. O <em>Principia Mathematica</em> (1687) é considerado a obra mais influente da história da física. A citação acima abre o Livro I do <em>Principia</em>, no Escólio das Definições.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>O Largo Marília de Dirceu ainda estava coberto por aquela bruma fina que Ouro Preto guarda entre as montanhas nas madrugadas de inverno. O sol mal havia ultrapassado a linha da Serra do Itacolomi quando Sofia desceu os últimos degraus da Ladeira de Santa Efigênia e pisou o calçamento de quartzito do largo. O ar carregava cheiro de café torrado vindo de uma das casas coloniais, e o chafariz &mdash; o mesmo onde Maria Dorotéia, a Marília de Dirceu, ouvia a água cair há mais de dois séculos &mdash; pingava ritmado, como um metrônomo de pedra.</p>
+
+  <!-- Figura 2 — IT-02 (chegada, de costas) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T07-IT-02-v3.jpg" alt="O caminhão inicia a subida da Rua Santa Efigênia; Sofia, Pedro e Lucas observam de pontos diferentes da rua e o Prof. Felipe chega" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; O Gancho: o caminhão inicia a subida da Rua Santa Efigênia e Sofia, Pedro e Lucas, de pontos diferentes da mesma rua, descrevem sua posição de formas diferentes &mdash; o Prof. Felipe chega para a atividade.</figcaption>
+  </figure>
+
+  <p>Pedro já estava ali, em pé na calçada esquerda da Rua Santa Efigênia, poucos metros acima do largo, com o caderno aberto nas mãos. Lucas tinha subido um pouco mais e esperava na calçada do outro lado da mesma rua, de olho na torre da igreja de Santa Efigênia, recortada lá no alto, onde a ladeira termina. Os três tinham combinado de se encontrar cedo para a atividade de campo do Prof.&nbsp;Felipe &mdash; algo sobre &ldquo;observar a cidade como um físico&rdquo;, dissera o professor na aula anterior, sem dar mais detalhes.</p>
+
+  <p>Foi quando o barulho chegou primeiro que a imagem. Um caminhão-basculante carregado de cascalho de granito cruzou o largo e engatou a subida da Rua Santa Efigênia, os pneus largos estalando sobre as pedras irregulares. O motorista reduziu a marcha logo no início da rampa, para vencer a ladeira sem arrancar nenhuma das pedras centenárias do calçamento. O cascalho na caçamba tremia a cada solavanco, e um fino pó cinza se desprendia no ar da manhã.</p>
+
+  <p>Sofia, parada na boca da rua, alinhada com o chafariz, olhou para o caminhão e anotou: &ldquo;Está passando na minha frente agora &mdash; bem diante do chafariz.&rdquo;</p>
+
+  <p>Pedro, da calçada de baixo, escreveu no caderno: &ldquo;O caminhão acabou de passar por mim &mdash; já está uns dez metros à frente.&rdquo;</p>
+
+  <p>Lucas, mais acima na ladeira, disse em voz alta: &ldquo;Ele ainda está longe da igreja de Santa Efigênia, lá em cima.&rdquo;</p>
+
+  <p>Os três descreviam o mesmo caminhão, no mesmo instante, na mesma rua &mdash; e nenhum dava a mesma posição.</p>
+
+  <p>Prof.&nbsp;Felipe apareceu na esquina da Rua Bernardo Vasconcelos, com a camisa polo em tom terroso e a prancheta debaixo do braço. Parou, ouviu os três relatos, e sorriu.</p>
+
+  <p>&mdash; Todos viram o mesmo caminhão. Nenhum deu a mesma posição. Quem está certo?</p>
+
+  <p>Silêncio.</p>
+
+  <p>&mdash; Todos estão &mdash; completou o professor. &mdash; Cada um de vocês escolheu, sem perceber, um ponto de referência diferente para descrever onde o caminhão estava. Sofia usou o chafariz. Pedro usou a si mesmo. Lucas usou a igreja lá no alto da ladeira. Três pontos de referência diferentes, três respostas diferentes — e nenhuma delas errada. Isso que vocês acabaram de fazer tem um nome na Física.</p>
+
+  <p>Sofia franziu a testa. &ldquo;Para descrever onde alguma coisa está&rdquo;, pensou, &ldquo;não basta apontar &mdash; precisa dizer de onde se está apontando.&rdquo;</p>
+
+  <p>Ela não sabia ainda, mas tinha acabado de formular, com palavras próprias, o conceito de referencial.</p>
+
+  <div class="separador"></div>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar</div>
+
+    <!-- Figura 3 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-03-v3.jpg" alt="Sofia, Pedro e Lucas diante do Chafariz de Marília" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Sofia, Pedro e Lucas exploram o Chafariz de Marília &mdash; o largo como ponto de referência.</figcaption>
+    </figure>
+
+    <p>O Largo Marília de Dirceu é um dos recantos mais antigos de Ouro Preto, no bairro Antônio Dias. No lado esquerdo do chafariz há uma placa que conta a sua história:</p>
+    <blockquote>&ldquo;Construído em 1759, esse artístico chafariz tem peças decorativas e funcionais, atribuídas a Manuel Francisco Lisboa. Foi erigido no paredão do Solar dos Ferrão, hoje Clube XV de Novembro, onde residiu Maria Dorotéia Joaquina de Seixas, a musa do poeta inconfidente Tomás Antônio Gonzaga, que ficou conhecida como Marília de Dirceu.&rdquo;</blockquote>
+    <p>Repare no nome: Manuel Francisco Lisboa foi o pai de Aleijadinho. E a &ldquo;Marília&rdquo; da fonte é a mesma dos versos de Tomás Antônio Gonzaga, um dos inconfidentes. Nesse pequeno largo se cruzam a arte barroca, a poesia e a história do Brasil &mdash; e, agora, a Física.</p>
+    <p>Vale a pena ir até lá pessoalmente: sente-se na escadaria, ouça a água cair no mesmo ponto onde Marília a ouvia há mais de dois séculos e escolha &mdash; como Sofia, Pedro e Lucas &mdash; um ponto de referência para descrever o movimento da cidade. A Física está em cada esquina de Ouro Preto, esperando o seu olhar.</p>
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Largo+Mar%C3%ADlia+de+Dirceu,+Ouro+Preto,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+
+</div><!-- fim ato-i -->
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ─── TÓPICO 1 ─── -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; A relatividade do repouso e do movimento</div>
+
+    <p>Antes de medir qualquer movimento, é preciso escolher de onde olhar. Numa mina, essa escolha aparece de forma concreta: a mesma correia transportadora pode estar &ldquo;parada&rdquo; ou &ldquo;em movimento&rdquo;, conforme quem a observa. A imagem a seguir mostra exatamente essa cena &mdash; o operador que caminha ao lado da correia carregada de minério, no mesmo ritmo que ela.</p>
+
+    <!-- Figura 4 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-04-v3.jpg" alt="Correia transportadora em operação — parada ou em movimento depende do referencial" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Parado ou em movimento? Na correia, a resposta depende de quem pergunta.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Na mineração colonial de Ouro Preto, os escravizados que trabalhavam nas galerias da Mina do Chico Rei &mdash; com até 2,5 km de extensão &mdash; precisavam descrever posições no escuro absoluto usando referências fixas: uma estaca cravada no chão, uma curva na rocha, o som da água de drenagem. Sem saber, praticavam o conceito de referencial &mdash; a escolha de um ponto fixo a partir do qual tudo o mais é descrito. Essa prática, anterior a qualquer formalismo, é tão antiga quanto a necessidade humana de se localizar.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Em Física, referencial é o corpo ou ponto que um observador adota como fixo para descrever o movimento dos demais corpos. Dizer que algo está &ldquo;em repouso&rdquo; ou &ldquo;em movimento&rdquo; só tem significado quando se especifica em relação a quê. Essa ideia &mdash; a relatividade do movimento &mdash; foi formalizada por Galileu Galilei no século XVII: não existe movimento absoluto; todo movimento é relativo a um referencial escolhido.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na rotina de uma mina a céu aberto, o técnico em mineração lida com referenciais a todo momento. Uma correia transportadora carregada de minério está &ldquo;parada&rdquo; para o operador que caminha ao lado dela na mesma velocidade &mdash; mas está claramente &ldquo;em movimento&rdquo; para o supervisor que a observa da torre de controle. A NR-22 exige que o trabalhador identifique corretamente o estado de movimento de máquinas antes de intervir: confundir &ldquo;parado em relação a mim&rdquo; com &ldquo;parado de verdade&rdquo; pode custar uma vida.</p>
+    </div>
+
+    <p>Prof.&nbsp;Felipe pediu aos três estudantes que repetissem a experiência do largo, mas agora com consciência. Sofia ficou parada no calçamento; Pedro caminhou ao lado do caminhão, na mesma velocidade; Lucas observou de um ponto mais alto da ladeira.</p>
+
+    <p>&mdash; Para Sofia, o caminhão se move. Para Pedro, que caminha junto, o caminhão parece parado. Para Lucas, lá de cima, os dois &mdash; Pedro e o caminhão &mdash; se movem juntos &mdash; explicou o professor.</p>
+
+    <p>O estado de movimento depende de quem observa. Essa é a primeira lição da cinemática: antes de descrever qualquer movimento, é preciso declarar o referencial.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Referencial e estado de movimento</div>
+      <table>
+        <thead>
+          <tr><th>Observador (referencial)</th><th>O caminhão está...</th><th>Pedro está...</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Sofia (parada no calçamento)</td><td>Em movimento</td><td>Em movimento</td></tr>
+          <tr><td>Pedro (caminhando junto ao caminhão)</td><td>Em repouso</td><td>Em repouso (ele próprio)</td></tr>
+          <tr><td>Lucas (mais acima na ladeira)</td><td>Em movimento</td><td>Em movimento</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O quadro mostra que o mesmo objeto pode estar simultaneamente em repouso e em movimento &mdash; basta mudar o referencial. Não há contradição: há escolha consciente do ponto de vista.</p>
+
+    <p>Galileu percebeu que, dentro de um navio que se move em linha reta e velocidade constante, nenhum experimento mecânico permite distinguir se o navio está parado ou em movimento. As borboletas voam da mesma forma, a água escorre igual, a bola cai no mesmo ponto. Esse é o Princípio da Relatividade de Galileu: as leis da Física são as mesmas em qualquer referencial que se mova em linha reta com velocidade constante.</p>
+
+    <p>Para o estudante de Ouro Preto, a versão cotidiana é simples: dentro do ônibus que desce a ladeira suavemente, seu suco sobre a mesa não se move &mdash; até o motorista frear.</p>
+  </div>
+
+  <!-- ─── TÓPICO 2 ─── -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Coordenadas em túneis e galerias</div>
+
+    <p>Se o estado de movimento depende do referencial, a posição de um corpo depende de uma origem. Nas galerias escuras da mineração colonial, essa origem ganhava forma em estacas de madeira cravadas ao longo do caminho. A imagem a seguir mostra essas estacas numeradas, rente à parede da galeria &mdash; as primeiras coordenadas da história.</p>
+
+    <!-- Figura 5 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-05-v3.jpg" alt="Galeria de mina com estacas de madeira marcando posições na escuridão" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Estacas na escuridão: as primeiras coordenadas nasceram antes da Física.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>As galerias da Mina do Chico Rei, no bairro Antônio Dias em Ouro Preto, usavam estacas de madeira fincadas no chão a intervalos regulares &mdash; tipicamente a cada braça (2,2 m) &mdash; como sistema de localização no escuro. Um minerador podia dizer &ldquo;estou na quinta estaca depois da boca da galeria&rdquo;, e qualquer colega saberia exatamente onde encontrá-lo. Essas estacas eram, na prática, coordenadas unidimensionais: uma origem (a boca da galeria), um sentido (para dentro) e posições marcadas por números.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Posição é a grandeza escalar que indica onde um corpo se encontra em relação a uma origem escolhida, ao longo de uma trajetória orientada. Em uma dimensão, a posição é um número com sinal: positivo se o corpo está no sentido adotado como positivo, negativo se está no sentido oposto. A posição não é distância &mdash; é localização com direção.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na topografia de minas subterrâneas modernas, a origem é fixada na boca da galeria e o sentido positivo aponta para dentro. Posições são registradas em metros, com coordenadas unidimensionais ao longo do eixo da galeria. Um erro de apenas 5 m na determinação da posição de um sistema de drenagem pode resultar em inundação catastrófica &mdash; a NR-22 exige que toda posição subterrânea seja registrada com precisão mínima de 1 m.</p>
+    </div>
+
+    <p>Prof.&nbsp;Felipe levou os estudantes mentalmente para dentro da Mina do Chico Rei.</p>
+
+    <p>&mdash; Imaginem uma galeria retilínea. A boca da mina é a origem &mdash; a posição zero. Para dentro é o sentido positivo. Cada estaca marca uma posição.</p>
+
+    <p>Sofia desenhou no caderno uma reta horizontal. Marcou um ponto como &ldquo;0&rdquo; (boca da galeria), e depois marcou estacas a cada 10 m: +10, +20, +30...</p>
+
+    <p>&mdash; E se eu caminhar para fora da mina, passando da boca? &mdash; perguntou.</p>
+
+    <p>&mdash; Então sua posição será negativa &mdash; respondeu o professor. &mdash; Posição &minus;5 m significa que você está 5 metros para fora da boca da galeria, no sentido oposto ao que escolhemos como positivo.</p>
+
+    <p>A posição é um número com sinal. O sinal não indica &ldquo;bom&rdquo; ou &ldquo;ruim&rdquo; &mdash; indica direção em relação à origem.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Posição</div>
+      <div class="equacao-formula"><em>x</em> = posição do corpo em relação à origem</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>x</em></td><td>Posição</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Exemplo:</strong> Um minerador na terceira estaca, a 30 m da boca da galeria, no sentido positivo (para dentro): <em>x</em> = <strong>+30 m</strong>. Se ele recuar 5 m para fora da boca: <em>x</em> = <strong>&minus;5 m</strong>.</div>
+    </div>
+
+    <p>Quando um corpo muda de posição, a diferença entre a posição final e a posição inicial tem nome: <span class="termo">deslocamento</span>. O deslocamento é uma grandeza com sinal &mdash; informa não apenas o quanto o corpo se moveu, mas em que sentido.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Deslocamento</div>
+      <div class="equacao-formula">&Delta;<em>x</em> = <em>x</em><sub>f</sub> &minus; <em>x</em><sub>i</sub></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&Delta;<em>x</em></td><td>Deslocamento</td><td>m (metro)</td></tr>
+          <tr><td><em>x</em><sub>f</sub></td><td>Posição final</td><td>m (metro)</td></tr>
+          <tr><td><em>x</em><sub>i</sub></td><td>Posição inicial</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> O minerador caminha da estaca em <em>x</em><sub>i</sub> = +10 m até a estaca em <em>x</em><sub>f</sub> = +40 m. &Delta;<em>x</em> = 40 &minus; 10 = <strong>+30 m</strong>. O sinal positivo indica que ele se deslocou para dentro da mina. Segundo caso: o minerador retorna de <em>x</em><sub>i</sub> = +40 m até <em>x</em><sub>f</sub> = +10 m. &Delta;<em>x</em> = 10 &minus; 40 = <strong>&minus;30 m</strong>. O sinal negativo indica deslocamento no sentido contrário &mdash; para fora.</div>
+    </div>
+
+    <p>Sofia percebeu algo: o deslocamento pode ser positivo, negativo ou nulo &mdash; mas nunca é a mesma coisa que a distância percorrida. Se o minerador for até a estaca +40 e voltar para +10, o deslocamento total é zero (voltou ao ponto de partida), mas ele caminhou 60 m no total. Essa diferença será fundamental no Tópico 4.</p>
+  </div>
+
+  <!-- ─── TÓPICO 3 ─── -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Instante e intervalo de tempo</div>
+
+    <p>Assim como a posição precisa de uma origem no espaço, o tempo precisa de um instante de partida. Em Ouro Preto, esse instante era anunciado pelos sinos das igrejas. A imagem a seguir mostra o sino nas torres da Igreja de Nossa Senhora da Conceição &mdash; cada badalada, um ponto exato e sem duração na linha do tempo.</p>
+
+    <!-- Figura 6 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-06-v3.jpg" alt="Sino de igreja colonial — o instante do repique como ponto no tempo" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; O instante do repique: um ponto no tempo, sem duração, preciso como uma estaca no espaço.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Antes de relógios mecânicos se tornarem acessíveis no Brasil colônia, os moradores de Ouro Preto marcavam o tempo pelos sinos das igrejas. O sino da Matriz de Nossa Senhora do Pilar marcava as horas canônicas; o da Igreja de São Francisco de Assis, as missas. Cada badalada era um instante &mdash; um ponto no tempo, sem duração. O intervalo entre duas badaladas era mensurável: contava-se mentalmente, usava-se o próprio pulso, ou observava-se a sombra de um gnômon no adro da igreja. O tempo, como grandeza física, nasceu dessa necessidade de contar intervalos entre eventos.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Instante é um ponto específico na linha do tempo, representado pela letra <em>t</em> e medido em segundos (s) a partir de uma origem temporal escolhida &mdash; o &ldquo;momento zero&rdquo;. Intervalo de tempo é a duração entre dois instantes: a diferença &Delta;<em>t</em> = <em>t</em><sub>f</sub> &minus; <em>t</em><sub>i</sub>. A relação entre instante e intervalo de tempo é análoga à relação entre posição e deslocamento: o instante localiza no tempo assim como a posição localiza no espaço; o intervalo mede a duração assim como o deslocamento mede a mudança de posição.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, intervalos de tempo são críticos para segurança. O tempo entre o sinal de alerta e a detonação de uma bancada é padronizado em 30 s &mdash; violá-lo é infração grave sob a NR-22. Cronômetros digitais são usados para medir o intervalo entre a ignição e a detonação de cada furo, garantindo que a sequência de retardos esteja correta. Um erro de 0,5 s pode significar a diferença entre uma detonação controlada e uma projeção de fragmentos.</p>
+    </div>
+
+    <p>Prof.&nbsp;Felipe sacou o celular e mostrou o cronômetro zerado.</p>
+
+    <p>&mdash; Quando eu apertar &ldquo;iniciar&rdquo;, esse será o nosso instante zero. Tudo que acontecer depois será medido a partir desse ponto.</p>
+
+    <p>Ele apertou. O cronômetro começou a correr.</p>
+
+    <p>&mdash; Agora, Sofia, bata palmas quando quiser.</p>
+
+    <p>Ela esperou alguns segundos e bateu palmas. O cronômetro marcava 4,7 s.</p>
+
+    <p>&mdash; O instante da sua palma é <em>t</em> = 4,7 s. Não é uma duração &mdash; é um ponto na linha do tempo, como uma estaca na galeria. É onde o evento aconteceu no tempo.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Instante e intervalo de tempo</div>
+      <table>
+        <thead>
+          <tr><th>Conceito</th><th>Analogia espacial</th><th>Símbolo</th><th>O que mede</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Instante</td><td>Posição (<em>x</em>)</td><td><em>t</em></td><td>Onde no tempo um evento ocorre</td></tr>
+          <tr><td>Intervalo</td><td>Deslocamento (&Delta;<em>x</em>)</td><td>&Delta;<em>t</em></td><td>Quanto tempo decorreu entre dois eventos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Pedro bateu palmas em <em>t</em><sub>1</sub> = 4,7 s. Lucas bateu em <em>t</em><sub>2</sub> = 9,2 s. O intervalo entre as duas palmas é a diferença entre os dois instantes.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Intervalo de tempo</div>
+      <div class="equacao-formula">&Delta;<em>t</em> = <em>t</em><sub>f</sub> &minus; <em>t</em><sub>i</sub></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&Delta;<em>t</em></td><td>Intervalo de tempo</td><td>s (segundo)</td></tr>
+          <tr><td><em>t</em><sub>f</sub></td><td>Instante final</td><td>s (segundo)</td></tr>
+          <tr><td><em>t</em><sub>i</sub></td><td>Instante inicial</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> &Delta;<em>t</em> = 9,2 &minus; 4,7 = <strong>4,5 s</strong>. Esse é o intervalo entre as palmas de Pedro e Lucas.</div>
+    </div>
+
+    <p>O intervalo de tempo é sempre positivo quando <em>t</em><sub>f</sub> &gt; <em>t</em><sub>i</sub> &mdash; o tempo, diferente do espaço, só corre numa direção. Mas a analogia com o deslocamento é poderosa: assim como &Delta;<em>x</em> = 0 significa &ldquo;não mudou de lugar&rdquo;, &Delta;<em>t</em> = 0 significaria dois eventos simultâneos &mdash; acontecendo no mesmo instante.</p>
+
+    <p>A humanidade inventou três escalas para medir o tempo: calendários (dias, meses, anos &mdash; intervalos longos), relógios (horas, minutos, segundos &mdash; intervalos intermediários) e cronômetros (frações de segundo &mdash; intervalos curtos). Cada escala tem uma precisão diferente e serve a um contexto diferente.</p>
+
+    <p>Na mineração moderna, o GPS depende de relógios atômicos a bordo dos satélites, capazes de medir intervalos de tempo com precisão de nanossegundos (10<sup>&minus;9</sup> s). Sem essa precisão, o erro de posicionamento do GPS seria de dezenas de metros &mdash; inaceitável para a topografia de minas.</p>
+  </div>
+
+  <!-- ─── TÓPICO 4 ─── -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Trajetória: o caminho no espaço</div>
+
+    <p>Nem todo caminho é uma linha reta. Numa mina a céu aberto, a estrada desce em espiral pelos níveis da cava, e o percurso é muito mais longo que a distância vertical entre o topo e o fundo. A imagem a seguir mostra essa rampa helicoidal vista do alto &mdash; a diferença entre trajetória e deslocamento desenhada na própria montanha.</p>
+
+    <!-- Figura 7 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-07-v3.jpg" alt="Rampa helicoidal de mina a céu aberto — trajetória curvilínea" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; A espiral que revela: o caminho é sempre mais longo que a distância em linha reta.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>As galerias da mineração colonial em Ouro Preto raramente eram retilíneas &mdash; seguiam os veios de ouro, que serpentavam pela rocha de forma imprevisível. Os mineradores desciam por rampas escavadas em espiral, acompanhando a inclinação natural do terreno. O caminho percorrido era sempre mais longo que a distância em linha reta entre a entrada e o ponto de lavra. Sem saber, aqueles mineradores viviam a diferença entre trajetória e deslocamento &mdash; um conceito que a Física só formalizaria séculos depois.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Trajetória é a curva descrita por um corpo durante seu movimento, vista a partir de um referencial específico. O comprimento da trajetória (<em>&#8467;</em>) é a distância total percorrida ao longo da curva &mdash; é sempre positivo ou nulo. O deslocamento (&Delta;<em>x</em>) é a diferença entre posição final e inicial &mdash; pode ser positivo, negativo ou nulo. As duas grandezas só coincidem em módulo quando o movimento é retilíneo e sem inversão de sentido.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração a céu aberto, rampas helicoidais conectam os diferentes níveis da cava. Um caminhão que desce do nível 0 ao nível &minus;60 m percorre uma trajetória helicoidal de várias centenas de metros, mas seu deslocamento vertical é apenas 60 m. Correias transportadoras curvas seguem trajetórias que precisam ser medidas com precisão para calcular o comprimento da correia, o número de roletes e a tensão no acionamento.</p>
+    </div>
+
+    <p>Sofia desenhou dois caminhos no caderno: uma reta (galeria sem curvas) e uma espiral (rampa helicoidal).</p>
+
+    <p>&mdash; No primeiro caso &mdash; explicou Prof.&nbsp;Felipe &mdash;, a trajetória é retilínea: o corpo se move em linha reta. No segundo, é curvilínea: o caminho tem curvas. A trajetória depende do referencial: uma formiga caminhando na borda de uma roda descreve um círculo para quem observa de fora, mas uma reta para outra formiga parada na roda.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Relação entre comprimento da trajetória e deslocamento</div>
+      <div class="equacao-formula"><em>&#8467;</em> &ge; |&Delta;<em>x</em>|</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>&#8467;</em></td><td>Comprimento da trajetória (distância percorrida)</td><td>m (metro)</td></tr>
+          <tr><td>|&Delta;<em>x</em>|</td><td>Módulo do deslocamento</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Um caminhão desce uma rampa helicoidal de comprimento <em>&#8467;</em> = 480 m entre dois níveis separados por |&Delta;<em>x</em>| = 60 m (vertical). Note que 480 &ge; 60 &mdash; o caminho é muito mais longo que o deslocamento direto.</div>
+    </div>
+
+    <p>A igualdade só ocorre em uma condição especial.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Condição de igualdade</div>
+      <div class="equacao-formula"><em>&#8467;</em> = |&Delta;<em>x</em>| &hArr; trajetória retilínea e sem inversão de sentido</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>&#8467;</em></td><td>Comprimento da trajetória</td><td>m (metro)</td></tr>
+          <tr><td>|&Delta;<em>x</em>|</td><td>Módulo do deslocamento</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Um minerador caminha em linha reta da estaca <em>x</em><sub>i</sub> = +10 m até <em>x</em><sub>f</sub> = +40 m, sem voltar. <em>&#8467;</em> = 30 m e |&Delta;<em>x</em>| = |40 &minus; 10| = 30 m. Iguais. Mas se ele for até +40 e voltar para +10, <em>&#8467;</em> = 60 m e |&Delta;<em>x</em>| = 0 m. Completamente diferentes.</div>
+    </div>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Distância percorrida (<em>&#8467;</em>) e deslocamento (&Delta;<em>x</em>)</div>
+      <table>
+        <thead>
+          <tr><th>Grandeza</th><th>Sinal</th><th>Pode ser zero?</th><th>Depende do caminho?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Distância percorrida (<em>&#8467;</em>)</td><td>Sempre &ge; 0</td><td>Sim (corpo parado)</td><td>Sim &mdash; mede todo o caminho</td></tr>
+          <tr><td>Deslocamento (&Delta;<em>x</em>)</td><td>Positivo, negativo ou zero</td><td>Sim (volta ao início)</td><td>Não &mdash; só depende de <em>x</em><sub>i</sub> e <em>x</em><sub>f</sub></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── TÓPICO 5 ─── -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; O tempo como dimensão técnica na mineração</div>
+
+    <p>Na mineração moderna, o tempo deixou de ser apenas uma grandeza a medir e virou um recurso a controlar. Numa sala de operações, cada segundo do ciclo de um caminhão é cronometrado, comparado e otimizado. A imagem a seguir mostra esse ambiente &mdash; o tempo transformado em minério e decisão.</p>
+
+    <!-- Figura 8 — IT-08 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-08-v3.jpg" alt="Painel de controle de operações de mina — tempo como variável de produção" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; O tempo como recurso: na sala de operações, cada segundo carrega minério e decisão.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Em 1761, o relojoeiro inglês John Harrison construiu o cronômetro marítimo H4, capaz de manter a hora com erro de apenas 5 segundos após 81 dias no mar. Essa precisão revolucionou a navegação: pela primeira vez, era possível determinar a longitude de um navio comparando a hora local com a hora de Greenwich. A conexão entre medir o tempo com precisão e localizar-se no espaço &mdash; o princípio que sustenta o GPS moderno &mdash; já estava ali, dois séculos antes dos satélites.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O segundo é a unidade SI de tempo. Desde 1967, é definido como a duração de 9.192.631.770 oscilações da radiação emitida pelo átomo de césio-133 na transição entre dois níveis hiperfinos do estado fundamental. Essa definição confere ao segundo uma precisão de 1 parte em 10<sup>15</sup> &mdash; o equivalente a errar 1 segundo em 30 milhões de anos. Período (<em>T</em>) é o tempo de uma oscilação completa; frequência (<em>f</em>) é o número de oscilações por segundo. As duas grandezas são inversas: <em>T</em> = 1/<em>f</em>.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração moderna, o tempo é recurso e variável de controle. O tempo de ciclo de um caminhão fora de estrada &mdash; carga, transporte, descarga, retorno &mdash; determina a produtividade da operação. Um ciclo típico de 20 minutos significa 3 ciclos por hora por caminhão. A frota inteira é sincronizada por GPS, e atrasos de 2 minutos em um único caminhão propagam filas em toda a cadeia. A NR-22 também regula intervalos de descanso: 15 minutos a cada 90 minutos de exposição contínua a vibração de corpo inteiro &mdash; um intervalo de tempo que protege a saúde do trabalhador.</p>
+    </div>
+
+    <p>Prof.&nbsp;Felipe segurou um pêndulo improvisado &mdash; uma pedra amarrada a um barbante &mdash; e o soltou. O pêndulo oscilou de um lado para o outro.</p>
+
+    <p>&mdash; O tempo que a pedra leva para ir e voltar uma vez completa chama-se período &mdash; explicou. &mdash; Se eu contar quantas idas e voltas completas ela faz em um segundo, tenho a frequência.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 6 &mdash; Período e frequência</div>
+      <div class="equacao-formula"><em>T</em> = 1 / <em>f</em></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>T</em></td><td>Período</td><td>s (segundo)</td></tr>
+          <tr><td><em>f</em></td><td>Frequência</td><td>Hz (hertz = 1/s)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> O pêndulo do Prof.&nbsp;Felipe completa uma oscilação a cada 1,4 s. Logo <em>T</em> = 1,4 s e <em>f</em> = 1/1,4 = <strong>0,71 Hz</strong> &mdash; aproximadamente 0,71 oscilação por segundo.</div>
+    </div>
+
+    <p>A física da mineração lida com intervalos de tempo que vão de nanossegundos a anos. Os prefixos do SI organizam essa enormidade.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 7 &mdash; Prefixos de tempo</div>
+      <div class="equacao-formula">1 ms = 10<sup>&minus;3</sup> s &nbsp;&nbsp;|&nbsp;&nbsp; 1 &mu;s = 10<sup>&minus;6</sup> s &nbsp;&nbsp;|&nbsp;&nbsp; 1 ns = 10<sup>&minus;9</sup> s</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Prefixo</th><th>Símbolo</th><th>Fator</th><th>Exemplo na mineração</th></tr></thead>
+        <tbody>
+          <tr><td>milissegundo</td><td>ms</td><td>10<sup>&minus;3</sup> s</td><td>Retardo entre detonações sequenciais (~25 ms)</td></tr>
+          <tr><td>microssegundo</td><td>&mu;s</td><td>10<sup>&minus;6</sup> s</td><td>Tempo de resposta de um sensor de vibração</td></tr>
+          <tr><td>nanossegundo</td><td>ns</td><td>10<sup>&minus;9</sup> s</td><td>Precisão do relógio atômico de um satélite GPS</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O GPS determina posição comparando os instantes de chegada de sinais de pelo menos quatro satélites, cada um equipado com um relógio atômico. A velocidade da luz é constante, então a diferença de tempo entre os sinais permite calcular a distância a cada satélite &mdash; e, por triangulação, a posição do receptor.</p>
+
+    <p>Mas há um detalhe extraordinário: os relógios dos satélites GPS adiantam 38 microssegundos por dia em relação aos relógios na superfície, por efeito da relatividade geral de Einstein (a gravidade mais fraca na órbita faz o tempo correr mais rápido). Sem a correção relativística, o erro de posicionamento acumularia 11 km por dia &mdash; tornando o GPS inútil. O tempo, que parecia uma grandeza simples, revela-se entrelaçado com o próprio espaço.</p>
+  </div>
+
+</div><!-- fim ato-ii -->
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>O entardecer trouxe Sofia de volta ao Largo Marília de Dirceu, e com ela vieram Pedro, Lucas e o Prof. Felipe. A luz alaranjada do sol, agora descendo atrás da Serra de Ouro Preto, tingia o chafariz de tons quentes que a manhã não conhecera. O mesmo largo, o mesmo calçamento, o mesmo chafariz &mdash; mas, para Sofia, tudo parecia diferente. Não porque o lugar tivesse mudado, mas porque ela agora sabia nomeá-lo de outra forma.</p>
+
+  <!-- Figura 9 — IT-09 (retorno, de costas) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T07-IT-09-v3.jpg" alt="Prof. Felipe e os três estudantes de costas no Largo Marília de Dirceu ao entardecer" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; O fechamento: o Prof. Felipe e os três estudantes retornam ao Largo Marília de Dirceu ao entardecer &mdash; o mesmo chafariz da manhã, agora com outro olhar.</figcaption>
+  </figure>
+
+  <p><span class="termo">Referencial</span>: o ponto a partir do qual se observa. <span class="termo">Posição</span>: onde o corpo está, com sinal. <span class="termo">Deslocamento</span>: quanto mudou de posição. <span class="termo">Instante</span>: quando aconteceu. <span class="termo">Intervalo de tempo</span>: quanto durou. <span class="termo">Trajetória</span>: o caminho percorrido. Seis palavras &mdash; seis tijolos que, juntos, formam a primeira parede da cinemática.</p>
+
+  <p>Sofia olhou para o chafariz &mdash; aquele mesmo de onde descrevera a posição do caminhão pela manhã &mdash; e pensou que Maria Dorotéia, Marília de Dirceu, também observava dali o movimento dos tropeiros e carroças há mais de dois séculos. Os referenciais mudam, os observadores mudam, mas a Física é a mesma.</p>
+
+  <p>Na próxima aula, esses seis conceitos ganharão movimento: velocidade média, velocidade instantânea e o significado físico de uma reta no gráfico posição &times; tempo. A parede terá janelas.</p>
+</div>
+
+<!-- ═══════════════════ CONEXÕES INTERDISCIPLINARES ═══════════════════ -->
+<div class="ato" id="conexoes">
+  <div class="ato-titulo">Problemas Interdisciplinares</div>
+
+  <p><em>Cinco problemas que conectam a Física com outras áreas do conhecimento técnico e científico. Cada problema exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- Figura 10 — IT-10 (Conexões Interdisciplinares) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T07-IT-10-v3.jpg" alt="Mapa radial de conexões interdisciplinares da cinemática" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas convergem num só diagrama: as conexões que a cinemática tece entre o espaço e o tempo.</figcaption>
+  </figure>
+
+  <!-- C5 Protocol Table -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; Metodologia para Problemas Interdisciplinares</div>
+    <p style="margin-bottom:12px;font-family:var(--serif);font-size:1rem;color:oklch(0.80 0 0);">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 11 — IT-11 (Protocolo C5 / RCP) -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T07-IT-11-v3.jpg" alt="O método científico de resolução de problemas em cena — as oito etapas do RCP" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>O que está sendo pedido?</td><td>Releia o enunciado. Escreva com suas próprias palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td>Quais são os dados?</td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td>Quais são as hipóteses?</td><td>Declare o que você vai assumir (trajetória retilínea, sem inversão etc.).</td></tr>
+        <tr><td>4</td><td>Qual é o desenho do problema?</td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td>Quais são as equações?</td><td>Identifique a equação do TT. Isole algebricamente a variável pedida.</td></tr>
+        <tr><td>6</td><td>Cálculo com unidades</td><td>Substitua os valores. Acompanhe as unidades passo a passo até o resultado.</td></tr>
+        <tr><td>7</td><td>Análise de resultados</td><td>O resultado faz sentido? Compare com valores típicos da mineração.</td></tr>
+        <tr><td>8</td><td>Responda o que foi pedido</td><td>Escreva a resposta completa, com unidade e interpretação no contexto.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- Atividade 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Topografia</div>
+    <p>Uma galeria retilínea de uma mina subterrânea em Mariana tem 350 m de extensão. A boca da galeria é a origem (<em>x</em> = 0) e o sentido positivo aponta para dentro. Um topógrafo está na posição <em>x</em><sub>i</sub> = +80 m e caminha até a posição <em>x</em><sub>f</sub> = +260 m para instalar um sensor de ventilação. Determine o deslocamento do topógrafo e compare com a distância percorrida.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Calcular o deslocamento do topógrafo e compará-lo com a distância percorrida.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>x</em><sub>i</sub> = +80 m (posição inicial); <em>x</em><sub>f</sub> = +260 m (posição final); movimento retilíneo, sem inversão de sentido.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Trajetória retilínea ao longo da galeria; o topógrafo não muda de sentido durante o percurso.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">Boca [0]----[+80]====caminho====[+260]----[+350] Fundo. O topógrafo caminha de +80 a +260, em linha reta.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">&Delta;<em>x</em> = <em>x</em><sub>f</sub> &minus; <em>x</em><sub>i</sub> (Equação 2). Como o movimento é retilíneo sem inversão: <em>&#8467;</em> = |&Delta;<em>x</em>| (Equação 5).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">&Delta;<em>x</em> = 260 m &minus; 80 m = <strong>+180 m</strong>. <em>&#8467;</em> = |+180| = <strong>180 m</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">180 m é pouco mais da metade da galeria (350 m) &mdash; plausível para uma caminhada interna. O sinal positivo confirma que ele se deslocou para dentro da mina.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O deslocamento do topógrafo é +180 m (sentido para dentro da mina). A distância percorrida é igual ao módulo do deslocamento (180 m), pois o movimento foi retilíneo e sem inversão de sentido.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e História</div>
+    <p>No século XVIII, um minerador na Mina do Chico Rei partia da boca da galeria (<em>x</em> = 0) às 6h00 (<em>t</em><sub>1</sub> = 0), alcançava o veio de ouro na posição <em>x</em> = +200 m às 6h40 (<em>t</em><sub>2</sub>), e retornava à boca às 7h30 (<em>t</em><sub>3</sub>). Determine: (a) o intervalo de tempo da ida, (b) o intervalo total do ciclo, (c) o deslocamento total e (d) a distância total percorrida.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Quatro grandezas: intervalo de ida, intervalo total, deslocamento total e distância total.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>t</em><sub>1</sub> = 0 (instante de partida, 6h00); <em>t</em><sub>2</sub> = 40 min (instante de chegada ao veio, 6h40); <em>t</em><sub>3</sub> = 90 min (instante de retorno à boca, 7h30); <em>x</em><sub>1</sub> = 0, <em>x</em><sub>2</sub> = +200 m, <em>x</em><sub>3</sub> = 0.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Galeria retilínea; o minerador não faz paradas intermediárias.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[0]===ida===[+200]===volta===[0]. Ida: 0 &rarr; +200 m. Volta: +200 &rarr; 0.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">&Delta;<em>t</em> = <em>t</em><sub>f</sub> &minus; <em>t</em><sub>i</sub> (Equação 3); &Delta;<em>x</em> = <em>x</em><sub>f</sub> &minus; <em>x</em><sub>i</sub> (Equação 2).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">(a) &Delta;<em>t</em><sub>ida</sub> = 40 &minus; 0 = <strong>40 min</strong>. (b) &Delta;<em>t</em><sub>total</sub> = 90 &minus; 0 = <strong>90 min</strong> (= 1 h 30 min). (c) &Delta;<em>x</em><sub>total</sub> = <em>x</em><sub>3</sub> &minus; <em>x</em><sub>1</sub> = 0 &minus; 0 = <strong>0 m</strong>. (d) <em>&#8467;</em><sub>total</sub> = 200 + 200 = <strong>400 m</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">O deslocamento é zero (voltou ao ponto de partida), mas a distância percorrida é 400 m &mdash; quase meio quilômetro dentro de uma mina colonial, no escuro, em 90 minutos. Plausível para as condições da época.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">(a) O intervalo de ida foi 40 min. (b) O ciclo completo durou 90 min. (c) O deslocamento total foi zero (retornou à origem). (d) A distância total percorrida foi 400 m. Este problema ilustra a diferença fundamental entre deslocamento e distância percorrida.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Matemática</div>
+    <p>Uma correia transportadora segue uma trajetória curvilínea entre o britador primário (posição A) e o pátio de estocagem (posição B), percorrendo <em>&#8467;</em> = 1.200 m ao longo da curva. A distância em linha reta entre A e B é de 850 m. Um técnico precisa decidir se usará a Equação 5 (<em>&#8467;</em> = |&Delta;<em>x</em>|) para estimar o comprimento da correia. Avalie: a equação é válida neste caso? Justifique usando a relação entre <em>&#8467;</em> e |&Delta;<em>x</em>|.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Avaliar se a condição <em>&#8467;</em> = |&Delta;<em>x</em>| se aplica ao caso da correia curvilínea.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>&#8467;</em> = 1.200 m (comprimento da trajetória, curvilínea); |&Delta;<em>x</em>| = 850 m (distância em linha reta entre A e B).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">A correia segue trajetória curvilínea fixa.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[A]--curva (1200 m)--[B] e [A]---reta (850 m)---[B].</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text"><em>&#8467;</em> &ge; |&Delta;<em>x</em>| (Equação 4); <em>&#8467;</em> = |&Delta;<em>x</em>| somente se retilíneo e sem inversão (Equação 5).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text"><em>&#8467;</em> = 1.200 m e |&Delta;<em>x</em>| = 850 m &rarr; 1.200 &gt; 850 &rarr; <em>&#8467;</em> &gt; |&Delta;<em>x</em>|.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Como <em>&#8467;</em> &ne; |&Delta;<em>x</em>|, a condição de igualdade não se aplica. A trajetória é curvilínea, portanto a distância percorrida ao longo da correia é maior que a distância em linha reta. Usar |&Delta;<em>x</em>| como estimativa subestimaria o comprimento da correia em 350 m &mdash; o que levaria a comprar menos correia do que o necessário.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A Equação 5 (<em>&#8467;</em> = |&Delta;<em>x</em>|) NÃO é válida neste caso, pois a trajetória da correia é curvilínea. O comprimento real (1.200 m) é 41% maior que a distância em linha reta (850 m). O técnico deve medir o comprimento ao longo da curva, não a distância direta.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Segurança do Trabalho</div>
+    <p>A NR-22 estabelece que trabalhadores expostos a vibração de corpo inteiro devem ter 15 minutos de descanso a cada 90 minutos de exposição contínua. Um operador de caminhão fora de estrada começa seu turno às 7h00. Em que instantes ele deve iniciar os intervalos de descanso nas primeiras 4 horas de turno? Represente os instantes e intervalos numa linha do tempo.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Determinar os instantes (horas do dia) em que o operador inicia cada intervalo de descanso.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>t</em><sub>0</sub> = 7h00 (início do turno); &Delta;<em>t</em><sub>exposição</sub> = 90 min; &Delta;<em>t</em><sub>descanso</sub> = 15 min; duração total: 4 h = 240 min.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Exposição contínua sem pausas além das regulamentares; o ciclo é regular.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">7h00---[90 min trabalho]---8h30---[15 min descanso]---8h45---[90 min]---10h15---[15 min]---10h30---...</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Instante de cada pausa: soma acumulada de intervalos de trabalho e descanso a partir de <em>t</em><sub>0</sub>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">1.&ordf; pausa: <em>t</em><sub>0</sub> + 90 min = 7h00 + 1h30 = <strong>8h30</strong>. 2.&ordf; pausa: 8h30 + 15 min + 90 min = <strong>10h15</strong>. 3.&ordf; pausa: 10h15 + 15 min + 90 min = <strong>12h00</strong> (já fora das 4 h iniciais, pois 12h00 &minus; 7h00 = 5 h). Portanto, nas primeiras 4 horas (até 11h00): <strong>duas pausas</strong>, às 8h30 e às 10h15.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Duas pausas em 4 horas é razoável &mdash; o operador trabalha ~3 h efetivas e descansa 30 min. O ritmo é sustentável e compatível com a NR-22.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O operador deve iniciar o 1.&ordm; descanso às 8h30 e o 2.&ordm; às 10h15. Cada ciclo de 105 min (90 + 15) garante que a exposição contínua nunca exceda o limite de 90 min estabelecido pela NR-22.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e Geografia</div>
+    <p>O sistema GPS determina posição comparando instantes de chegada de sinais de 4 satélites. Cada satélite transmite um sinal que viaja à velocidade da luz (<em>c</em> = 3,0 &times; 10<sup>8</sup> m/s). Se o sinal de um satélite leva 0,068 s para chegar ao receptor de um topógrafo na Serra de Ouro Preto, determine a distância entre o satélite e o receptor. Expresse o resultado em km.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">A distância entre o satélite GPS e o receptor, em km.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>c</em> = 3,0 &times; 10<sup>8</sup> m/s (velocidade da luz); &Delta;<em>t</em> = 0,068 s (tempo de viagem do sinal).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">O sinal viaja em linha reta (espaço livre entre satélite e receptor); velocidade constante e igual a <em>c</em>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[Satélite] ---sinal (<em>c</em>, &Delta;<em>t</em>)---&gt; [Receptor na Serra de Ouro Preto]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text"><em>d</em> = <em>c</em> &times; &Delta;<em>t</em> (distância = velocidade &times; tempo &mdash; conceito que será formalizado na T08, mas intuitivamente acessível).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text"><em>d</em> = 3,0 &times; 10<sup>8</sup> m/s &times; 0,068 s = 2,04 &times; 10<sup>7</sup> m = <strong>20.400 km</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Satélites GPS orbitam a ~20.200 km de altitude &mdash; o resultado de 20.400 km é coerente (inclui a componente horizontal da distância). A precisão da medida depende de cronometrar esse intervalo com erro inferior a 10 ns &mdash; por isso os relógios atômicos são indispensáveis.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A distância entre o satélite e o receptor é aproximadamente 20.400 km, compatível com a órbita dos satélites GPS. O problema demonstra que medir tempo com precisão de nanossegundos é o que permite ao GPS localizar um ponto na superfície com erro de poucos metros.</div></div>
+    </details>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIÊNCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+  <div class="ciencia-arte-obra"><strong>Gravura:</strong> <em>Relatividade</em> &mdash; Maurits Cornelis Escher (1953)</div>
+
+  <p>Em <em>Relatividade</em>, Escher desenhou um mundo onde três campos gravitacionais coexistem: escadarias que sobem para um observador descem para outro; o chão de um personagem é o teto de seu vizinho. Ninguém está errado &mdash; cada um vive em seu próprio referencial, e as leis da física funcionam perfeitamente dentro de cada um deles. A litogravura é, talvez sem que o artista pretendesse, a ilustração mais elegante do conceito que Sofia descobriu no Largo Marília de Dirceu: a posição, o movimento e até a direção de &ldquo;cima&rdquo; dependem de onde você está e de como escolhe olhar.</p>
+
+  <p>Escher nunca estudou física formalmente, mas sua obsessão por simetria e perspectiva o levou ao mesmo território que Galileu e Newton exploraram com equações: a realidade não tem um ponto de vista privilegiado.</p>
+
+  <!-- Figura 12 — IT-12 (Ciência e Arte) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T07-IT-12-v3.jpg" alt="Relatividade (1953), gravura de M. C. Escher — escadarias impossíveis e múltiplos referenciais gravitacionais" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 12</span> &mdash; Escher e a Física: três gravidades num só mundo &mdash; a prova gráfica de que a posição depende do ponto de vista.</figcaption>
+  </figure>
+
+  <blockquote>&ldquo;O que é, afinal, o tempo? Se ninguém me pergunta, eu sei; se me perguntam e quero explicar, não sei.&rdquo;</blockquote>
+  <div class="ca-autor">&mdash; Santo Agostinho (354&ndash;430)</div>
+
+  <div class="footnote"><strong>Maurits Cornelis Escher</strong> (Leeuwarden, Países Baixos, 1898 &mdash; Hilversum, 1972). Artista gráfico neerlandês, célebre por suas litogravuras e xilogravuras que exploram simetrias, tessellações, espaços impossíveis e paradoxos visuais. <em>Relatividade</em> (1953) é uma de suas obras mais conhecidas: apresenta um mundo arquitetônico onde três forças gravitacionais distintas operam simultaneamente, cada uma servindo de referencial para um grupo diferente de habitantes.</div>
+
+  <div class="footnote"><strong>Aurélio Agostinho de Hipona</strong> (Tagaste, Numídia, 354 &mdash; Hipona, 430). Filósofo, teólogo e bispo cristão, um dos mais influentes pensadores do Ocidente. Em <em>Confissões</em> (c. 397), Livro XI, capítulo 14, formulou a célebre reflexão sobre a natureza do tempo que antecipou em 15 séculos os paradoxos da relatividade. A frase permanece como uma das mais citadas da filosofia ocidental.</div>
+</div>
+
+<!-- ═══════════════════ REFERÊNCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo">Referências &mdash; Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MÁXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio</em>, v. único. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Referências &mdash; Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Declaração de autoria</div>
+  <p>Estas Trilhas de Aprendizagem são concebidas, dirigidas e revisadas por uma equipe humana &mdash; autor, coautor, colaboradores, monitores e a equipe do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) e equipe da Coordenadoria da Área de Física (CODAFIS).</p>
+  <p>A inteligência artificial entra no processo como ferramenta, nunca como autora: é usada sob curadoria humana, com princípios claros, diretrizes pedagógicas explícitas e honestidade intelectual.</p>
+  <p>Assim, declaramos abertamente o uso de IA como assistente de redação e diagramação de todos os Objetos de Aprendizagem (Claude Opus 4.8 e Claude Cowork, Anthropic, 2026; Gemini Notebook, Google, 2026), do mesmo modo que se declara o uso de qualquer ferramenta de autoria.</p>
+</div>
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T07 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T07-TT-v4';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

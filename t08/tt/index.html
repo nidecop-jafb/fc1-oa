@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T08 · Velocidade Média e Instantânea — Texto Temático v1</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; O Terminal Rodoviário 8 de Julho ao amanhecer, antes da primeira partida</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Um ponteiro de velocímetro e uma estrada que se estreita ao longe: o símbolo de quem aprendeu que a pressa tem número</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; A partida: o trio de costas embarca no ônibus das 7h30 enquanto o Prof. Julio distribui os cronômetros</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Sofia, Pedro e Lucas na plataforma do Terminal 8 de Julho &mdash; o quilômetro zero de toda medida de velocidade</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Hodômetro e relógio, lado a lado: toda velocidade nasce do encontro entre uma distância e uma duração</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Três trechos numa página de caderno: a tabela que desmente a média das médias</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; O ponteiro nos oitenta: a velocidade de agora, não a velocidade de antes</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Dois ônibus, uma estrada, sinais opostos: o sentido do movimento cabe num sinal de mais ou de menos</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; A correia em regime: cada metro por segundo vale mil toneladas por hora</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio desembarca de costas na mesma plataforma, ao entardecer &mdash; a viagem inteira agora cabe num número</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas ao redor de uma única razão: o deslocamento sobre o tempo</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Muybridge e a Física: vinte e quatro instantes de um galope &mdash; a prova em prata de que o limite existe</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Franz Schubert &mdash; Impromptus, D. 899</div>
+  <div class="musica-detail">1827 &middot; piano solo &middot; ~30 min</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Schubert+Impromptus+D899+piano" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T08 &mdash;
+Velocidade Média e Instantânea / Julio
+Cesar Silva Azevedo; colaboração Felipe
+Beato. &mdash; 1. ed. &mdash; Ouro Preto, MG:
+Instituto Federal de Minas Gerais &mdash;
+Campus Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T08)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Cinemática &mdash; Velocidade média
+   e velocidade instantânea.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epígrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Tópico 1 &mdash; Velocidade média</a>
+  <a href="#topico-2" class="toc-topico">Tópico 2 &mdash; Percursos compostos</a>
+  <a href="#topico-3" class="toc-topico">Tópico 3 &mdash; Velocidade instantânea</a>
+  <a href="#topico-4" class="toc-topico">Tópico 4 &mdash; Movimento progressivo e retrógrado</a>
+  <a href="#topico-5" class="toc-topico">Tópico 5 &mdash; Velocidade como ferramenta de gestão</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Problemas Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciência e Arte</a>
+  <a href="#referencias" class="toc-extra">Referências</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T08-IT-00-v1.jpg" alt="Terminal Rodoviário 8 de Julho ao amanhecer, pátio de pedra vazio">
+  <div class="capa-label">Trilha de Aprendizagem 08</div>
+  <div class="capa-titulo">Velocidade Média e Instantânea</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T08</span> &middot; Velocidade Média e Instantânea</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~40 min de leitura</div>
+</header>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;A natureza, para ser comandada, deve ser obedecida.&rdquo;</blockquote>
+  <div class="autor">&mdash; Francis Bacon (1561&ndash;1626)</div>
+
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T08-IT-01-v1.jpg" alt="Símbolo 3D da trilha T08 — ponteiro de velocímetro e estrada que se estreita ao longe" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Um ponteiro de velocímetro e uma estrada que se estreita ao longe: o símbolo de quem aprendeu que a pressa tem número.</figcaption>
+  </figure>
+
+  <div class="nota"><strong>Francis Bacon</strong> (Londres, 1561 &mdash; Highgate, 1626). Filósofo, jurista e estadista inglês, chanceler do reino sob Jaime I. É considerado o pai do empirismo e do método indutivo: defendeu que o conhecimento da natureza não vem da autoridade dos antigos, mas da observação sistemática e do experimento. A frase acima aparece no <em>Novum Organum</em> (1620), Livro I, Aforismo 3, no original latino <em>&ldquo;Natura enim non nisi parendo vincitur&rdquo;</em> &mdash; a natureza só se deixa vencer quando é obedecida.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>O Terminal Rodoviário 8 de Julho, na Rua Padre Rolim, ainda cheirava a café e diesel às sete e vinte da manhã. Sofia chegou primeiro, mochila nas costas e o caderno de campo debaixo do braço. Pedro apareceu logo atrás, conferindo a passagem impressa; Lucas veio por último, ainda mastigando pão de queijo, com aquela calma de quem nunca perdeu um ônibus na vida. O Prof.&nbsp;Julio já os esperava junto à plataforma, camisa polo em tom terroso, prancheta na mão e três cronômetros emprestados do laboratório.</p>
+
+  <!-- Figura 2 — IT-02 (partida, de costas) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T08-IT-02-v1.jpg" alt="O trio embarca de costas no ônibus das 7h30 enquanto o Prof. Julio distribui cronômetros" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; A partida: o trio de costas embarca no ônibus das 7h30 enquanto o Prof. Julio distribui os cronômetros.</figcaption>
+  </figure>
+
+  <p>&mdash; Hoje a sala de aula é o ônibus &mdash; disse o professor, entregando um cronômetro para cada um. &mdash; Vocês vão a Belo Horizonte comigo, e a única tarefa é anotar duas coisas: onde estamos e que horas são. Nada mais.</p>
+
+  <p>O ônibus da linha Ouro Preto&ndash;Belo Horizonte saiu da plataforma às 7h30 em ponto. Sofia anotou o instante zero. Pedro escreveu no alto da página: <span class="citacao">&ldquo;Rodoviária de Ouro Preto &mdash; km 0&rdquo;</span>. Lucas apenas olhou pela janela, vendo a cidade barroca ficar para trás enquanto o veículo pegava a BR-356, a Rodovia dos Inconfidentes.</p>
+
+  <p>A viagem seguiu o roteiro de sempre. Às 7h55 o ônibus parou em Cachoeira do Campo, distrito de Ouro Preto a 19 km do centro, e ficou dez minutos embarcando passageiros. Às 8h35 encostou na rodoviária de Itabirito, mais 28 km adiante, e parou outros dez minutos. Depois pegou a BR-040 e entrou em Belo Horizonte às 9h30, exatamente duas horas depois da partida, tendo percorrido 107 quilômetros de asfalto.</p>
+
+  <p>Foi na descida, ainda dentro do terminal de BH, que a discussão começou.</p>
+
+  <p>&mdash; Cento e sete quilômetros em duas horas &mdash; disse Pedro, fechando o caderno. &mdash; Isso dá cinquenta e três e meio por hora. A média da viagem.</p>
+
+  <p>Sofia franziu a testa.</p>
+
+  <p>&mdash; Não pode ser. Eu olhei o velocímetro do motorista na BR-040 e ele marcava oitenta. Ficou nos oitenta um tempão. Como é que a média é cinquenta e três?</p>
+
+  <p>&mdash; Porque a gente parou duas vezes &mdash; respondeu Pedro.</p>
+
+  <p>&mdash; Mas quando a gente estava parado, a velocidade era zero &mdash; completou Lucas, sem levantar os olhos do caderno. &mdash; E zero também entra na conta. Então o número do Pedro não é a velocidade do ônibus. É a velocidade da viagem.</p>
+
+  <p>Prof.&nbsp;Julio, que ouvia encostado na coluna, finalmente se mexeu.</p>
+
+  <p>&mdash; Reparem no que vocês acabaram de fazer. Pedro calculou um número que descreve as duas horas inteiras. Sofia leu um número que descrevia um instante específico. Lucas percebeu que existe um terceiro número, o dos trechos em que o ônibus realmente andava. Três números diferentes, todos corretos, todos chamados de &ldquo;velocidade&rdquo;.</p>
+
+  <p>Ele fez uma pausa.</p>
+
+  <p>&mdash; A pergunta não é qual está certo. A pergunta é: <strong>o que cada um deles responde?</strong></p>
+
+  <p>Sofia olhou para o cronômetro na mão, ainda marcando 2h00min00s, e pensou que talvez a velocidade não fosse uma propriedade do ônibus, mas uma propriedade do intervalo de tempo que se escolhe olhar.</p>
+
+  <p>Ela ainda não sabia, mas tinha acabado de tropeçar na diferença entre velocidade média e velocidade instantânea.</p>
+
+  <div class="separador"></div>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar</div>
+
+    <!-- Figura 3 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-03-v1.jpg" alt="Sofia, Pedro e Lucas na plataforma do Terminal Rodoviário 8 de Julho" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Sofia, Pedro e Lucas na plataforma do Terminal 8 de Julho &mdash; o quilômetro zero de toda medida de velocidade.</figcaption>
+    </figure>
+
+    <p>O Terminal Rodoviário 8 de Julho fica na Rua Padre Rolim, 661, no bairro São Cristóvão, a poucos minutos a pé do centro histórico de Ouro Preto. É de lá que partem, todos os dias, os ônibus da linha para Belo Horizonte &mdash; o mesmo trajeto que Sofia, Pedro e Lucas fizeram nesta trilha.</p>
+
+    <p>Procure a plataforma de embarque e siga com o olhar a saída dos veículos: eles pegam a Rua Padre Rolim e, logo adiante, entram na BR-356, a <strong>Rodovia dos Inconfidentes</strong>. Essa estrada não foi traçada por acaso &mdash; ela acompanha, em boa parte, o mesmo corredor natural entre serras que as tropas de muares usavam no século XVIII para escoar o ouro do Quadrilátero Ferrífero.</p>
+
+    <p>Repare no relevo: em nenhum momento a estrada é plana. Cada curva da serra, cada subida, cada trecho de pista simples é um pedaço de tempo a mais no cronômetro &mdash; e, portanto, um pedaço de velocidade média a menos. A geografia de Minas está escrita no velocímetro.</p>
+
+    <p>Vale a pena ir até lá e cronometrar você mesmo o trecho até Cachoeira do Campo. Compare o seu número com os 19 km em 25 minutos desta trilha. A Física não pede que você acredite: ela pede que você meça.</p>
+
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Terminal+Rodovi%C3%A1rio+de+Ouro+Preto,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+
+</div><!-- fim ato-i -->
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ─── TÓPICO 1 ─── -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Velocidade média: o deslocamento dividido pelo tempo</div>
+
+    <p>Toda medida de velocidade começa com duas perguntas simples: quanto o corpo mudou de posição e quanto tempo isso levou. No painel de um ônibus interestadual, essas duas respostas estão lado a lado &mdash; o hodômetro conta os quilômetros, o relógio conta as horas. A imagem a seguir mostra exatamente esse par de instrumentos, os dois números de que a Física precisa para dizer o quão rápido alguém foi.</p>
+
+    <!-- Figura 4 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-04-v1.jpg" alt="Hodômetro e relógio no painel do ônibus, lado a lado" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Hodômetro e relógio, lado a lado: toda velocidade nasce do encontro entre uma distância e uma duração.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>No Brasil colonial, medir velocidade era medir tempo de viagem. As tropas de muares que desciam a Estrada Real levando ouro de Vila Rica até o litoral avançavam cerca de 4 km/h e cumpriam jornadas de aproximadamente oito horas por dia &mdash; algo em torno de 32 km diários. Ninguém falava em &ldquo;quilômetros por hora&rdquo;: falava-se em &ldquo;três dias de tropa até o arraial seguinte&rdquo;. A velocidade existia como experiência prática muito antes de existir como fração.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Velocidade média é a razão entre o deslocamento de um corpo e o intervalo de tempo gasto nesse deslocamento. É uma grandeza que resume um percurso inteiro em um único número: não informa o que aconteceu em cada momento, apenas o efeito global. Por depender do deslocamento (&Delta;<em>s</em>), e não da distância percorrida, a velocidade média carrega sinal &mdash; ela indica também o sentido do movimento em relação ao referencial adotado.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, a velocidade média é a unidade básica de planejamento. O tempo de ciclo de um caminhão fora de estrada é calculado a partir da velocidade média em cada trecho da cava; a velocidade média de uma correia transportadora define a produção horária da usina. Um engenheiro que confunda velocidade média com velocidade de pico superestima a produção e compromete o cronograma de lavra de um mês inteiro.</p>
+    </div>
+
+    <p>De volta a Ouro Preto, o Prof.&nbsp;Julio escreveu no quadro o número de Pedro e pediu que a turma o justificasse.</p>
+
+    <p>&mdash; O ônibus saiu do km 0 e chegou ao km 107. Levou duas horas. A conta que o Pedro fez tem nome.</p>
+
+    <p>Antes de escrevê-la no quadro, porém, o professor fez um aviso.</p>
+
+    <p>&mdash; Na trilha passada usamos a letra <em>x</em> para posição. A partir de agora vamos usar <em>s</em>. Não é capricho meu: é a notação do livro de vocês.</p>
+
+    <p>A troca tem uma razão prática. O livro <em>Física Identidade</em>, adotado pelo PNLD e usado nesta disciplina, representa a posição por <strong><em>s</em></strong>, a posição inicial por <strong><em>s</em><sub>0</sub></strong> e o deslocamento escalar por <strong>&Delta;<em>s</em> = <em>s</em> &minus; <em>s</em><sub>0</sub></strong>; os instantes, por <strong><em>t</em><sub>0</sub></strong> e <strong><em>t</em></strong>, com o intervalo dado por <strong>&Delta;<em>t</em> = <em>t</em> &minus; <em>t</em><sub>0</sub></strong>. Adotar a mesma notação a partir desta trilha permite que você leia o livro e a trilha sem precisar traduzir símbolos no meio do caminho. O que muda é a letra, não o conceito: <em>s</em> continua sendo a posição medida sobre a trajetória orientada, exatamente como o marco quilométrico de uma rodovia. O próprio livro apresenta a ideia assim, usando os marcos da BR-230. Nesta trilha, os marcos são os da BR-356.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Velocidade média</div>
+      <div class="equacao-formula"><em>v</em><sub>m</sub> = &Delta;<em>s</em> / &Delta;<em>t</em></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>v</em><sub>m</sub></td><td>Velocidade média</td><td>m/s (metro por segundo)</td></tr>
+          <tr><td>&Delta;<em>s</em></td><td>Deslocamento</td><td>m (metro)</td></tr>
+          <tr><td>&Delta;<em>t</em></td><td>Intervalo de tempo</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Na viagem de Ouro Preto a Belo Horizonte, &Delta;<em>s</em> = 107 km e &Delta;<em>t</em> = 2,0 h. <em>v</em><sub>m</sub> = 107 / 2,0 = <strong>53,5 km/h</strong>.</div>
+    </div>
+
+    <p>O número de Pedro estava certo. O que faltava era entender <strong>o que ele descreve</strong>: não o estado do ônibus em nenhum instante específico, mas o efeito acumulado de duas horas inteiras de viagem &mdash; incluindo os vinte minutos em que o veículo esteve completamente parado.</p>
+
+    <p>A unidade do Sistema Internacional para velocidade é o metro por segundo. O quilômetro por hora é uma unidade prática, herdada do trânsito, e a conversão entre as duas se faz pela regra da cadeia &mdash; multiplicando por frações que valem 1.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Conversão entre km/h e m/s</div>
+      <div class="equacao-formula">1 km/h = (1000 m) / (3600 s) = 1/3,6 m/s</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Sentido da conversão</th><th>Operação</th></tr></thead>
+        <tbody>
+          <tr><td>km/h &rarr; m/s</td><td>dividir por 3,6</td></tr>
+          <tr><td>m/s &rarr; km/h</td><td>multiplicar por 3,6</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> <em>v</em><sub>m</sub> = 53,5 km/h &divide; 3,6 = <strong>14,9 m/s</strong>. Ou seja: em média, o ônibus avançou quase 15 metros a cada segundo de viagem &mdash; contando as paradas.</div>
+    </div>
+
+    <p>Sofia achou o resultado desconcertante. Quinze metros por segundo é a largura de uma quadra de vôlei percorrida em um piscar de olhos. E ainda assim a viagem levou duas horas.</p>
+
+    <p>&mdash; É que a gente não sente o segundo &mdash; comentou Lucas. &mdash; A gente sente a hora.</p>
+
+    <p>Como o deslocamento pode ser positivo ou negativo, a velocidade média herda esse sinal. O intervalo de tempo é sempre positivo &mdash; o tempo só corre num sentido &mdash;, então o sinal de <em>v</em><sub>m</sub> é sempre o mesmo sinal de &Delta;<em>s</em>.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; O sinal da velocidade média</div>
+      <table>
+        <thead>
+          <tr><th>Situação</th><th>&Delta;<em>s</em></th><th>&Delta;<em>t</em></th><th><em>v</em><sub>m</sub></th><th>Interpretação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ouro Preto &rarr; Belo Horizonte</td><td>+107 km</td><td>+2,0 h</td><td>+53,5 km/h</td><td>Move-se no sentido positivo</td></tr>
+          <tr><td>Belo Horizonte &rarr; Ouro Preto</td><td>&minus;107 km</td><td>+2,0 h</td><td>&minus;53,5 km/h</td><td>Move-se no sentido oposto</td></tr>
+          <tr><td>Ida e volta no mesmo dia</td><td>0 km</td><td>+4,0 h</td><td>0 km/h</td><td>Voltou à origem: deslocamento nulo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A terceira linha do quadro costuma causar espanto. Um ônibus que roda 214 km em quatro horas tem velocidade média <strong>zero</strong> se terminar exatamente onde começou. Não há erro na conta: a velocidade escalar média mede a mudança de posição, não o esforço gasto no caminho. Quem quiser descrever o esforço precisa recorrer à distância percorrida, e não ao deslocamento escalar &Delta;<em>s</em>.</p>
+  </div>
+
+  <!-- ─── TÓPICO 2 ─── -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Velocidade média em percursos compostos</div>
+
+    <p>Uma viagem raramente é um bloco único. A de Sofia, Pedro e Lucas teve três trechos de estrada e duas paradas, cada um com sua própria velocidade. A imagem a seguir mostra o caderno de campo aberto sobre o banco do ônibus, com a tabela de três linhas que os três preencheram durante o percurso &mdash; e que revelaria o erro mais comum de toda a cinemática.</p>
+
+    <!-- Figura 5 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-05-v1.jpg" alt="Caderno de campo aberto com a tabela dos três trechos da viagem" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Três trechos numa página de caderno: a tabela que desmente a média das médias.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>As tropas que percorriam a Estrada Real não mantinham ritmo constante. Nos trechos planos dos campos gerais, os muares avançavam a 5 km/h; nas subidas da Serra do Espinhaço, caíam para menos de 3 km/h; e havia as paradas obrigatórias nos registros, onde a Coroa conferia e taxava o ouro. Os tropeiros experientes não calculavam médias: decoravam o tempo total entre dois pousos, porque sabiam, empiricamente, que somar velocidades não funcionava.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A velocidade média de um percurso composto é o deslocamento <strong>total</strong> dividido pelo intervalo de tempo <strong>total</strong> &mdash; e não a média aritmética das velocidades parciais. As duas coisas só coincidem no caso particular em que todos os trechos duram exatamente o mesmo tempo. Sempre que os intervalos são diferentes, cada trecho &ldquo;pesa&rdquo; na média proporcionalmente à sua duração, e não à sua distância.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O planejamento de transporte numa mina depende dessa distinção. O ciclo de um caminhão fora de estrada envolve carregamento (parado), subida carregado (lento), descarga (parado) e descida vazio (rápido). Um engenheiro que calcule a produtividade da frota pela média aritmética das velocidades de cada etapa superestima a produção &mdash; às vezes em mais de 20% &mdash; e compromete o contrato de entrega da mina.</p>
+    </div>
+
+    <p>Prof.&nbsp;Julio pediu que os três organizassem no quadro tudo que haviam anotado. O resultado foi este:</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; A viagem Ouro Preto &rarr; Belo Horizonte, trecho a trecho</div>
+      <table>
+        <thead>
+          <tr><th>Trecho</th><th>Percurso</th><th>&Delta;<em>s</em> (km)</th><th>&Delta;<em>t</em> (min)</th><th><em>v</em><sub>m</sub> do trecho (km/h)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Ouro Preto &rarr; Cachoeira do Campo</td><td>19</td><td>25</td><td>45,6</td></tr>
+          <tr><td>&mdash;</td><td><em>parada em Cachoeira do Campo</em></td><td>0</td><td>10</td><td>0</td></tr>
+          <tr><td>2</td><td>Cachoeira do Campo &rarr; Itabirito</td><td>28</td><td>30</td><td>56,0</td></tr>
+          <tr><td>&mdash;</td><td><em>parada em Itabirito</em></td><td>0</td><td>10</td><td>0</td></tr>
+          <tr><td>3</td><td>Itabirito &rarr; Belo Horizonte</td><td>60</td><td>45</td><td>80,0</td></tr>
+          <tr><td></td><td><strong>TOTAL</strong></td><td><strong>107</strong></td><td><strong>120</strong></td><td><strong>53,5</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Agora a pergunta &mdash; disse o professor. &mdash; Alguém consegue chegar aos 53,5 km/h somando as velocidades dos três trechos e dividindo por três?</p>
+
+    <p>Pedro tentou: (45,6 + 56,0 + 80,0) &divide; 3 = 60,5 km/h.</p>
+
+    <p>&mdash; Deu 60,5. Não bate.</p>
+
+    <p>&mdash; E nem deveria &mdash; respondeu Prof.&nbsp;Julio. &mdash; Você acabou de descobrir a armadilha mais antiga da cinemática.</p>
+
+    <p>A velocidade média de um percurso composto se obtém somando todos os deslocamentos e todos os intervalos de tempo &mdash; nunca somando velocidades.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Velocidade média de um percurso composto</div>
+      <div class="equacao-formula"><em>v</em><sub>m</sub> = (&Delta;<em>s</em><sub>1</sub> + &Delta;<em>s</em><sub>2</sub> + &hellip; + &Delta;<em>s</em><sub><em>n</em></sub>) / (&Delta;<em>t</em><sub>1</sub> + &Delta;<em>t</em><sub>2</sub> + &hellip; + &Delta;<em>t</em><sub><em>n</em></sub>)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&Delta;<em>s</em><sub><em>i</em></sub></td><td>Deslocamento do trecho <em>i</em></td><td>m (metro)</td></tr>
+          <tr><td>&Delta;<em>t</em><sub><em>i</em></sub></td><td>Intervalo de tempo do trecho <em>i</em></td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> <em>v</em><sub>m</sub> = (19 + 28 + 60) km / (25 + 30 + 45 + 10 + 10) min = 107 km / 120 min = 107 km / 2,0 h = <strong>53,5 km/h</strong>.</div>
+    </div>
+
+    <p>A média aritmética (60,5 km/h) trata os três trechos como se fossem igualmente importantes. Mas eles não são: o trecho 3, de 45 minutos, pesa quase o dobro do trecho 1, de 25 minutos. Na velocidade média verdadeira, <strong>cada trecho pesa o seu tempo</strong> &mdash; e as paradas, que duram 20 minutos com deslocamento zero, puxam o resultado para baixo sem que ninguém as perceba na média das médias.</p>
+
+    <p>Lucas percebeu que a tabela permitia calcular ainda um terceiro valor: a velocidade média apenas dos trechos em que o ônibus efetivamente andava, descontando as paradas.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Três velocidades médias da mesma viagem</div>
+      <table>
+        <thead>
+          <tr><th>O que se calcula</th><th>&Delta;<em>s</em></th><th>&Delta;<em>t</em></th><th>Resultado</th><th>Responde à pergunta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Viagem completa</td><td>107 km</td><td>2,00 h</td><td>53,5 km/h</td><td>Quanto rendeu a manhã inteira?</td></tr>
+          <tr><td>Só os trechos em movimento</td><td>107 km</td><td>1,67 h</td><td>64,2 km/h</td><td>Quão rápido o ônibus andou?</td></tr>
+          <tr><td>Média aritmética dos trechos</td><td>&mdash;</td><td>&mdash;</td><td>60,5 km/h</td><td><strong>Nada</strong> &mdash; é um erro de cálculo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Os dois primeiros números são legítimos &mdash; concluiu o professor. &mdash; Eles respondem a perguntas diferentes, e por isso são diferentes. O terceiro não responde a pergunta nenhuma: é apenas uma conta errada que parece certa.</p>
+
+    <p>Sofia anotou a frase no caderno e sublinhou duas vezes.</p>
+  </div>
+
+  <!-- ─── TÓPICO 3 ─── -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Velocidade instantânea: o conceito de limite</div>
+
+    <p>Se a velocidade média resume um intervalo inteiro, resta a pergunta que Sofia fez na rodoviária: e o número que o velocímetro mostrava naquele exato momento? A imagem a seguir mostra o painel do ônibus na BR-040, o ponteiro firme nos 80 km/h &mdash; o retrato de um instante, não o resumo de uma viagem.</p>
+
+    <!-- Figura 6 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-06-v1.jpg" alt="Velocímetro do ônibus com o ponteiro firme nos 80 km/h" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; O ponteiro nos oitenta: a velocidade de agora, não a velocidade de antes.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Até o século XVII, ninguém sabia descrever matematicamente a velocidade &ldquo;num instante&rdquo; &mdash; a própria ideia parecia contraditória, pois num instante não há tempo decorrido e, sem tempo, não há divisão possível. O paradoxo da flecha, formulado por Zenão de Eleia por volta do século V a.C., explorava exatamente essa dificuldade. A solução veio com o cálculo diferencial, desenvolvido de forma independente por Isaac Newton e Gottfried Leibniz no final do século XVII: a velocidade instantânea é o valor para o qual a velocidade média tende quando o intervalo de tempo encolhe indefinidamente.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Velocidade instantânea é o limite da velocidade média quando o intervalo de tempo tende a zero. Na prática, é a velocidade calculada sobre um intervalo tão pequeno que reduzi-lo ainda mais não altera o resultado. É a grandeza que o velocímetro exibe e que os radares de trânsito medem &mdash; e é sobre ela, não sobre a média da viagem, que recai a lei.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Sensores de velocidade instantânea são obrigatórios em correias transportadoras de grande porte: uma queda súbita de velocidade indica sobrecarga ou patinagem do tambor de acionamento e dispara o desligamento automático. Em caminhões fora de estrada, telemetria embarcada registra a velocidade instantânea a cada segundo, e a NR-22 obriga o controle de velocidade em rampas de cava, onde exceder o limite instantâneo &mdash; mesmo que a média do ciclo esteja correta &mdash; é infração grave.</p>
+    </div>
+
+    <p>Prof.&nbsp;Julio propôs um exercício mental. O ônibus passa por um ponto da BR-040 exatamente às 9h00.</p>
+
+    <p>&mdash; Vamos calcular a velocidade média em intervalos cada vez menores, todos centrados nesse instante.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; A velocidade média conforme &Delta;<em>t</em> encolhe</div>
+      <table>
+        <thead>
+          <tr><th>&Delta;<em>t</em></th><th>&Delta;<em>s</em> correspondente</th><th><em>v</em><sub>m</sub> calculada</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>30 min</td><td>39,0 km</td><td>78,0 km/h</td></tr>
+          <tr><td>5 min</td><td>6,63 km</td><td>79,6 km/h</td></tr>
+          <tr><td>1 min</td><td>1,332 km</td><td>79,9 km/h</td></tr>
+          <tr><td>10 s</td><td>222,1 m</td><td>79,96 km/h</td></tr>
+          <tr><td>1 s</td><td>22,22 m</td><td>80,0 km/h</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Reparem &mdash; disse o professor. &mdash; Os valores não vão a lugar nenhum: eles <strong>convergem</strong>. A partir de certo ponto, encolher o intervalo já não muda a resposta. Esse valor-limite é a velocidade instantânea.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Velocidade instantânea</div>
+      <div class="equacao-formula"><em>v</em> = lim (&Delta;<em>s</em> / &Delta;<em>t</em>), quando &Delta;<em>t</em> &rarr; 0</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>v</em></td><td>Velocidade instantânea</td><td>m/s (metro por segundo)</td></tr>
+          <tr><td>&Delta;<em>t</em> &rarr; 0</td><td>Intervalo de tempo tendendo a zero</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> No instante das 9h00, o ônibus tinha <em>v</em> = 80,0 km/h = <strong>22,2 m/s</strong> &mdash; independentemente de a viagem inteira ter média de 53,5 km/h.</div>
+    </div>
+
+    <p>O símbolo &ldquo;lim&rdquo; e a seta são a forma matemática de dizer algo simples: <em>não importa o quanto eu diminua o intervalo, a resposta é sempre esta</em>. É a mesma ideia que permite falar em &ldquo;temperatura agora&rdquo; ou &ldquo;batimentos por minuto agora&rdquo; &mdash; grandezas médias por definição, que se tornam instantâneas quando o intervalo é pequeno o bastante.</p>
+
+    <p>Os dois instrumentos que os estudantes encontram todos os dias medem velocidade instantânea por caminhos diferentes.</p>
+
+    <p>O <span class="termo">velocímetro</span> conta as voltas da roda. Sabendo o perímetro do pneu, o instrumento converte rotações por segundo em metros por segundo e atualiza o ponteiro dezenas de vezes por minuto &mdash; um intervalo curto o bastante para que o motorista o perceba como &ldquo;agora&rdquo;.</p>
+
+    <p>O <span class="termo">radar de solo</span> usa dois sensores no asfalto, separados por uma distância conhecida. O veículo aciona o primeiro e depois o segundo; o equipamento divide a separação pelo tempo entre os dois acionamentos.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; O princípio do radar de solo</div>
+      <div class="equacao-formula"><em>v</em> &asymp; <em>d</em> / &Delta;<em>t</em>, com <em>d</em> pequeno</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>d</em></td><td>Separação entre os sensores</td><td>m (metro)</td></tr>
+          <tr><td>&Delta;<em>t</em></td><td>Intervalo entre os acionamentos</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Sensores separados por <em>d</em> = 2,0 m. O ônibus a 22,2 m/s aciona os dois com &Delta;<em>t</em> = 2,0 / 22,2 = <strong>0,090 s</strong>. Nesse intervalo de nove centésimos de segundo, a velocidade não teve tempo de mudar &mdash; por isso a medida vale como instantânea.</div>
+    </div>
+
+    <p>Sofia entendeu a sutileza: o radar não mede um instante verdadeiro. Ele mede uma média sobre um intervalo tão curto que a diferença deixa de importar. É assim que a Física resolve, na prática, um problema que Zenão formulou como paradoxo.</p>
+  </div>
+
+  <!-- ─── TÓPICO 4 ─── -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Movimento progressivo e retrógrado</div>
+
+    <p>O sinal de uma velocidade não é um detalhe algébrico: é uma informação física sobre o sentido do movimento. Na BR-356, dois ônibus podem cruzar-se a 70 km/h cada um e ainda assim ter velocidades de sinais opostos. A imagem a seguir mostra exatamente esse encontro &mdash; dois veículos, a mesma estrada, sentidos contrários &mdash; e o eixo orientado que os separa em positivo e negativo.</p>
+
+    <!-- Figura 7 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-07-v1.jpg" alt="Dois ônibus em sentidos opostos sobre a mesma estrada, com eixo orientado" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Dois ônibus, uma estrada, sinais opostos: o sentido do movimento cabe num sinal de mais ou de menos.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Nas galerias da mineração colonial de Ouro Preto, &ldquo;descer&rdquo; e &ldquo;subir&rdquo; eram os dois únicos sentidos possíveis, e a distinção era vital: carregado de minério, o trabalhador subia; vazio, descia. Os capatazes contabilizavam separadamente as viagens de ida e de volta porque sabiam que elas tinham ritmos diferentes. Sem nenhum formalismo, aplicavam o que a Física chamaria depois de movimento progressivo e retrógrado.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Adotado um referencial com sentido positivo definido, o movimento é chamado <strong>progressivo</strong> quando o corpo avança nesse sentido (<em>v</em> &gt; 0) e <strong>retrógrado</strong> quando avança no sentido oposto (<em>v</em> &lt; 0). O sinal não qualifica o movimento como bom ou ruim, rápido ou lento: informa apenas a orientação. Uma velocidade de &minus;80 km/h tem exatamente o mesmo módulo &mdash; a mesma &ldquo;rapidez&rdquo; &mdash; que uma de +80 km/h.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Em correias transportadoras reversíveis, usadas para alimentar dois silos distintos a partir de um mesmo britador, o sentido de operação é controlado por software e sinalizado no painel como positivo ou negativo. Inverter o sentido sem esvaziar a correia provoca transbordo de material. A NR-22 exige sinalização sonora distinta para cada sentido de acionamento, justamente porque o operador precisa saber o sinal, não apenas o módulo.</p>
+    </div>
+
+    <p>Prof.&nbsp;Julio desenhou no quadro a rodovia como uma reta orientada, com a origem na rodoviária de Ouro Preto e o sentido positivo apontando para Belo Horizonte.</p>
+
+    <p>&mdash; Na ida, o ônibus caminhou de <em>s</em> = 0 até <em>s</em> = +107 km. Na volta, de +107 km de volta a 0.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 6 &mdash; Sinal da velocidade e sentido do movimento</div>
+      <div class="equacao-formula"><em>v</em> &gt; 0 &rarr; progressivo &nbsp;|&nbsp; <em>v</em> &lt; 0 &rarr; retrógrado &nbsp;|&nbsp; <em>v</em> = 0 &rarr; repouso</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Situação</th><th>&Delta;<em>s</em></th><th><em>v</em><sub>m</sub></th><th>Classificação</th></tr></thead>
+        <tbody>
+          <tr><td>Ouro Preto &rarr; Belo Horizonte</td><td>+107 km</td><td>+53,5 km/h</td><td>Progressivo</td></tr>
+          <tr><td>Belo Horizonte &rarr; Ouro Preto</td><td>&minus;107 km</td><td>&minus;53,5 km/h</td><td>Retrógrado</td></tr>
+          <tr><td>Ônibus parado em Itabirito</td><td>0 km</td><td>0 km/h</td><td>Repouso</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Na viagem de volta, às 17h, o ônibus tem <em>v</em> = &minus;53,5 km/h. O módulo é o mesmo da ida (53,5 km/h): ele não está mais lento nem mais rápido &mdash; está apenas indo no sentido contrário ao que foi adotado como positivo.</div>
+    </div>
+
+    <p>Pedro levantou a mão.</p>
+
+    <p>&mdash; E se a gente tivesse escolhido Belo Horizonte como origem, com o positivo apontando para Ouro Preto?</p>
+
+    <p>&mdash; Aí todos os sinais se invertem &mdash; respondeu o professor. &mdash; A ida vira retrógrada e a volta vira progressiva. E nada de físico muda: só a nossa convenção. É a lição da trilha passada aparecendo de novo &mdash; o referencial é escolha nossa; o movimento, não.</p>
+
+    <p>Existe um caso que costuma confundir: o instante em que a velocidade vale exatamente zero sem que o corpo esteja parado de fato.</p>
+
+    <p>Quando o ônibus encostou em Cachoeira do Campo, ficou dez minutos em repouso &mdash; velocidade instantânea nula durante todo o intervalo. Mas considere agora uma situação diferente: um caminhão sobe a rampa da cava, para para engatar a ré e desce de volta. No exato instante em que ele inverte o sentido, sua velocidade instantânea passa por zero &mdash; mesmo que ele esteja parado por uma fração de segundo apenas.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 5 &mdash; Repouso permanente e repouso instantâneo</div>
+      <table>
+        <thead>
+          <tr><th>Situação</th><th>Duração de <em>v</em> = 0</th><th>O que acontece depois</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ônibus parado em Itabirito</td><td>10 minutos</td><td>Retoma o mesmo sentido (progressivo)</td></tr>
+          <tr><td>Caminhão invertendo na rampa</td><td>um instante</td><td>Inverte o sentido (passa a retrógrado)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Lucas resumiu do seu jeito: &mdash; Todo movimento que muda de sentido tem que passar pelo zero. Não dá para pular de mais oitenta para menos oitenta sem encostar no zero no caminho.</p>
+
+    <p>Era, em linguagem de estudante de dezesseis anos, uma formulação correta do teorema do valor intermediário.</p>
+  </div>
+
+  <!-- ─── TÓPICO 5 ─── -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; Velocidade como ferramenta de gestão na mineração</div>
+
+    <p>Fora da sala de aula, velocidade deixa de ser uma grandeza a calcular e passa a ser um recurso a administrar. Numa usina de beneficiamento, a velocidade de uma correia transportadora não é uma curiosidade física: é o que define quantas toneladas de minério chegam ao pátio a cada hora. A imagem a seguir mostra essa correia em operação, carregada de minério de ferro britado, com o painel de controle de velocidade ao fundo.</p>
+
+    <!-- Figura 8 — IT-08 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-08-v1.jpg" alt="Correia transportadora carregada de minério de ferro britado, com painel de controle de velocidade" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; A correia em regime: cada metro por segundo vale mil toneladas por hora.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os engenhos coloniais de Ouro Preto já dependiam de velocidade controlada. Nos monjolos e rodas d&rsquo;água que moíam o minério aurífero, a velocidade de rotação era ajustada pelo volume de água desviado do córrego: água demais quebrava o eixo, água de menos não movia a carga. Os mestres de engenho regulavam o fluxo por tentativa e erro, buscando empiricamente o ponto em que a produção era máxima &mdash; o mesmo problema de otimização que hoje se resolve com sensores e inversores de frequência.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Numa correia transportadora, a vazão mássica de material é o produto de três grandezas: a densidade aparente do material, a área da seção transversal da carga sobre a correia e a velocidade da correia. Como as duas primeiras são fixadas pelo projeto e pelo minério, a velocidade é a única variável de ajuste rápido &mdash; e a vazão responde a ela de forma diretamente proporcional.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Correias industriais operam tipicamente entre 1,5 e 5,0 m/s. Abaixo dessa faixa, a produção não compensa o custo de energia; acima, o material segrega e projeta finos, e o desgaste dos roletes cresce rapidamente. O técnico em mineração precisa saber traduzir uma meta de produção em toneladas por hora numa velocidade de correia em metros por segundo &mdash; e verificar se essa velocidade está dentro dos limites de projeto.</p>
+    </div>
+
+    <p>Prof.&nbsp;Julio trouxe os dados de uma correia real da região.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 7 &mdash; Vazão mássica de uma correia transportadora</div>
+      <div class="equacao-formula"><em>Q</em><sub>m</sub> = &rho; &middot; <em>A</em> &middot; <em>v</em></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>Q</em><sub>m</sub></td><td>Vazão mássica</td><td>kg/s (quilograma por segundo)</td></tr>
+          <tr><td>&rho;</td><td>Densidade aparente do material</td><td>kg/m&sup3;</td></tr>
+          <tr><td><em>A</em></td><td>Área da seção transversal da carga</td><td>m&sup2;</td></tr>
+          <tr><td><em>v</em></td><td>Velocidade da correia</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Minério de ferro britado com &rho; = 2.200 kg/m&sup3;, seção de carga <em>A</em> = 0,072 m&sup2; e correia a <em>v</em> = 3,5 m/s. <em>Q</em><sub>m</sub> = 2.200 &times; 0,072 &times; 3,5 = <strong>554 kg/s</strong>. Em toneladas por hora: 554 &times; 3.600 &divide; 1.000 &asymp; <strong>2,0 &times; 10&sup3; t/h</strong>.</div>
+    </div>
+
+    <p>&mdash; Duas mil toneladas por hora &mdash; comentou Pedro, impressionado. &mdash; É quase o peso de um prédio a cada sessenta minutos.</p>
+
+    <p>&mdash; E repare no que a equação diz &mdash; completou o professor. &mdash; Se o supervisor aumentar a velocidade de 3,5 para 4,0 m/s, a vazão sobe na mesma proporção: cerca de 2,3 mil toneladas por hora. Um ajuste de meio metro por segundo vale trezentas toneladas.</p>
+
+    <p>No transporte por caminhões fora de estrada, a velocidade aparece indiretamente, através do tempo de ciclo &mdash; a duração de uma volta completa: carregamento, percurso carregado, descarga e retorno vazio.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 6 &mdash; Ciclo típico de um caminhão fora de estrada</div>
+      <table>
+        <thead>
+          <tr><th>Etapa</th><th>&Delta;<em>t</em> (min)</th><th>Velocidade característica</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Carregamento na frente de lavra</td><td>5</td><td><em>v</em> = 0 (repouso)</td></tr>
+          <tr><td>Percurso carregado (subida)</td><td>8</td><td>~20 km/h</td></tr>
+          <tr><td>Descarga no britador</td><td>2</td><td><em>v</em> = 0 (repouso)</td></tr>
+          <tr><td>Retorno vazio (descida)</td><td>5</td><td>~35 km/h</td></tr>
+          <tr><td><strong>Ciclo completo</strong></td><td><strong>20</strong></td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Um ciclo de 20 minutos significa 3 ciclos por hora. Com caçamba de 40 toneladas, cada caminhão entrega 120 t/h. Para atender a correia de 2.000 t/h do exemplo anterior, seriam necessários cerca de <strong>17 caminhões</strong> operando simultaneamente &mdash; número que a mina precisa manter mesmo com veículos em manutenção.</p>
+
+    <p>Sofia fez a conexão com o Tópico 2 e sorriu: o ciclo do caminhão é um percurso composto, com duas etapas de velocidade zero. Calcular a produtividade pela média aritmética das velocidades de subida e descida daria um número bonito e completamente inútil.</p>
+  </div>
+</div><!-- fim ato-ii -->
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>Às seis e meia da tarde, o mesmo ônibus da manhã encostou de volta na plataforma do Terminal 8 de Julho. A luz alaranjada do fim de tarde batia nas mesmas paredes que, ao amanhecer, estavam cinzentas de neblina. Sofia desceu primeiro, com o cronômetro ainda no bolso e o caderno cheio; Pedro veio atrás, calculando alguma coisa de cabeça; Lucas foi o último, como sempre, olhando a rodoviária com aquela atenção de quem repara nas coisas depois que elas já aconteceram.</p>
+
+  <!-- Figura 9 — IT-09 (retorno, de costas) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T08-IT-09-v1.jpg" alt="O trio desembarca de costas na plataforma do Terminal 8 de Julho, ao entardecer" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio desembarca de costas na mesma plataforma, ao entardecer &mdash; a viagem inteira agora cabe num número.</figcaption>
+  </figure>
+
+  <p>Prof.&nbsp;Julio esperou que os três se juntassem na calçada.</p>
+
+  <p>&mdash; Vocês saíram daqui às sete e meia e voltaram às dezoito e trinta. Onze horas. Qual foi a velocidade média de vocês hoje?</p>
+
+  <p>Pedro abriu a boca para responder e parou. Sofia começou a rir.</p>
+
+  <p>&mdash; Zero &mdash; disse ela. &mdash; A gente voltou pro mesmo lugar. Deslocamento zero.</p>
+
+  <p>&mdash; Duzentos e catorze quilômetros de asfalto &mdash; completou Lucas &mdash; e velocidade média zero. A Física não está interessada no cansaço da gente.</p>
+
+  <p><span class="termo">Velocidade média</span>: o deslocamento dividido pelo intervalo, um número que resume um percurso inteiro. <span class="termo">Velocidade instantânea</span>: o mesmo cálculo levado ao limite, um número que descreve um único momento. Entre os dois, a diferença entre a história de uma viagem e a fotografia de um instante dela.</p>
+
+  <p>Na próxima trilha, esses números ganharão desenho: o gráfico posição &times; tempo, onde a velocidade média vira a inclinação de uma reta e a velocidade instantânea vira a inclinação de uma tangente. O que hoje foi tabela, amanhã será curva.</p>
+</div>
+
+<!-- ═══════════════════ PROBLEMAS INTERDISCIPLINARES ═══════════════════ -->
+<div class="ato" id="conexoes">
+  <div class="ato-titulo">Problemas Interdisciplinares</div>
+
+  <p><em>Cinco problemas que conectam a Física com outras áreas do conhecimento técnico e científico. Cada problema exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- Figura 10 — IT-10 (Conexões Interdisciplinares) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T08-IT-10-v1.jpg" alt="Mapa radial das cinco disciplinas conectadas pela razão entre deslocamento e tempo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas ao redor de uma única razão: o deslocamento sobre o tempo.</figcaption>
+  </figure>
+
+  <!-- C5 Protocol Table -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; Metodologia para Problemas Interdisciplinares</div>
+    <p style="margin-bottom:12px;font-family:var(--serif);font-size:1rem;color:oklch(0.80 0 0);">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 11 — IT-11 (Protocolo C5 / RCP) -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T08-IT-11-v1.jpg" alt="O método científico de resolução de problemas em cena — as oito etapas do RCP" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>O que está sendo pedido?</td><td>Releia o enunciado. Escreva com suas próprias palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td>Quais são os dados?</td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td>Quais são as hipóteses?</td><td>Declare o que você vai assumir (trajetória retilínea, velocidade constante etc.).</td></tr>
+        <tr><td>4</td><td>Qual é o desenho do problema?</td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td>Quais são as equações?</td><td>Identifique a equação do TT. Isole algebricamente a variável pedida.</td></tr>
+        <tr><td>6</td><td>Cálculo com unidades</td><td>Substitua os valores. Acompanhe as unidades passo a passo até o resultado.</td></tr>
+        <tr><td>7</td><td>Análise de resultados</td><td>O resultado faz sentido? Compare com valores típicos da mineração.</td></tr>
+        <tr><td>8</td><td>Responda o que foi pedido</td><td>Escreva a resposta completa, com unidade e interpretação no contexto.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- Atividade 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Geografia</div>
+    <p>O ônibus da linha Ouro Preto&ndash;Belo Horizonte cumpre três trechos de estrada: 19 km em 25 min, 28 km em 30 min e 60 km em 45 min, com duas paradas de 10 min cada. Determine (a) a velocidade média da viagem completa e (b) a velocidade média considerando apenas os trechos em movimento. Explique por que os dois valores são diferentes e o que cada um descreve.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Duas velocidades médias da mesma viagem &mdash; uma incluindo as paradas, outra excluindo-as &mdash; e a interpretação física da diferença.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">&Delta;<em>s</em><sub>1</sub> = 19 km, &Delta;<em>t</em><sub>1</sub> = 25 min; &Delta;<em>s</em><sub>2</sub> = 28 km, &Delta;<em>t</em><sub>2</sub> = 30 min; &Delta;<em>s</em><sub>3</sub> = 60 km, &Delta;<em>t</em><sub>3</sub> = 45 min; duas paradas de 10 min cada, com &Delta;<em>s</em> = 0.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Trajetória retilínea orientada de Ouro Preto para Belo Horizonte (sentido positivo); sem desvios de rota; os tempos anotados são exatos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[OP 0km]--19km--[CCampo]&bull;10min--28km--[Itabirito]&bull;10min--60km--[BH 107km]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 3: <em>v</em><sub>m</sub> = &Sigma;&Delta;<em>s</em> / &Sigma;&Delta;<em>t</em>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">&Delta;<em>s</em> total = 19 + 28 + 60 = 107 km. (a) &Delta;<em>t</em> total = 25 + 10 + 30 + 10 + 45 = 120 min = 2,00 h &rarr; <em>v</em><sub>m</sub> = 107 / 2,00 = <strong>53,5 km/h</strong>. (b) &Delta;<em>t</em> em movimento = 25 + 30 + 45 = 100 min = 1,67 h &rarr; <em>v</em><sub>m</sub> = 107 / 1,67 = <strong>64,2 km/h</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Ambos os valores são compatíveis com transporte rodoviário em serra. A diferença de 10,7 km/h corresponde exatamente aos 20 minutos parados: o mesmo deslocamento distribuído por um tempo maior produz velocidade média menor.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">(a) A velocidade média da viagem completa é 53,5 km/h &mdash; responde &ldquo;quanto rendeu a manhã inteira&rdquo;. (b) A velocidade média em movimento é 64,2 km/h &mdash; responde &ldquo;quão rápido o ônibus andou&rdquo;. Os dois são corretos porque respondem a perguntas diferentes: o primeiro inclui o tempo parado no denominador; o segundo, não.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Matemática</div>
+    <p>Um estudante calculou a velocidade média da mesma viagem somando as velocidades dos três trechos (45,6 km/h, 56,0 km/h e 80,0 km/h) e dividindo por 3, obtendo 60,5 km/h. Avalie o procedimento: em que condição a média aritmética das velocidades coincidiria com a velocidade média verdadeira? Demonstre com os dados do problema.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Avaliar a validade da média aritmética de velocidades e determinar a condição matemática em que ela coincide com a velocidade média.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>v</em><sub>1</sub> = 45,6 km/h (&Delta;<em>t</em><sub>1</sub> = 25 min), <em>v</em><sub>2</sub> = 56,0 km/h (&Delta;<em>t</em><sub>2</sub> = 30 min), <em>v</em><sub>3</sub> = 80,0 km/h (&Delta;<em>t</em><sub>3</sub> = 45 min); média aritmética obtida pelo estudante: 60,5 km/h; velocidade média verdadeira (só movimento): 64,2 km/h.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Cada trecho tem velocidade média constante; os intervalos de tempo são exatos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">&Delta;<em>t</em><sub>1</sub>=25min &mdash; &Delta;<em>t</em><sub>2</sub>=30min &mdash; &Delta;<em>t</em><sub>3</sub>=45min (pesos desiguais). &Delta;<em>t</em><sub>1</sub>=&Delta;<em>t</em><sub>2</sub>=&Delta;<em>t</em><sub>3</sub> (pesos iguais &rarr; médias coincidem).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text"><em>v</em><sub>m</sub> = &Sigma;&Delta;<em>s</em> / &Sigma;&Delta;<em>t</em> (Equação 3). Como &Delta;<em>s</em><sub><em>i</em></sub> = <em>v</em><sub><em>i</em></sub> &middot; &Delta;<em>t</em><sub><em>i</em></sub>, segue que <em>v</em><sub>m</sub> = &Sigma;(<em>v</em><sub><em>i</em></sub>&middot;&Delta;<em>t</em><sub><em>i</em></sub>) / &Sigma;&Delta;<em>t</em><sub><em>i</em></sub> &mdash; uma <strong>média ponderada pelos tempos</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Média ponderada: (45,6&times;25 + 56,0&times;30 + 80,0&times;45) / 100 = (1.140 + 1.680 + 3.600) / 100 = 6.420 / 100 = <strong>64,2 km/h</strong> &#10004; (bate com a Equação 3). Média aritmética: (45,6 + 56,0 + 80,0)/3 = <strong>60,5 km/h</strong> &#10008;. Se &Delta;<em>t</em><sub>1</sub> = &Delta;<em>t</em><sub>2</sub> = &Delta;<em>t</em><sub>3</sub>, os pesos se cancelam e as duas fórmulas se tornam idênticas.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">O erro do estudante foi de 3,7 km/h (5,8% para menos). O procedimento subestimou o trecho 3, que dura 45 min mas recebeu o mesmo peso do trecho 1, de 25 min.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O procedimento é inválido. A velocidade média é uma média <strong>ponderada pelos intervalos de tempo</strong>, não aritmética. As duas só coincidem quando todos os trechos têm exatamente a mesma duração &mdash; condição que não se verifica aqui (25, 30 e 45 min).</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Engenharia de Minas</div>
+    <p>Uma correia transportadora opera a 3,5 m/s carregando minério de ferro britado de densidade aparente 2.200 kg/m&sup3;, com seção de carga de 0,072 m&sup2;. A usina precisa elevar a produção de 2.000 t/h para 2.400 t/h. Determine a nova velocidade necessária e avalie se ela é compatível com a faixa de operação industrial (1,5 a 5,0 m/s).</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">A velocidade de correia que produz 2.400 t/h e a avaliação de sua viabilidade técnica.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">&rho; = 2.200 kg/m&sup3;; <em>A</em> = 0,072 m&sup2;; <em>v</em><sub>0</sub> = 3,5 m/s; <em>Q</em><sub>0</sub> &asymp; 2.000 t/h; <em>Q</em><sub>novo</sub> = 2.400 t/h; faixa de operação: 1,5 a 5,0 m/s.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">A seção de carga <em>A</em> permanece constante (mesma alimentação e mesmo perfil de carga); a densidade aparente não muda; regime permanente.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[Britador] ══correia (&rho;, <em>A</em>, <em>v</em>)══&gt; [Pátio] &nbsp; <em>Q</em><sub>m</sub> = &rho;&middot;<em>A</em>&middot;<em>v</em></div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 7: <em>Q</em><sub>m</sub> = &rho;&middot;<em>A</em>&middot;<em>v</em>. Isolando: <em>v</em> = <em>Q</em><sub>m</sub> / (&rho;&middot;<em>A</em>).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text"><em>Q</em><sub>novo</sub> = 2.400 t/h = 2.400.000 kg / 3.600 s = 666,7 kg/s. <em>v</em> = 666,7 / (2.200 &times; 0,072) = 666,7 / 158,4 = <strong>4,21 m/s</strong>. Verificação pela proporcionalidade: 3,5 &times; (2.400/2.000) = 3,5 &times; 1,2 = 4,2 m/s &#10004;</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">4,21 m/s está dentro da faixa de 1,5 a 5,0 m/s, porém no terço superior &mdash; próximo do limite em que ocorrem segregação de finos e desgaste acelerado dos roletes. Como <em>Q</em><sub>m</sub> é diretamente proporcional a <em>v</em>, um aumento de 20% na produção exige exatamente 20% a mais de velocidade.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A nova velocidade necessária é 4,21 m/s (aumento de 0,71 m/s). Ela é tecnicamente viável por estar dentro da faixa industrial, mas exige monitoramento: operar próximo ao limite superior aumenta a projeção de finos e o desgaste de roletes. Uma alternativa seria ampliar a seção de carga <em>A</em>, mantendo a velocidade mais baixa.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Segurança do Trabalho</div>
+    <p>Numa rampa de cava, a NR-22 e o plano de tráfego da mina limitam a velocidade a 25 km/h. Um caminhão fora de estrada percorre os 1,2 km da rampa em 2 min 20 s. O sistema de telemetria registrou, porém, um pico instantâneo de 34 km/h num trecho da descida. Avalie: houve infração? Justifique distinguindo as duas grandezas envolvidas.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Determinar a velocidade média na rampa, compará-la ao limite e decidir se o registro de 34 km/h configura infração.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">&Delta;<em>s</em> = 1,2 km = 1.200 m; &Delta;<em>t</em> = 2 min 20 s = 140 s; limite regulamentar: 25 km/h; pico instantâneo registrado: 34 km/h.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">A telemetria é confiável; o limite de 25 km/h se aplica à velocidade instantânea em qualquer ponto da rampa (como todo limite de trânsito).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[topo]───1200 m em 140 s───[base] &nbsp; pico de 34 km/h em algum ponto</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 1: <em>v</em><sub>m</sub> = &Delta;<em>s</em>/&Delta;<em>t</em>. Equação 2 para converter m/s em km/h (&times;3,6). Equação 4 para a natureza da velocidade instantânea.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text"><em>v</em><sub>m</sub> = 1.200 m / 140 s = 8,57 m/s = 8,57 &times; 3,6 = <strong>30,9 km/h</strong>. Comparações: <em>v</em><sub>m</sub> = 30,9 km/h &gt; 25 km/h &#10008; &middot; <em>v</em><sub>instantânea</sub> = 34 km/h &gt; 25 km/h &#10008;</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Neste caso as duas grandezas acusam infração, o que reforça o diagnóstico. Mas o ponto conceitual é outro: mesmo que a média estivesse abaixo do limite &mdash; por exemplo, se o caminhão tivesse parado 1 min na rampa &mdash;, o pico de 34 km/h ainda seria infração, porque o limite regulamentar incide sobre a velocidade <strong>instantânea</strong>, não sobre a média do percurso.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">Sim, houve infração, e por duas vias independentes: a velocidade média de 30,9 km/h excede o limite em 5,9 km/h, e o pico instantâneo de 34 km/h o excede em 9 km/h. A distinção é essencial para a segurança: uma média dentro do limite jamais absolve um pico acima dele, pois é no instante do pico que a capacidade de frenagem do caminhão carregado é ultrapassada.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e História</div>
+    <p>No século XVIII, uma tropa de muares avançava a cerca de 4 km/h pela Estrada Real, cumprindo jornadas de 8 horas por dia. Considere o mesmo trajeto de 107 km entre Vila Rica e o arraial de Curral del Rei &mdash; hoje Belo Horizonte. Determine quantos dias a tropa levaria e compare com as 2 horas do ônibus atual, calculando o fator de aceleração histórica do transporte.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">O tempo de viagem da tropa colonial em dias e a razão entre esse tempo e o tempo do ônibus moderno.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">&Delta;<em>s</em> = 107 km (mesmo trajeto); <em>v</em><sub>tropa</sub> = 4 km/h; jornada = 8 h/dia; &Delta;<em>t</em><sub>ônibus</sub> = 2,0 h.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Velocidade média constante de 4 km/h ao longo de toda a jornada; jornadas regulares de 8 h; sem paradas prolongadas em registros fiscais (que na prática ampliariam ainda mais o tempo).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">Vila Rica ─── 107 km ─── Curral del Rei. Tropa: 32 km/dia &middot; ônibus: 107 km em 2 h.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 1 rearranjada: &Delta;<em>t</em> = &Delta;<em>s</em> / <em>v</em><sub>m</sub>. Depois, número de dias = &Delta;<em>t</em><sub>total</sub> / jornada diária.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">&Delta;<em>t</em><sub>tropa</sub> = 107 km / 4 km/h = 26,75 h de marcha efetiva. Dias = 26,75 h &divide; 8 h/dia = <strong>3,3 dias</strong> (na prática, 4 dias de viagem). Distância diária: 4 km/h &times; 8 h = 32 km/dia. Fator de aceleração = 26,75 h / 2,0 h = <strong>13,4 vezes</strong> (tempo de marcha). Considerando os dias corridos: 4 dias (96 h) &divide; 2,0 h &asymp; <strong>48 vezes</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Os dois fatores são legítimos e respondem a perguntas distintas &mdash; um compara o tempo de deslocamento efetivo, o outro o tempo de calendário que o viajante gastava. A diferença entre 13,4 e 48 é exatamente o efeito das paradas, o mesmo fenômeno do Tópico 2 aplicado à escala de dias.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A tropa levaria cerca de 3,3 dias de marcha efetiva, o que na prática significava 4 dias de viagem entre Vila Rica e Curral del Rei. O ônibus cobre o mesmo trajeto em 2 horas. O transporte ficou 13 vezes mais rápido em tempo de marcha e cerca de 48 vezes mais rápido em tempo de calendário &mdash; e o motivo não é apenas o motor: é a estrada pavimentada que permitiu suprimir as paradas.</div></div>
+    </details>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIÊNCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+  <div class="ciencia-arte-obra"><strong>Fotografia:</strong> <em>The Horse in Motion</em> (Sallie Gardner ao galope) &mdash; Eadweard Muybridge (1878)</div>
+
+  <p>Em 19 de junho de 1878, na pista de Palo Alto, Eadweard Muybridge alinhou vinte e quatro câmeras ao longo do percurso e amarrou um fio a cada obturador. Quando a égua Sallie Gardner passou a galope, suas patas romperam os fios um a um, e cada câmera registrou uma fatia do movimento com exposição de aproximadamente um milésimo de segundo. A questão que motivava o experimento era antiga e aparentemente insolúvel: durante o galope, o cavalo chega a ter as quatro patas simultaneamente no ar? A olho nu, ninguém conseguia responder &mdash; o movimento era rápido demais.</p>
+
+  <p>As fotografias responderam: sim. E fizeram mais do que isso. Ao congelar o galope em instantes sucessivos, Muybridge produziu a primeira demonstração visual do que a Física chama de limite: reduza o intervalo de tempo o suficiente e o movimento revela sua estrutura interna. É exatamente o raciocínio do Tópico 3 &mdash; o mesmo que Sofia percorreu quando entendeu que o velocímetro não mede a viagem, mas o instante. O milésimo de segundo do obturador de Muybridge é o &Delta;<em>t</em> &rarr; 0 da Equação 4, traduzido em prata e vidro.</p>
+
+  <p>Muybridge nunca escreveu uma linha de cálculo diferencial. Mas, ao decompor o galope em vinte e quatro instantes, deu ao mundo a primeira cronofotografia e abriu o caminho para o cinema &mdash; provando que a velocidade instantânea não é uma abstração matemática, e sim algo que se pode fotografar.</p>
+
+  <!-- Figura 12 — IT-12 (Ciência e Arte) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T08-IT-12-v1.jpg" alt="Cronofotografia no espírito de Muybridge — instantes sucessivos de um galope" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 12</span> &mdash; Muybridge e a Física: vinte e quatro instantes de um galope &mdash; a prova em prata de que o limite existe.</figcaption>
+  </figure>
+
+  <blockquote>&ldquo;Nenhum homem entra duas vezes no mesmo rio, pois quando nele entra já não é o mesmo rio, nem ele é o mesmo homem.&rdquo;</blockquote>
+  <div class="ca-autor">&mdash; Heráclito de Éfeso (c. 540&ndash;470 a.C.)</div>
+
+  <div class="footnote"><strong>Eadweard Muybridge</strong> (Kingston upon Thames, Inglaterra, 1830 &mdash; Kingston upon Thames, 1904). Fotógrafo britânico radicado nos Estados Unidos, pioneiro do estudo fotográfico do movimento. Em 1878, a pedido do empresário e ex-governador da Califórnia Leland Stanford, montou na pista de Palo Alto um sistema de 24 câmeras acionadas por fios rompidos pelo próprio animal, obtendo a sequência <em>The Horse in Motion</em>. O trabalho inaugurou a cronofotografia &mdash; o registro fotográfico da passagem do tempo &mdash; e é considerado um dos antecedentes diretos do cinematógrafo.</div>
+
+  <div class="footnote"><strong>Heráclito de Éfeso</strong> (Éfeso, Jônia, c. 540 a.C. &mdash; c. 470 a.C.). Filósofo pré-socrático grego, conhecido como &ldquo;o Obscuro&rdquo; pela concisão enigmática de seus fragmentos. Defendeu que a realidade é fluxo permanente e que a mudança, não a permanência, é a natureza última das coisas. A imagem do rio, preservada em fragmentos citados por Platão e Aristóteles, tornou-se a formulação mais duradoura da ideia de que descrever o mundo exige descrever o seu movimento.</div>
+</div>
+
+<!-- ═══════════════════ REFERÊNCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo">Referências &mdash; Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MÁXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio</em>, v. único. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Referências &mdash; Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Declaração de autoria</div>
+  <p>Estas Trilhas de Aprendizagem são concebidas, dirigidas e revisadas por uma equipe humana &mdash; autor, coautor, colaboradores, monitores e a equipe do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) e equipe da Coordenadoria da Área de Física (CODAFIS).</p>
+  <p>A inteligência artificial entra no processo como ferramenta, nunca como autora: é usada sob curadoria humana, com princípios claros, diretrizes pedagógicas explícitas e honestidade intelectual.</p>
+  <p>Assim, declaramos abertamente o uso de IA como assistente de redação e diagramação de todos os Objetos de Aprendizagem (Claude Opus 5 e Claude Cowork, Anthropic, 2026; Gemini Notebook, Google, 2026), do mesmo modo que se declara o uso de qualquer ferramenta de autoria.</p>
+</div>
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T08 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T08-TT-v1';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
