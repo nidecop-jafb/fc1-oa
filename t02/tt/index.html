@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T02 · Sistema de Numeração de Base 12: dos Dedos ao GPS — Texto Temático v10</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+.ctx-cotidiano .contexto-label { color: var(--verde); }
+.contexto p { font-size: 1.1rem; margin-bottom: 8px; }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esse texto temático foi elaborado com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; Largo do Coimbra em névoa &mdash; bancas de pedra-sabão sob tendas de lona, fachada barroca da Igreja São Francisco de Assis ao fundo</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Mão, feirinha, sino, bússola, GPS, igreja &mdash; cinco linguagens do número doze reunidas numa identidade visual</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; Régua duodecimal na banca de Seu Geraldo &mdash; a ponte entre quatro milênios de contagem e o GPS no bolso</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Pedro desce a ladeira como quem segue o fio de uma história que ainda não conhece</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Falanges, dúzias e a régua do artesão &mdash; antes da escrita, o corpo já sabia contar até doze</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Sino, átomo e detonação &mdash; três relógios medem o mesmo segundo em escalas incomensuráveis</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Gorceix e a bússola &mdash; o ângulo que uniu a astronomia islâmica ao ferro de Minas Gerais</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Satélite, babilônio e celular &mdash; graus, minutos e segundos ainda falam a mesma língua há quatro mil anos</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Bússola na mão, galeria no mapa &mdash; o azimute é o endereço que nenhuma revolução conseguiu mudar</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; Pedro guarda a esfera de pedra-sabão &mdash; doze reais pelo peso de quatro milênios de aritmética</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da base 12 &mdash; Matemática, Geologia, História, Língua Portuguesa, Segurança do Trabalho</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; Mão, régua, sino, bússola, satélite &mdash; a mesma contagem que divide o palmo vibra do dedo ao acorde de Bach</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Johann Sebastian Bach &mdash; O Cravo Bem-Temperado (Das Wohltemperierte Klavier, BWV 846&ndash;893)</div>
+  <div class="musica-detail">1722 &middot; 48 prelúdios e fugas &middot; ~2h 30min (Livro I)</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Bach+Well+Tempered+Clavier+Book+1" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T02 &mdash;
+Sistema de Numeração de Base 12:
+dos Dedos ao GPS / Julio Cesar
+Silva Azevedo; colaboração Felipe
+Beato. &mdash; 1. ed. &mdash; Ouro Preto,
+MG: Instituto Federal de Minas
+Gerais &mdash; Campus Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T02)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Sistemas de numeração.
+4. Medição de tempo e ângulos.
+5. GPS e georreferenciamento.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epigrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Topico 1 &mdash; Dos Dedos das Maos aos Simbolos</a>
+  <a href="#topico-2" class="toc-topico">Topico 2 &mdash; Medindo o Tempo</a>
+  <a href="#topico-3" class="toc-topico">Topico 3 &mdash; Medindo o Angulo</a>
+  <a href="#topico-4" class="toc-topico">Topico 4 &mdash; O GPS e o Google Earth</a>
+  <a href="#topico-5" class="toc-topico">Topico 5 &mdash; Medindo Azimutes e Rumo</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexoes Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciencia e Arte</a>
+  <a href="#referencias" class="toc-extra">Referencias</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T02-IT-00.jpg" alt="Largo do Coimbra em Ouro Preto — bancas de pedra-sabão sob tendas de lona, fachada barroca da Igreja São Francisco de Assis ao fundo">
+  <div class="capa-label">Trilha de Aprendizagem 02</div>
+  <div class="capa-titulo">Sistema de Numeração<br>de Base 12: dos Dedos ao GPS</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T02</span> &middot; Sistema de Numeração de Base 12: dos Dedos ao GPS</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~30 min de leitura</div>
+</header>
+
+<!-- Figura 1 — IT-11 -->
+<figure class="figura">
+  <img class="figura-img" src="../_imagens/_web/T02-IT-11-v11.jpg" alt="Identidade visual da T02 — mão com falanges, régua duodecimal, sino, bússola, GPS, Igreja São Francisco" loading="lazy">
+  <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Mão, feirinha, sino, bússola, GPS, igreja &mdash; cinco linguagens do número doze reunidas numa identidade visual</figcaption>
+</figure>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;Conta o que é contável, mede o que é mensurável; o que não for mensurável, torna-o mensurável.&rdquo;</blockquote>
+  <div class="autor">&mdash; Galileu Galilei (1564&ndash;1642), atribuído, séc. XVII</div>
+  <div class="nota"><strong>Galileu Galilei</strong> (1564&ndash;1642). Matemático, físico e astrônomo italiano, considerado o pai da física moderna e da astronomia observacional. Suas contribuições incluem a descrição matemática do movimento dos corpos, a lei da queda dos graves e o aperfeiçoamento do telescópio. A frase é amplamente atribuída a Galileu &mdash; embora a formulação exata não figure em nenhuma obra conhecida &mdash; e sintetiza o espírito do método científico que ele inaugurou.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>Pedro desceu a Rua Cláudio Manoel devagar.</p>
+
+  <p>Era sábado de maio. A névoa que cobria Ouro Preto desde a madrugada ainda não havia cedido, e o frio úmido dos 1 100 metros de altitude tornava a pedra do calçamento escorregadia sob os tênis. A rua descia em direção ao Largo do Coimbra com a inclinação característica das ladeiras históricas da cidade &mdash; o tipo de ladeira que, depois de alguns meses, você aprende a descer num ângulo ligeiramente oblíquo para não derrapar.</p>
+
+  <p>Pedro conhecia bem esse caminho. Mas naquela manhã havia algo diferente: Sofia e Lucas o haviam chamado para a Feirinha de Pedra-Sabão com a promessa de que o Prof. Felipe estaria lá. Não na escola, não na sala de aula &mdash; na feirinha. <em>&ldquo;Apareça cedo,&rdquo;</em> ele havia dito no grupo da turma, <em>&ldquo;antes de eu tomar o segundo café.&rdquo;</em></p>
+
+  <p>O Largo do Coimbra abriu-se à frente quando Pedro dobrou à esquerda na Rua Randolfo Bretas. À sua direita, a Igreja São Francisco de Assis &mdash; obra de Aleijadinho, fachada em pedra-sabão cinza esculpida com o medalhão de São Francisco no centro, dois campanários laterais que subiam em suave perspectiva barroca. À sua frente, mais de cinquenta bancas de artesanato se estendiam pelo largo. Pedra-sabão polida: vasos, tabuleiros de xadrez, esculturas, pratos, relógios de parede, panelas e miniaturas de igrejas. O cheiro era mineral e levemente gorduroso &mdash; talco de rocha e cera de carnaúba, usada no polimento final.</p>
+
+  <p>Sofia e Lucas já estavam lá, diante da banca de Seu Geraldo.</p>
+
+  <p>Seu Geraldo era um artesão de cabelos brancos e mãos grandes e calejadas &mdash; quarenta anos esculpindo pedra-sabão, as unhas permanentemente escurecidas pela poeira da rocha. Ele trabalhava em silêncio, movendo uma grosa ao longo de um bloco verde-acinzentado com movimentos lentos e precisos, como quem não tem pressa porque sabe exatamente o que está fazendo.</p>
+
+  <p>Sobre a banca, entre as peças já acabadas, havia uma régua artesanal de madeira escura. Não uma régua escolar de plástico transparente: uma régua de trabalho, grossa, polida pelo uso, com marcações gravadas a faca. Pedro pegou-a sem pensar.</p>
+
+  <p>As marcas não eram centímetros. Eram doze divisões por segmento &mdash; doze traços igualmente espaçados por palmo, com subdivisões menores de três em três.</p>
+
+  <p>&mdash; Base 12 &mdash; disse uma voz familiar. &mdash; Régua duodecimal.</p>
+
+  <p>O Prof. Felipe estava de pé atrás do toldo lateral, com uma xícara de café na mão, como quem já estava ali antes de todo mundo. Óculos de metal retangular, barba curta, casaco sobre a camiseta do IFMG. O tipo de pessoa que nunca parece ter chegado porque sempre parece já ter estado.</p>
+
+  <p>&mdash; Por que 12 e não 10? &mdash; Pedro perguntou, com o tom direto de quem quer a versão curta. &mdash; O sistema métrico inteiro é base 10. Por que um artesão usaria outra coisa?</p>
+
+  <p>O Prof. Felipe ergueu a mão direita aberta, com o polegar livre.</p>
+
+  <p>&mdash; Quantas divisões você vê nessa mão? &mdash; disse ele.</p>
+
+  <p>Pedro olhou. Quatro dedos, além do polegar.</p>
+
+  <p>&mdash; Quatro.</p>
+
+  <p>&mdash; Conte as falanges &mdash; disse o Prof. Felipe. E tocou o polegar nas três falanges do indicador: um, dois, três. Depois do médio: quatro, cinco, seis. Do anular: sete, oito, nove. Do mínimo: dez, onze, doze. &mdash; Esta mão conta doze. Com a outra, você registra as dúzias. Uma dúzia, duas dúzias, três dúzias &mdash; até sessenta. Sem lápis, sem papel.</p>
+
+  <p>Sessenta. Com as duas mãos abertas.</p>
+
+  <p>&mdash; Tudo bem &mdash; disse Pedro. &mdash; Mas pra que serve isso hoje em dia? O GPS do celular não usa base 12.</p>
+
+  <p>O Prof. Felipe sorriu e tirou o celular do bolso. A tela mostrava as coordenadas do ponto onde estavam:</p>
+
+  <div class="equacao" style="text-align:center;">
+    <div class="equacao-formula" style="font-family:var(--mono); font-size:1.3rem;">20°23&prime;18&Prime;S &nbsp; 43°30&prime;20&Prime;W</div>
+  </div>
+
+  <p>&mdash; Vinte graus, vinte e três minutos e dezoito segundos sul. &mdash; Ele pausou. &mdash; Isso é exatamente a mesma estrutura de uma hora num relógio: horas, minutos, segundos. A mesma base 60 que os babilônios inventaram há quatro mil anos. E o 60 não é por acaso: é cinco dúzias. Cinco dúzias de doze.</p>
+
+  <p>Pedro olhou para a régua na mão, para o GPS no celular, para a Igreja de São Francisco ao fundo com seus dois campanários barrocos em pedra-sabão &mdash; a mesma pedra que Seu Geraldo esculpia ali, a menos de vinte metros.</p>
+
+  <p>A régua e o GPS. O artesão do século XVIII e o satélite do século XXI. E entre eles, o número doze &mdash; intocado, persistente, matematicamente superior ao dez para quem precisa dividir com precisão.</p>
+
+  <p>Sofia abriu o caderno instintivamente, como sempre fazia quando algo importante estava para ser dito. Lucas levantou os olhos do bloco de pedra-sabão que estava examinando e os fixou no Prof. Felipe com aquele olhar paciente de quem quer ouvir a história inteira antes de comentar.</p>
+
+  <p>Pedro colocou a régua de volta sobre a banca com cuidado.</p>
+
+  <p>&mdash; Eu uso base 12 o tempo todo &mdash; disse ele devagar. &mdash; E nunca soube.</p>
+
+  <p>O Prof. Felipe assentia.</p>
+
+  <p>&mdash; Vamos descobrir de onde veio, onde mais aparece, e por que nenhuma revolução matemática &mdash; nem a francesa de 1793, nem o sistema métrico de 1875 &mdash; conseguiu eliminar o número doze da experiência humana.</p>
+
+  <!-- Figura 2 — IT-02 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T02-IT-02-v11.jpg" alt="Pedro, Prof. Felipe e régua duodecimal de Seu Geraldo na banca do Largo do Coimbra; GPS com DMS sobre a banca" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; Régua duodecimal na banca de Seu Geraldo &mdash; a ponte entre quatro milênios de contagem e o GPS no bolso.</figcaption>
+  </figure>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar no Google Maps</div>
+
+    <!-- Figura 3 — IT-01 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-01.jpg" alt="Pedro descendo a Rua Cláudio Manoel até a Feirinha do Largo do Coimbra numa manhã de névoa" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Pedro desce a ladeira como quem segue o fio de uma história que ainda não conhece.</figcaption>
+    </figure>
+
+    <p>A cena acima acontece num lugar real: a Feira de Pedra-Sabão do Largo do Coimbra existe em Ouro Preto desde 1995 (oficializada em 1999), com mais de cinquenta bancas de artesanato em pedra-sabão dispostas em frente à Igreja São Francisco de Assis &mdash; a obra-prima de Aleijadinho, datada de 1766&ndash;1810.</p>
+    <p style="margin-top:10px;"><strong>Como acessar e usar o Street View:</strong> 1. Acesse o link abaixo &mdash; ou abra o Google Maps e pesquise por <strong>&ldquo;Largo do Coimbra, Ouro Preto, MG&rdquo;</strong>. 2. Clique no ícone do <strong>boneco amarelo</strong> (Pegman) no canto inferior direito do mapa e arraste-o até a rua ou local desejado. 3. Solte o boneco sobre a rua destacada em azul &mdash; você entrará no modo <strong>Street View</strong>. 4. Use as <strong>setas</strong> na tela para caminhar e o <strong>mouse</strong> (ou o dedo, no celular) para girar a câmera 360°. 5. Você vai encontrar as bancas de pedra-sabão com as esculturas características e, ao fundo, a fachada barroca da Igreja São Francisco de Assis em pedra-sabão cinza-esverdeada &mdash; a mesma que Pedro via enquanto segurava a régua duodecimal de Seu Geraldo.</p>
+    <p style="margin-top:10px;">O mesmo largo onde Pedro segurou uma régua de base 12 tem coordenadas GPS que usam minutos e segundos &mdash; herança direta da mesma matemática babilônica. Ouro Preto é isso: quatro mil anos de medição em cada esquina.</p>
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Largo+do+Coimbra,+Ouro+Preto,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ═══ TOPICO 1 ═══ -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Dos Dedos das Mãos aos Símbolos</div>
+
+    <p>Muito antes de existirem algarismos ou calculadoras, os povos da Mesopotâmia &mdash; sumérios e babilônios &mdash; já contavam em base 12 usando as falanges da mão. O método é elegante: com o polegar da mão direita, contam-se as três falanges de cada um dos quatro dedos restantes, totalizando doze posições distintas.</p>
+
+    <!-- Figura 4 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-03-v11.jpg" alt="Mãos com falanges numeradas de 1 a 12 e régua artesanal de 12 divisões por segmento" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Falanges, dúzias e a régua do artesão &mdash; antes da escrita, o corpo já sabia contar até doze.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Muito antes de existirem algarismos ou calculadoras, os povos da Mesopotâmia &mdash; sumérios e babilônios &mdash; já contavam em base 12 usando as falanges da mão. O método é elegante: com o polegar da mão direita, contam-se as três falanges (proximal, média e distal) de cada um dos quatro dedos restantes, totalizando doze posições distintas. Com a outra mão, levantavam um dedo para cada dúzia completada &mdash; permitindo contar até 60 sem nenhum instrumento externo. Essa técnica está registrada em tábuas de argila datadas de aproximadamente 3 000 a.C. Em Ouro Preto, artesãos de pedra-sabão como Seu Geraldo, da Feirinha do Largo do Coimbra, herdaram essa tradição pelos cânones de medição ibérica trazidos pelos colonizadores portugueses no século XVIII.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Um sistema de numeração posicional é aquele em que o valor de um dígito depende de sua posição na escrita do número. A base define quantos símbolos distintos o sistema utiliza antes de &ldquo;virar uma casa&rdquo;: na base 10, temos os dígitos 0&ndash;9; na base 12, precisamos de doze símbolos. A principal vantagem matemática do 12 sobre o 10 está em seus divisores: 12 é divisível por 1, 2, 3, 4, 6 e 12 &mdash; seis divisores exatos. O número 10 possui apenas quatro: 1, 2, 5 e 10. Isso torna as frações em base 12 muito mais precisas.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, divisões exatas importam. Ciclos de 12 turnos podem ser divididos em dois grupos de 6, três de 4, quatro de 3 ou seis de 2 &mdash; sem sobra em nenhum caso. O técnico em mineração encontra o sistema duodecimal também nos equipamentos importados: diâmetro de tubulações e hastes de perfuratriz são especificados em polegadas, unidade subdividida em frações duodecimais. Um técnico que não domina a lógica do 12 perde precisão na interpretação de especificações de campo.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Uma Mão Conta, Outra Registra</strong></p>
+
+    <p>O Prof. Felipe colocou a mão direita aberta diante de Pedro, Sofia e Lucas, com o polegar livre.</p>
+
+    <p>&mdash; Aqui está o problema dos nossos antepassados: como contar mais de dez sem lápis e papel?</p>
+
+    <p>Ele tocou com o polegar as três falanges do indicador: um, dois, três. Depois do médio: quatro, cinco, seis. Do anular: sete, oito, nove. Do mínimo: dez, onze, doze.</p>
+
+    <p>&mdash; Esta mão conta as unidades. Até doze. &mdash; Levantou um dedo da mão esquerda. &mdash; Esta registra as dúzias. Uma dúzia. &mdash; Dois dedos. &mdash; Duas dúzias: vinte e quatro. &mdash; Cinco dedos. &mdash; Cinco dúzias: sessenta.</p>
+
+    <p>Sessenta. Com duas mãos abertas, sem caneta, sem papel.</p>
+
+    <!-- EQUACAO 1 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Representação posicional em base <em>b</em></div>
+      <div class="equacao-formula">N = d<sub>n</sub> &times; b<sup>n</sup> + d<sub>n&minus;1</sub> &times; b<sup>n&minus;1</sup> + &hellip; + d<sub>1</sub> &times; b<sup>1</sup> + d<sub>0</sub> &times; b<sup>0</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>N</td><td>Valor numérico</td><td>adimensional</td></tr>
+          <tr><td>b</td><td>Base do sistema</td><td>b = 10 (decimal); b = 12 (duodecimal)</td></tr>
+          <tr><td>d<sub>i</sub></td><td>Dígito na posição i</td><td>0 &le; d<sub>i</sub> &lt; b</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Converter os números-âncora para base 12:<br>12 = 1 &times; 12¹ + 0 &times; 12⁰ &rarr; <strong>10₁₂</strong> (uma dúzia)<br>24 = 2 &times; 12¹ + 0 &times; 12⁰ &rarr; <strong>20₁₂</strong> (duas dúzias)<br>60 = 5 &times; 12¹ + 0 &times; 12⁰ &rarr; <strong>50₁₂</strong> (cinco dúzias)</div>
+    </div>
+
+    <!-- QUADRO 1 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Divisores de 10 e 12 comparados</div>
+      <table>
+        <thead><tr><th>Número</th><th>Divisores exatos</th><th>Quantidade</th><th>Frações exatas</th></tr></thead>
+        <tbody>
+          <tr><td>10</td><td>1, 2, 5, 10</td><td>4</td><td>1/2, 1/5, 1/10</td></tr>
+          <tr><td>12</td><td>1, 2, 3, 4, 6, 12</td><td>6</td><td>1/2, 1/3, 1/4, 1/6, 1/12</td></tr>
+          <tr><td>60</td><td>1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60</td><td>12</td><td>todas as frações de 1/2 a 1/60 com denominador &le; 12</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Então 1/3 de hora é 20 minutos exatos &mdash; disse Pedro, olhando para o quadro. &mdash; Mas 1/3 de 100 segundos é 33,33&hellip; repetido.</p>
+
+    <p>&mdash; Exatamente por que os relojoeiros medievais não escolheram base 10 para subdividir a hora &mdash; disse o Prof. Felipe. &mdash; E por que os artesãos de Ouro Preto não usavam centímetros para dividir o palmo. O 12 não é arcaísmo. É aritmética inteligente que sobreviveu às revoluções porque funciona.</p>
+  </div>
+
+  <!-- ═══ TOPICO 2 ═══ -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Medindo o Tempo</div>
+
+    <p>As primeiras medições de tempo foram astronômicas: a observação do ciclo solar (dia e noite) e do ciclo lunar (mês). Os egípcios do Médio Império usavam gnômones &mdash; hastes verticais cuja sombra marcava as horas do dia.</p>
+
+    <!-- Figura 5 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-04-v11.jpg" alt="Torre do Pilar com mostrador de relógio, visor de relógio atômico Cs-133, diagrama de retardos de detonação" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Sino, átomo e detonação &mdash; três relógios medem o mesmo segundo em escalas incomensuráveis.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os relógios mecânicos de escapamento chegaram às torres das igrejas de Minas Gerais no século XVIII. As torres da Igreja de Nossa Senhora do Carmo e da Basílica de Nossa Senhora do Pilar, em Ouro Preto, tinham relógios que organizavam a vida da cidade colonial desde a madrugada &mdash; as horas canonicais ditavam os turnos nas minas, a abertura dos mercados e o horário das missas. Em 1967, a 13.ª Conferência Geral de Pesos e Medidas redefiniu o segundo com base nas oscilações do átomo de césio-133.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>No Sistema Internacional de Unidades (SI), a unidade de tempo é o <strong>segundo (s)</strong>, definido como a duração de exatamente 9 192 631 770 oscilações da radiação emitida na transição hiperfina do estado fundamental do átomo de césio-133. A Terra leva 86 400 s para completar uma rotação em relação ao Sol (1 dia solar médio), pois 1 dia = 24 horas &times; 60 min/hora &times; 60 s/min = 86 400 s.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, o tempo é recurso e risco simultaneamente. O controle de &ldquo;horas-homem trabalhadas&rdquo; (HHT) é a base do cálculo da Taxa de Frequência de Acidentes (TFA), exigida pela NR-22. Em operações de desmonte com explosivos, o retardo de milissegundos entre cargas sequenciais determina a direção e a fragmentação do bloco de rocha: um erro de 100 ms pode transformar um desmonte controlado em projeção de fragmentos sobre a equipe de campo.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>O Sino do Pilar e o Átomo de Césio</strong></p>
+
+    <p>O Prof. Felipe tirou do bolso um caderno espiral e o abriu numa tabela de conversões de tempo.</p>
+
+    <p>&mdash; Quando o sino do Pilar bate &mdash; disse ele, apontando na direção da torre &mdash;, o que está medindo de fato?</p>
+
+    <p>&mdash; Um fenômeno periódico &mdash; disse Pedro. &mdash; Um pêndulo, um mecanismo de escapamento. O sino bate a cada intervalo regular.</p>
+
+    <p>&mdash; Exatamente. Tempo não é algo que medimos diretamente &mdash; medimos <em>eventos</em> que se repetem e chamamos de &ldquo;tempo&rdquo; o número de repetições multiplicado pelo período de cada uma.</p>
+
+    <!-- EQUACAO 2 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Conversão em cadeia: dias e horas para segundos</div>
+      <div class="equacao-formula">t(s) = t(dias) &times; 24 &times; 60 &times; 60 = t(dias) &times; 86 400</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>t(s)</td><td>Tempo em segundos</td><td>s</td></tr>
+          <tr><td>t(dias)</td><td>Tempo em dias</td><td>adimensional</td></tr>
+          <tr><td>86 400</td><td>Segundos por dia (24 &times; 60 &times; 60)</td><td>s/dia</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicações:<br>1 dia = 24 &times; 60 &times; 60 = <strong>86 400 s</strong><br>1 ano trópico = 365,2422 &times; 86 400 &asymp; <strong>31 556 926 s</strong><br>1 hora de trabalho = 1 &times; 3 600 = <strong>3 600 s</strong></div>
+    </div>
+
+    <!-- QUADRO 2 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Unidades de tempo e suas equivalências em segundos</div>
+      <table>
+        <thead><tr><th>Unidade</th><th>Símbolo</th><th>Equivalência</th><th>Contexto típico</th></tr></thead>
+        <tbody>
+          <tr><td>Milissegundo</td><td>ms</td><td>10⁻³ s</td><td>retardo de detonação (NR-22)</td></tr>
+          <tr><td>Segundo</td><td>s</td><td>1 s</td><td>unidade base do SI</td></tr>
+          <tr><td>Minuto</td><td>min</td><td>60 s</td><td>tempo de evacuação</td></tr>
+          <tr><td>Hora</td><td>h</td><td>3 600 s</td><td>turno de trabalho</td></tr>
+          <tr><td>Dia solar médio</td><td>dia</td><td>86 400 s</td><td>ciclo operacional</td></tr>
+          <tr><td>Ano trópico</td><td>ano</td><td>&asymp; 31 556 926 s</td><td>planejamento de lavra</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; O sino do Pilar bate horas &mdash; disse Pedro, olhando para a torre ao longe. &mdash; O detonador bate em milissegundos. Mesma física, escalas diferentes.</p>
+
+    <p>&mdash; Mesma física, quatro séculos de diferença &mdash; confirmou o Prof. Felipe.</p>
+  </div>
+
+  <!-- ═══ TOPICO 3 ═══ -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Medindo o Ângulo</div>
+
+    <p>Os babilônios dividiram o círculo em 360 graus há mais de 4 000 anos, baseados em dois fatos simultâneos: a aproximação do ano em 360 dias e a excepcional divisibilidade do número 360, que possui 24 divisores inteiros.</p>
+
+    <!-- Figura 6 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-05-v11.jpg" alt="Gorceix com teodolito, bússola Brunton aberta, diagrama de erro angular em galeria subterrânea" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Gorceix e a bússola &mdash; o ângulo que uniu a astronomia islâmica ao ferro de Minas Gerais.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os engenheiros coloniais que projetaram as igrejas barrocas de Ouro Preto no século XVIII usavam astrolábios e bússolas calibradas nessa divisão para orientar galerias e eixos dos templos. Henri Gorceix, engenheiro e astrônomo francês, fundou a Escola de Minas de Ouro Preto em 1876 com teodolitos alemães fabricados em Jena que permitiram os primeiros levantamentos topográficos sistemáticos do Quadrilátero Ferrífero.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Um ângulo plano mede a abertura entre dois semiplanos que compartilham uma aresta comum. O SI adota o <strong>radiano (rad)</strong> como unidade oficial: 1 radiano é o ângulo central que subtende um arco de comprimento igual ao raio da circunferência. Uma volta completa equivale a 2&pi; radianos = 360°. Para um ângulo de 1° em uma galeria de 300 m, o desvio lateral é: desvio = 300 &times; tan(1°) &asymp; 300 &times; 0,01746 &asymp; <strong>5,2 m</strong>.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Todo levantamento topográfico de uma mina começa com medições angulares. O técnico em mineração usa o teodolito eletrônico (estação total) para medir ângulos horizontais e verticais com precisão de segundos de arco. A NR-22 exige que as plantas de lavra sejam orientadas em relação ao Norte geográfico com indicação explícita das direções das galerias em graus.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>O Instrumento que Gorceix Trouxe</strong></p>
+
+    <p>O Prof. Felipe tirou do casaco uma bússola compacta &mdash; uma Brunton de alumínio, com o limbo graduado de 0° a 360° &mdash; e a posicionou horizontalmente sobre a banca de Seu Geraldo, aguardando a agulha estabilizar.</p>
+
+    <p>&mdash; Por que 360? Por que não 400, que seria mais decimal?</p>
+
+    <p>&mdash; A Revolução Francesa tentou 400 graus &mdash; o gradiano. &mdash; O Prof. Felipe cruzou os braços. &mdash; Falhou. O 360 tem 24 divisores inteiros; o 400 tem apenas 20.</p>
+
+    <!-- EQUACAO 3 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Conversão entre graus e radianos</div>
+      <div class="equacao-formula">&theta;(rad) = &theta;(°) &times; &pi; / 180</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&theta;(rad)</td><td>Ângulo em radianos</td><td>rad</td></tr>
+          <tr><td>&theta;(°)</td><td>Ângulo em graus</td><td>° (grau, tolerado pelo SI)</td></tr>
+          <tr><td>&pi;</td><td>Constante matemática</td><td>&asymp; 3,141 592 (adimensional)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicações:<br>360° &rarr; &theta;(rad) = 360 &times; &pi;/180 = <strong>2&pi; &asymp; 6,283 rad</strong><br>60° &rarr; &theta;(rad) = 60 &times; &pi;/180 = &pi;/3 &asymp; <strong>1,047 rad</strong><br>1° &rarr; &theta;(rad) = &pi;/180 &asymp; <strong>0,01745 rad</strong><br><br><em>Aplicação profissional:</em> Erro angular de 1° em galeria de 300 m:<br>desvio = 300 &times; tan(1°) &asymp; 300 &times; 0,01746 &asymp; <strong>5,2 m</strong></div>
+    </div>
+
+    <!-- QUADRO 3 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Ângulos especiais e suas referências práticas</div>
+      <table>
+        <thead><tr><th>Ângulo</th><th>Radianos</th><th>Minutos de arco</th><th>Referência prática</th></tr></thead>
+        <tbody>
+          <tr><td>360°</td><td>2&pi; &asymp; 6,283 rad</td><td>21 600&prime;</td><td>volta completa; bússola; GPS</td></tr>
+          <tr><td>90°</td><td>&pi;/2 &asymp; 1,571 rad</td><td>5 400&prime;</td><td>ângulo reto; galeria perpendicular</td></tr>
+          <tr><td>60°</td><td>&pi;/3 &asymp; 1,047 rad</td><td>3 600&prime;</td><td>1 setor duodecimal (1/6 do círculo)</td></tr>
+          <tr><td>30°</td><td>&pi;/6 &asymp; 0,524 rad</td><td>1 800&prime;</td><td>1 mês babilônico; 1/12 do círculo</td></tr>
+          <tr><td>1°</td><td>&pi;/180 &asymp; 0,01745 rad</td><td>60&prime;</td><td>unidade base do azimute e do GPS</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ TOPICO 4 ═══ -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; O GPS e o Google Earth</div>
+
+    <p>O GPS é um sistema de <strong>trilateração</strong> baseado em sinais de rádio enviados por satélites em órbita média. Cada satélite transmite sua posição e o instante exato de emissão do sinal.</p>
+
+    <!-- Figura 7 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-06-v11.jpg" alt="Técnico com GNSS-RTK em platô de lavra, diagrama de trilateração GPS, Google Earth com coordenadas DMS" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Satélite, babilônio e celular &mdash; graus, minutos e segundos ainda falam a mesma língua há quatro mil anos.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O GPS foi desenvolvido pelo Departamento de Defesa dos Estados Unidos a partir de 1973. No Brasil, a Agência Nacional de Mineração (ANM) passou a exigir o georreferenciamento GPS de todas as áreas licenciadas a partir dos anos 2000. O Google Earth foi lançado em 2005 e democratizou o acesso às imagens de satélite em alta resolução.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O receptor calcula a diferença de tempo entre a emissão e a recepção e multiplica pela velocidade da luz no vácuo &mdash; <strong>c = 299 792 458 m/s</strong> &mdash; para obter a distância ao satélite. Com quatro satélites simultâneos, o receptor resolve um sistema de quatro equações e determina latitude, longitude e altitude. A precisão padrão do GPS civil é de &plusmn;3 m a &plusmn;5 m; com correção diferencial GNSS-RTK, atinge &plusmn;1 cm.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O técnico em mineração usa GPS de alta precisão para marcar a posição de furos de sondagem, cristas de talude e estruturas de contenção. A ANM exige o georreferenciamento GPS de todas as frentes de lavra ativas. Um erro de conversão entre DMS e DD pode deslocar um ponto registrado em dezenas de metros, comprometendo o licenciamento ambiental.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Do Babilônico ao Satélite &mdash; Em Graus, Minutos e Segundos</strong></p>
+
+    <p>O Prof. Felipe virou o celular para Pedro mostrar a tela do GPS:</p>
+
+    <div class="equacao" style="text-align:center;">
+      <div class="equacao-formula" style="font-family:var(--mono); font-size:1.3rem;">20°23&prime;18&Prime;S &nbsp; 43°30&prime;20&Prime;W</div>
+    </div>
+
+    <p>&mdash; Latitude vinte graus, vinte e três minutos e dezoito segundos sul. &mdash; Pedro leu devagar, como quem percebe algo pela primeira vez. &mdash; É como ler a hora num relógio.</p>
+
+    <!-- EQUACAO 4 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Conversão de DMS para graus decimais (DD)</div>
+      <div class="equacao-formula">DD = graus + (minutos / 60) + (segundos / 3 600)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>DD</td><td>Graus decimais</td><td>número real</td></tr>
+          <tr><td>graus</td><td>Parte inteira</td><td>número inteiro</td></tr>
+          <tr><td>minutos</td><td>Minutos de arco (0&ndash;59)</td><td>número inteiro</td></tr>
+          <tr><td>segundos</td><td>Segundos de arco (0&ndash;59,99&hellip;)</td><td>número real</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Converter a latitude do Largo do Coimbra &mdash; 20°23&prime;18&Prime;S &mdash; para graus decimais:<br>DD = 20 + (23 / 60) + (18 / 3 600)<br>DD = 20 + 0,3833 + 0,0050<br>DD = <strong>20,3883° S</strong> (negativo no sistema de coordenadas: &minus;20,3883°)</div>
+    </div>
+
+    <!-- QUADRO 4 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; Precisão do GPS em diferentes contextos de mineração</div>
+      <table>
+        <thead><tr><th>Contexto</th><th>Equipamento</th><th>Precisão</th><th>Formato típico</th></tr></thead>
+        <tbody>
+          <tr><td>Georreferenciamento de lavra (ANM)</td><td>GNSS-RTK</td><td>&plusmn;1 cm</td><td>DD (para SIG)</td></tr>
+          <tr><td>Topografia de campo</td><td>GPS geodésico</td><td>&plusmn;1 m</td><td>DMS ou DD</td></tr>
+          <tr><td>Marcação de furo de sondagem</td><td>GPS civil</td><td>&plusmn;3&ndash;5 m</td><td>DMS ou DD</td></tr>
+          <tr><td>Aplicativo de celular</td><td>GPS civil integrado</td><td>&plusmn;3&ndash;5 m</td><td>DMS ou DD</td></tr>
+          <tr><td>Google Earth Pro (leitura)</td><td>Imagem de satélite</td><td>depende do zoom</td><td>DD ou DMS configurável</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ TOPICO 5 ═══ -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; Medindo Azimutes e Rumo</div>
+
+    <p>A bússola magnética chegou ao Brasil com os navegadores portugueses do século XV e foi adotada pelos mineradores de Minas Gerais desde as primeiras concessões de lavra do século XVII.</p>
+
+    <!-- Figura 8 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-07-v11.jpg" alt="Técnico com bússola Brunton em frente de lavra, mapa topográfico com azimutes anotados" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Bússola na mão, galeria no mapa &mdash; o azimute é o endereço que nenhuma revolução conseguiu mudar.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O conceito de azimute como ângulo orientado para o Norte data dos astrônomos islâmicos medievais, que o adotaram para determinar a direção de Meca a partir de qualquer ponto do globo. A navegação oceânica europeia universalizou os azimutes e rumos náuticos a partir do século XV, e essa tradição migrou diretamente para a cartografia e a mineração modernas.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O <strong>azimute</strong> é um ângulo medido no plano horizontal, a partir do Norte geográfico (ou magnético), no sentido horário, variando de 0° a 360°. O <strong>rumo</strong> (<em>bearing</em>) expressa a mesma direção como ângulo de 0° a 90° em relação ao Norte ou ao Sul, com indicação do quadrante (N, S, E, W). O <strong>contra-azimute</strong> é o azimute oposto: se o técnico segue em azimute &alpha;, o retorno exige &alpha; &plusmn; 180°.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O técnico em mineração usa azimutes para descrever a orientação de galerias subterrâneas, eixos de britagem, canais de drenagem e rampas de acesso. A NR-22 exige que toda planta de lavra indique as direções principais a partir do Norte geográfico. Na navegação de <em>haul trucks</em> autônomos, os algoritmos de rota computam azimutes contínuos para calcular trajetórias de mínima distância.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Bússola na Mão, Galeria no Mapa</strong></p>
+
+    <p>O Prof. Felipe posicionou a bússola Brunton horizontalmente sobre a banca de Seu Geraldo e aguardou a agulha estabilizar.</p>
+
+    <p>&mdash; Se eu estou aqui no Largo do Coimbra, e preciso ir até a entrada de uma mina a nordeste, qual é o azimute?</p>
+
+    <p>&mdash; Quarenta e cinco graus &mdash; disse Pedro.</p>
+
+    <p>&mdash; Azimute 045°. Rumo: N45°E. Quando eu sair da galeria e quiser voltar, qual é o azimute de retorno?</p>
+
+    <p>&mdash; 045 mais 180 &mdash; Pedro calculou. &mdash; 225°.</p>
+
+    <p>&mdash; Contra-azimute. Rumo S45°W.</p>
+
+    <!-- EQUACAO 5 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Cálculo do contra-azimute</div>
+      <div class="equacao-formula">Se Az &lt; 180°: Az<sub>contra</sub> = Az + 180°<br>Se Az &ge; 180°: Az<sub>contra</sub> = Az &minus; 180°</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>Az</td><td>Azimute de ida</td><td>° (0° a 360°, sentido horário a partir do Norte)</td></tr>
+          <tr><td>Az<sub>contra</sub></td><td>Contra-azimute (retorno)</td><td>° (sempre oposto a Az)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicações:<br>Az = 045° &rarr; Az<sub>contra</sub> = 045° + 180° = <strong>225°</strong> (rumo: S45°W)<br>Az = 230° &rarr; Az<sub>contra</sub> = 230° &minus; 180° = <strong>050°</strong> (rumo: N50°E)<br>Az = 315° &rarr; Az<sub>contra</sub> = 315° &minus; 180° = <strong>135°</strong> (rumo: S45°E)</div>
+    </div>
+
+    <!-- QUADRO 5 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 5 &mdash; Conversão entre azimute e rumo por quadrante</div>
+      <table>
+        <thead><tr><th>Quadrante</th><th>Faixa de azimute</th><th>Fórmula do rumo</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td>NE (nordeste)</td><td>0° a 90°</td><td>N(Az)E</td><td>Az 045° &rarr; N45°E</td></tr>
+          <tr><td>SE (sudeste)</td><td>90° a 180°</td><td>S(180°&minus;Az)E</td><td>Az 135° &rarr; S45°E</td></tr>
+          <tr><td>SW (sudoeste)</td><td>180° a 270°</td><td>S(Az&minus;180°)W</td><td>Az 225° &rarr; S45°W</td></tr>
+          <tr><td>NW (noroeste)</td><td>270° a 360°</td><td>N(360°&minus;Az)W</td><td>Az 315° &rarr; N45°W</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- fim ato II -->
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>O sino da Basílica do Pilar bateu doze vezes.</p>
+
+  <!-- Figura 9 — IT-08 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T02-IT-08-v11.jpg" alt="Pedro com esfera de pedra-sabão na mão, Prof. Felipe se afastando, Igreja São Francisco ao fundo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; Pedro guarda a esfera de pedra-sabão &mdash; doze reais pelo peso de quatro milênios de aritmética.</figcaption>
+  </figure>
+
+  <p>Pedro contou instintivamente &mdash; um velho hábito &mdash; e parou no doze. Olhou para Seu Geraldo, que havia acabado de polir uma pequena esfera de pedra-sabão. Verde-acinzentada, fria ao toque, com a superfície tão lisa que refletia a luz difusa do largo.</p>
+
+  <p>&mdash; Quanto? &mdash; Pedro perguntou.</p>
+
+  <p>&mdash; Doze reais &mdash; disse Seu Geraldo, sem cerimônia.</p>
+
+  <p>Pedro riu, pagou e ficou com a esfera na palma da mão.</p>
+
+  <p>Olhou para a feirinha inteira &mdash; as bancas, os artesãos, os celulares com GPS, os dois campanários da Igreja São Francisco de Assis que subiam acima das tendas de lona. A névoa havia se dissipado completamente. O sol de maio dava de cheio na pedra-sabão cinza-esverdeada da fachada barroca.</p>
+
+  <p>Sofia leu em voz alta as anotações do caderno:</p>
+
+  <p>&mdash; Dedos das mãos. Tempo. Ângulos. GPS. Azimutes. E tudo saiu de uma mão com o polegar livre.</p>
+
+  <p>&mdash; Cinco assuntos ou um único assunto &mdash; disse Pedro, pesando a esfera na mão. &mdash; Cinco formas de medir o mundo. Com o mesmo número embaixo de tudo.</p>
+
+  <p>Lucas olhava para os campanários.</p>
+
+  <p>&mdash; Aleijadinho calculou a curvatura desses arcos em graus, minutos e segundos. Há duzentos e cinquenta anos. Com uma bússola e um teodolito. Sobre essa mesma pedra.</p>
+
+  <p>O Prof. Felipe havia começado a se afastar em direção à Rua Cláudio Manoel, xícara vazia na mão, com os óculos refletindo o céu azul de Ouro Preto. Antes de sumir na ladeira, virou-se uma última vez.</p>
+
+  <p>&mdash; Na próxima trilha, vamos descobrir que os ponteiros do relógio e as correias transportadoras de uma britagem falam o mesmo idioma. Você vai aprender a ouvi-los.</p>
+
+  <p>Pedro guardou a esfera de pedra-sabão no bolso do uniforme. Doze reais. Doze marcas por palmo na régua de Seu Geraldo. Doze horas no mostrador de cada relógio do mundo. Doze badaladas do sino.</p>
+
+  <p>Um número que, há quatro milênios, um povo havia descoberto ser mais divisível que qualquer outro que cabia em duas mãos. E que nenhuma revolução havia conseguido tirar do centro do tempo, do espaço e da posição.</p>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CONEXOES INTERDISCIPLINARES ═══════════════════ -->
+<div id="conexoes">
+  <div class="ato-titulo">Conexões Interdisciplinares</div>
+
+  <p><em>Atividades que articulam a Física da Trilha T02 com outras disciplinas do currículo do Técnico em Mineração Integrado ao Ensino Médio. Cada atividade exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- C5 PROTOCOL -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; RCP: Resolução Científica de Problemas</div>
+    <p style="margin-bottom:12px;">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 10 — IT-09 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T02-IT-09-v11.jpg" alt="Mapa de conexões disciplinares da Base 12 — estrela com 5 pontas conectando disciplinas" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da base 12 &mdash; Matemática, Geologia, História, Língua Portuguesa, Segurança do Trabalho.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>O que está sendo pedido?</strong></td><td>Releia o enunciado. Escreva com suas palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td><strong>Quais são os dados?</strong></td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td><strong>Quais são as hipóteses?</strong></td><td>Declare o que vai assumir (atrito nulo, regime estacionário etc.).</td></tr>
+        <tr><td>4</td><td><strong>Qual é o desenho do problema?</strong></td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td><strong>Quais são as equações?</strong></td><td>Identifique a equação do TT. Isole a variável pedida.</td></tr>
+        <tr><td>6</td><td><strong>Cálculo com unidades</strong></td><td>Substitua os valores. Acompanhe as unidades até o resultado.</td></tr>
+        <tr><td>7</td><td><strong>Análise de resultados</strong></td><td>O resultado faz sentido? Compare com valores típicos.</td></tr>
+        <tr><td>8</td><td><strong>Responda o que foi pedido</strong></td><td>Formule a resposta completa ao que o problema perguntou.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- ATIVIDADE 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Matemática &mdash; divisores, frações e a lógica do 12</div>
+    <p>Compare os divisores dos números 10, 12 e 60 usando o Quadro 1 desta trilha. Em seguida, calcule: (a) 1/3 de 1 hora em minutos; (b) 1/3 de 100 segundos; (c) 1/4 de 12 horas em horas; (d) 1/4 de 10 horas em horas. Organize os resultados numa tabela comparando base 10 e base 12. Escreva um parágrafo argumentativo explicando por que os relojoeiros medievais escolheram dividir a hora em 60 minutos &mdash; e não em 100 &mdash; mesmo antes de conhecerem o sistema métrico decimal.</p>
+    <div class="conexao">Conexão: Matemática &mdash; divisores &mdash; frações exatas &mdash; história da medição &mdash; régua duodecimal.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Comparar os divisores de 10, 12 e 60; calcular quatro frações de tempo em bases diferentes; explicar argumentativamente por que os relojoeiros medievais escolheram 60 minutos por hora e não 100.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">1 hora = 60 minutos (base 60, herança babilônica). 1 hora hipotética decimal = 100 minutos. Divisores: 10 &rarr; {1, 2, 5, 10}; 12 &rarr; {1, 2, 3, 4, 6, 12}; 60 &rarr; {1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60}.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Divisão exata significa resultado inteiro sem resto; &ldquo;fração exata&rdquo; refere-se a divisão sem resíduo no conjunto dos inteiros.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Tabela de quatro colunas &mdash; operação | base 10 | base 12/60 | resultado exato?</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">(a) 1/3 &times; 60 min = ? &nbsp; (b) 1/3 &times; 100 s = ? &nbsp; (c) 1/4 &times; 12 h = ? &nbsp; (d) 1/4 &times; 10 h = ?</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">(a) 1/3 &times; 60 min = <strong>20 min</strong> (exato). (b) 1/3 &times; 100 s = <strong>33,33&hellip; s</strong> (dízima periódica). (c) 1/4 &times; 12 h = <strong>3 h</strong> (exato). (d) 1/4 &times; 10 h = <strong>2,5 h</strong> (não exato).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Os resultados confirmam a superioridade aritmética da base 60/12 para divisões de tempo: terços, quartos e sextos exatos &mdash; essenciais para marcar ofícios religiosos, turnos de guarda e ciclos de produção.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Os relojoeiros medievais escolheram 60 minutos por hora porque a base 60 (produto de 12 &times; 5) possui 12 divisores exatos, permitindo frações inteiras em 1/2, 1/3, 1/4, 1/5, 1/6, 1/10, 1/12, 1/15, 1/20, 1/30 e 1/60 &mdash; superioridade aritmética que a base decimal jamais ofereceu.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Geologia &mdash; erro angular em galeria subterrânea</div>
+    <p>Um topógrafo mediu que a galeria principal de uma mina segue em azimute 070°. A galeria tem 250 m de comprimento. Calcule: (a) o rumo equivalente ao azimute 070°; (b) o contra-azimute de retorno; (c) o desvio lateral, em metros, que ocorreria se o azimute fosse lido com erro de 1° (use a aproximação: desvio &asymp; comprimento &times; 0,01746). Discuta se esse desvio seria relevante para a NR-22.</p>
+    <div class="conexao">Conexão: Geologia estrutural &mdash; topografia &mdash; erro angular &mdash; NR-22 &mdash; plantas de lavra.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Dado azimute 070° e comprimento 250 m, determinar o rumo equivalente, o contra-azimute de retorno e o desvio lateral causado por erro de 1°; avaliar relevância para a NR-22.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Az = 070°. L = 250 m. Erro angular = 1°. Fator de desvio: tan(1°) &asymp; 0,01746.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Galeria retilínea; erro de 1° constante ao longo de todo o comprimento; desvio calculado pela aproximação linear.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Linha reta de 250 m partindo de origem em Az = 070°; linha tracejada com Az = 071° divergindo 1°; desvio lateral d perpendicular ao eixo principal.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">(a) Quadro 5: Az entre 0° e 90° &rarr; quadrante NE &rarr; Rumo = N(Az)E. (b) Equação 5: Az &lt; 180° &rarr; Az<sub>contra</sub> = Az + 180°. (c) desvio = L &times; tan(1°).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">(a) Az = 070° &rarr; Rumo = <strong>N70°E</strong>. (b) Az<sub>contra</sub> = 070° + 180° = <strong>250°</strong> (Rumo: S70°W). (c) desvio = 250 m &times; 0,01746 = <strong>4,37 m &asymp; 4,4 m</strong>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Um desvio de 4,4 m em 250 m de galeria é altamente relevante para a NR-22: pode significar intersecção com galeria vizinha, comprometimento de pilar estrutural ou ultrapassagem do limite da cava licenciada pela ANM.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Rumo = N70°E; contra-azimute = 250° (S70°W); desvio lateral por erro de 1° = 4,4 m &mdash; relevante para a NR-22, exigindo repetição da medição com teodolito e verificação da declinação magnética.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e História &mdash; Gorceix e a permanência do grau</div>
+    <p>Pesquise como Henri Gorceix utilizou o teodolito nos levantamentos topográficos do Quadrilátero Ferrífero após a fundação da Escola de Minas em 1876. Por que a base babilônica (graus, minutos, segundos) ainda era usada em pleno século XIX, mesmo após a adoção do sistema métrico decimal pela França em 1799? Elabore um parágrafo argumentativo de 8 a 10 linhas com a sua análise.</p>
+    <div class="conexao">Conexão: História da ciência &mdash; metrologia &mdash; instrumentação &mdash; Escola de Minas de Ouro Preto &mdash; permanência de sistemas de medida.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Explicar por que Gorceix e seus contemporâneos ainda usavam graus, minutos e segundos no século XIX, após a adoção do sistema métrico; elaborar parágrafo argumentativo coeso.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Fundação da Escola de Minas: 1876. Adoção do sistema métrico pela França: 1799. Tentativa do gradiano (400°): 1793 &mdash; fracassou. 360° tem 24 divisores; 400° tem 20.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">A permanência deve-se tanto à inércia instrumental quanto à superioridade matemática intrínseca (divisibilidade); as duas razões são complementares.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Linha do tempo: 4 000 a.C. (babilônios, 360°) &rarr; séc. XVIII (Aleijadinho) &rarr; 1793 (gradiano, fracasso) &rarr; 1876 (Gorceix, 360°) &rarr; 2026 (GPS, DMS).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Argumento em três etapas: (i) superioridade matemática do 360 sobre o 400; (ii) peso da inércia instrumental; (iii) continuidade ininterrupta até o GPS.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">Quando Gorceix chegou a Ouro Preto em 1876, registrou seus levantamentos em graus, minutos e segundos &mdash; a mesma unidade angular de quatro mil anos antes. Não foi descuido: o 360 possui 24 divisores enquanto o 400 possui 20, e todos os instrumentos existentes estavam calibrados em 360°. A cadeia ininterrupta &mdash; de argila babilônica ao GPS &mdash; demonstra que sistemas de medida sobrevivem por utilidade, não por decreto.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">O parágrafo é coeso, cobre as evidências do TT e conecta Aleijadinho, Gorceix e o GPS numa continuidade argumentativa verificável.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Gorceix usou graus, minutos e segundos porque o 360 é matematicamente superior ao 400 (24 vs 20 divisores) e porque a inércia instrumental de quatro milênios tornava impossível a substituição &mdash; a mesma razão pela qual o GPS usa DMS até hoje.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Língua Portuguesa &mdash; escrita por extenso e comunicação científica</div>
+    <p>Escreva por extenso, em português correto, os seguintes valores desta trilha: (a) 86 400 s; (b) 31 556 926 s; (c) 9 192 631 770 oscilações por segundo; (d) 299 792 458 m/s. Em seguida, escreva um parágrafo de 6 a 8 linhas explicando, sem fórmulas, por que as coordenadas GPS do seu celular são expressas em graus, minutos e segundos de arco.</p>
+    <div class="conexao">Conexão: Língua Portuguesa &mdash; numerais por extenso &mdash; comunicação científica acessível &mdash; história das falanges babilônicas.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Converter quatro valores numéricos para escrita por extenso em português formal; redigir parágrafo explicativo sem fórmulas sobre o formato DMS do GPS.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">86 400 s; 31 556 926 s; 9 192 631 770 Hz; 299 792 458 m/s. Coordenadas do Largo do Coimbra: 20°23&prime;32&Prime;S &middot; 43°30&prime;18&Prime;W.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Escrita segue as normas do Acordo Ortográfico de 1990; parágrafo usa vocabulário acessível a estudante sem formação técnica.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Lista com os quatro valores e suas grafias por extenso; parágrafo de 6 a 8 linhas em prosa corrida.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Regras de extenso: separação de classes por vírgulas; concordância de gênero nos numerais compostos.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">(a) oitenta e seis mil e quatrocentos segundos. (b) trinta e um milhões, quinhentos e cinquenta e seis mil, novecentos e vinte e seis segundos. (c) nove bilhões, cento e noventa e dois milhões, seiscentas e trinta e uma mil, setecentas e setenta oscilações por segundo. (d) duzentos e noventa e nove milhões, setecentos e noventa e dois mil, quatrocentos e cinquenta e oito metros por segundo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">As grafias estão corretas em português formal. O parágrafo usa a história das falanges, cita coordenadas reais e estabelece a conexão entre relógio e GPS sem fórmulas.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Valores escritos por extenso conforme as normas; o GPS usa graus, minutos e segundos porque herdou a base 60 dos babilônios, que contavam doze nas falanges de uma mão e registravam dúzias na outra &mdash; a mesma lógica da régua de Seu Geraldo e do relógio.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e Segurança do Trabalho (NR-22) &mdash; tempo de evacuação e retardo de detonação</div>
+    <p>Um técnico de detonação precisa garantir que a equipe de evacuação percorra 180 m em terreno acidentado antes do disparo. A velocidade média de caminhada em ladeira íngreme é de 0,8 m/s. Calcule: (a) o tempo mínimo de evacuação em segundos; (b) o tempo em minutos e segundos. Se o detonador eletrônico tem um retardo programável de 500 ms, converta esse retardo para segundos e determine o tempo total. Discuta se o retardo de 500 ms altera significativamente o planejamento de segurança.</p>
+    <div class="conexao">Conexão: NR-22 &mdash; segurança do trabalho &mdash; tempo de evacuação &mdash; retardo de detonação &mdash; conversão de unidades.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Calcular o tempo mínimo para a equipe percorrer 180 m a 0,8 m/s; converter para minutos e segundos; adicionar retardo de 500 ms; avaliar se o retardo é significativo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">d = 180 m. v = 0,8 m/s. t<sub>retardo</sub> = 500 ms = 0,500 s.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Velocidade média constante; sem obstáculos que causem paradas adicionais; retardo começa após o comando de disparo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Linha do tempo: t = 0 (sinal de retirada) &rarr; t = t<sub>evac</sub> (equipe na zona segura) &rarr; t = t<sub>evac</sub> + 0,5 s (detonação).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">t<sub>evac</sub> = d / v. Conversão: min = &lfloor;t/60&rfloor;; s = t mod 60. t<sub>total</sub> = t<sub>evac</sub> + t<sub>retardo</sub>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">(a) t<sub>evac</sub> = 180 m &divide; 0,8 m/s = <strong>225 s</strong>. (b) 225 s = <strong>3 minutos e 45 segundos</strong>. t<sub>retardo</sub> = 500 &divide; 1 000 = <strong>0,500 s</strong>. t<sub>total</sub> = 225 + 0,5 = <strong>225,5 s</strong> (3 min 45,5 s).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">O retardo de 500 ms representa 0,22% do tempo total &mdash; fração insignificante para o planejamento. O tempo de evacuação de 225 s (3 min 45 s) é o parâmetro crítico para a NR-22.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Tempo de evacuação = 225 s (3 min 45 s); retardo de 500 ms = 0,5 s (&lt; 0,22% do total) &mdash; não altera significativamente o planejamento de segurança. O parâmetro crítico para a NR-22 é o tempo de evacuação de 3 min 45 s, que deve constar da documentação técnica do plano de fogo.</div></div>
+    </details>
+  </div>
+
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIENCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+
+  <div class="ciencia-arte-obra"><strong>Música:</strong> <em>O Cravo Bem-Temperado</em> (<em>Das Wohltemperierte Klavier</em>, 1722) &mdash; Johann Sebastian Bach</div>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:24px; font-size:1.1rem;">
+    &ldquo;A música é um exercício oculto de aritmética, no qual a alma não sabe que está contando.&rdquo;
+  </blockquote>
+  <div class="ca-autor">&mdash; Gottfried Wilhelm Leibniz (1646&ndash;1716)</div>
+
+  <!-- Figura 11 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T02-IT-10-v11.jpg" alt="Identidade visual T02 — mão com falanges, régua, sino, bússola, GPS, Igreja São Francisco" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; Mão, régua, sino, bússola, satélite &mdash; a mesma contagem que divide o palmo vibra do dedo ao acorde de Bach.</figcaption>
+  </figure>
+
+  <p style="margin-top:20px;">A base 12 não mora apenas nos relógios e nas bússolas &mdash; ela vibra em cada acorde. A escala cromática ocidental divide a oitava musical em 12 semitons iguais, e essa divisão não é arbitrária: resulta de séculos de experimentação entre artesãos de órgãos, matemáticos e músicos. O fator multiplicativo entre semitons consecutivos é &sup1;&sup2;&radic;2 &asymp; 1,0595 &mdash; uma raiz duodécima, a mesma estrutura matemática que Pedro encontrou nas falanges de Seu Geraldo.</p>
+
+  <p>Quando Johann Sebastian Bach compôs <em>O Cravo Bem-Temperado</em> (1722), demonstrou que as 12 notas cromáticas permitiam tocar em qualquer tonalidade sem reafinar o instrumento &mdash; era a universalidade da base 12 aplicada ao som. Em Ouro Preto, os órgãos barrocos da Igreja de São Francisco de Assis e da Matriz do Pilar foram construídos sobre esse mesmo princípio: tubos de estanho e madeira cortados em proporções que obedecem à progressão geométrica de razão &sup1;&sup2;&radic;2.</p>
+
+  <p>Medir o tempo em 12 horas, o ângulo em graus múltiplos de 12, e o som em 12 semitons não é coincidência &mdash; é a herança de uma civilização que descobriu, por caminhos diferentes, que o 12 é o número mais divisível entre os pequenos inteiros.</p>
+
+  <div class="footnote">
+    <strong>Johann Sebastian Bach</strong> (Eisenach, 1685 &mdash; Leipzig, 1750) foi compositor e músico alemão do período Barroco, considerado um dos maiores gênios da história da música ocidental. <em>O Cravo Bem-Temperado</em> (Livro I, 1722; Livro II, 1742) é um ciclo de 48 prelúdios e fugas em todas as 24 tonalidades maiores e menores, demonstração definitiva de que o temperamento igual &mdash; a divisão da oitava em 12 semitons idênticos &mdash; permitia navegar por qualquer tonalidade sem reafinar o instrumento.
+  </div>
+
+  <div class="footnote" style="margin-top:8px;">
+    <strong>Gottfried Wilhelm Leibniz</strong> (Leipzig, 1646 &mdash; Hanover, 1716) foi matemático, filósofo, lógico e polímata alemão, coinventor do cálculo infinitesimal e criador do sistema binário de numeração. A frase citada é da carta a Christian Goldbach de 17 de abril de 1712 (<em>Musica est exercitium arithmeticae occultum nescientis se numerare animi</em>).
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ REFERENCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo" style="font-size: 1.4rem; color: var(--azul);">Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:16px; font-size: 1.4rem; color: var(--azul);">Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+</div>
+
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T02 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T02-TT-v10';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

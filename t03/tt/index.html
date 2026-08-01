@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T03 · Sistema de Numeração de Base 10 — Texto Temático v9</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+.ctx-cotidiano .contexto-label { color: var(--verde); }
+.contexto p { font-size: 1.1rem; margin-bottom: 8px; }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esse texto temático foi elaborado com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; Estação Ferroviária de Ouro Preto ao amanhecer &mdash; fachada colonial azul-e-branca, trilhos convergindo para o horizonte</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Algarismos, régua, paquímetro, estação &mdash; dez símbolos que contam o mundo numa identidade visual</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; Sofia, Pedro, Lucas diante do painel de horários &mdash; três olhares sobre a mesma placa de granito</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; A estação ao amanhecer &mdash; onde as bases 10, 24 e 60 convivem há mais de 130 anos</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Mãos com dedos numerados &mdash; antes da escrita, o corpo já era a primeira calculadora</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Lousa e valor posicional &mdash; o mesmo algarismo pode valer um ou um bilhão</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Paquímetro em amostra de minério &mdash; a vírgula que Simon Stevin inventou em 1585</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Régua, trena, paquímetro &mdash; cada instrumento opera numa faixa da escala decimal</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Balança analítica e caderno &mdash; algarismos significativos são a fronteira entre o que medimos e o que imaginamos</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; Trio no banco de pedra ao entardecer &mdash; cinco tópicos, uma base, dez dedos</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da base 10 &mdash; Matemática, Química, Português, História, Topografia</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; Algarismos 0&ndash;9 e silhueta da Estação &mdash; a mesma proporção que Leonardo mediu vibra no GPS e no paquímetro</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Antonio Vivaldi &mdash; As Quatro Estações (Le Quattro Stagioni, RV 269, 315, 293, 297)</div>
+  <div class="musica-detail">1725 &middot; 4 concertos &middot; ~40 min</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Vivaldi+Four+Seasons" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T03 &mdash;
+Sistema de Numeração de Base 10 /
+Julio Cesar Silva Azevedo;
+colaboração Felipe Beato. &mdash; 1. ed.
+&mdash; Ouro Preto, MG: Instituto
+Federal de Minas Gerais &mdash; Campus
+Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T03)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Sistemas de numeração decimal.
+4. Algarismos significativos.
+5. Instrumentos de medição.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epigrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Topico 1 &mdash; Dos Dedos as Casas</a>
+  <a href="#topico-2" class="toc-topico">Topico 2 &mdash; Numeros e Algarismos</a>
+  <a href="#topico-3" class="toc-topico">Topico 3 &mdash; Numeros Decimais</a>
+  <a href="#topico-4" class="toc-topico">Topico 4 &mdash; Medicoes de Comprimento</a>
+  <a href="#topico-5" class="toc-topico">Topico 5 &mdash; Algarismos Significativos</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexoes Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciencia e Arte</a>
+  <a href="#referencias" class="toc-extra">Referencias</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T03-IT-00.jpg" alt="Estação Ferroviária de Ouro Preto ao amanhecer — fachada colonial azul-e-branca, trilhos convergindo para o horizonte">
+  <div class="capa-label">Trilha de Aprendizagem 03</div>
+  <div class="capa-titulo">Sistema de Numeração<br>de Base 10</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T03</span> &middot; Sistema de Numeração de Base 10</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~30 min de leitura</div>
+</header>
+
+<!-- Figura 1 — IT-11 -->
+<figure class="figura">
+  <img class="figura-img" src="../_imagens/_web/T03-IT-11-v11.jpg" alt="Identidade visual da T03 — algarismos, régua, paquímetro e silhueta da Estação Ferroviária de Ouro Preto" loading="lazy">
+  <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Algarismos, régua, paquímetro, estação &mdash; dez símbolos que contam o mundo numa identidade visual</figcaption>
+</figure>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O que o olho não alcança, a escala revela.&rdquo;</blockquote>
+  <div class="autor">&mdash; René Descartes (adapt.), séc. XVII</div>
+  <div class="nota"><strong>René Descartes</strong> (1596&ndash;1650). Filósofo e matemático francês. Criador do método analítico-dedutivo e da geometria analítica (plano cartesiano); considerado pai do racionalismo moderno. A frase é adaptação de princípio exposto em <em>Discours de la méthode</em> (1637): a mensuração precisa como condição do conhecimento científico.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>A Praça Cesário Alvim acordava devagar naquela manhã de maio.</p>
+
+  <p>Sofia chegou primeiro. Ela havia tomado o ônibus da linha Bauxita, descido na parada da Avenida dos Inconfidentes e cruzado a pequena praça a pé, seguindo o cheiro de café que vinha de um quiosque ainda fechado. A estação estava à sua frente: o prédio colonial de tijolos pintados em azul pastel e branco, com a marquise de madeira escurecida pelo tempo sustentada por colunas de ferro fundido. Na fachada, uma placa de pedra gravada anunciava: <em>1888</em>. E logo abaixo, em algarismos menores: <em>km 540,3 &mdash; E.F. Central do Brasil &mdash; Ramal de Ponte Nova.</em></p>
+
+  <p>Ela parou diante da placa e inclinou a cabeça.</p>
+
+  <p><em>Quinhentos e quarenta vírgula três quilômetros.</em> Um número com vírgula. Uma distância com dois algarismos antes da vírgula e um depois. Ela sabia, sem ainda saber dizer exatamente por quê, que aquilo importava.</p>
+
+  <p>Pedro chegou logo depois, com a mochila aberta e um sanduíche na mão.</p>
+
+  <p>&mdash; Por que a placa tem vírgula? &mdash; perguntou Sofia, sem virar para ele.</p>
+
+  <p>&mdash; Porque não dá ser exatamente 540 &mdash; disse Pedro, mordendo o sanduíche. &mdash; Deve ser 540 e mais um pedaço. 300 metros.</p>
+
+  <p>&mdash; Trezentos metros &mdash; repetiu Sofia devagar. &mdash; Que é zero vírgula três de quilômetro. &mdash; Ela apontou para a placa. &mdash; É isso que está escrito ali: quinhentos e quarenta quilômetros e trezentos metros. Mas em vez de escrever tudo isso, alguém decidiu escrever 540,3. Uma vírgula. Um algarismo. A mesma informação.</p>
+
+  <p>Lucas apareceu pelo lado sul da praça, vindo de baixo da marquise coberta, onde os trilhos de chegada cruzavam a plataforma de pedra. Ele havia chegado cedo o suficiente para examinar o painel de horários metálico fixado na parede lateral da estação &mdash; um painel de ferro esmaltado, com os horários do Trem da Vale impressos em fileiras de algarismos: <em>07:15 &middot; 10:30 &middot; 14:45 &middot; 17:00.</em></p>
+
+  <p>&mdash; Olha aqui &mdash; Lucas chamou os dois.</p>
+
+  <p>Eles se aproximaram. O painel mostrava quatro horários. Cada um tinha dois algarismos para as horas, dois pontos, dois algarismos para os minutos. Nenhum chegava a três algarismos de horas. Nenhum ultrapassava 59 minutos.</p>
+
+  <p>&mdash; Por que os minutos nunca passam de 59? &mdash; perguntou Lucas.</p>
+
+  <p>&mdash; Porque um minuto a mais já é uma hora &mdash; disse Pedro.</p>
+
+  <p>&mdash; Exato &mdash; disse Lucas. &mdash; Os minutos voltam ao zero quando chegam a 60. Igual aos segundos. Isso é base 60 &mdash; o sistema que os babilônios inventaram para medir tempo e ângulos. Mas as horas, aqui, vão até 23. Base 24.</p>
+
+  <p>&mdash; E os quilômetros na placa lá fora &mdash; disse Sofia &mdash; estão em base 10. Décimos. Centésimos. Milésimos. Sempre potência de dez.</p>
+
+  <p>Os três ficaram olhando para o painel e para a placa de granito ao mesmo tempo, como se a estação inteira fosse um diagrama de sistemas de numeração distintos empilhados sobre a mesma pedra.</p>
+
+  <p>Foi nesse momento que o Prof. Julio apareceu pela porta de vidro da estação. Ele carregava um caderno e um paquímetro metálico preso ao bolso do avental.</p>
+
+  <p>&mdash; Bom dia, turma. &mdash; Ele olhou para os três estudantes e depois para o ponto de cada olhar. &mdash; Estão observando a conversa que os sistemas de numeração travam nessa fachada?</p>
+
+  <p>&mdash; Tem base 10, base 60 e base 24 &mdash; disse Lucas.</p>
+
+  <p>&mdash; Isso &mdash; disse o Prof. Julio. Ele caminhou até a placa de granito e passou o dedo sobre os algarismos gravados. &mdash; E todos eles compartilham algo: usam os mesmos dez símbolos. Zero, um, dois, três, quatro, cinco, seis, sete, oito, nove. Os <em>algarismos</em> são os mesmos; o que muda é a <em>base</em> &mdash; o ponto em que se reinicia a contagem e se passa para a próxima posição.</p>
+
+  <p>Sofia olhou para as mãos.</p>
+
+  <p>&mdash; É por causa dos dedos &mdash; ela disse.</p>
+
+  <p>&mdash; Talvez &mdash; disse o Prof. Julio. &mdash; Mas por que os babilônios usavam base 60 se também tinham dez dedos?</p>
+
+  <p>Nenhum dos três respondeu. O trem da manhã assobiou ao fundo, ainda longe, surgindo no corredor de trilhos que atravessava o bairro Barra. O som ecoou na marquise de madeira, desceu pela plataforma de pedra e sumiu no ar fresco de maio.</p>
+
+  <p>&mdash; É disso que trata essa trilha &mdash; disse o Prof. Julio, com uma leveza que parecia não combinar com a profundidade da questão. &mdash; De onde vêm os dez símbolos. O que eles carregam. E o que acontece quando cruzamos uma vírgula.</p>
+
+  <!-- Figura 2 — IT-02 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T03-IT-02-v11.jpg" alt="Sofia, Pedro e Lucas diante do painel de horários da Estação Ferroviária de Ouro Preto; Prof. Julio aponta para a placa de granito com o numeral 540,3" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; Sofia, Pedro, Lucas diante do painel de horários &mdash; três olhares sobre a mesma placa de granito.</figcaption>
+  </figure>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar no Google Maps</div>
+
+    <!-- Figura 3 — IT-01 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-01-v11.jpg" alt="Vista frontal da Estação Ferroviária de Ouro Preto ao amanhecer, com Sofia, Pedro e Lucas diante dos trilhos" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; A estação ao amanhecer &mdash; onde as bases 10, 24 e 60 convivem há mais de 130 anos.</figcaption>
+    </figure>
+
+    <p>A Estação Ferroviária de Ouro Preto existe exatamente como descrita acima: o prédio colonial de 1888, a plataforma de pedra, o painel de horários metálico e os trilhos do Trem da Vale (Ouro Preto&ndash;Mariana) que partem daqui.</p>
+    <p style="margin-top:10px;"><strong>Como acessar e usar o Street View:</strong> 1. Acesse o link abaixo &mdash; ou abra o Google Maps e pesquise por <strong>&ldquo;Estação Ferroviária de Ouro Preto, MG&rdquo;</strong>. 2. Clique no ícone do <strong>boneco amarelo</strong> (Pegman) no canto inferior direito do mapa e arraste-o até a rua ou local desejado. 3. Solte o boneco sobre a rua destacada em azul &mdash; você entrará no modo <strong>Street View</strong>. 4. Use as <strong>setas</strong> na tela para caminhar e o <strong>mouse</strong> (ou o dedo, no celular) para girar a câmera 360°. 5. Na plataforma, procure a fachada azul-e-branca e a placa de granito com a numeração da linha ferroviária &mdash; os mesmos algarismos que Sofia leu naquela manhã de maio.</p>
+    <p style="margin-top:10px;">A estação é isso: um museu vivo onde sistemas de numeração distintos &mdash; base 10, base 60, base 24 &mdash; convivem na mesma parede de pedra há mais de 130 anos.</p>
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Estação+Ferroviária+Ouro+Preto,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ═══ TOPICO 1 ═══ -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Dos Dedos às Casas: a origem do sistema decimal</div>
+
+    <p>Muito antes de existirem algarismos ou calculadoras, contar era uma questão de corpo: dedos, falanges, mãos abertas. O sistema decimal que hoje usamos para medir toneladas de minério ou milésimos de milímetro nasceu de uma escolha humana muito simples &mdash; e nem sempre óbvia.</p>
+
+    <!-- Figura 4 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-03-v11.jpg" alt="Duas mãos abertas com dedos numerados de 1 a 10 em algarismos dourados; chave de boca com marcações em milímetros; vitrine do Museu de Ciência e Técnica da UFOP" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Mãos com dedos numerados &mdash; antes da escrita, o corpo já era a primeira calculadora.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>No século XVIII, quando os engenheiros da Coroa Portuguesa percorriam o Quadrilátero Ferrífero em busca de veios de ouro, os registros de peso, volume e comprimento eram feitos em <em>oitavas</em>, <em>palmos</em> e <em>braças</em> &mdash; unidades que não obedeciam a uma base uniforme. A fundação da Casa dos Contos de Ouro Preto (1770), responsável pela fundição e taxação do ouro extraído, revelou a urgência de um sistema comum: sem uma base numérica compartilhada entre mineradores, fiscais e comerciantes, fraudes eram inevitáveis. A adoção progressiva do sistema decimal na metrologia imperial brasileira, ao longo do século XIX, resolveu essa inconsistência &mdash; e a Escola de Minas de Ouro Preto (1876) foi criada, em parte, para disseminar esse padrão.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O sistema de numeração de base 10, também chamado <em>sistema decimal posicional</em>, é um sistema em que o valor de cada algarismo depende de sua posição relativa. Ele utiliza dez símbolos distintos &mdash; os algarismos indo-arábicos: 0, 1, 2, 3, 4, 5, 6, 7, 8 e 9 &mdash; e a regra de que cada posição vale dez vezes a posição à sua direita. Trata-se de uma convenção cultural, não de uma lei natural: outras civilizações adotaram bases distintas (12, 20, 60) com igual funcionalidade matemática.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>No dia a dia de uma mina, técnicos em mineração registram comprimentos, massas e volumes em múltiplos e submúltiplos do sistema métrico &mdash; todos estruturados em potências de 10. O paquímetro, o micrômetro, a balança analítica e o teodolito são instrumentos que fazem sentido apenas dentro de um sistema decimal bem compreendido. A NR-22 (Norma Regulamentadora de Segurança e Saúde Ocupacional na Mineração) exige que todos os registros de campo sejam feitos com unidades do Sistema Internacional &mdash; base 10 sem exceção.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Por que dez? A anatomia de uma decisão cultural</strong></p>
+
+    <p>Sofia caminhou ao longo da plataforma, olhando para as mãos. O Prof. Julio havia dito algo que ela não conseguia largar: &ldquo;Talvez seja pelos dedos.&rdquo;</p>
+
+    <p>Ela abriu as mãos. Dez dedos. Mas o Prof. Julio também havia dito que os babilônios tinham base 60 com os mesmos dez dedos.</p>
+
+    <p>A hipótese mais aceita pelos historiadores da matemática não é anatômica, mas combinatória: um humano com duas mãos abertas representa, visualmente, dois grupos de cinco &mdash; e cinco grupos de dois. Dez permite subdivisões por 1, 2, 5 e 10. É divisível o suficiente para o comércio cotidiano e simples o suficiente para ser memorizado por qualquer pessoa sem formação especializada.</p>
+
+    <p>Os babilônios escolheram 60 porque 60 é divisível por 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30 e 60 &mdash; uma riqueza aritmética enorme, especialmente útil para dividir círculos (astronomia e navegação) e frações (comércio de grãos e terra). Mas 60 exige 59 símbolos distintos, o que é inviável para analfabetos. Os hindus resolveram esse problema com uma inovação radical: o <em>zero como posição vazia</em>. Com o zero, qualquer base pode ser expressa com apenas <em>base</em> símbolos distintos. Para base 10, são apenas dez. Para base 60, seriam sessenta &mdash; absurdo. Para base 2, são apenas dois: 0 e 1. É a base binária dos computadores.</p>
+
+    <p>&mdash; Então o que existe de &ldquo;natural&rdquo; no sistema decimal &mdash; disse Lucas, sentado no banco de pedra da plataforma &mdash; é o zero. Não os dez dedos.</p>
+
+    <p>&mdash; Não exatamente &mdash; disse o Prof. Julio. &mdash; O zero também foi inventado. Pelos indianos, por volta do século V. Durante mais de mil anos, a humanidade fez matemática sem o zero.</p>
+
+    <p>Pedro franziu o cenho.</p>
+
+    <p>&mdash; Matemática sem zero? Como você escreve &ldquo;nenhum&rdquo;?</p>
+
+    <p>&mdash; Você não escreve &mdash; disse o Prof. Julio. &mdash; Você simplesmente não menciona. Se a conta dá nada, a conta acaba. O zero é uma abstração: a representação de uma ausência. Isso é uma ideia filosófica antes de ser matemática.</p>
+
+    <p>O trem ao fundo apitou novamente &mdash; mais próximo agora. A plataforma começou a vibrar levemente sob os pés dos três.</p>
+
+    <!-- QUADRO 1 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Comparação de bases numéricas usadas por civilizações</div>
+      <table>
+        <thead><tr><th>Civilização</th><th>Base</th><th>Número de símbolos</th><th>Aplicação principal</th></tr></thead>
+        <tbody>
+          <tr><td>Hindu-arábica (atual)</td><td>10</td><td>10 (0&ndash;9)</td><td>Universal &mdash; ciência, comércio, tecnologia</td></tr>
+          <tr><td>Babilônia</td><td>60</td><td>60 símbolos cuneiformes</td><td>Astronomia, geometria, frações</td></tr>
+          <tr><td>Maia</td><td>20</td><td>20 (pontos e traços)</td><td>Calendário, astronomia</td></tr>
+          <tr><td>Computadores (binário)</td><td>2</td><td>2 (0 e 1)</td><td>Eletrônica digital, programação</td></tr>
+          <tr><td>Romano (multiplicativo)</td><td>Sem base fixa</td><td>7 letras (I, V, X, L, C, D, M)</td><td>Registros administrativos</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A frase-síntese que encerra este tópico: <em>escolher uma base é escolher uma linguagem &mdash; e toda linguagem carrega a história de quem a criou.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 2 ═══ -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Números e Algarismos: a diferença que muda tudo</div>
+
+    <p>Um algarismo é apenas um símbolo. Um número é o que acontece quando os símbolos se organizam em posições. Confundir os dois é o primeiro erro que um técnico de campo pode cometer &mdash; e o mais caro.</p>
+
+    <!-- Figura 5 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-04-v11.jpg" alt="Lousa escolar com o algarismo 7 isolado e o número 7.342 com setas indicando cada posição; Pedro aponta com um giz" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Lousa e valor posicional &mdash; o mesmo algarismo pode valer um ou um bilhão.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os algarismos indo-arábicos chegaram à Europa via Al-Andaluz no século XII, trazidos por estudiosos árabes que os haviam herdado dos matemáticos indianos. Em Portugal, sua adoção nas transações comerciais e administrativas foi lenta e resistida: documentos coloniais do século XVII ainda misturavam algarismos romanos (para registros oficiais) e indo-arábicos (para contagens rápidas). Nas atas das câmaras coloniais de Ouro Preto &mdash; conservadas no Arquivo Público Mineiro &mdash; é possível encontrar, na mesma página, &ldquo;MDCCXL&rdquo; (1740 em romano) e &ldquo;2.340 oitavas de ouro&rdquo;. Dois sistemas para o mesmo mundo.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Na teoria dos sistemas de numeração, <em>algarismo</em> é um símbolo isolado &mdash; um dos dez caracteres do conjunto {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}. <em>Número</em> é a quantidade que resulta da combinação posicional desses algarismos. O algarismo &ldquo;3&rdquo; pode representar 3, 30, 300, 3.000 ou 0,003 &mdash; dependendo exclusivamente de sua posição em relação à vírgula decimal. Essa distinção é fundamental: confundi-los leva a erros de leitura de instrumentos e registros de campo.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Em mineração, confundir algarismo e número pode ter consequências graves. Uma medida registrada como &ldquo;32 mm&rdquo; é diferente de &ldquo;3,2 mm&rdquo; e de &ldquo;320 mm&rdquo; &mdash; embora os algarismos 3 e 2 estejam presentes nas três. O técnico de campo que lê um micrômetro e anota &ldquo;32&rdquo; sem especificar a unidade e a posição decimal cria uma ambiguidade que pode comprometer um projeto de perfuração. A NR-22 exige unidades explícitas em todos os registros.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>O valor posicional: por que a posição importa mais que o símbolo</strong></p>
+
+    <p>Pedro olhou para a placa da estação. <em>540,3 km.</em></p>
+
+    <p>&mdash; Então &mdash; ele disse &mdash; o algarismo 5 aqui vale quinhentos. O algarismo 4 vale quarenta. O algarismo 0 vale zero. E o algarismo 3 vale três décimos.</p>
+
+    <p>&mdash; Exato &mdash; disse o Prof. Julio. &mdash; O mesmo símbolo, o algarismo 5, vale coisas completamente diferentes dependendo de onde está. &mdash; Ele pegou o caderno e escreveu: <strong>5 &middot; 100 + 4 &middot; 10 + 0 &middot; 1 + 3 &middot; (1/10)</strong>.</p>
+
+    <p>&mdash; Isso é a regra de valor posicional. Cada posição vale 10 vezes a posição à direita.</p>
+
+    <!-- EQUACAO 1 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Valor posicional de um número decimal</div>
+      <div class="equacao-formula">N = a<sub>n</sub> &times; 10<sup>n</sup> + a<sub>n&minus;1</sub> &times; 10<sup>n&minus;1</sup> + &hellip; + a<sub>1</sub> &times; 10<sup>1</sup> + a<sub>0</sub> &times; 10<sup>0</sup> + a<sub>&minus;1</sub> &times; 10<sup>&minus;1</sup> + &hellip;</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>N</td><td>Número representado</td><td>adimensional</td></tr>
+          <tr><td>a<sub>i</sub></td><td>Algarismo na posição i</td><td>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}</td></tr>
+          <tr><td>10<sup>i</sup></td><td>Valor da posição i</td><td>potência de 10</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: 540,3 = 5&times;10<sup>2</sup> + 4&times;10<sup>1</sup> + 0&times;10<sup>0</sup> + 3&times;10<sup>&minus;1</sup> = 500 + 40 + 0 + 0,3 = <strong>540,3</strong></div>
+    </div>
+
+    <p>Lucas anotou no caderno e depois olhou para a equação.</p>
+
+    <p>&mdash; Então o zero não é &ldquo;nada&rdquo; &mdash; ele disse. &mdash; O zero é uma posição.</p>
+
+    <p>&mdash; Um marcador de posição &mdash; disse o Prof. Julio. &mdash; Escreva 107. Sem o zero, você teria 17. O zero avisa: aqui havia uma dezena, mas ela está vazia.</p>
+
+    <p>Pedro entendeu de imediato.</p>
+
+    <p>&mdash; É como um gaveteiro &mdash; ele disse. &mdash; A gaveta do meio pode estar vazia. Mas se você tirar a gaveta, o número muda de estrutura.</p>
+
+    <p>&mdash; Essa é a melhor analogia que já ouvi para o zero posicional &mdash; disse o Prof. Julio, genuinamente surpreso.</p>
+
+    <!-- QUADRO 2 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Ordens decimais: da unidade ao bilhão e do décimo ao milionésimo</div>
+      <table>
+        <thead><tr><th>Ordem</th><th>Notação</th><th>Potência de 10</th><th>Exemplo em mineração</th></tr></thead>
+        <tbody>
+          <tr><td>Bilhão</td><td>1.000.000.000</td><td>10<sup>9</sup></td><td>Toneladas de minério em mina de ferro (Carajás)</td></tr>
+          <tr><td>Milhão</td><td>1.000.000</td><td>10<sup>6</sup></td><td>Metros cúbicos de estéril removido por ano</td></tr>
+          <tr><td>Milhar</td><td>1.000</td><td>10<sup>3</sup></td><td>Metros de galeria perfurada por mês</td></tr>
+          <tr><td>Centena</td><td>100</td><td>10<sup>2</sup></td><td>Metros de sondagem em uma campanha</td></tr>
+          <tr><td>Dezena</td><td>10</td><td>10<sup>1</sup></td><td>Metros de avanço diário de uma frente</td></tr>
+          <tr><td>Unidade</td><td>1</td><td>10<sup>0</sup></td><td>Amostras coletadas em uma bancada</td></tr>
+          <tr><td>Décimo</td><td>0,1</td><td>10<sup>&minus;1</sup></td><td>Precisão de uma régua comum (mm = 0,1 cm)</td></tr>
+          <tr><td>Centésimo</td><td>0,01</td><td>10<sup>&minus;2</sup></td><td>Precisão de um paquímetro padrão</td></tr>
+          <tr><td>Milésimo</td><td>0,001</td><td>10<sup>&minus;3</sup></td><td>Precisão de um micrômetro de mesa</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A frase-síntese: <em>o mesmo algarismo pode valer um bilhão ou um milionésimo &mdash; tudo depende de onde ele está sentado.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 3 ═══ -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Números Decimais: vírgula, fração e o sistema posicional</div>
+
+    <p>Nem sempre a vírgula existiu. Por séculos, frações foram escritas por extenso &mdash; até um matemático flamengo decidir que havia uma forma mais rápida de dizer a mesma coisa.</p>
+
+    <!-- Figura 6 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-05-v11.jpg" alt="Close em régua metálica e paquímetro sobre amostra de minério de ferro, cursor parado em 2,35 cm, mão de Sofia com luva de laboratório" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Paquímetro em amostra de minério &mdash; a vírgula que Simon Stevin inventou em 1585.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A vírgula decimal como separador entre parte inteira e parte fracionária foi proposta pelo matemático flamengo Simon Stevin em 1585, na obra <em>De Thiende</em> (&ldquo;A Décima&rdquo;). Antes de Stevin, frações eram escritas como razões explícitas: &ldquo;3 e 7 décimos&rdquo; ou &ldquo;3 + 7/10&rdquo;. Stevin propôs a notação compacta que usamos hoje &mdash; com algumas variações regionais: na Europa continental e no Brasil, usa-se <em>vírgula</em>; nos países anglófonos, usa-se <em>ponto</em>. Essa diferença não é trivial em ambientes técnicos internacionais: a placa da estação que Sofia observou naquela manhã usa a notação brasileira, com vírgula.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Um <em>número decimal</em> é qualquer número que pode ser representado na forma posicional com dígitos à direita da vírgula. Na notação decimal, a vírgula separa a <em>parte inteira</em> (potências não negativas de 10) da <em>parte decimal</em> (potências negativas de 10). Decimais podem ser: (a) <em>exatos</em> &mdash; terminam em alguma posição (ex.: 1,25); (b) <em>periódicos</em> &mdash; repetem um grupo de algarismos indefinidamente (ex.: 1/3 = 0,333...); (c) <em>não periódicos</em> &mdash; como &radic;2 = 1,41421356&hellip; Os decimais não periódicos são os <em>irracionais</em>, e não podem ser escritos como fração inteira.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Em laboratório de análise mineral, os resultados de pesagem são sempre registrados com casas decimais &mdash; o número de casas depende da precisão do instrumento. Uma balança analítica de precisão 0,0001 g fornece resultados como &ldquo;12,3475 g&rdquo;. Registrar apenas &ldquo;12 g&rdquo; descarta quatro algarismos significativos e torna o resultado inútil para cálculos de teor metálico. A leitura correta de decimais é uma habilidade técnica fundamental, não apenas matemática.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Lendo a vírgula: parte inteira, parte decimal e a posição que as separa</strong></p>
+
+    <p>Sofia havia se aproximado da sala de espera da estação. Numa vitrine de vidro, um recorte de jornal antigo mostrava a inauguração da linha em 1888: <em>&ldquo;percurso de 12,5 léguas em 3,5 horas&rdquo;</em>. Léguas e horas &mdash; mas a vírgula era a mesma.</p>
+
+    <p>&mdash; A vírgula sempre foi assim? &mdash; ela perguntou.</p>
+
+    <p>&mdash; Não &mdash; disse o Prof. Julio. &mdash; Por quase quinhentos anos depois de Cristo, todo mundo escrevia frações separadas. &ldquo;Doze léguas e meia&rdquo; era diferente de &ldquo;12,5 léguas&rdquo;. Um Simon Stevin teve a ideia de colapsar os dois numa só notação em 1585. E funcionou tão bem que hoje parece natural.</p>
+
+    <p>Ele escreveu no caderno: <strong>12,5</strong>.</p>
+
+    <p>&mdash; A vírgula separa duas vizinhanças. À esquerda: a parte inteira &mdash; 12, que vale 10 + 2. À direita: a parte decimal &mdash; 5, que vale 5 décimos, ou 5/10, ou 0,5. São a mesma quantidade: uma légua e meia.</p>
+
+    <!-- EQUACAO 2 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Decomposição de um número decimal em parte inteira e parte fracionária</div>
+      <div class="equacao-formula">N = PI + PD</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td>N</td><td>Número decimal</td><td>540,3</td></tr>
+          <tr><td>PI</td><td>Parte inteira</td><td>540</td></tr>
+          <tr><td>PD</td><td>Parte decimal</td><td>0,3 (= 3/10)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: 540,3 km = 540 km + 0,3 km = 540 km + 300 m = <strong>540 km e 300 m</strong></div>
+    </div>
+
+    <p>Lucas olhou para a equação.</p>
+
+    <p>&mdash; Então a vírgula é um tradutor &mdash; ele disse. &mdash; Ela diz: tudo que está à minha esquerda você conta como unidades inteiras. Tudo à minha direita você conta como frações.</p>
+
+    <p>&mdash; E frações de 10 em 10 &mdash; disse Pedro. &mdash; Décimos, centésimos, milésimos. Sempre base 10.</p>
+
+    <p>A frase-síntese: <em>a vírgula não divide o número &mdash; ela revela que todo número decimal é a soma de uma parte contável e uma parte fracionária, ambas obedecendo à mesma potência de 10.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 4 ═══ -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Medições de Comprimento: da jarda ao metro, da polegada ao milímetro</div>
+
+    <p>Antes do metro existir, cada rei tinha seu próprio palmo. A padronização de comprimento não foi apenas um avanço científico &mdash; foi uma decisão política.</p>
+
+    <!-- Figura 7 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-06-v11.jpg" alt="Régua de 30 cm, trena metálica e paquímetro aberto em 47,3 mm sobre bancada de madeira; fragmento de trilho de trem com marcação de distância; Pedro segura o paquímetro" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Régua, trena, paquímetro &mdash; cada instrumento opera numa faixa da escala decimal.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O metro foi definido em 1791 pela Academia de Ciências da França como a dez-milionésima parte do quadrante do meridiano terrestre &mdash; uma tentativa explícita de ancorar a medida num fato da natureza, e não no corpo de um rei. Antes disso, o <em>palmo</em> português (22 cm), a <em>polegada</em> inglesa (2,54 cm) e a <em>jarda</em> inglesa (91,44 cm) coexistiam no comércio colonial. No Brasil, a adoção do sistema métrico decimal foi decretada em 1862, durante o Segundo Reinado. Mesmo assim, nas minas de Ouro Preto, os mineiros experientes ainda mediam &ldquo;em braças&rdquo; décadas depois &mdash; um palmo de resistência cultural a uma mudança que fazia sentido matemático mas rompia com a linguagem do ofício.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O comprimento é uma <em>grandeza fundamental</em> no Sistema Internacional de Unidades (SI), com unidade-padrão o <em>metro</em> (símbolo: m). A escala de comprimento no SI é inteiramente decimal: 1 km = 10<sup>3</sup> m; 1 dm = 10<sup>&minus;1</sup> m; 1 cm = 10<sup>&minus;2</sup> m; 1 mm = 10<sup>&minus;3</sup> m; 1 &micro;m = 10<sup>&minus;6</sup> m; 1 nm = 10<sup>&minus;9</sup> m. Os instrumentos de medição linear mais comuns &mdash; régua, paquímetro, micrômetro &mdash; exploram subdivisões decimais dessa escala, com precisões crescentes.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na prática de campo em mineração, os instrumentos mais usados para medição de comprimento são: (a) <em>trena de aço</em> (precisão &plusmn;1 mm, alcance até 50 m); (b) <em>paquímetro</em> (precisão 0,02 mm, faixa 0&ndash;300 mm); (c) <em>micrômetro externo</em> (precisão 0,001 mm, faixa 0&ndash;25 mm); (d) <em>estação total</em> (precisão 1 mm a distâncias de até 3 km). Cada instrumento opera numa faixa específica da escala decimal, e o técnico precisa saber em que ordem de grandeza está trabalhando antes de escolher o instrumento correto.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Réguas, paquímetros e a escala que conecta tudo</strong></p>
+
+    <p>Pedro havia trazido o paquímetro do laboratório de física do IFMG. Era um instrumento de aço inoxidável, com escala principal em milímetros e nônio com resolução de 0,05 mm.</p>
+
+    <p>&mdash; Mede isso aqui &mdash; disse o Prof. Julio, colocando sobre a bancada uma pequena amostra de quartzo retirada da coleção do laboratório.</p>
+
+    <p>Pedro abriu o paquímetro, encostou as faces na amostra e travou.</p>
+
+    <p>&mdash; Três vírgula quatro centímetros &mdash; ele disse. &mdash; Ou seja, 34 milímetros. Mais um pouco &mdash; o nônio diz 0,05 mm. Então é 34,05 mm.</p>
+
+    <p>&mdash; Em metros? &mdash; perguntou o Prof. Julio.</p>
+
+    <p>Pedro franziu o cenho.</p>
+
+    <p>&mdash; Trinta e quatro vírgula zero cinco milímetros &mdash; ele disse devagar &mdash; é&hellip; trinta e quatro vírgula zero cinco dividido por mil metros. &mdash; Ele calculou no caderno. &mdash; 0,03405 metros.</p>
+
+    <!-- EQUACAO 3 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Conversão entre unidades decimais de comprimento</div>
+      <div class="equacao-formula">L(m) = L(mm) &times; 10<sup>&minus;3</sup><br>L(cm) = L(mm) &times; 10<sup>&minus;1</sup><br>L(km) = L(m) &times; 10<sup>&minus;3</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>L</td><td>Comprimento</td><td>m (metro)</td></tr>
+          <tr><td>10<sup>&minus;3</sup></td><td>Fator de conversão mm &rarr; m</td><td>adimensional</td></tr>
+          <tr><td>10<sup>&minus;1</sup></td><td>Fator de conversão mm &rarr; cm</td><td>adimensional</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: 34,05 mm &times; 10<sup>&minus;3</sup> = <strong>0,03405 m</strong> = 3,405 cm</div>
+    </div>
+
+    <p>Sofia observou enquanto Pedro media. Ela havia pego uma régua escolar comum &mdash; a mesma que usava desde o ensino fundamental &mdash; e estava comparando as escalas: centímetros de um lado, polegadas do outro.</p>
+
+    <p>&mdash; Uma polegada &mdash; ela disse &mdash; é quanto?</p>
+
+    <p>&mdash; 2,54 centímetros &mdash; disse o Prof. Julio. &mdash; Ou 25,4 mm. É a convenção adotada mundialmente, incluída na norma ISO 1000. Mas 2,54 não é um número &ldquo;bonito&rdquo; em base 10. É por isso que a polegada resiste: ela tem divisões em potências de 2 &mdash; 1/2, 1/4, 1/8, 1/16 &mdash; que são práticas para marcenaria e mecânica. A base 10 é conveniente para ciência; a base 2 é conveniente para dividir ao meio.</p>
+
+    <!-- QUADRO 3 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Equivalências entre sistemas de medida de comprimento</div>
+      <table>
+        <thead><tr><th>Unidade</th><th>Sistema</th><th>Equivalência em mm</th><th>Uso no Brasil</th></tr></thead>
+        <tbody>
+          <tr><td>Milímetro (mm)</td><td>SI / Métrico</td><td>1</td><td>Universal (ciência, indústria)</td></tr>
+          <tr><td>Centímetro (cm)</td><td>SI / Métrico</td><td>10</td><td>Cotidiano, réguas escolares</td></tr>
+          <tr><td>Metro (m)</td><td>SI / Métrico</td><td>1.000</td><td>Construção, topografia, física</td></tr>
+          <tr><td>Quilômetro (km)</td><td>SI / Métrico</td><td>1.000.000</td><td>Distâncias geográficas, estradas</td></tr>
+          <tr><td>Polegada (inch)</td><td>Imperial</td><td>25,4</td><td>Mecânica industrial, ferramentas</td></tr>
+          <tr><td>Pé (foot)</td><td>Imperial</td><td>304,8</td><td>Aviação, projetos com parceiros EUA</td></tr>
+          <tr><td>Jarda (yard)</td><td>Imperial</td><td>914,4</td><td>Legado histórico, tecidos</td></tr>
+          <tr><td>Braça (PT)</td><td>Colonial</td><td>&asymp; 2.200</td><td>Legado histórico em mineração</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A frase-síntese: <em>medir comprimento com precisão é escolher o instrumento certo para a escala certa &mdash; e toda a escala, no Sistema Internacional, é uma potência de dez.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 5 ═══ -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; Algarismos Significativos: precisão, incerteza e confiabilidade de medidas</div>
+
+    <p>Toda medida carrega uma confissão: até onde o instrumento sabe, e a partir de onde o observador apenas estima. Saber separar as duas coisas é o que diferencia um registro técnico de um chute com aparência de número.</p>
+
+    <!-- Figura 8 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-07-v11.jpg" alt="Lucas com óculos de proteção observa display digital de balança analítica mostrando 12,3475 g; anotações em caderno de laboratório com algarismos significativos circulados" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Balança analítica e caderno &mdash; algarismos significativos são a fronteira entre o que medimos e o que imaginamos.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A formalização das regras de algarismos significativos foi sistematizada no século XX, com o desenvolvimento da metrologia científica. Antes disso, erros de escrita em medidas eram comuns e podiam ter consequências graves: em 1793, durante a medição do meridiano terrestre para definir o metro-padrão, um erro sistemático de algarismos levou a uma discrepância de 0,2 mm na barra-padrão original de platina iridada. Essa discrepância, pequena em aparência, foi suficiente para que o metro-padrão ficasse 0,2 mm mais curto que o valor verdadeiro &mdash; e assim permaneceu por quase dois séculos, até a redefinição do metro por velocidade da luz em 1983.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p><em>Algarismos significativos</em> são os algarismos que carregam informação confiável numa medida: os <em>algarismos certos</em> (cujo valor é lido diretamente no instrumento) mais o <em>algarismo duvidoso</em> (o último, estimado pelo observador). Todo resultado de medida experimental tem um número finito de algarismos significativos, determinado pela precisão do instrumento. Zeros à esquerda não são significativos (0,0034 tem 2 algarismos significativos); zeros entre algarismos não nulos são significativos (1.002 tem 4); zeros à direita após vírgula são significativos (1,200 tem 4).</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Nos laudos técnicos de análise mineralógica e nos relatórios de perfuração, o número de algarismos significativos comunica a confiabilidade da medida. Registrar &ldquo;a amostra tem 23,4567 g de teor de ouro&rdquo; quando o instrumento tem precisão de 0,01 g é uma afirmação falsa de precisão &mdash; e pode ser contestada numa auditoria. A norma ABNT NBR ISO 80000-1:2013 define as regras de arredondamento e escrita de resultados de medida usadas em todos os documentos técnicos da mineração brasileira.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Algarismos certos, duvidosos e o que a régua realmente mede</strong></p>
+
+    <p>Lucas estava com a régua na mão, medindo o comprimento de uma amostra de minério de ferro sobre a bancada de laboratório.</p>
+
+    <p>&mdash; Dez vírgula seis centímetros &mdash; ele disse. &mdash; Mais ou menos.</p>
+
+    <p>&mdash; &ldquo;Mais ou menos&rdquo; não serve numa mina &mdash; disse o Prof. Julio, com gentileza. &mdash; O que a régua te diz com certeza?</p>
+
+    <p>&mdash; Dez centímetros com certeza. O traço está entre 10 e 11. A menor divisão da régua é um milímetro. Então sei com certeza que está entre 10,0 e 11,0 cm.</p>
+
+    <p>&mdash; E o sexto milímetro?</p>
+
+    <p>&mdash; Estimo. Parece estar em 6. Pode ser 5 ou 7. Não tenho certeza.</p>
+
+    <p>&mdash; Então &mdash; disse o Prof. Julio &mdash; 10,6 cm tem três algarismos significativos: 1, 0 e 6. O 1 e o 0 são <em>certos</em>; o 6 é <em>duvidoso</em>. Não escreva 10,60 cm &mdash; isso implicaria que o centésimo é confiável. Não escreva 10 cm &mdash; isso descarta o décimo que você estimou com cuidado.</p>
+
+    <!-- EQUACAO 4 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Escrita do resultado de uma medida com algarismos significativos</div>
+      <div class="equacao-formula">Resultado = valor &plusmn; incerteza (com n algarismos significativos)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Significado</th></tr></thead>
+        <tbody>
+          <tr><td>valor</td><td>melhor estimativa da medida</td></tr>
+          <tr><td>incerteza</td><td>metade da menor divisão do instrumento</td></tr>
+          <tr><td>n</td><td>número de algarismos significativos</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Régua com menor divisão 1 mm: resultado = (10,6 &plusmn; 0,5) mm &mdash; <strong>3 algarismos significativos</strong></div>
+    </div>
+
+    <!-- QUADRO 4 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; Regras para identificar algarismos significativos</div>
+      <table>
+        <thead><tr><th>Regra</th><th>Exemplo</th><th>Algarismos significativos</th></tr></thead>
+        <tbody>
+          <tr><td>Todos os algarismos não nulos são significativos</td><td>347</td><td>3</td></tr>
+          <tr><td>Zeros entre não nulos são significativos</td><td>3.047</td><td>4</td></tr>
+          <tr><td>Zeros à esquerda do primeiro não nulo NÃO são significativos</td><td>0,0034</td><td>2</td></tr>
+          <tr><td>Zeros à direita após vírgula SÃO significativos</td><td>3,400</td><td>4</td></tr>
+          <tr><td>Zeros à direita sem vírgula: ambíguos (usar notação científica)</td><td>3.400 &rarr; 3,4 &times; 10<sup>3</sup></td><td>2</td></tr>
+          <tr><td>Notação científica define explicitamente os algarismos</td><td>3,40 &times; 10<sup>3</sup></td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Pedro olhou para o quadro.</p>
+
+    <p>&mdash; Então quando eu medi 34,05 mm com o paquímetro &mdash; ele disse &mdash; eu tenho quatro algarismos significativos. O 3, o 4, o 0 e o 5.</p>
+
+    <p>&mdash; Correto &mdash; disse o Prof. Julio. &mdash; O zero entre o 4 e o 5 é significativo. Ele não é um marcador de posição &mdash; ele é uma leitura real do instrumento.</p>
+
+    <p>Lucas fechou o caderno.</p>
+
+    <p>&mdash; Então algarismos significativos &mdash; ele disse &mdash; é o sistema de numeração dizendo a verdade sobre si mesmo. Não escrevemos mais do que sabemos.</p>
+
+    <!-- EQUACAO 5 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Notação científica: forma padrão com algarismos significativos explícitos</div>
+      <div class="equacao-formula">N = a &times; 10<sup>n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th></tr></thead>
+        <tbody>
+          <tr><td>a</td><td>mantissa: 1 &le; a &lt; 10 (define os algarismos significativos)</td></tr>
+          <tr><td>n</td><td>expoente inteiro (define a ordem de grandeza)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: 0,03405 m = 3,405 &times; 10<sup>&minus;2</sup> m &rarr; <strong>4 algarismos significativos</strong>, ordem de grandeza 10<sup>&minus;2</sup></div>
+    </div>
+
+    <p>A frase-síntese: <em>algarismos significativos são a fronteira entre o que medimos e o que imaginamos &mdash; e cruzar essa fronteira nos relatórios técnicos é o primeiro erro que custa mais caro na mineração.</em></p>
+  </div>
+
+</div><!-- fim ato II -->
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>O trem das 14h45 havia chegado e partido. A plataforma da estação estava quieta de novo, apenas o vento de maio varrendo os últimos tíquetes de papel esquecidos sob o banco de pedra.</p>
+
+  <!-- Figura 9 — IT-08 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T03-IT-08-v11.jpg" alt="Sofia, Pedro e Lucas sentados no banco de pedra da plataforma ao entardecer, cadernos abertos, trem da Vale ao longe" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; Trio no banco de pedra ao entardecer &mdash; cinco tópicos, uma base, dez dedos.</figcaption>
+  </figure>
+
+  <p>Sofia, Pedro e Lucas ficaram onde estavam, cadernos abertos, revisando as anotações da manhã.</p>
+
+  <p>Sofia releu a primeira anotação: <em>Por que a placa tem vírgula?</em> Ela havia chegado à estação com uma pergunta e saía com cinco respostas &mdash; cada uma puxando um tópico diferente. Os dez dedos das mãos que deram origem ao sistema decimal. A diferença entre um algarismo e um número. A vírgula que Simon Stevin inventou em 1585 para tornar as frações mais rápidas de escrever. A régua que mede em milímetros porque o metro é base 10. E o algarismo duvidoso que toda medida carrega consigo, como uma confissão honesta de que o instrumento tem limites.</p>
+
+  <p>Pedro fechou o caderno com um baque suave.</p>
+
+  <p>&mdash; Sabe o que mais me impressionou? &mdash; ele disse. &mdash; Que o zero foi inventado. Sempre achei que zero era... óbvio. Como se ele sempre tivesse existido.</p>
+
+  <p>&mdash; Por mais de mil anos, não existiu &mdash; disse Lucas. &mdash; E sem o zero, você não tem posição vazia. E sem posição vazia, você não tem base 10 funcionando de verdade. O zero é o que permite que o sistema decimal seja decimal.</p>
+
+  <p>Sofia olhou para a placa de granito lá fora: <em>540,3</em>.</p>
+
+  <p>Cinco algarismos. Quatro significativos. Uma vírgula. Uma decisão humana de 1585. Uma estação de 1888. Uma trilha de física de 2026.</p>
+
+  <p>Tudo conectado pela mesma base: dez.</p>
+
+  <p>Na próxima aula, vocês vão usar esses conceitos para ler instrumentos de medição reais &mdash; régua, paquímetro e trena &mdash; e registrar os resultados da forma correta: com as unidades, a posição decimal e os algarismos significativos que o instrumento permite. Tragam os cadernos. O laboratório espera.</p>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CONEXOES INTERDISCIPLINARES ═══════════════════ -->
+<div id="conexoes">
+  <div class="ato-titulo">Conexões Interdisciplinares</div>
+
+  <p><em>Atividades que articulam a Física da Trilha T03 com outras disciplinas do currículo do Técnico em Mineração Integrado ao Ensino Médio. Cada atividade exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- C5 PROTOCOL -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; RCP: Resolução Científica de Problemas</div>
+    <p style="margin-bottom:12px;">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 10 — IT-09 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T03-IT-09-v11.jpg" alt="Infográfico duplo: mapa de conexões disciplinares da Base 10 (estrela com 5 pontas) e fluxograma das 8 etapas do Protocolo C5" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da base 10 &mdash; Matemática, Química, Português, História, Topografia.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>O que está sendo pedido?</strong></td><td>Releia o enunciado. Escreva com suas palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td><strong>Quais são os dados?</strong></td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td><strong>Quais são as hipóteses?</strong></td><td>Declare o que vai assumir (atrito nulo, regime estacionário etc.).</td></tr>
+        <tr><td>4</td><td><strong>Qual é o desenho do problema?</strong></td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td><strong>Quais são as equações?</strong></td><td>Identifique a equação do TT. Isole a variável pedida.</td></tr>
+        <tr><td>6</td><td><strong>Cálculo com unidades</strong></td><td>Substitua os valores. Acompanhe as unidades até o resultado.</td></tr>
+        <tr><td>7</td><td><strong>Análise de resultados</strong></td><td>O resultado faz sentido? Compare com valores típicos.</td></tr>
+        <tr><td>8</td><td><strong>Responda o que foi pedido</strong></td><td>Formule a resposta completa ao que o problema perguntou.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- ATIVIDADE 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Matemática &mdash; notação científica e algarismos significativos</div>
+    <p>Escolha três medições registradas na plataforma da estação (comprimentos, horários, distâncias). Para cada uma, escreva o número em notação científica e indique quantos algarismos significativos ele contém. Compare: qual das medições é mais precisa? Justifique usando a definição de algarismo significativo.</p>
+    <div class="conexao">Conexão: Matemática &mdash; notação científica &mdash; algarismos significativos &mdash; precisão relativa de instrumentos.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Converter três medições da plataforma para notação científica, identificar o número de algarismos significativos em cada uma e comparar qual é mais precisa com base na definição de algarismo significativo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Distância na placa: 540,3 km. Horário do trem: 07:15 (h:min) &rarr; 7,25 h = 7 h e 15 min. Comprimento da amostra de quartzo medido com paquímetro: 34,05 mm.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Os valores são tomados como leituras diretas dos instrumentos; a conversão para notação científica não altera o número de algarismos significativos; horário de trem não é uma medição de precisão instrumental e serve apenas como dado de comparação.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Tabela de três colunas &mdash; Medição | Notação científica | Algarismos significativos.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Notação científica: N = a &times; 10<sup>n</sup>, com 1 &le; a &lt; 10. Contagem de algarismos significativos pelas regras do Quadro 4.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">540,3 km = 5,403 &times; 10<sup>2</sup> km &rarr; <strong>4 algarismos significativos</strong> (5, 4, 0, 3). 34,05 mm = 3,405 &times; 10<sup>1</sup> mm &rarr; <strong>4 algarismos significativos</strong> (3, 4, 0, 5 &mdash; o zero entre 4 e 5 é significativo). 0,003405 m = 3,405 &times; 10<sup>&minus;3</sup> m &rarr; <strong>4 algarismos significativos</strong> (mesma medida, unidade diferente &mdash; o número de algarismos significativos não muda com a conversão de unidade).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">As três medições apresentam 4 algarismos significativos, mas a incerteza relativa varia: o paquímetro (34,05 mm, precisão 0,05 mm) tem incerteza relativa de 0,05/34,05 &asymp; 0,15%, enquanto a placa da estação (540,3 km, incerteza visual estimada &plusmn;0,1 km) tem incerteza relativa &asymp; 0,06%. O número de algarismos significativos não determina sozinho a precisão relativa &mdash; depende também da escala do instrumento.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">As três medições &mdash; 540,3 km (5,403&times;10<sup>2</sup> km), 34,05 mm (3,405&times;10<sup>1</sup> mm) e 0,003405 m (3,405&times;10<sup>&minus;3</sup> m) &mdash; têm todas 4 algarismos significativos. Comparando a precisão relativa, a medição da placa da estação é a mais precisa (&asymp;0,06% de incerteza) contra &asymp;0,15% do paquímetro; ainda assim, na prática de mineração, escolher o instrumento certo para a escala de trabalho &mdash; paquímetro para peças de máquina, trena ou estação total para distâncias de campo &mdash; continua sendo a decisão técnica central antes de qualquer registro.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Química &mdash; densidade e algarismos significativos</div>
+    <p>A densidade do ouro é 19,3 g/cm³. Se um técnico em mineração pesar uma amostra em balança analítica e obter 2,4730 g, e medir seu volume pelo método da proveta graduada (variação de 0,12 cm³), qual é a densidade calculada? Quantos algarismos significativos o resultado pode ter? (Atenção: em operações de multiplicação/divisão, o resultado tem o mesmo número de algarismos significativos que o fator com menor precisão.)</p>
+    <div class="conexao">Conexão: Química &mdash; densidade &mdash; algarismos significativos &mdash; propagação de incertezas.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Calcular a densidade experimental de uma amostra a partir da massa medida em balança analítica e do volume medido por deslocamento de líquido em proveta; determinar o número correto de algarismos significativos no resultado final.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Massa: m = 2,4730 g &rarr; 5 algarismos significativos. Volume: V = 0,12 cm³ &rarr; 2 algarismos significativos. Densidade de referência do ouro: &rho;<sub>ref</sub> = 19,3 g/cm³.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">A proveta está calibrada e lida corretamente; a amostra é sólida e não absorve água; temperatura ambiente não altera significativamente as leituras; o único erro relevante é o limite de precisão da proveta (menor divisão 0,1 cm³ &rarr; incerteza &plusmn;0,05 cm³).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Diagrama de duas etapas: [Balança &rarr; m = 2,4730 g] + [Proveta: nível inicial &rarr; nível final, &Delta;V = 0,12 cm³] &rarr; [&rho; = m/V].</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Equação da densidade: &rho; = m/V. Em divisão, o resultado tem tantos algarismos significativos quantos o fator com menor precisão. O fator limitante é V = 0,12 cm³ com 2 algarismos significativos.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">&rho; = 2,4730 g &divide; 0,12 cm³ = <strong>20,6 g/cm³</strong> (arredondado para 2 algarismos significativos, conforme a precisão de V).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">O resultado 20,6 g/cm³ é próximo da densidade real do ouro (19,3 g/cm³), com erro relativo Er = |20,6 &minus; 19,3|/19,3 &times; 100% &asymp; 6,7%. Esse desvio é esperado: a proveta graduada em 0,1 cm³ é o instrumento limitante &mdash; para uma amostra de apenas 0,12 cm³, qualquer erro de leitura de &plusmn;0,01 cm³ representa 8% do valor.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A densidade calculada é &rho; = 20,6 g/cm³, com 2 algarismos significativos (limitados pela proveta). O valor é compatível com o ouro (19,3 g/cm³, erro &asymp;6,7%), mas a proveta comum é o fator limitante: substituí-la por um picnômetro de precisão (&plusmn;0,001 cm³) reduziria drasticamente o erro e permitiria confirmar com confiança se a amostra é ouro puro ou liga.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Português &mdash; unidades coloniais</div>
+    <p>Localize um documento histórico (carta, ata de câmara, inventário) do Arquivo Público Mineiro que contenha medidas em unidades coloniais (braças, palmos, oitavas). Transcreva uma medida e converta-a para o SI. Em seguida, redija um parágrafo explicando o que essa conversão revela sobre a mudança de linguagem técnica entre o Brasil colonial e o Brasil republicano.</p>
+    <div class="conexao">Conexão: Língua Portuguesa &mdash; leitura de fontes históricas &mdash; unidades coloniais &mdash; produção textual argumentativa.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Localizar uma medida em unidades coloniais num documento do Arquivo Público Mineiro, convertê-la para o SI e escrever um parágrafo que interprete o significado histórico dessa mudança de sistema de medidas.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Exemplo extraído de inventário colonial de Ouro Preto (séc. XVIII): &ldquo;hum terreno de 40 braças de frente e 60 braças de fundo&rdquo;. 1 braça portuguesa = 2,20 m (equivalência histórica estabelecida na metrologia colonial). Fator de conversão: 1 braça = 2,20 m; 1 oitava = 3,586 g; 1 palmo = 0,22 m.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">A braça utilizada é a braça portuguesa padrão de 2,20 m; o terreno é retangular; a conversão é exata (não há incerteza instrumental &mdash; é conversão de unidade, não medição nova).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Retângulo com lados anotados: [40 braças = 88 m] &times; [60 braças = 132 m]; área = 11.616 m².</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">L(m) = L(braças) &times; 2,20 m/braça. Área(m²) = frente(m) &times; fundo(m).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">Frente: 40 braças &times; 2,20 m/braça = <strong>88 m</strong>. Fundo: 60 braças &times; 2,20 m/braça = <strong>132 m</strong>. Área: 88 m &times; 132 m = <strong>11.616 m²</strong> &asymp; <strong>1,16 ha</strong>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Um terreno de 88 m &times; 132 m é compatível com lotes urbanos coloniais de Ouro Preto, onde as sesmarias e chãos de casas eram generosos pela escassez de construção.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Parágrafo solicitado: &ldquo;A conversão de 40 braças para 88 metros revela mais do que um cálculo: revela uma ruptura de linguagem. A braça era uma medida corporal &mdash; literalmente, o comprimento de dois braços abertos &mdash;, variável de região para região e de reinado para reinado. O metro, definido em 1791 a partir do meridiano terrestre, propôs pela primeira vez que a medida não pertencesse a nenhum corpo e a nenhum rei. A passagem do Brasil colonial ao Brasil republicano foi também a passagem de uma linguagem de corpos para uma linguagem de grandezas &mdash; e os documentos do Arquivo Público Mineiro guardam esse momento exato de transição, página por página, em braças e metros convivendo no mesmo inventário.&rdquo;</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e História &mdash; Casa dos Contos</div>
+    <p>Pesquise a fundação da Casa dos Contos de Ouro Preto (1770) e sua relação com a padronização de medidas para o controle do ouro extraído. Responda: quais problemas de medição geravam fraudes na tributação do ouro? Como o sistema decimal poderia (e eventualmente foi usado para) reduzir essas fraudes?</p>
+    <div class="conexao">Conexão: História &mdash; Casa dos Contos &mdash; fiscalização colonial do ouro &mdash; padronização metrológica como instrumento político.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Investigar como a ausência de padronização decimal nas medidas coloniais facilitava fraudes na taxação do ouro; explicar o papel da Casa dos Contos e como o sistema decimal poderia ter sido (e foi) instrumento de controle fiscal.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Casa dos Contos de Ouro Preto: fundada em 1770 pela Coroa Portuguesa para centralizar a fundição e tributação do ouro. Imposto colonial: o &ldquo;quinto&rdquo; &mdash; 20% (1/5) da produção de ouro deveria ser entregue à Coroa. Unidade colonial de massa: oitava = 3,586 g; marco = 230,5 g = 64 oitavas. Sistema decimal: adotado progressivamente no Brasil a partir de 1862 (Lei de 1862 do Segundo Reinado).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">As fraudes analisadas são do tipo metrológico (adulteração de medidas e pesos), não apenas contábil (sub-declaração); o sistema decimal é comparado ao sistema colonial de bases não uniformes (oitava, marco, arrátel).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Linha do tempo: [Séc. XVIII: oitavas e marcos &mdash; bases não uniformes &mdash; fraude metrológica fácil] &rarr; [1770: Casa dos Contos &mdash; centralização e controle] &rarr; [1862: Sistema métrico decimal &mdash; padronização nacional] &rarr; [1876: Escola de Minas &mdash; formação técnica decimal].</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Análise histórico-qualitativa com suporte quantitativo. Cálculo ilustrativo: se 1 marco = 64 oitavas e o &ldquo;quinto&rdquo; era 1/5 da produção, o fiscal que usava um marco de 63 oitavas (adulterado em 1/64) cobrava 1,56% a menos que o devido &mdash; acumulado sobre toneladas de ouro, representava centenas de quilos sonegados por ano.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">Marco adulterado: 63 oitavas &times; 3,586 g = 226,0 g (versus 230,5 g legítimo). Erro: (230,5 &minus; 226,0)/230,5 &times; 100% &asymp; <strong>1,95% por pesagem</strong>. Em 10.000 marcos pesados/ano: perda de &asymp; 195 marcos = <strong>44,9 kg de ouro</strong> sonegados anualmente por um único fiscal desonesto.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">O número 44,9 kg/ano de sonegação por fiscal é conservador &mdash; documentos históricos indicam que a Derrama (cobrança forçada de impostos atrasados em 1789) visava cobrar exatamente as décadas de subpagamento acumulado por esse mecanismo. O sistema decimal resolve o problema porque suas subdivisões são universais e verificáveis: 1 kg = 1.000 g em qualquer balança do mundo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A ausência de padronização decimal (marco = 64 oitavas não uniformes) permitia fraudes metrológicas como o marco adulterado, gerando perda estimada de &asymp;44,9 kg de ouro/ano por fiscal desonesto. A Casa dos Contos (1770) foi a primeira instituição a tentar uniformizar os pesos, mas somente a adoção do sistema métrico decimal em 1862 resolveu o problema de forma definitiva &mdash; a padronização decimal não foi apenas matemática, foi um instrumento político de controle fiscal do Estado sobre a produção mineral.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e Topografia Aplicada &mdash; conversão distância/tempo</div>
+    <p>A estação de Ouro Preto marca km 540,3 da antiga E.F. Central do Brasil &mdash; a distância por trilhos desde a estação de origem no Rio de Janeiro. Se um trem percorresse esse trecho inteiro a uma velocidade média de 28,4 km/h, calcule o tempo de viagem em horas e em horas-minutos. Registre o resultado com o número correto de algarismos significativos. Em seguida, converta a distância para metros e para milímetros, mantendo os algarismos significativos em cada conversão.</p>
+    <div class="conexao">Conexão: Topografia aplicada &mdash; conversão distância/tempo &mdash; algarismos significativos em múltiplas ordens de grandeza.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Calcular o tempo de viagem do trem a partir da distância e da velocidade média; registrar o resultado com algarismos significativos corretos; converter a distância para metros e milímetros mantendo a precisão em cada etapa.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Distância: d = 540,3 km &rarr; 4 algarismos significativos. Velocidade média: v = 28,4 km/h &rarr; 3 algarismos significativos. Fator de conversão: 1 km = 10³ m = 10⁶ mm.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Velocidade média constante ao longo de todo o percurso (modelo cinemático uniforme); não há paradas intermediárias; a distância registrada na placa é a distância percorrida pela linha (não em linha reta).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Diagrama linear: [Estação OP] &mdash;&mdash;d = 540,3 km&mdash;&mdash; [Destino]; velocidade v = 28,4 km/h; tempo t = ? h.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Equação cinemática: t = d/v. Em divisão: resultado com o menor número de algarismos significativos dos fatores &rarr; min(4, 3) = 3 algarismos significativos. Conversão de distância: d(m) = d(km) &times; 10³; d(mm) = d(m) &times; 10³.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">t = 540,3 km &divide; 28,4 km/h = <strong>19,0 h</strong> (3 algarismos significativos). Convertendo para horas e minutos: 0,0 h &times; 60 min/h = 2 min &rarr; <strong>19 h e 02 min</strong> (aproximação prática). Conversão de distância: d(m) = 540,3 km &times; 10³ m/km = <strong>5,403 &times; 10⁵ m</strong> (4 algarismos significativos preservados). d(mm) = 5,403 &times; 10⁵ m &times; 10³ mm/m = <strong>5,403 &times; 10⁸ mm</strong> (4 algarismos significativos preservados).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">19 h 02 min é coerente com uma viagem de 540 km por ferrovia de montanha no final do séc. XIX &mdash; a velocidade média de 28,4 km/h era típica de trens de passageiros em linhas sinuosas como a que ligava o Rio de Janeiro a Ouro Preto. A conversão para 5,403 &times; 10⁸ mm parece absurda na escala cotidiana, mas é exatamente o tipo de raciocínio que o técnico em topografia usa ao trabalhar com levantamentos geodésicos onde distâncias grandes são referenciadas em unidades menores para cálculos de precisão.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">O tempo de viagem é t &asymp; 19,0 h (19 h e 02 min), com 3 algarismos significativos. A distância convertida é d = 5,403 &times; 10⁵ m = 5,403 &times; 10⁸ mm, preservando os 4 algarismos significativos originais em cada conversão. A notação científica é o único formato que mantém os algarismos significativos visíveis ao atravessar múltiplas ordens de grandeza &mdash; registrar &ldquo;540300000 mm&rdquo; sem notação científica seria tecnicamente incorreto, porque não informa se os zeros finais são significativos ou apenas marcadores de posição.</div></div>
+    </details>
+  </div>
+
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIENCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+
+  <div class="ciencia-arte-obra"><strong>Desenho:</strong> <em>Homem Vitruviano</em> (c. 1490) &mdash; Leonardo da Vinci</div>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:24px; font-size:1.1rem;">
+    &ldquo;Foi a Índia que nos deu o engenhoso método de expressar todos os números por meio de dez símbolos, cada símbolo recebendo um valor de posição além de um valor absoluto; ideia profunda e importante que nos parece agora tão simples que ignoramos seu verdadeiro mérito.&rdquo;
+  </blockquote>
+  <div class="ca-autor">&mdash; Pierre-Simon de Laplace (1749&ndash;1827)</div>
+
+  <!-- Figura 11 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T03-IT-10-v11.jpg" alt="Identidade visual T03 — algarismos 0-9 em tipografia bold azul-escuro, vírgula decimal em verde, silhueta da Estação Ferroviária de Ouro Preto" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; Algarismos 0&ndash;9 e silhueta da Estação &mdash; a mesma proporção que Leonardo mediu vibra no GPS e no paquímetro.</figcaption>
+  </figure>
+
+  <p style="margin-top:20px;">O <em>Homem Vitruviano</em> é um estudo de proporções do corpo humano inscrito simultaneamente num círculo e num quadrado &mdash; duas figuras geométricas perfeitas que representam, respectivamente, o divino e o terreno. Leonardo traduziu em traço e medida o que o arquiteto romano Vitrúvio descrevera em palavras: a cabeça é um oitavo da altura; o pé, um sexto; o antebraço, um quarto. O desenho é, em essência, um sistema de representação posicional: o corpo humano <em>é</em> a unidade de referência, e cada parte é uma fração ou múltiplo dessa unidade &mdash; a mesma lógica que o sistema decimal aplica ao número.</p>
+
+  <p>Assim como a notação posicional de base 10 permite expressar qualquer magnitude com apenas dez símbolos, Leonardo demonstrou que qualquer dimensão do corpo pode ser expressa como proporção de um padrão único. O técnico em mineração que mede a galeria com trena milimetrada faz o mesmo gesto intelectual: escolhe uma unidade (metro), subdivide-a em frações decimais (cm, mm) e localiza qualquer distância &mdash; da espessura de um veio aurífero à profundidade de um shaft &mdash; dentro de um sistema coerente de posições.</p>
+
+  <div class="footnote">
+    <strong>Leonardo di ser Piero da Vinci</strong> (Vinci, 1452 &mdash; Amboise, 1519) foi pintor, escultor, arquiteto, engenheiro, matemático, anatomista e inventor italiano &mdash; o arquétipo do polímata renascentista. Autor da <em>Mona Lisa</em> e da <em>Última Ceia</em>, deixou milhares de páginas de cadernos com observações sobre anatomia, óptica, hidráulica e mecânica. O <em>Homem Vitruviano</em> (c. 1490), conservado na Gallerie dell&rsquo;Accademia de Veneza, sintetiza sua convicção de que arte e ciência são formas complementares de medir o mundo.
+  </div>
+
+  <div class="footnote" style="margin-top:8px;">
+    <strong>Pierre-Simon, marquês de Laplace</strong> (Beaumont-en-Auge, 1749 &mdash; Paris, 1827) foi matemático, físico e astrônomo francês, chamado de &ldquo;Newton da França&rdquo; por suas contribuições à mecânica celeste. Autor da monumental <em>Mécanique Céleste</em> (5 volumes, 1799&ndash;1825) e da <em>Théorie Analytique des Probabilités</em> (1812), formulou a transformada de Laplace e a hipótese nebular da formação do Sistema Solar. A frase citada aparece em <em>Exposition du Système du Monde</em> (1796), onde Laplace reconhece que a notação posicional de base 10 &mdash; tão simples que parece óbvia &mdash; é uma das maiores invenções intelectuais da humanidade.
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ REFERENCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo" style="font-size: 1.4rem; color: var(--azul);">Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:16px; font-size: 1.4rem; color: var(--azul);">Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+</div>
+
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T03 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T03-TT-v9';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

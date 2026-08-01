@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T05 · Notação Científica: A Linguagem da Escala — Texto Temático v8</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esse texto temático foi elaborado com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; Pedro descendo a Rua Dom Silvério &mdash; onde cada paralelepípedo guarda uma potência de dez em segredo</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Régua-cunha dos prefixos &mdash; de yocto a yotta, quarenta e oito ordens de grandeza comprimidas numa escultura</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; Pedro diante do portão colonial &mdash; de costas para o presente, de frente para três séculos de engenharia gravada em pedra</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Pedro e Prof. Julio iluminando a inscrição colonial &mdash; 4.320 palmos cúbicos gravados em quartzito, ancestrais da notação científica</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Do próton à galáxia &mdash; 41 ordens de grandeza comprimidas numa escada que só a notação científica consegue subir</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Pedro no banco da galeria &mdash; a lanterna do capacete e o bloco de notas, duas ferramentas para iluminar o que os zeros escondem</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Dupla escala &mdash; do cristal de quartzito ao Quadrilátero Ferrífero, onze potências de dez separam o microscópico do geológico</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Pedro ao fundo da galeria &mdash; cinco operações, uma linguagem, nenhum zero perdido</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Quartzo, feldspato, pirita, hematita, ouro &mdash; a densidade é a impressão digital que a balança lê e a notação científica traduz</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; Pedro no batente entre sombra e luz &mdash; o mesmo limiar que separa o número gravado em pedra do número escrito em ciência</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas em órbita &mdash; a notação científica como lingua franca da Física, Química, Geologia, Português e Segurança</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; Powers of Ten &mdash; quatro janelas para o universo, uma potência de dez de cada vez, na câmera dos Eames</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Claude Debussy &mdash; Suite Bergamasque (Clair de Lune)</div>
+  <div class="musica-detail">1890 &middot; piano solo &middot; ~17 min</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Debussy+Clair+de+Lune+Suite+Bergamasque" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T05 &mdash;
+Notação Científica: A Linguagem da
+Escala / Julio Cesar Silva Azevedo;
+colaboração Felipe Beato. &mdash; 1. ed.
+&mdash; Ouro Preto, MG: Instituto
+Federal de Minas Gerais &mdash; Campus
+Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T05)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Notação científica.
+4. Potências de 10.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epigrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Tópico 1 &mdash; Potências de 10</a>
+  <a href="#topico-2" class="toc-topico">Tópico 2 &mdash; Facilitação de Cálculos</a>
+  <a href="#topico-3" class="toc-topico">Tópico 3 &mdash; Números Astronômicos</a>
+  <a href="#topico-4" class="toc-topico">Tópico 4 &mdash; Todas as Operações</a>
+  <a href="#topico-5" class="toc-topico">Tópico 5 &mdash; Aplicação em Densidades</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexões Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciência e Arte</a>
+  <a href="#referencias" class="toc-extra">Referências</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T05-IT-00.jpg" alt="Pedro descendo a Rua Dom Silvério rumo à Mina do Chico Rei ao entardecer">
+  <div class="capa-label">Trilha de Aprendizagem 05</div>
+  <div class="capa-titulo">Notação Científica<br>A Linguagem da Escala</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T05</span> &middot; Notação Científica: A Linguagem da Escala</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~40 min de leitura</div>
+</header>
+
+<!-- Figura 1 — IT-11 -->
+<figure class="figura">
+  <img class="figura-img" src="../_imagens/_web/T05-IT-11-v10.jpg" alt="Régua-cunha escultural 3D azul-profundo com prefixos y e Y gravados — de yocto a yotta, símbolo da notação científica" loading="lazy">
+  <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Régua-cunha dos prefixos &mdash; de yocto a yotta, quarenta e oito ordens de grandeza comprimidas numa escultura.</figcaption>
+</figure>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O universo é um grande livro escrito em linguagem matemática, e seus caracteres são triângulos, círculos e outras figuras geométricas.&rdquo;</blockquote>
+  <div class="autor">&mdash; Galileu Galilei (1564&ndash;1642)</div>
+  <div class="nota"><strong>Galileu Galilei</strong> (1564&ndash;1642). Matemático, físico e astrônomo italiano, considerado o pai da física moderna e da astronomia observacional. A frase consta de <em>Il Saggiatore</em> (O Ensaiador, 1623), obra em que Galileu defende que os fenômenos naturais só podem ser compreendidos por meio da linguagem matemática &mdash; antecipando em quatro séculos a notação científica como ferramenta universal de comunicação.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>A Rua Dom Silvério começa quase sem aviso, numa saída lateral da Praça Antônio Dias que a maioria dos turistas não percebe. Pedro a notou porque havia estudado a rota com antecedência: saindo da Praça Tiradentes, descendo em direção ao bairro Antônio Dias e tomando a Rua do Aleijadinho &mdash; uns duzentos e cinquenta metros de ladeira estreita e sinuosa, com o cheiro de café escapando dos sobrados e o eco dos passos no calçamento colonial &mdash;, desembocando na Praça Antônio Dias à sombra da Igreja de Nossa Senhora da Conceição e virando à direita na Rua Dom Silvério. Outros cem metros de pedras molhadas, e o portão colonial de ferro da Mina do Chico Rei aparecia no número 108, aberto, como se esperasse por ele.</p>
+
+  <p>Era uma tarde de outono. O sol já não tinha força suficiente para aquecer o calçamento, mas ainda tinha luz suficiente para tornar os casarões do bairro Antônio Dias quase teatrais &mdash; as paredes brancas pegando ouro, as janelas de gelosia projetando sombras geométricas no chão. Pedro ajustou a mochila do IFMG no ombro e acendeu a lanterna antes mesmo de cruzar o portão. O Prof.&nbsp;Julio havia recomendado: a galeria principal tinha teto alto e iluminação nos primeiros 325 metros, mas nas galerias laterais o teto baixava e havia trechos onde era preciso se agachar. A temperatura interna girava em torno de 18&nbsp;°C e, fora do trecho iluminado, a escuridão era total.</p>
+
+  <p>O Prof.&nbsp;Julio já estava dentro, esperando. Pedro o reconheceu pelo cabelo cacheado preso e pela mochila de couro desgastado que o professor carregava desde antes da pandemia. Mas o que Pedro notou primeiro foi a expressão no rosto do Prof.&nbsp;Julio &mdash; não de professor em sala de aula, mas de alguém que estava num lugar de que genuinamente gostava.</p>
+
+  <p>&mdash; Bem-vindo ao século XVIII &mdash; disse ele, sem mais preâmbulo.</p>
+
+  <!-- Figura 2 — IT-01 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T05-IT-01-v10.jpg" alt="Pedro diante do portão colonial de ferro da Mina do Chico Rei na Rua Dom Silvério, ao entardecer" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; Pedro diante do portão colonial &mdash; de costas para o presente, de frente para três séculos de engenharia gravada em pedra.</figcaption>
+  </figure>
+
+  <p>A mudança foi imediata. No instante em que Pedro entrou na galeria, o mundo de fora desapareceu. A temperatura caiu uns oito graus. O cheiro da rua &mdash; café, pedra quente, escapamento de carro &mdash; foi substituído por algo mais denso: terra molhada, minerais, tempo acumulado. As paredes de quartzito cinza-escuro estavam úmidas ao toque, cobertas de um brilho mineral que a lanterna de Pedro desdobrava em pontos de luz &mdash; veios de quartzo branco cortando a rocha em diagonais precisas, como costuras de cristal feitas por dentro.</p>
+
+  <p>Naquela galeria lateral, o teto forçava os dois a caminharem levemente curvados. O eco dos passos redobrava no corredor estreito. O gotejamento constante de água pelas fissuras da rocha criava um ritmo baixo e regular que Pedro, depois de alguns segundos, começou a ouvir como se fosse música &mdash; ou como se fosse a respiração da própria montanha.</p>
+
+  <p>&mdash; Olha isso. &mdash; Pedro aproximou a lanterna de uma seção da parede onde uma inscrição sobrevivera ao tempo, quase absorvida pelo quartzito mas ainda legível: <em>Vol.&nbsp;= 4.320 palmos cúbicos.</em></p>
+
+  <p>&mdash; Engenharia colonial, século XVIII. &mdash; O Prof.&nbsp;Julio se agachou para ver melhor, a lanterna do professor iluminando a gravura de baixo para cima, ampliando cada irregularidade da rocha ao redor das letras. &mdash; Os engenheiros de minas estimavam o volume de cada galeria para calcular o rendimento esperado de ouro. Era cálculo real, com instrumentos reais &mdash; só que em unidades que a maioria das pessoas não usa mais.</p>
+
+  <p>Pedro ficou olhando para o número. <em>4.320.</em> Simples de ler. Mas quanto era um palmo cúbico? Quantos metros cúbicos cabiam em 4.320 deles? Ele não sabia &mdash; e percebeu que sem conhecer a unidade, o número era um símbolo vazio. Três séculos de história gravados em pedra, e sem o contexto metrológico ele não conseguia extrair nada além de uma sequência de algarismos.</p>
+
+  <p>O Prof.&nbsp;Julio tirou um bloco de papel da mochila e escreveu ao lado da inscrição, segurando o papel perto da parede para que Pedro pudesse comparar os dois: 4,32 &times; 10<sup>3</sup> <em>palmos</em><sup>3</sup> &asymp; 350&nbsp;m<sup>3</sup>.</p>
+
+  <p>&mdash; Dois formatos para o mesmo volume &mdash; disse ele. &mdash; Qual você prefere?</p>
+
+  <p>&mdash; O da pedra é mais fácil de ler num relance. &mdash; Pedro considerou. &mdash; Mas o do papel diz quanto é de verdade. Trezentos e cinquenta metros cúbicos de rocha escavada à mão. &mdash; Ele fez uma pausa, sentindo o peso real disso. &mdash; Isso é enorme.</p>
+
+  <!-- Figura 3 — IT-02 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T05-IT-02-v10.jpg" alt="Pedro e Prof. Julio na galeria da Mina do Chico Rei, iluminando a inscrição colonial 4.320 palmos cúbicos na parede de quartzito" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Pedro e Prof. Julio iluminando a inscrição colonial &mdash; 4.320 palmos cúbicos gravados em quartzito, ancestrais da notação científica.</figcaption>
+  </figure>
+
+  <p>Mais adiante na galeria, uma pequena bancada de madeira havia sido instalada pela equipe de museologia. Sobre ela, uma ficha plastificada com os dados técnicos da mina. Pedro a leu em voz alta:</p>
+
+  <p>&mdash; <em>Reserva histórica estimada: dois bilhões trezentos e quarenta e sete milhões oitocentos e vinte e três mil quatrocentas e doze toneladas de minério.</em></p>
+
+  <p>Levou quinze segundos. E no final, não tinha certeza se havia lido certo.</p>
+
+  <p>O Prof.&nbsp;Julio pegou o bloco e escreveu: 2,348 &times; 10<sup>9</sup>&nbsp;t.</p>
+
+  <p>Pedro olhou para o papel. Dois segundos. <em>Dois ponto três bilhões de toneladas.</em> Ordem de grandeza imediata, sem contar zeros, sem perder o fio no meio da leitura.</p>
+
+  <p>&mdash; Mas tem um detalhe &mdash; disse o Prof.&nbsp;Julio, apontando de volta para a ficha plastificada. &mdash; Você disse que não conseguia saber a <em>ordem de grandeza</em> antes de terminar de ler o número por extenso. Isso é o coração do problema. Na mineração, um número sem ordem de grandeza clara é um número perigoso. Você pode pedir caminhões para mover dez vezes mais material do que o necessário &mdash; ou dez vezes menos. A notação científica não é estética. É protocolo de segurança.</p>
+
+  <p>Pedro olhou de volta para a inscrição na parede. <em>Vol.&nbsp;= 4.320 palmos cúbicos.</em> Três séculos separavam aquela gravação do papel do Prof.&nbsp;Julio. A intenção era a mesma: compactar um número para que pudesse ser lido, comparado e comunicado sem ambiguidade. Os engenheiros coloniais não tinham notação científica &mdash; mas a necessidade que criou a notação científica já estava lá, gravada em quartzito, esperando que alguém a nomeasse corretamente.</p>
+
+  <p>A galeria seguia em frente, mais escura, mais fria, mais funda. Pedro ajustou a lanterna no capacete que o guia havia emprestado na entrada e começou a caminhar.</p>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar no Google Maps</div>
+    <p>A Mina do Chico Rei existe exatamente como descrita &mdash; o portão colonial de ferro, as 175 galerias de quartzito distribuídas em cinco níveis e os 325 metros iluminados são reais, na Rua Dom Silvério, 108, bairro Antônio Dias, a cerca de 600 metros a pé da Praça Tiradentes.</p>
+    <p style="margin-top:10px;">No Street View da Rua Dom Silvério, você vai ver o portão histórico de ferro da mina enquadrado entre dois casarões coloniais brancos de janelas com gelosia &mdash; o mesmo quarteirão onde Chico Rei comprou sua liberdade no século XVIII.</p>
+    <p style="margin-top:10px;">Os números gravados nessas paredes são os ancestrais diretos da notação científica que você vai usar ao longo de todo o curso técnico.</p>
+    <p style="margin-top:14px;"><a href="https://maps.app.goo.gl/zuvuqXvXFi7rAZpAA" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ═══ TOPICO 1 ═══ -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Potências de 10: A Escada do Universo</div>
+
+    <!-- Figura 4 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T05-IT-03-v10.jpg" alt="Diagrama de escala do universo de 10 elevado a menos 15 metros a 10 elevado a 26 metros, com referência à galeria da Mina do Chico Rei" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Do próton à galáxia &mdash; 41 ordens de grandeza comprimidas numa escada que só a notação científica consegue subir.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Por volta de 250 a.C., o matemático grego Arquimedes escreveu <em>A Arenária</em> (<em>Psammites</em>), um texto em que estimou o número de grãos de areia necessários para encher o universo então conhecido. Para expressar números que chegavam a 10<sup>63</sup>, Arquimedes criou um sistema de ordens de magnitude &mdash; antecessor direto das potências de 10 que usamos hoje. Quase dois milênios depois, René Descartes formalizou a notação de expoentes no século XVII, e a linguagem das potências de 10 tornou-se padrão internacional. Em Minas Gerais colonial, engenheiros de minas estimavam volumes de ouro em grandezas que escapavam à escala cotidiana &mdash; sem o formalismo de Descartes, mas com a mesma necessidade urgente de lidar com números impossíveis de ler por extenso sem perder o fio.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Uma potência de 10 é uma expressão da forma 10<sup>n</sup>, onde <em>n</em> é um número inteiro chamado expoente. Para <em>n</em> positivo, o expoente indica quantas vezes 10 é multiplicado por si mesmo; para <em>n</em> negativo, quantas vezes é dividido. Por definição algébrica, 10<sup>0</sup> = 1. A notação científica padrão representa qualquer número real na forma N = a &times; 10<sup>n</sup>, com 1 &le; a &lt; 10 e <em>n</em> inteiro. A escala das potências de 10 abrange toda a física conhecida: do raio do próton (&asymp; 10<sup>&minus;15</sup>&nbsp;m) ao diâmetro do universo observável (&asymp; 10<sup>26</sup>&nbsp;m) &mdash; uma amplitude de 41 ordens de grandeza. A distinção essencial é que uma escala linear cresce por adição (0, 10, 20, 30&hellip;), enquanto uma escala logarítmica cresce por multiplicação (1, 10, 100, 1&thinsp;000&hellip;) &mdash; e esta última comprime o universo inteiro em aproximadamente 41 casas.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na rotina de uma mina, o técnico em mineração lida com grandezas que variam por muitas ordens de magnitude num mesmo turno: o diâmetro de uma partícula de ouro recuperável pode ser da ordem de micrômetros (10<sup>&minus;6</sup>&nbsp;m), enquanto a extensão de uma frente de lavra pode atingir centenas de metros (10<sup>2</sup>&nbsp;m). A NR-22 (Norma Regulamentadora de Mineração) exige que medições de escavação, drenagem e controle de poeira sejam registradas com a unidade correta e o número de algarismos significativos adequado &mdash; o que implica dominar a escala logarítmica e a notação científica como competências de segurança, não apenas de conveniência matemática.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>A Escada dos Expoentes.</strong></p>
+
+    <p>Pedro registrou a série no bloco, usando a lanterna do capacete como fonte de luz enquanto o Prof.&nbsp;Julio ditava e comentava cada linha:</p>
+
+    <!-- EQUACAO 1 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Forma geral da notação científica</div>
+      <div class="equacao-formula">N = a &times; 10<sup>n</sup> &emsp; (1 &le; a &lt; 10, &ensp; n &isin; <strong>Z</strong>)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>N</td><td>Número em notação científica</td><td>qualquer grandeza física</td></tr>
+          <tr><td>a</td><td>Coeficiente (mantissa)</td><td>1 &le; a &lt; 10</td></tr>
+          <tr><td>n</td><td>Expoente inteiro de base 10</td><td>adimensional</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Normalização:</strong> se a &ge; 10, divida por 10 e some 1 ao expoente. Se a &lt; 1, multiplique por 10 e subtraia 1.</div>
+    </div>
+
+    <!-- QUADRO 1 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Potências de 10 &mdash; leitura e valor numérico</div>
+      <table>
+        <thead><tr><th>Potência</th><th>Leitura</th><th>Valor numérico</th></tr></thead>
+        <tbody>
+          <tr><td>10<sup>&minus;6</sup></td><td>um milionésimo</td><td>0,000&thinsp;001</td></tr>
+          <tr><td>10<sup>&minus;3</sup></td><td>um milésimo</td><td>0,001</td></tr>
+          <tr><td>10<sup>0</sup></td><td>um</td><td>1</td></tr>
+          <tr><td>10<sup>3</sup></td><td>mil</td><td>1&thinsp;000</td></tr>
+          <tr><td>10<sup>6</sup></td><td>um milhão</td><td>1&thinsp;000&thinsp;000</td></tr>
+          <tr><td>10<sup>9</sup></td><td>um bilhão</td><td>1&thinsp;000&thinsp;000&thinsp;000</td></tr>
+          <tr><td>10<sup>12</sup></td><td>um trilhão</td><td>1&thinsp;000&thinsp;000&thinsp;000&thinsp;000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Os dois números que você calculou da ficha da mina &mdash; disse o Prof.&nbsp;Julio, apontando para o bloco de Pedro &mdash; estão separados por quanto na escala logarítmica?</p>
+
+    <p>Pedro examinou o que havia anotado. 2,348 &times; 10<sup>9</sup> toneladas de reserva. 3,5 &times; 10<sup>2</sup> metros cúbicos de galeria. Sete ordens de grandeza. Sete degraus nessa escada. A mesma mina, dois números completamente diferentes em escala &mdash; e a notação científica tornava a diferença óbvia de um único olhar para os expoentes. Nenhuma contagem de zeros necessária.</p>
+  </div>
+
+  <!-- ═══ TOPICO 2 ═══ -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Facilitação de Cálculos: Por que Não Escrever Todos os Zeros</div>
+
+    <!-- Figura 5 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T05-IT-04-v10.jpg" alt="Pedro calculando operações com potências de 10 no banco da galeria da Mina do Chico Rei, iluminado pela lanterna do capacete" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Pedro no banco da galeria &mdash; a lanterna do capacete e o bloco de notas, duas ferramentas para iluminar o que os zeros escondem.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Em 1614, o matemático escocês John Napier publicou <em>Mirifici Logarithmorum Canonis Descriptio</em>, inventando os logaritmos a partir de uma observação prática: multiplicar números grandes é equivalente a somar seus logaritmos, o que reduzia horas de cálculo manual a minutos. Pierre-Simon Laplace, que usou logaritmos extensivamente em mecânica celeste, declarou que a invenção de Napier havia &ldquo;dobrado a vida dos astrônomos ao reduzir pela metade o trabalho de cálculo&rdquo;. As regras de operação com notação científica &mdash; somar expoentes para multiplicar, subtrair para dividir &mdash; são a versão moderna e destilada dessa mesma descoberta. Napier não tinha computador; tinha a propriedade dos expoentes. E isso foi suficiente.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A elegância das operações com potências de 10 decorre diretamente das propriedades dos expoentes. Multiplicação de potências de mesma base equivale à soma dos expoentes: 10<sup>m</sup> &times; 10<sup>n</sup> = 10<sup>m+n</sup>. Divisão equivale à subtração: 10<sup>m</sup> &divide; 10<sup>n</sup> = 10<sup>m&minus;n</sup>. Isso significa que, ao operar em notação científica, os coeficientes <em>a</em> e <em>b</em> são tratados separadamente dos expoentes &mdash; e o resultado é renormalizado para a forma padrão quando necessário. A notação científica funciona, assim, como um sistema anti-erro embutido: ao isolar a ordem de grandeza no expoente, torna imediatamente visível quando um resultado é fisicamente plausível ou absurdo &mdash; antes mesmo de checar o cálculo.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Um erro frequente em engenharia de minas é o &ldquo;erro de dígito&rdquo; &mdash; um zero a mais ou a menos numa planilha de volume ou massa que multiplica ou divide o resultado por 10, inviabilizando ou superestimando o projeto. Com notação científica, esse erro se torna detectável na inspeção visual: a ordem de grandeza está explícita no expoente, e uma mudança de 10<sup>6</sup> para 10<sup>7</sup> é percebida imediatamente. Projetos de lavra envolvem multiplicações de área (m²) por espessura da camada (m) por densidade (kg/m³) &mdash; três grandezas em ordens de grandeza distintas, manipuláveis de forma confiável somente quando organizadas em notação científica.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>As Regras de Ouro do Cálculo.</strong></p>
+
+    <p>Pedro escreveu os dois casos principais usando dados reais da mina como exemplos concretos, com o Prof.&nbsp;Julio ditando e verificando cada linha:</p>
+
+    <!-- EQUACAO 2 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Multiplicação de potências de 10</div>
+      <div class="equacao-formula">(a &times; 10<sup>m</sup>) &times; (b &times; 10<sup>n</sup>) = (a &times; b) &times; 10<sup>m+n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a, b</td><td>Coeficientes</td><td>adimensionais</td></tr>
+          <tr><td>m, n</td><td>Expoentes inteiros</td><td>adimensionais</td></tr>
+          <tr><td>m+n</td><td>Soma dos expoentes</td><td>expoente do resultado</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> V = 4,8 &times; 10<sup>2</sup>&nbsp;m &times; 5,0&nbsp;m<sup>2</sup> = 24,0 &times; 10<sup>2</sup>&nbsp;m<sup>3</sup> = <strong>2,40 &times; 10<sup>3</sup></strong>&nbsp;m<sup>3</sup></div>
+    </div>
+
+    <!-- EQUACAO 3 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Divisão de potências de 10</div>
+      <div class="equacao-formula">(a &times; 10<sup>m</sup>) &divide; (b &times; 10<sup>n</sup>) = (a &divide; b) &times; 10<sup>m&minus;n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a, b</td><td>Coeficientes</td><td>adimensionais</td></tr>
+          <tr><td>m, n</td><td>Expoentes inteiros</td><td>adimensionais</td></tr>
+          <tr><td>m&minus;n</td><td>Diferença dos expoentes</td><td>expoente do resultado</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Teor:</strong> (7,5 &times; 10<sup>&minus;8</sup>) &divide; (5,0 &times; 10<sup>&minus;3</sup>) = 1,5 &times; 10<sup>&minus;5</sup>&nbsp;kg Au/kg = <strong>15&nbsp;g/t</strong></div>
+    </div>
+
+    <p>&mdash; Quinze gramas de ouro por tonelada de rocha &mdash; disse Pedro, olhando para o resultado com a expressão de quem acabara de ver um número se transformar em realidade. &mdash; Pra extrair 1&nbsp;kg de ouro, você tritura 67 toneladas de pedra. E faz esse cálculo em notação científica porque se escrever todos os zeros, você conta errado na hora da pressão.</p>
+
+    <p>&mdash; Agora você está raciocinando como um técnico &mdash; disse o Prof.&nbsp;Julio.</p>
+  </div>
+
+  <!-- ═══ TOPICO 3 ═══ -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Números Astronômicos na Produção Mineral</div>
+
+    <!-- Figura 6 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T05-IT-05-v10.jpg" alt="Infográfico de dupla escala: micrografia de quartzito e imagem de satélite do Quadrilátero Ferrífero" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Dupla escala &mdash; do cristal de quartzito ao Quadrilátero Ferrífero, onze potências de dez separam o microscópico do geológico.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>As maiores reservas de minério de ferro do mundo estão concentradas no Quadrilátero Ferrífero de Minas Gerais &mdash; estimadas em 6,8 &times; 10<sup>10</sup> toneladas de hematita e itabirito. O Quadrilátero se formou há cerca de 2,5 &times; 10<sup>9</sup> anos, durante o Arqueano, quando processos hidrotermais depositaram ferro em camadas intercaladas com quartzo e xisto sob pressões e temperaturas inimagináveis à escala humana. Em termos de tempo absoluto, 2,5 bilhões de anos equivalem a aproximadamente 7,9 &times; 10<sup>16</sup> segundos &mdash; um número que, escrito por extenso, exigiria 17 algarismos e tornaria qualquer comparação instantânea impossível sem notação científica como mediadora.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A produção mineral envolve grandezas nos dois extremos do espectro numérico. No extremo pequeno: o número de Avogadro (6,022 &times; 10<sup>23</sup> átomos por mol) permite calcular que 1 grama de ouro (Au, massa molar 197&nbsp;g/mol) contém 3,06 &times; 10<sup>21</sup> átomos. No extremo grande: a reserva mundial estimada de ouro é de aproximadamente 1,73 &times; 10<sup>5</sup> toneladas, e a produção anual brasileira de minério de ferro está na ordem de 4,0 &times; 10<sup>8</sup> toneladas por ano. O número de Avogadro e a reserva de ferro do Quadrilátero diferem por 13 ordens de grandeza &mdash; uma diferença que só se torna comparável quando ambos os números estão escritos em notação científica e os expoentes podem ser subtraídos diretamente.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O planejamento de uma mina começa com a modelagem de reservas: a estimativa de quanto minério pode ser extraído economicamente. Essa modelagem usa softwares de geoestatística que operam com volumes na ordem de 10<sup>6</sup> a 10<sup>9</sup>&nbsp;m³ e massas na ordem de 10<sup>9</sup> a 10<sup>12</sup>&nbsp;kg. Uma frota de caminhões das grandes minas do Quadrilátero carrega entre 2,0 &times; 10<sup>1</sup>&nbsp;t (modelos menores) e 3,5 &times; 10<sup>2</sup>&nbsp;t (gigantes como o Caterpillar 797F). Comunicar qualquer dado de capacidade operacional de uma mina de grande porte &mdash; para um relatório técnico, uma licitação ou uma inspeção da NR-22 &mdash; exige invariavelmente notação científica como linguagem comum.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>A Régua da Produção Mineral.</strong></p>
+
+    <!-- QUADRO 2 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Grandezas da produção mineral</div>
+      <table>
+        <thead><tr><th>Grandeza</th><th>Extenso</th><th>Not. científica</th></tr></thead>
+        <tbody>
+          <tr><td>Reserva de Fe (QF)</td><td>68 bi t</td><td>6,8 &times; 10<sup>10</sup>&nbsp;t</td></tr>
+          <tr><td>Prod. anual Fe (Brasil)</td><td>400 mi t</td><td>4,0 &times; 10<sup>8</sup>&nbsp;t/a</td></tr>
+          <tr><td>Reserva mundial Au</td><td>173&thinsp;000 t</td><td>1,73 &times; 10<sup>5</sup>&nbsp;t</td></tr>
+          <tr><td>Prod. anual Au (Brasil)</td><td>85 t</td><td>8,5 &times; 10<sup>1</sup>&nbsp;t/a</td></tr>
+          <tr><td>Átomos em 1&nbsp;g de Au</td><td>&mdash;</td><td>3,06 &times; 10<sup>21</sup></td></tr>
+          <tr><td>N. de Avogadro</td><td>&mdash;</td><td>6,02 &times; 10<sup>23</sup>&nbsp;mol<sup>&minus;1</sup></td></tr>
+          <tr><td>Idade do QF</td><td>2,5 bi a</td><td>2,5 &times; 10<sup>9</sup>&nbsp;a</td></tr>
+          <tr><td>Idade do QF (seg.)</td><td>&mdash;</td><td>7,9 &times; 10<sup>16</sup>&nbsp;s</td></tr>
+          <tr><td>Caminhão pequeno</td><td>20 t</td><td>2,0 &times; 10<sup>1</sup>&nbsp;t</td></tr>
+          <tr><td>Caminhão Cat 797F</td><td>350 t</td><td>3,5 &times; 10<sup>2</sup>&nbsp;t</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Pedro olhou para a tabela e ficou em silêncio por um momento. O número de átomos em 1 grama de ouro era 3,06 &times; 10<sup>21</sup>. A reserva de ferro do Quadrilátero era 6,8 &times; 10<sup>10</sup>. Qual era maior? Com os números por extenso, a resposta exigiria contar zeros. Com notação científica, bastava comparar os expoentes: 21 contra 10. A resposta era imediata &mdash; e, mais importante, confiável.</p>
+
+    <p>&mdash; Um número que você não consegue comparar é um número que não te serve &mdash; disse o Prof.&nbsp;Julio, fechando o bloco. &mdash; Na engenharia, tempo gasto contando zeros é tempo roubado de pensar no problema real.</p>
+  </div>
+
+  <!-- ═══ TOPICO 4 ═══ -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Todas as Operações com Notação Científica</div>
+
+    <!-- Figura 7 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T05-IT-06-v10.jpg" alt="Pedro ao fundo da galeria da Mina do Chico Rei, bloco de notas com as cinco operações em notação científica" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Pedro ao fundo da galeria &mdash; cinco operações, uma linguagem, nenhum zero perdido.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A calculadora científica portátil &mdash; a HP-35, lançada em 1972 &mdash; foi o primeiro instrumento de bolso capaz de operar diretamente em notação científica, com teclas dedicadas ao expoente de 10. Antes dela, geólogos e engenheiros de minas usavam réguas de cálculo e tábuas logarítmicas para multiplicar e dividir grandes números em campo &mdash; ferramentas que dependiam do mesmo princípio dos expoentes, mas exigiam treino e paciência consideráveis. A HP-35 revolucionou o trabalho de prospecção mineral ao permitir calcular volumes, concentrações e reservas em segundos, com o expoente visível no visor. Seu preço de lançamento era US$ 395 (equivalente a cerca de R$ 12.000 em 2026) &mdash; um investimento que se pagava em dias de erros de cálculo evitados.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>As operações com notação científica seguem regras derivadas das propriedades dos expoentes. A adição e a subtração exigem que os expoentes sejam iguais antes de operar os coeficientes &mdash; etapa que demanda atenção e é a fonte mais comum de erro para iniciantes. A multiplicação e a divisão são as mais diretas: coeficientes operam entre si, expoentes somam ou subtraem. A potenciação eleva tanto o coeficiente quanto o expoente: (a &times; 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> &times; 10<sup>n&middot;p</sup>. A radiciação inverte o processo: <sup>n</sup>&radic;(a &times; 10<sup>m</sup>) = <sup>n</sup>&radic;a &times; 10<sup>m/n</sup> &mdash; com a ressalva que quando o expoente <em>m</em> não é divisível pelo índice <em>n</em>, é necessário ajustar o expoente antes de extrair a raiz, convertendo para uma potência conveniente.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Um técnico em mineração executa, num mesmo turno, grandezas que envolvem todas as cinco operações: massa total de minério de uma pilha (multiplicação de volume por densidade), concentração de elemento traço numa amostra (divisão de massas), volume total de rejeitos de duas barragens somadas (adição), área de uma frente de lavra quadrada a partir do lado (potenciação) e diâmetro de partícula a partir de área projetada em microscópio (radiciação). Quando os valores envolvem ordens de grandeza distintas &mdash; como invariavelmente ocorre na mineração &mdash; todas essas operações são executadas de forma segura e rastreável somente em notação científica.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>As Cinco Operações.</strong></p>
+
+    <p>Pedro assumiu o bloco e escreveu os casos sistematicamente, um a um, com exemplos de dados reais da mineração.</p>
+
+    <!-- EQUACAO 4 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Adição e subtração em notação científica</div>
+      <div class="equacao-formula">a &times; 10<sup>n</sup> &plusmn; b &times; 10<sup>n</sup> = (a &plusmn; b) &times; 10<sup>n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a, b</td><td>Coeficientes (expoentes iguais)</td><td>adimensionais</td></tr>
+          <tr><td>n</td><td>Expoente comum</td><td>igualar antes de operar</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Rejeitos:</strong> 4,0 &times; 10<sup>7</sup> + 1,2 &times; 10<sup>7</sup> = <strong>5,2 &times; 10<sup>7</sup></strong>&nbsp;m<sup>3</sup></div>
+    </div>
+
+    <!-- EQUACAO 5 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Multiplicação em notação científica</div>
+      <div class="equacao-formula">(a &times; 10<sup>m</sup>) &times; (b &times; 10<sup>n</sup>) = (a &times; b) &times; 10<sup>m+n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a &times; b</td><td>Produto dos coeficientes</td><td>renormalizar se &ge; 10</td></tr>
+          <tr><td>m + n</td><td>Soma dos expoentes</td><td>expoente do resultado</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Pilha:</strong> 6,83 &times; 10<sup>2</sup> &times; 4,0 &times; 10<sup>3</sup> = 27,32 &times; 10<sup>5</sup> = <strong>2,732 &times; 10<sup>6</sup></strong>&nbsp;kg</div>
+    </div>
+
+    <!-- EQUACAO 6 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 6 &mdash; Divisão em notação científica</div>
+      <div class="equacao-formula">(a &times; 10<sup>m</sup>) &divide; (b &times; 10<sup>n</sup>) = (a &divide; b) &times; 10<sup>m&minus;n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a &divide; b</td><td>Quociente dos coeficientes</td><td>renormalizar se &lt; 1</td></tr>
+          <tr><td>m &minus; n</td><td>Diferença dos expoentes</td><td>expoente do resultado</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Fração mássica:</strong> 1,5 &times; 10<sup>1</sup> &divide; 1,0 &times; 10<sup>6</sup> = <strong>1,5 &times; 10<sup>&minus;5</sup></strong></div>
+    </div>
+
+    <!-- EQUACAO 7 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 7 &mdash; Potenciação em notação científica</div>
+      <div class="equacao-formula">(a &times; 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> &times; 10<sup>n&middot;p</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>a<sup>p</sup></td><td>Coeficiente elevado a p</td><td>calcular separadamente</td></tr>
+          <tr><td>n &middot; p</td><td>Expoente multiplicado</td><td>expoente do resultado</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Área:</strong> (3,0 &times; 10<sup>2</sup>)<sup>2</sup> = <strong>9,0 &times; 10<sup>4</sup></strong>&nbsp;m<sup>2</sup></div>
+    </div>
+
+    <!-- EQUACAO 8 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 8 &mdash; Radiciação em notação científica</div>
+      <div class="equacao-formula"><sup>n</sup>&radic;(a &times; 10<sup>m</sup>) = <sup>n</sup>&radic;a &times; 10<sup>m/n</sup></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td><sup>n</sup>&radic;a</td><td>Raiz do coeficiente</td><td>calcular separadamente</td></tr>
+          <tr><td>m/n</td><td>Expoente dividido</td><td>ajustar se não inteiro</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Lado:</strong> &radic;(4,0 &times; 10<sup>0</sup>) = 2,0&nbsp;m; <strong>partícula:</strong> &radic;(10<sup>&minus;8</sup>) = 10<sup>&minus;4</sup>&nbsp;m</div>
+    </div>
+
+    <!-- QUADRO 3 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Resumo das operações com notação científica</div>
+      <table>
+        <thead><tr><th>Operação</th><th>Coeficientes</th><th>Expoentes</th><th>Atenção</th></tr></thead>
+        <tbody>
+          <tr><td>Adição / Subtração</td><td>somam ou subtraem</td><td>mantém o do maior</td><td>igualar expoentes</td></tr>
+          <tr><td>Multiplicação</td><td>multiplicam</td><td>somam</td><td>renormalizar</td></tr>
+          <tr><td>Divisão</td><td>dividem</td><td>subtraem</td><td>renormalizar</td></tr>
+          <tr><td>Potenciação</td><td>elevam a p</td><td>multiplicam por p</td><td>calcular a<sup>p</sup></td></tr>
+          <tr><td>Radiciação</td><td>extraem a raiz</td><td>dividem por n</td><td>ajustar exp. ímpar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Esse quadro vai para o seu capacete &mdash; disse o Prof.&nbsp;Julio, meio a brincar, meio a sério. &mdash; No primeiro mês de estágio, você vai precisar disso mais do que imagina.</p>
+  </div>
+
+  <!-- ═══ TOPICO 5 ═══ -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; Aplicação em Densidades</div>
+
+    <!-- Figura 8 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T05-IT-07-v10.jpg" alt="Bancada de amostras minerais com etiquetas em notação científica no laboratório do IFMG Ouro Preto" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Quartzo, feldspato, pirita, hematita, ouro &mdash; a densidade é a impressão digital que a balança lê e a notação científica traduz.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Arquimedes de Siracusa (287&ndash;212 a.C.) descobriu o princípio do empuxo enquanto investigava uma encomenda do rei Hierão II: uma coroa de ouro supostamente adulterada com prata. Sem destruir a coroa, Arquimedes usou a diferença de densidade entre ouro (19&thinsp;300&nbsp;kg/m³) e prata (10&thinsp;490&nbsp;kg/m³) para detectar a fraude comparando o volume de água deslocada pela coroa com o volume deslocado por uma peça de ouro puro de mesma massa. Em Ouro Preto colonial, a mesma lógica física foi mobilizada para distinguir ouro verdadeiro da pirita &mdash; o &ldquo;ouro de tolo&rdquo; &mdash;, que enganou garimpeiros iniciantes por décadas: a pirita brilha como ouro, mas tem densidade de apenas 5&thinsp;000&nbsp;kg/m³, menos de um terço do ouro puro. A densidade era, em essência, a identidade forense do mineral.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A densidade é definida como a razão entre a massa e o volume de um material: &rho; = m/V. A unidade padrão no SI é o quilograma por metro cúbico (kg/m³). As densidades dos minerais variam por mais de uma ordem de grandeza: de 2,65 &times; 10<sup>3</sup>&nbsp;kg/m³ (quartzo) a 19,3 &times; 10<sup>3</sup>&nbsp;kg/m³ (ouro puro) &mdash; uma variação de fator 7,3 dentro de materiais que podem estar lado a lado na mesma amostra de rocha. Em geologia e mineração, a densidade é o elo de conversão entre grandezas geométricas (volume, obtido por levantamento das galerias) e grandezas de massa (tonelagem, necessária para calcular rendimento econômico).</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O cálculo de tonelagem de lavra &mdash; a massa total de minério que pode ser extraído de uma reserva &mdash; é a operação econômica mais fundamental num plano de mineração. A fórmula é simples: massa = volume &times; densidade aparente. Mas os números envolvidos são invariavelmente grandes: volumes na ordem de 10<sup>3</sup> a 10<sup>6</sup>&nbsp;m³, densidades na ordem de 10<sup>3</sup>&nbsp;kg/m³, massas resultantes na ordem de 10<sup>6</sup> a 10<sup>9</sup>&nbsp;kg. Um erro de uma ordem de grandeza nesse cálculo pode inviabilizar um projeto inteiro ou gerar um superestoque de equipamentos com custo na ordem de milhões de reais.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>A Impressão Digital dos Minerais.</strong></p>
+
+    <p>O Prof.&nbsp;Julio havia trazido quatro amostras na mochila &mdash; pequenas, mas com massas medidas no laboratório antes da saída. Na bancada improvisada sobre uma pedra plana da galeria, Pedro calculou a densidade de cada uma.</p>
+
+    <!-- EQUACAO 9 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 9 &mdash; Definição de densidade</div>
+      <div class="equacao-formula">&rho; = m / V</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>&rho; (rho)</td><td>Densidade</td><td>kg/m³</td></tr>
+          <tr><td>m</td><td>Massa</td><td>kg</td></tr>
+          <tr><td>V</td><td>Volume</td><td>m³</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> &rho;<sub>ouro</sub> = 19,3 &times; 10<sup>3</sup>&nbsp;kg/m³; &rho;<sub>pirita</sub> = 5,0 &times; 10<sup>3</sup>&nbsp;kg/m³</div>
+    </div>
+
+    <!-- QUADRO 4 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; Densidades de minerais típicos da mineração</div>
+      <table>
+        <thead><tr><th>Mineral</th><th>Dens. (kg/m³)</th><th>Not. cient.</th><th>Papel</th></tr></thead>
+        <tbody>
+          <tr><td>Quartzo</td><td>2&thinsp;650</td><td>2,65 &times; 10<sup>3</sup></td><td>ganga</td></tr>
+          <tr><td>Feldspato</td><td>2&thinsp;560</td><td>2,56 &times; 10<sup>3</sup></td><td>ganga</td></tr>
+          <tr><td>Pirita</td><td>5&thinsp;000</td><td>5,0 &times; 10<sup>3</sup></td><td>ouro de tolo</td></tr>
+          <tr><td>Hematita</td><td>5&thinsp;260</td><td>5,26 &times; 10<sup>3</sup></td><td>minério de Fe</td></tr>
+          <tr><td>Ouro</td><td>19&thinsp;300</td><td>19,3 &times; 10<sup>3</sup></td><td>metal precioso</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Problema aplicado &mdash; tonelagem de lavra.</strong></p>
+
+    <p>Uma pilha de quartzito fragmentado ocupa um volume aparente de 6,83 &times; 10<sup>2</sup>&nbsp;m³. A densidade aparente (incluindo vazios entre fragmentos) é de 2,60 &times; 10<sup>3</sup>&nbsp;kg/m³. Qual a massa total da pilha?</p>
+
+    <!-- EQUACAO 10 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 10 &mdash; Cálculo de tonelagem de lavra</div>
+      <div class="equacao-formula">m = &rho; &times; V</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>m</td><td>Massa total da pilha</td><td>kg</td></tr>
+          <tr><td>&rho;</td><td>Densidade aparente</td><td>2,60 &times; 10<sup>3</sup>&nbsp;kg/m³</td></tr>
+          <tr><td>V</td><td>Volume da pilha</td><td>6,83 &times; 10<sup>2</sup>&nbsp;m³</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Resultado:</strong> m = (2,60 &times; 6,83) &times; 10<sup>3+2</sup> = 17,76 &times; 10<sup>5</sup> = <strong>1,78 &times; 10<sup>6</sup></strong>&nbsp;kg &asymp; 1,78 &times; 10<sup>3</sup>&nbsp;t</div>
+    </div>
+
+    <p>&mdash; Mil e oitocentas toneladas &mdash; disse Pedro, olhando para o número como se visse pela primeira vez o peso real do que havia embaixo dos seus pés. &mdash; E essa pilha está aqui embaixo, esperando para ser extraída. Mas agora eu sei quanto ela pesa. Não é um número impossível de imaginar &mdash; é uma tonelagem real, calculável, que cabe num relatório técnico sem ocupar uma linha inteira.</p>
+
+    <p>O Prof.&nbsp;Julio sorriu e apagou a lanterna por um segundo. No escuro absoluto da galeria, o silêncio era completo &mdash; exceto pelo gotejamento constante de água nas paredes de quartzito, o mesmo ritmo que os garimpeiros do século XVIII ouviram enquanto escavavam esses corredores à pena e martelo, centímetro por centímetro, tonelada por tonelada. Depois ele reacendeu a lanterna.</p>
+
+    <p>&mdash; Quando você sair daqui &mdash; disse ele &mdash; vai ver a luz do sol com outros olhos.</p>
+
+    <p>Pedro pensou. <em>Ela percorreu 1,5 &times; 10<sup>11</sup> metros para chegar até mim.</em></p>
+
+    <p>&mdash; Isso &mdash; confirmou o Prof.&nbsp;Julio, sem que Pedro precisasse falar em voz alta. &mdash; E agora você consegue dizer isso em dois segundos. E todo mundo que ouvir vai entender de imediato a ordem de grandeza. É disso que se trata.</p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <!-- Figura 9 — IT-08 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T05-IT-08-v10.jpg" alt="Pedro no batente do portão da Mina do Chico Rei, entre a sombra da galeria e a luz dourada da Rua Dom Silvério" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; Pedro no batente entre sombra e luz &mdash; o mesmo limiar que separa o número gravado em pedra do número escrito em ciência.</figcaption>
+  </figure>
+
+  <p>Pedro saiu pela entrada da Mina do Chico Rei e ficou parado por um instante no batente do portão, a um passo entre o escuro da galeria e a luz da tarde. A Rua Dom Silvério estava tão dourada quanto ele havia deixado &mdash; ou talvez mais, com o sol já inclinado atrás das colinas e os casarões coloniais capturando a luz nos beirais de madeira e nas janelas de gelosia fechadas.</p>
+
+  <p>Ele respirou fundo. O ar da rua cheirava a pedra quente e café, depois de quase uma hora no universo mineral da galeria. Eram dois mundos a menos de um metro de distância um do outro.</p>
+
+  <p>Dentro, na parede de quartzito, continuava gravada: <em>Vol.&nbsp;= 4.320 palmos cúbicos.</em> O engenheiro colonial que a fez não tinha notação científica, não sabia quem era John Napier, não havia lido Descartes. Mas havia feito o que qualquer engenheiro faz diante de um número grande: compactou-o numa forma que pudesse ser lida, comparada e comunicada. 4.320 <em>palmos</em><sup>3</sup> era a versão colonial de 4,32 &times; 10<sup>3</sup> <em>palmos</em><sup>3</sup>. A necessidade era a mesma. A ferramenta ainda estava sendo aperfeiçoada.</p>
+
+  <p>Pedro pensou nas dez equações que havia escrito naquela tarde, na ordem em que apareceram: a forma geral N = a &times; 10<sup>n</sup>, as regras de multiplicar e dividir expoentes, a tabela com as grandezas do Quadrilátero Ferrífero, as cinco operações sistematizadas no Quadro&nbsp;3, e o cálculo de tonelagem com densidades reais. Cinco tópicos, dez equações, uma única linguagem &mdash; a notação científica como régua invisível que torna qualquer grandeza legível, comparável e transmissível.</p>
+
+  <p>A notação científica não surgiu para complicar a vida de estudante. Surgiu porque Arquimedes precisava contar grãos de areia, porque Napier precisava multiplicar distâncias astronômicas sem perder o dia inteiro, porque os engenheiros coloniais precisavam registrar volumes de ouro numa parede de quartzito no coração de Minas Gerais &mdash; e porque Pedro, na trilha seguinte, vai precisar dela para estimar ordens de grandeza sem calculadora, para comparar densidades com um olhar e para escrever laudos técnicos que qualquer colega de qualquer mina possa ler sem contar zeros.</p>
+
+  <p>Ele caminhou de volta pela Rua Dom Silvério em direção à Praça Tiradentes, com o bloco de notas na mão e a lanterna desligada no bolso. Ouro Preto fazia o que sempre fez: guardava séculos de engenharia nas pedras e esperava, com a paciência de 2,5 &times; 10<sup>9</sup> anos, que alguém se desse ao trabalho de lê-las.</p>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CONEXOES INTERDISCIPLINARES ═══════════════════ -->
+<div class="ato" id="conexoes">
+  <div class="ato-titulo">Conexões Interdisciplinares &mdash; Protocolo C5</div>
+
+  <!-- Figura 10 — IT-09 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T05-IT-09-v10.jpg" alt="Mapa radial de cinco conexões disciplinares da Notação Científica: Matemática, Química, Geologia, Língua Portuguesa, NR-22" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas em órbita &mdash; a notação científica como lingua franca da Física, Química, Geologia, Português e Segurança.</figcaption>
+  </figure>
+
+  <p>Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+  <!-- C5 TABLE -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; 8 Etapas</div>
+    <table class="c5-tabela">
+      <thead><tr><th>#</th><th>Etapa</th><th>Ação</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Compreender</td><td>Leia o enunciado e identifique o que se pede.</td></tr>
+        <tr><td>2</td><td>Dados</td><td>Liste os dados fornecidos com unidades.</td></tr>
+        <tr><td>3</td><td>Hipóteses</td><td>Declare as simplificações assumidas.</td></tr>
+        <tr><td>4</td><td>Representar</td><td>Faça um diagrama, tabela ou esquema visual.</td></tr>
+        <tr><td>5</td><td>Equacionar</td><td>Escreva as equações que conectam os dados ao que se pede.</td></tr>
+        <tr><td>6</td><td>Resolver</td><td>Substitua e calcule passo a passo.</td></tr>
+        <tr><td>7</td><td>Verificar</td><td>Confira unidades, ordem de grandeza e coerência.</td></tr>
+        <tr><td>8</td><td>Responder</td><td>Responda o que foi pedido, com unidade e interpretação.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RCP 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">Problema C5 &middot; 1 &mdash; Física e Matemática: logaritmos e densidades minerais</div>
+    <p>A propriedade log<sub>10</sub>(a &times; 10<sup>n</sup>) &asymp; n + log<sub>10</sub>(a) conecta notação científica e logaritmos diretamente. Use essa propriedade para ordenar os minerais do Quadro&nbsp;4 por logaritmo de sua densidade e construir uma escala logarítmica visual. Depois, calcule a diferença logarítmica entre a densidade do ouro (19,3 &times; 10<sup>3</sup>&nbsp;kg/m³) e a da pirita (5,0 &times; 10<sup>3</sup>&nbsp;kg/m³). Essa diferença é maior ou menor que 0,5? O que isso significa na prática: seria fácil ou difícil separar esses dois minerais numa batea apenas pela diferença de densidade?</p>
+    <details class="rcp">
+      <summary>Resolução &mdash; Protocolo C5</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. Compreender</div><div class="rcp-step-text">Calcular log<sub>10</sub> das densidades dos cinco minerais do Quadro&nbsp;4; construir escala logarítmica visual; calcular diferença logarítmica entre ouro e pirita; avaliar viabilidade de separação por batea.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Dados</div><div class="rcp-step-text">&rho;<sub>quartzo</sub> = 2,65 &times; 10<sup>3</sup>&nbsp;kg/m³; &rho;<sub>feldspato</sub> = 2,56 &times; 10<sup>3</sup>&nbsp;kg/m³; &rho;<sub>pirita</sub> = 5,0 &times; 10<sup>3</sup>&nbsp;kg/m³; &rho;<sub>hematita</sub> = 5,26 &times; 10<sup>3</sup>&nbsp;kg/m³; &rho;<sub>ouro</sub> = 19,3 &times; 10<sup>3</sup>&nbsp;kg/m³.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Hipóteses</div><div class="rcp-step-text">Densidades tabeladas; grãos de tamanho similar; separação ideal sem turbulência.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Representar</div><div class="rcp-step-text">Régua logarítmica horizontal &mdash; [2,56 &times; 10<sup>3</sup> &hellip; 5,0 &times; 10<sup>3</sup> &hellip; 19,3 &times; 10<sup>3</sup>].</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Equacionar</div><div class="rcp-step-text">log<sub>10</sub>(&rho;) = n + log<sub>10</sub>(a); &Delta; = log<sub>10</sub>(&rho;<sub>ouro</sub>) &minus; log<sub>10</sub>(&rho;<sub>pirita</sub>).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Resolver</div><div class="rcp-step-text">log<sub>10</sub>(2,65 &times; 10<sup>3</sup>) &asymp; 3,42; log<sub>10</sub>(5,0 &times; 10<sup>3</sup>) &asymp; 3,70; log<sub>10</sub>(19,3 &times; 10<sup>3</sup>) &asymp; 4,29. &Delta; = 4,29 &minus; 3,70 = <strong>0,59</strong> (maior que 0,5). Razão: 19,3/5,0 = <strong>3,86</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Verificar</div><div class="rcp-step-text">&Delta; = 0,59 corresponde a fator ~3,9 &mdash; separação viável em batea. Na Mina do Chico Rei, o ouro se depositava no fundo enquanto a pirita era arrastada pela água.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responder</div><div class="rcp-step-text">A diferença de <strong>0,59 décadas logarítmicas</strong> justifica o uso de jigues e espirais concentradoras na separação gravimétrica &mdash; processos que o técnico em mineração dimensiona diariamente.</div></div>
+    </details>
+  </div>
+
+  <!-- RCP 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">Problema C5 &middot; 2 &mdash; Física e Química: átomos de ouro num fio de joalheria</div>
+    <p>O número de Avogadro é 6,022 &times; 10<sup>23</sup> átomos/mol e a massa molar do ouro é 197&nbsp;g/mol. (a) Calcule quantos átomos de ouro existem num fio de 0,50&nbsp;g &mdash; massa típica de uma liga de joalheria artesanal de Ouro Preto. Expresse em notação científica. (b) Se cada átomo representasse um segundo de tempo, quantos séculos esse número de átomos representaria?</p>
+    <details class="rcp">
+      <summary>Resolução &mdash; Protocolo C5</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. Compreender</div><div class="rcp-step-text">(a) Calcular o número de átomos de Au em 0,50&nbsp;g; (b) converter esse número em séculos, interpretando a escala.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Dados</div><div class="rcp-step-text">N<sub>A</sub> = 6,022 &times; 10<sup>23</sup> átomos/mol; M<sub>Au</sub> = 197&nbsp;g/mol; m = 5,0 &times; 10<sup>&minus;1</sup>&nbsp;g; 1 século &asymp; 3,156 &times; 10<sup>9</sup>&nbsp;s.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Hipóteses</div><div class="rcp-step-text">Fio de ouro puro (100% Au); massa molar constante; n = m/M.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Representar</div><div class="rcp-step-text">Diagrama de fluxo &mdash; m &rarr; &divide; M &rarr; n &rarr; &times; N<sub>A</sub> &rarr; N<sub>átomos</sub> &rarr; &divide; (s/séc) &rarr; N<sub>séculos</sub>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Equacionar</div><div class="rcp-step-text">N = (m/M) &times; N<sub>A</sub>; N<sub>séc</sub> = N / (3,156 &times; 10<sup>9</sup>).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Resolver</div><div class="rcp-step-text">n = 2,54 &times; 10<sup>&minus;3</sup>&nbsp;mol; N = (2,54 &times; 6,022) &times; 10<sup>&minus;3+23</sup> = 15,3 &times; 10<sup>20</sup> &asymp; <strong>1,53 &times; 10<sup>21</sup></strong> átomos. N<sub>séc</sub> = 1,53 &times; 10<sup>21</sup> / 3,156 &times; 10<sup>9</sup> &asymp; <strong>4,85 &times; 10<sup>11</sup></strong> séculos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Verificar</div><div class="rcp-step-text">4,85 &times; 10<sup>11</sup> séculos &asymp; 5 &times; 10<sup>13</sup> anos &mdash; mais de 3&thinsp;000 vezes a idade do universo. Resultado coerente.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responder</div><div class="rcp-step-text">Meio grama de ouro contém um número de átomos tão astronômico que, se cada átomo fosse um segundo, o tempo transcorrido seria <strong>3&thinsp;000 vezes</strong> a idade do universo.</div></div>
+    </details>
+  </div>
+
+  <!-- RCP 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">Problema C5 &middot; 3 &mdash; Física e Geologia: duração das reservas do Quadrilátero</div>
+    <p>A reserva de hematita no QF é de 6,8 &times; 10<sup>10</sup>&nbsp;t e a produção anual do Brasil é de 4,0 &times; 10<sup>8</sup>&nbsp;t/ano. (a) Em notação científica, por quantos anos durariam essas reservas nesse ritmo? (b) Se o ritmo de extração aumentar 15% ao ano, as reservas durarão mais ou menos? Estime usando potências de 10 e discuta a sustentabilidade geológica.</p>
+    <details class="rcp">
+      <summary>Resolução &mdash; Protocolo C5</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. Compreender</div><div class="rcp-step-text">(a) Calcular duração das reservas ao ritmo atual; (b) avaliar impacto de crescimento de 15% ao ano.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Dados</div><div class="rcp-step-text">R = 6,8 &times; 10<sup>10</sup>&nbsp;t; P = 4,0 &times; 10<sup>8</sup>&nbsp;t/ano; crescimento: 15% a.a.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Hipóteses</div><div class="rcp-step-text">(a) Produção constante; (b) crescimento exponencial simplificado; sem novas descobertas.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Representar</div><div class="rcp-step-text">Diagrama: [R] &divide; [P] = t; curva exponencial para item (b).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Equacionar</div><div class="rcp-step-text">t = R/P; regra de 70: 70/15 &asymp; 4,7 anos para dobrar.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Resolver</div><div class="rcp-step-text">t = (6,8/4,0) &times; 10<sup>10&minus;8</sup> = 1,7 &times; 10<sup>2</sup> = <strong>170</strong> anos. Com 15% a.a., prazo cai para ~30&ndash;100 anos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Verificar</div><div class="rcp-step-text">170 anos ao ritmo atual; com crescimento de 15%, duração cai dramaticamente. Resultado coerente com dados geológicos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responder</div><div class="rcp-step-text">O QF, formado há 2,5 &times; 10<sup>9</sup> anos, seria esgotado em &lt; 2 &times; 10<sup>2</sup> anos de extração. Sustentabilidade geológica exige diversificação &mdash; cálculo direto em notação científica.</div></div>
+    </details>
+  </div>
+
+  <!-- RCP 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">Problema C5 &middot; 4 &mdash; Física e Língua Portuguesa: reescrita de laudo técnico</div>
+    <p>Laudos técnicos de mineração exigem precisão numérica e clareza de linguagem. Reescreva o parágrafo abaixo substituindo todos os números por extenso pela notação científica correta, avalie se a leitura ficou mais clara e justifique: <em>&ldquo;O volume da galeria principal é de dois mil e trezentos metros cúbicos. A densidade da rocha é de dois mil e seiscentos quilogramas por metro cúbico. A massa total escavada é de cinco bilhões, novecentos e oitenta milhões de quilogramas.&rdquo;</em></p>
+    <details class="rcp">
+      <summary>Resolução &mdash; Protocolo C5</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. Compreender</div><div class="rcp-step-text">Converter três grandezas de extenso para notação científica; avaliar ganho de clareza; redigir parágrafo de laudo original.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Dados</div><div class="rcp-step-text">Volume: 2&thinsp;300&nbsp;m³; densidade: 2&thinsp;600&nbsp;kg/m³; massa: 5&thinsp;980&thinsp;000&thinsp;000&nbsp;kg.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Hipóteses</div><div class="rcp-step-text">Conversão direta para N = a &times; 10<sup>n</sup> (1 &le; a &lt; 10); algarismos significativos conforme original.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Representar</div><div class="rcp-step-text">Tabela: extenso &rarr; notação científica.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Equacionar</div><div class="rcp-step-text">Ajustar vírgula até 1 &le; a &lt; 10; contar casas deslocadas = n.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Resolver</div><div class="rcp-step-text">2,3 &times; 10<sup>3</sup>&nbsp;m³; 2,6 &times; 10<sup>3</sup>&nbsp;kg/m³; 5,98 &times; 10<sup>9</sup>&nbsp;kg. Leitura reduzida de ~15&nbsp;s para ~3&nbsp;s.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Verificar</div><div class="rcp-step-text">Expoentes diretamente comparáveis (10<sup>3</sup>, 10<sup>3</sup>, 10<sup>9</sup>); elimina erro de contagem de zeros.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responder</div><div class="rcp-step-text">A reescrita em notação científica é requisito legal em laudos submetidos à NR-22 &mdash; clareza numérica não é opção, é norma.</div></div>
+    </details>
+  </div>
+
+  <!-- RCP 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">Problema C5 &middot; 5 &mdash; Física e Segurança do Trabalho: detonação na Mina do Chico Rei</div>
+    <p>A NR-22 limita a quantidade de explosivo por detonação em galerias subterrâneas a 2,5 &times; 10<sup>1</sup>&nbsp;kg por disparo. Um projeto usa ANFO com energia de detonação de 3,7 &times; 10<sup>6</sup>&nbsp;J/kg. (a) Qual a energia máxima liberada por disparo? (b) A galeria tem volume de 8,0 &times; 10<sup>2</sup>&nbsp;m³ e o limiar de pressão segura para estruturas históricas é de 5,0 &times; 10<sup>3</sup>&nbsp;Pa. Discuta qualitativamente se o planejamento deve considerar a proximidade da mina com as edificações coloniais.</p>
+    <details class="rcp">
+      <summary>Resolução &mdash; Protocolo C5</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. Compreender</div><div class="rcp-step-text">(a) Calcular energia máxima por disparo (limite NR-22); (b) avaliar risco para edificações históricas vizinhas.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Dados</div><div class="rcp-step-text">m = 2,5 &times; 10<sup>1</sup>&nbsp;kg; E<sub>esp</sub> = 3,7 &times; 10<sup>6</sup>&nbsp;J/kg; V = 8,0 &times; 10<sup>2</sup>&nbsp;m³; P<sub>limiar</sub> = 5,0 &times; 10<sup>3</sup>&nbsp;Pa.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Hipóteses</div><div class="rcp-step-text">Toda energia convertida em pressão (conservador); expansão isotrópica; sem amortecimento.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Representar</div><div class="rcp-step-text">Retângulo (galeria) com ponto de detonação; casarões coloniais além das paredes.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Equacionar</div><div class="rcp-step-text">E = m &times; E<sub>esp</sub>; P &asymp; E/V (análise dimensional).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Resolver</div><div class="rcp-step-text">E = (2,5 &times; 3,7) &times; 10<sup>1+6</sup> = 9,3 &times; 10<sup>7</sup>&nbsp;J. P &asymp; 9,3 &times; 10<sup>7</sup> / 8,0 &times; 10<sup>2</sup> = 1,2 &times; 10<sup>5</sup>&nbsp;Pa. Razão: 1,2 &times; 10<sup>5</sup> / 5,0 &times; 10<sup>3</sup> = <strong>24</strong> vezes acima do limiar.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Verificar</div><div class="rcp-step-text">1,2 &times; 10<sup>5</sup>&nbsp;Pa &Gt; 5,0 &times; 10<sup>3</sup>&nbsp;Pa &mdash; hipótese conservadora mas consistente.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responder</div><div class="rcp-step-text">Planejamento obrigatório: fracionamento de cargas, retardadores, monitoramento sísmico. Cálculos em notação científica para rastreabilidade técnica e legal (NR-22 + NBR 9653).</div></div>
+    </details>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIENCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+
+  <div class="ciencia-arte-obra"><strong>Cinema:</strong> <em>Powers of Ten</em> (1977) &mdash; Charles e Ray Eames</div>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:24px; font-size:1.1rem;">
+    &ldquo;Em cada potência de dez, um mundo diferente se revela.&rdquo;
+  </blockquote>
+  <div class="ca-autor">&mdash; <em>Powers of Ten</em>, Eames Office, 1977</div>
+
+  <!-- Figura 11 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T05-IT-10-v10.jpg" alt="Grade 2x2 vintage com quatro quadros do filme Powers of Ten dos Eames: galáxias, Terra, piquenique, célula — uma potência de dez de cada vez" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; Powers of Ten &mdash; quatro janelas para o universo, uma potência de dez de cada vez, na câmera dos Eames.</figcaption>
+  </figure>
+
+  <p style="margin-top:20px;">Em 1977, os designers Charles e Ray Eames produziram um curta-metragem de nove minutos que se tornou a representação visual mais célebre da notação científica: <em>Powers of Ten</em>. O canal oficial do Eames Office disponibilizou o filme em alta definição no YouTube &mdash; e a qualidade do HD revela detalhes que a cópia original em película escondia: a textura da pele humana em 10<sup>&minus;5</sup>&nbsp;m, a estrutura cristalina das moléculas em 10<sup>&minus;9</sup>&nbsp;m, a voragem de luz das galáxias em 10<sup>24</sup>&nbsp;m.</p>
+
+  <p>O filme começa com um casal fazendo piquenique num parque de Chicago, visto de um metro de distância (10<sup>0</sup>&nbsp;m). A câmera se afasta em progressão geométrica &mdash; a cada dez segundos, o campo de visão se multiplica por dez. Em 10<sup>8</sup>&nbsp;m, a Terra cabe inteira na tela. Em 10<sup>26</sup>&nbsp;m, galáxias se tornam poeira luminosa. O filme então retorna e mergulha na pele do homem adormecido, atravessando células, moléculas e prótons até 10<sup>&minus;15</sup>&nbsp;m.</p>
+
+  <p>A escolha artística dos Eames é onde Ciência e Arte se fundem: não há narrador catastrófico, não há trilha dramática &mdash; apenas o zumbido do universo e a câmera que avança, firme, uma potência de dez de cada vez. Cada enquadramento é uma <em>equação visual</em>: a notação científica não é explicada, ela é <em>sentida</em>. Pedro, ao percorrer a Mina do Chico Rei com sua lanterna, praticou o mesmo gesto: mudou de escala para enxergar o que o olho desarmado não alcança.</p>
+
+  <p><strong style="color:var(--ouro);">Assista o filme.</strong> Acesse <em>Scales of the Universe in Powers of Ten</em> (HD 1080p) em <a href="https://www.youtube.com/watch?v=44cv416bKP4" target="_blank" rel="noopener" style="color:var(--verde);">youtube.com/watch?v=44cv416bKP4</a> &mdash; nove minutos que conectam a câmera do designer à lanterna do técnico de mineração.</p>
+
+  <div class="footnote">
+    <strong>Charles Eames</strong> (St. Louis, 1907 &mdash; St. Louis, 1978) e <strong>Bernice Alexandra &ldquo;Ray&rdquo; Eames</strong> (Sacramento, 1912 &mdash; Los Angeles, 1988) foram designers americanos cuja parceria criativa redefiniu o design industrial, a arquitetura e o cinema educativo do século XX. Fundadores do Eames Office em Venice, Califórnia, são conhecidos pela Eames Lounge Chair, pela Case Study House #8 e por dezenas de filmes didáticos. <em>Powers of Ten</em> (1977), inscrito no National Film Registry dos EUA, demonstra visualmente que cada potência de dez abre uma janela para fenômenos invisíveis na escala anterior &mdash; princípio fundador da notação científica.
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ REFERENCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo" style="font-size: 1.4rem; color: var(--azul);">Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:16px; font-size: 1.4rem; color: var(--azul);">Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+</div>
+
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T05 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T05-TT-v8';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

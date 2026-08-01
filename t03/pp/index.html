@@ -1039,13 +1039,30 @@ function toast(type, msg) {
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
 var ARQUIVO_FONTE = 'T03-PP-v6-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
-var COMPROVANTE_KEY = PREFIX + 'comprovante';
 var aluno = null;
 var alunoPendente = null;
 var coletaEnviando = false;
 
+/* CFG-OA v1: comprovante por tentativa (t1 = chave legada; t2 = sufixo _t2).
+   OAs legados sem oaTentativaAtual() continuam na chave unica. */
+function comprovanteKey_() {
+  var t = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  return PREFIX + 'comprovante' + (t > 1 ? '_t' + t : '');
+}
+
+/* CFG-OA v1: override remoto da Equipe de Professores (aba `config` da planilha).
+   So roda em OAs que expoem OA_ID + aplicarConfigOA; falha de rede e ignorada. */
+function buscarConfigOA() {
+  if (!COLETA_URL || typeof OA_ID === 'undefined' || typeof aplicarConfigOA !== 'function') return;
+  fetch(COLETA_URL + '?cfg=1&trilha=' + encodeURIComponent(OA_ID.trilha) + '&oa=' + encodeURIComponent(OA_ID.oa))
+    .then(function (r) { return r.json(); })
+    .then(function (res) { if (res && res.ok && res.cfg) aplicarConfigOA(res.cfg); })
+    .catch(function () {});
+}
+
 function initColeta() {
   if (!COLETA_URL) return;
+  buscarConfigOA();
   try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
   if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
   document.getElementById('coletaOverlay').hidden = false;
@@ -1113,6 +1130,8 @@ function aplicarAluno() {
     if (!el) return;
     try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
   });
+  /* CFG-OA v1: pre-carga da versao A/B/C apos identificar o RA */
+  if (typeof aplicarPrecargaOA === 'function') { try { aplicarPrecargaOA(aluno); } catch (e) {} }
 }
 
 function coletaStatusUI(estado, msg) {
@@ -1126,19 +1145,20 @@ function coletaStatusUI(estado, msg) {
 
 function restaurarComprovante() {
   if (!COLETA_URL) return;
-  var c = localStorage.getItem(COMPROVANTE_KEY);
+  var c = localStorage.getItem(comprovanteKey_());
   if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
 }
 
 function enviarColeta(isRetry) {
   if (!COLETA_URL || coletaEnviando) return;
-  if (localStorage.getItem(COMPROVANTE_KEY)) { restaurarComprovante(); return; }
+  if (localStorage.getItem(comprovanteKey_())) { restaurarComprovante(); return; }
   coletaEnviando = true;
   coletaStatusUI(null, 'Enviando respostas ao professor...');
 
   var payload = montarPacote();
   payload.ra = aluno ? aluno.ra : null;
   payload.turma_suap = aluno ? aluno.turma : null;
+  payload.tentativa = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
   if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
   payload.questoes = (payload.questoes || []).map(function (q) {
     var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
@@ -1161,7 +1181,7 @@ function enviarColeta(isRetry) {
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'rejeitado');
-      try { localStorage.setItem(COMPROVANTE_KEY, res.comprovante); } catch (e) {}
+      try { localStorage.setItem(comprovanteKey_(), res.comprovante); } catch (e) {}
       coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
     })
     .catch(function () {

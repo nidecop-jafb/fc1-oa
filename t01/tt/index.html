@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 · Física, uma linguagem básica da ciência — Texto Temático v20</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ PIAZZI BAR ═══ */
+.piazzi-bar {
+  max-width: 720px; margin: 0 auto; padding: 14px 20px;
+  background: oklch(0.16 0.03 45); border-left: 3px solid var(--azul);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  font-size: 0.82rem; color: oklch(0.72 0 0);
+}
+[data-theme="light"] .piazzi-bar {
+  background: oklch(0.95 0.02 45); color: oklch(0.35 0 0);
+}
+.piazzi-ref { width: 100%; font-style: italic; margin-bottom: 2px; }
+.piazzi-tag {
+  display: inline-block; padding: 2px 8px; font-weight: 700;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--azul); border: 1px solid var(--azul);
+}
+.piazzi-text { color: oklch(0.65 0 0); }
+[data-theme="light"] .piazzi-text { color: oklch(0.45 0 0); }
+.piazzi-yt {
+  display: inline-block; padding: 2px 10px; font-size: 0.72rem;
+  font-weight: 600; color: var(--erro); border: 1px solid var(--erro);
+  text-decoration: none; transition: background 0.15s;
+}
+.piazzi-yt:hover { background: oklch(0.2 0.08 25); }
+[data-theme="light"] .piazzi-yt:hover { background: oklch(0.95 0.04 25); }
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+.ato-subtitulo {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  font-style: italic; color: var(--branco); margin-bottom: 20px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+.ctx-cotidiano .contexto-label { color: var(--verde); }
+.contexto p { font-size: 1.1rem; margin-bottom: 8px; }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-logo {
+  width: 120px; height: auto; display: block; margin: 0 auto 20px; opacity: 0.7;
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.fecho-acao {
+  font-family: var(--font); font-size: 1rem; color: var(--ouro);
+  margin-bottom: 16px;
+}
+.fecho-nidec {
+  font-family: var(--font); font-size: 0.82rem; color: var(--cinza);
+  line-height: 1.5; max-width: 560px; margin: 0 auto;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ INEDITISMO ═══ */
+.ineditismo { padding: 28px 0; border-top: 1px solid var(--cinza-borda); margin-top: 28px; }
+.ineditismo .refs-titulo { font-size: 1.4rem; color: var(--azul); }
+.ineditismo p {
+  font-family: var(--font); font-size: 1.2rem; color: oklch(0.65 0 0);
+  line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo p { color: oklch(0.40 0 0); }
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ INDICE DE FIGURAS OVERRIDE ═══ */
+#indice-figuras .refs-titulo { font-size: 1.4rem; color: var(--azul); }
+#indice-figuras p { font-size: 1.2rem; }
+
+/* ═══ PROCESSO (T5) ═══ */
+.processo-titulo {
+  font-size: 1.1rem; font-weight: 700; color: var(--branco); margin: 24px 0 10px;
+  font-family: var(--font);
+}
+.processo-obs {
+  font-size: 0.85rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; padding: 8px 12px; border-left: 2px solid var(--cinza-borda);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .piazzi-bar { font-size: 0.75rem; padding: 10px 14px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .piazzi-bar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esse texto temático foi elaborado com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; Praça Tiradentes ao amanhecer &mdash; monumento ao Tiradentes sem personagem</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Três órbitas desenham no vazio o primeiro símbolo &mdash; antes de medir, a física precisou imaginar o invisível</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; Dedos no granito &mdash; o toque como primeiro instrumento de medida</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Sofia cruza o calçamento de quartzito como quem abre um livro antigo</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; A Praça se revela como um diagrama vivo: grandezas invisíveis &mdash; massa, comprimento, tempo &mdash; habitam cada pedra, cada sombra, cada eco entre os casarões</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Prof. Julio e Sofia diante do monumento: dois olhares, duas escalas &mdash; o mestre lê a história na pedra, a estudante descobre a física dentro dela</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Quatro ciências giram em torno do mesmo mundo como vozes de uma fuga de Bach &mdash; cada uma revela o que as outras não alcançam sozinhas</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Ouro Preto vista de cima: raios, chamas, átomos e lentes brotam do mapa como flores invisíveis &mdash; a física mora em cada esquina, esperando ser nomeada</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Cinco máquinas da mineração contam a mesma história em dialetos diferentes &mdash; perfurar, transportar, drenar, ventilar, escavar: verbos da linguagem que Sofia aprende</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; Sofia retorna ao ponto de partida, mas a Praça já não é a mesma &mdash; quem aprende a linguagem da física nunca mais vê pedra como apenas pedra</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da Física como raízes de uma árvore antiga &mdash; Matemática, Química, Geologia, Português, História: nenhuma ciência caminha sozinha</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O livro da natureza se abre em oito etapas &mdash; do enunciado à resposta, o Protocolo C5 ensina a ler cada página com a precisão que a mineração exige</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Granito, equações e poesia &mdash; a máquina do mundo se abre para quem ousa medir</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur</div>
+  <div class="musica-detail">2026 &middot; 14 músicas &middot; 44 min</div>
+  <a class="musica-link" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T0A &mdash;
+Laboratório de Mecânica: metodologia
+experimental, medida, incerteza e
+segurança / Julio Cesar Silva Azevedo;
+colaboração Felipe Beato. &mdash; 1. ed.
+&mdash; Ouro Preto, MG: Instituto Federal
+de Minas Gerais &mdash; Campus Ouro Preto,
+2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Experimental 1; T0A)
+
+    ISBN [a definir].
+
+1. Física experimental &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Metodologia científica.
+4. Medida e incerteza experimental.
+5. Segurança e saúde ocupacional
+   &mdash; NR-22.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física experimental 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epigrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Topico 1 &mdash; A fisica na Praca Tiradentes</a>
+  <a href="#topico-2" class="toc-topico">Topico 2 &mdash; Fisica teorica x experimental</a>
+  <a href="#topico-3" class="toc-topico">Topico 3 &mdash; Fisica x ciencias da natureza</a>
+  <a href="#topico-4" class="toc-topico">Topico 4 &mdash; Fenomenos naturais x areas da Fisica</a>
+  <a href="#topico-5" class="toc-topico">Topico 5 &mdash; A fisica na mineracao</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexoes Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciencia e Arte</a>
+  <a href="#referencias" class="toc-extra">Referencias</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T01-IT-00-v22.jpg" alt="Praça Tiradentes ao amanhecer — monumento ao Tiradentes sob luz dourada da Serra do Itacolomi">
+  <div class="capa-label">Trilha de Aprendizagem 01</div>
+  <div class="capa-titulo">Física, uma Linguagem<br>Básica da Ciência</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T01</span> &middot; Física, uma linguagem básica da ciência</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~30 min de leitura</div>
+</header>
+
+<!-- Figura 1 — IT-12 -->
+<figure class="figura">
+  <img class="figura-img" src="../_imagens/_web/T01-IT-12-v22.jpg" alt="Modelo atômico 3D com três órbitas elípticas e núcleo central — símbolo da física" loading="lazy">
+  <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Três órbitas desenham no vazio o primeiro símbolo &mdash; antes de medir, a física precisou imaginar o invisível</figcaption>
+</figure>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O livro da natureza está escrito na linguagem da matemática.&rdquo;</blockquote>
+  <div class="autor">&mdash; Galileu Galilei (1564&ndash;1642)</div>
+  <div class="nota"><strong>Galileu Galilei</strong> (1564&ndash;1642). Matemático, físico e astrônomo italiano, considerado o pai da física moderna e da astronomia observacional. Suas contribuições incluem a descrição matemática do movimento dos corpos, a lei da queda dos graves e o aperfeiçoamento do telescópio. A frase é atribuída à obra <em>Il Saggiatore</em> (O Ensaiador), de 1623, na qual Galileu defende que os fenômenos naturais só podem ser compreendidos por meio da linguagem matemática.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>A cidade estava mais fria do que o dia pedia.</p>
+
+  <p>Sofia chegou à Praça Tiradentes a pé, subindo a Rua Senador Rocha Lagoa desde o bairro Pilar, às sete e quinze da manhã. O calçamento irregular de pedra-sabão debaixo dos seus pés estava úmido &mdash; a garoa havia parado antes do sol nascer, mas a pedra ainda guardava a memória da água. A cada passo, ela sentia o piso ceder levemente sob a sola &mdash; as juntas entre as pedras, preenchidas com areia fina, absorviam a pisada de um jeito que o concreto reto do bairro onde crescera nunca havia feito.</p>
+
+  <!-- Figura 2 — IT-02 (movido para após o 2.º parágrafo) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T01-IT-02-v22.jpg" alt="Sofia de frente para o pedestal de granito do monumento ao Tiradentes — dedos da mão direita tocando levemente a superfície da pedra" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; Dedos no granito &mdash; o toque como primeiro instrumento de medida</figcaption>
+  </figure>
+
+  <p>Ela parou no centro da praça.</p>
+
+  <p>O monumento ao Tiradentes estava diante dela: uma coluna de granito cinza-escuro com quase dezesseis metros de altura, coroada pelos 2,85 metros de bronze da estátua &mdash; fundida na Itália pelo escultor Virgílio Cestari e inaugurada em 21 de abril de 1894. O bronze oxidado no topo ainda estava frio e escuro. Mas o sol, saindo atrás do perfil irregular da Serra do Itacolomi ao sudeste, havia tocado o ápice do monumento alguns minutos antes &mdash; e agora descia devagar pelo granito como uma mão que acende uma lareira. Onde o sol chegava, os veios de quartzo na pedra acendiam: pontos dourados, filamentos reluzentes, microplanos de feldspato faiscando entre o cinza uniforme. Em trinta segundos, o pedestal pareceu mudar de material. Depois, o sol subiu um grau a mais e os brilhos se apagaram &mdash; de volta ao cinza sereno de sempre.</p>
+
+  <p>Sofia ficou olhando sem entender bem o que havia visto.</p>
+
+  <p>&mdash; O que mudou? &mdash; disse uma voz a uns quatro metros atrás dela.</p>
+
+  <p>Ela se virou. O professor Julio estava ali, apoiado no muro baixo da entrada norte da praça, segurando com as duas mãos uma xícara de café que claramente havia vindo da padaria da esquina com a Rua Conde de Bobadela. Cinquenta e poucos anos, cabelo cacheado castanho preso com um elástico, blusão de lã cinza por cima da camisa. O ano letivo havia começado havia quatro dias; ainda não havia dado nenhuma aula de Física. Mas estava ali às sete e quinze como se tivesse esquecido alguma coisa importante.</p>
+
+  <p>&mdash; O pedestal &mdash; ela respondeu. &mdash; Ficou brilhoso por um segundo. Depois voltou ao normal.</p>
+
+  <p>&mdash; <em>O pedestal</em> ficou brilhoso, você disse. &mdash; Ele tomou um gole de café. &mdash; Ou a <em>luz</em> ficou brilhosa?</p>
+
+  <p>Sofia franziu a testa. Olhou de volta para o granito, que agora estava completamente cinza de novo. Era a mesma pedra. Era o mesmo ângulo de visão. Era uma luz diferente.</p>
+
+  <p>&mdash; A luz mudou &mdash; ela disse lentamente. &mdash; A pedra não mudou. Só a luz.</p>
+
+  <p>&mdash; Então o que você descreveu não é uma propriedade da pedra. É uma propriedade da <em>interação</em> entre a pedra e a luz. &mdash; O professor se afastou do muro e andou em direção ao monumento. &mdash; Qual grandeza descreve essa interação?</p>
+
+  <p>Sofia abriu a boca. Havia alguma coisa sobre ângulo, sobre reflexão, sobre o comprimento de onda da luz amarela do sol baixo. Mas o vocabulário ainda não estava lá.</p>
+
+  <p>&mdash; Ainda não sei o nome &mdash; ela disse.</p>
+
+  <p>&mdash; Ótimo. &mdash; Ele parou diante do pedestal. &mdash; Quando você já sabe o nome, para de prestar atenção na coisa. O desconforto de não saber nomear ainda é o único estado mental em que a aprendizagem real acontece.</p>
+
+  <p>Silêncio. Um pombo cruzou o calçamento na direção da Escola de Minas, ao norte da praça, como se tivesse uma reunião marcada. O cheiro de café da padaria chegava em ondas pelo vento que descia a Rua Conde de Bobadela. Ao sul, o Museu da Inconfidência ainda tinha as janelas fechadas. O sino da Igreja Nossa Senhora do Carmo &mdash; cujo adro se abre diretamente para o canto leste da praça, na Rua Costa Sena &mdash; marcou o quarto de hora &mdash; um som grave que se propagou pela praça de pedra e se amorteceu ao encontrar as fachadas dos casarões coloniais.</p>
+
+  <p>&mdash; Você já veio aqui antes &mdash; disse o professor.</p>
+  <p>&mdash; Várias vezes.</p>
+  <p>&mdash; E o que via?</p>
+  <p>&mdash; A praça. O monumento. A Escola de Minas ali. &mdash; Ela fez um gesto circular com a mão. &mdash; O calçamento torto.</p>
+  <p>&mdash; E hoje?</p>
+
+  <p>Sofia olhou ao redor com cuidado. O calçamento não era torto &mdash; era uma solução de engenharia para uma superfície irregular que precisava drenar água. As pedras não eram empilhadas aleatoriamente &mdash; cada uma distribuía carga para as vizinhas, e as juntas de areia absorviam as variações térmicas entre o frio da madrugada e o calor do meio-dia. A estátua no topo do monumento não era apenas bronze &mdash; era massa suspensa a quase dezenove metros de altura, com peso, com centro de gravidade, com torque sobre a fundação.</p>
+
+  <p>&mdash; Grandezas &mdash; ela disse. &mdash; Eu estou vendo grandezas.</p>
+
+  <p>O professor Julio bebeu o último gole de café e abaixou a xícara.</p>
+
+  <p>&mdash; Exatamente. E para cada grandeza que você for capaz de nomear e medir, a Física te dá uma equação. Para cada equação, um resultado que pode ser verificado. Para cada resultado verificado, um pedaço de mundo que deixou de ser misterioso e virou conhecimento utilizável. &mdash; Uma pausa. &mdash; Esse é o ofício.</p>
+
+  <p>Sofia olhou para o pedestal. O bloco principal tinha, a olho nu, cerca de 1,0 m de comprimento, 0,5 m de largura e 0,4 m de altura. Ela estimou o volume. Lembrou da aula de ciências do nono ano onde a professora havia dito que cada material tem uma densidade característica.</p>
+
+  <p><em>Se eu souber o volume e souber de que rocha é feita...</em></p>
+
+  <p>Ela não disse nada em voz alta. Mas o pensamento estava lá &mdash; e era exatamente o tipo de pensamento que a Física usa para começar a trabalhar: uma observação concreta, uma grandeza mensurável, uma propriedade que já está catalogada nos livros.</p>
+
+  <p>A praça não era apenas uma praça. Era um laboratório sem paredes, de acesso gratuito, aberto antes das sete da manhã &mdash; quando o sol ainda estava aprendendo a acender os veios de quartzo no granito.</p>
+
+  <p>E a linguagem que descrevia esse laboratório tinha quatro séculos de construção coletiva atrás dela. Sofia não sabia ainda. Mas havia começado a aprendê-la.</p>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar no Google Maps</div>
+
+    <!-- Figura 3 — IT-01 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-01-v22.jpg" alt="Sofia cruza o calçamento de quartzito da Praça Tiradentes como quem abre um livro antigo" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Sofia cruza o calçamento de quartzito como quem abre um livro antigo.</figcaption>
+    </figure>
+
+    <p>A Praça Tiradentes existe exatamente como descrita no texto &mdash; o monumento ao Tiradentes no centro (quase 19 metros de granito e bronze), a Escola de Minas ao norte com sua fachada neoclássica, o Museu da Inconfidência ao sul, a Igreja Nossa Senhora do Carmo junto ao canto leste da praça (Rua Costa Sena), e o perfil da Serra do Itacolomi ao sudeste. O calçamento de pedra-sabão, as juntas de areia, o vento que desce a Rua Conde de Bobadela &mdash; tudo está lá, verificável no Street View.</p>
+    <p style="margin-top:10px;"><strong>Como acessar e usar o Street View:</strong> 1. Acesse o link abaixo &mdash; ou abra o Google Maps e pesquise por <strong>&ldquo;Praça Tiradentes, Ouro Preto, MG&rdquo;</strong>. 2. Clique no ícone do <strong>boneco amarelo</strong> (Pegman) no canto inferior direito do mapa e arraste-o até a rua ou local desejado. 3. Solte o boneco sobre a rua destacada em azul &mdash; você entrará no modo <strong>Street View</strong>. 4. Use as <strong>setas</strong> na tela para caminhar e o <strong>mouse</strong> (ou o dedo, no celular) para girar a câmera 360°. 5. Posicione-se em frente ao monumento e gire a câmera para o norte: você vai encontrar a fachada neoclássica da Escola de Minas em pedra e reboco branco, o portão de ferro, o granito escuro do pedestal &mdash; e, se rodar para o leste, a entrada da Rua Conde de Bobadela com seus casarões coloniais.</p>
+    <p style="margin-top:10px;">Ouro Preto é isso: Física, história e pedra entrelaçadas em cada esquina. O mesmo calçamento que Sofia pisou ainda está lá &mdash; esperando que você o enxergue como um problema de distribuição de forças, não apenas como um piso bonito.</p>
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Praca+Tiradentes,+Ouro+Preto,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ═══ TOPICO 1 ═══ -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; A física na Praça Tiradentes</div>
+
+    <p>A Praça Tiradentes, coração de Ouro Preto, guarda em cada pedra e em cada sombra as grandezas que a Física sabe nomear. Quando o professor Julio pediu a Sofia que olhasse ao redor e identificasse tudo o que podia ser medido, ela percebeu que a resposta era infinita.</p>
+
+    <!-- Figura 4 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-03-v22.jpg" alt="A Praça se revela como um diagrama vivo: grandezas invisíveis — massa, comprimento, tempo — habitam cada pedra, cada sombra, cada eco entre os casarões" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; A Praça se revela como um diagrama vivo: grandezas invisíveis &mdash; massa, comprimento, tempo &mdash; habitam cada pedra, cada sombra, cada eco entre os casarões.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A Praça Tiradentes é o coração político de Ouro Preto desde a era colonial. Foi nela que os inconfidentes articularam o sonho republicano em 1789 &mdash; e foi a partir dela que Tiradentes caminhou para o enforcamento no Rio de Janeiro em 1792. O granito cinza-escuro da coluna do monumento, inaugurado em 21 de abril de 1894, foi extraído do Morro da Viúva, no Rio de Janeiro &mdash; uma rocha ígnea composta de quartzo, feldspato e biotita. Os engenheiros que projetaram o monumento, um século após a Inconfidência, calcularam forças, volumes e resistências com as mesmas leis que Sofia começou a aprender naquela manhã.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Toda grandeza física é, por definição, uma propriedade do mundo real que pode ser quantificada, comparada e expressa em unidades padronizadas. O Sistema Internacional de Unidades (SI), adotado internacionalmente em 1960 pela Conferência Geral de Pesos e Medidas, estabelece sete grandezas fundamentais: comprimento (metro), massa (quilograma), tempo (segundo), temperatura termodinâmica (kelvin), corrente elétrica (ampère), intensidade luminosa (candela) e quantidade de matéria (mol). Todas as demais grandezas &mdash; velocidade, força, pressão, energia &mdash; são grandezas derivadas, obtidas por combinações dessas sete.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Para o técnico em mineração, a Praça Tiradentes é um catálogo de materiais de engenharia: granito, quartzito, ferro fundido, pedra-sabão. Identificar materiais pelo aspecto visual, estimar volumes por medição direta e calcular massas a partir da densidade são tarefas de rotina em campo &mdash; exigidas antes de qualquer transporte de rocha, qualquer projeto de suporte de galeria e qualquer estimativa de reserva. O raciocínio que Sofia aplica ao pedestal é o mesmo que o técnico aplica ao bloco de minério.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>O laboratório de pedra</strong></p>
+
+    <p>Quando o professor Julio perguntou &ldquo;o que há de Física nesta praça?&rdquo;, Sofia olhou ao redor e sentiu, pela primeira vez, que a questão era enorme. Havia força no peso dos blocos sobre o solo. Havia energia na luz que chegava pela Serra do Itacolomi. Havia calor no contraste entre o granito frio das sombras e o calçamento que já começava a aquecer sob o sol. Havia som nos passos que ecoavam diferente nos trechos de pedra-sabão e nos trechos de paralelepípedo.</p>
+
+    <p>&mdash; Tudo isso é Física &mdash; disse o professor. &mdash; E para descrever cada um desses fenômenos, você precisa de pelo menos uma coisa em comum.</p>
+    <p>&mdash; Uma medida &mdash; Sofia respondeu.</p>
+    <p>&mdash; Exatamente. Uma <em>grandeza física</em>. Algo que existe no mundo e pode ser quantificado. O comprimento do pedestal. A temperatura do ar. A massa do bloco. O tempo que o sino levou para parar de vibrar. Sem grandeza, a Física não fala.</p>
+
+    <p>Ela se aproximou do pedestal e o examinou com atenção. O bloco principal tinha, a olho nu, cerca de 1,0 m de comprimento, 0,5 m de largura e 0,4 m de altura. Sofia começou pelo mais acessível: o volume.</p>
+
+    <!-- EQUACAO 1 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Volume de um paralelepípedo</div>
+      <div class="equacao-formula">V = c &times; l &times; h</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>V</td><td>Volume do bloco</td><td>m³ (metro cúbico)</td></tr>
+          <tr><td>c</td><td>Comprimento</td><td>m (metro)</td></tr>
+          <tr><td>l</td><td>Largura</td><td>m (metro)</td></tr>
+          <tr><td>h</td><td>Altura</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: V = 1,0 &times; 0,5 &times; 0,4 = <strong>0,20 m³</strong></div>
+    </div>
+
+    <p>Agora ela precisava da densidade. O granito apresenta densidade média de 2 700 kg/m³ &mdash; valor que Sofia confirmou rapidamente no celular, anotou no caderno e sublinhou.</p>
+
+    <!-- EQUACAO 2 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Relação entre massa, densidade e volume</div>
+      <div class="equacao-formula">m = &rho; &times; V</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>m</td><td>Massa do bloco</td><td>kg (quilograma)</td></tr>
+          <tr><td>&rho;</td><td>Densidade do material (lê-se &ldquo;rô&rdquo;)</td><td>kg/m³</td></tr>
+          <tr><td>V</td><td>Volume do bloco</td><td>m³</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: m = 2 700 &times; 0,20 = <strong>540 kg</strong></div>
+    </div>
+
+    <p>Sofia olhou para o bloco. Mais de meia tonelada. E ela havia ficado encostada nele, ombro contra a pedra, como se fosse um poste qualquer de calçada.</p>
+    <p>&mdash; Física &mdash; ela murmurou &mdash; é enxergar o que não dá para ver só olhando.</p>
+
+    <p>As sete grandezas fundamentais do SI &mdash; comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria &mdash; são os tijolos básicos dessa linguagem. Cada fenômeno da praça, por mais complexo que pareça, pode ser descrito em termos de combinações dessas sete grandezas. É assim que a Física transforma observação em conhecimento: nomeando, medindo, calculando.</p>
+
+    <p>A praça não era apenas um espaço histórico. Era um laboratório a céu aberto, gratuito, disponível todos os dias antes das sete da manhã &mdash; quando o sol ainda estava aprendendo a acender os veios de quartzo no granito do Tiradentes.</p>
+
+    <p>No próximo passo, Sofia vai descobrir que medir é apenas metade do trabalho. A outra metade é saber quando a medida confirma a teoria &mdash; e o que fazer quando não confirma.</p>
+  </div>
+
+  <!-- ═══ TOPICO 2 ═══ -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Física teórica &times; física experimental</div>
+
+    <p>O cálculo que Sofia fez no caderno era apenas metade do caminho. A outra metade esperava na balança &mdash; e na diferença entre o que se prevê no papel e o que se encontra na pedra.</p>
+
+    <!-- Figura 5 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-04-v22.jpg" alt="Prof. Julio e Sofia diante do monumento: dois olhares, duas escalas — o mestre lê a história na pedra, a estudante descobre a física dentro dela" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Prof. Julio e Sofia diante do monumento: dois olhares, duas escalas &mdash; o mestre lê a história na pedra, a estudante descobre a física dentro dela.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O monumento ao Tiradentes foi inaugurado em 21 de abril de 1894, um ano após a proclamação da República. Antes de posicionar um único bloco de granito, os engenheiros do projeto trabalharam em prancheta: calcularam a resistência do solo da Praça Tiradentes, a distribuição de cargas entre os elementos estruturais, as dimensões de cada componente. Esse foi o trabalho teórico. Depois, no canteiro, cada bloco foi medido, pesado, encaixado e verificado. Esse foi o trabalho experimental. Os dois precisavam concordar &mdash; e quando não concordavam, o projeto era revisto. O monumento que existe hoje é o resultado material desse ciclo.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A Física teórica constrói <em>modelos</em> &mdash; representações matemáticas simplificadas da realidade que permitem fazer previsões sem instrumentos. A Física experimental testa esses modelos: mede, compara, ajusta, rejeita ou confirma. Nenhuma das duas funciona sozinha: uma teoria sem experimento é hipótese; um experimento sem teoria é dado bruto sem interpretação. O ciclo de validação &mdash; observação, hipótese, experimento, revisão &mdash; foi sistematizado por Galileu Galilei no século XVII e permanece o núcleo do método científico até hoje. A diferença entre o valor teórico e o valor medido é quantificada pelo <em>erro relativo</em>, expresso em porcentagem.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, o ciclo teórico-experimental se repete em cada etapa da operação. O geólogo constrói um modelo de bloco de jazida a partir de perfis de sondagem &mdash; trabalho teórico. O técnico de campo perfura, coleta e pesa amostras para verificar o modelo &mdash; trabalho experimental. Se os valores concordam dentro de uma margem aceitável, o modelo é confiável. Se divergem, o modelo é corrigido. Um erro de 3% na estimativa de massa de um carregamento de 1 000 t representa 30 t a mais ou a menos que o sistema esperava processar &mdash; diferença que afeta contratos, logística e segurança.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>O diálogo na praça</strong></p>
+
+    <p>O professor Julio chegou enquanto Sofia ainda anotava as dimensões do bloco.</p>
+    <p>&mdash; Você chegou a 540 kg &mdash; ele disse, olhando as contas. &mdash; Agora imagine os engenheiros de 1894, na prancheta, fazendo exatamente esse mesmo cálculo antes de construir. Eles partiram de uma equação como a sua: densidade multiplicada por volume.</p>
+    <p>&mdash; Mas e se a pedra não fosse granito puro? &mdash; Sofia franziu a testa. &mdash; E se tivesse uma inclusão de minerais mais densos?</p>
+    <p>&mdash; Exatamente. Aí a teoria diverge do experimento. E quando divergem...</p>
+    <p>&mdash; ...a gente mede de novo &mdash; ela completou.</p>
+    <p>&mdash; Ou revisa o modelo. Ou os dois. &mdash; Ele apontou para o pedestal. &mdash; Essa diferença entre o que você calculou e o que a balança marcaria tem um nome. Chama-se erro relativo.</p>
+
+    <!-- EQUACAO 3 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Erro relativo de uma medição</div>
+      <div class="equacao-formula">E<sub>r</sub> = |V<sub>m</sub> &minus; V<sub>t</sub>| / V<sub>t</sub> &times; 100%</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>E<sub>r</sub></td><td>Erro relativo</td><td>% (porcentagem)</td></tr>
+          <tr><td>V<sub>m</sub></td><td>Valor medido experimentalmente</td><td>mesma unidade da grandeza</td></tr>
+          <tr><td>V<sub>t</sub></td><td>Valor teórico (calculado pelo modelo)</td><td>mesma unidade da grandeza</td></tr>
+          <tr><td>| |</td><td>Módulo &mdash; garante resultado sempre positivo</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Se o engenheiro calculou 540 kg (teórico) e a balança de campo marcou 556 kg (medido):<br>E<sub>r</sub> = |556 &minus; 540| / 540 &times; 100% &asymp; <strong>3,0%</strong></div>
+    </div>
+
+    <p>Um erro de 3% pode parecer pequeno. Em uma construção monumental de 1894, era aceitável. Em uma mina moderna que movimenta mil toneladas de minério por dia, um erro de 3% representa 30 toneladas a mais ou a menos que o sistema esperava processar &mdash; diferença que afeta contratos, segurança estrutural e o balanço econômico da operação inteira.</p>
+
+    <!-- QUADRO 1 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Física teórica &times; Física experimental: dois lados do mesmo método</div>
+      <table>
+        <thead><tr><th>Dimensão</th><th>Física Teórica</th><th>Física Experimental</th></tr></thead>
+        <tbody>
+          <tr><td>Ferramenta principal</td><td>Matemática e modelos</td><td>Instrumentos e medições</td></tr>
+          <tr><td>Produto gerado</td><td>Previsões e equações</td><td>Dados e resultados reais</td></tr>
+          <tr><td>Exemplo no monumento (1894)</td><td>Cálculo teórico da carga sobre o pedestal</td><td>Medição real da massa de cada bloco no canteiro</td></tr>
+          <tr><td>Limitação inerente</td><td>Depende de hipóteses simplificadoras</td><td>Depende da precisão dos instrumentos</td></tr>
+          <tr><td>O que fazer quando divergem</td><td>Revisar o modelo</td><td>Repetir o experimento com instrumentação melhor</td></tr>
+          <tr><td>Exemplo na mineração atual</td><td>Modelo de bloco da jazida por sondagem</td><td>Pesagem das amostras coletadas em campo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A lição central deste tópico foi sistematizada por Galileu Galilei no século XVII, quando ele deixou de aceitar as verdades aristotélicas sobre o movimento e foi medir o tempo de queda de objetos com diferentes massas. Não precisou de grandes instrumentos &mdash; precisou de uma pergunta precisa, de um experimento repetível e de honestidade intelectual para aceitar o resultado mesmo quando contrariava a autoridade de sua época.</p>
+
+    <p>Teoria e experimento são os dois pés da Física. Andar com apenas um leva a tropeços &mdash; e na mineração, tropeços têm consequências que vão muito além de uma nota baixa.</p>
+
+    <p>No tópico seguinte, Sofia vai descobrir que a Física não está sozinha entre as ciências &mdash; e que saber onde ela termina e onde começa a Química ou a Geologia é tão importante quanto dominar as equações.</p>
+  </div>
+
+  <!-- ═══ TOPICO 3 ═══ -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Física &times; ciências da natureza</div>
+
+    <p>A Física não está sozinha entre as ciências. Química, Biologia e Geologia olham para o mesmo pedaço de mundo &mdash; cada uma com suas perguntas e suas ferramentas. Saber onde uma termina e outra começa é tão importante quanto dominar as equações.</p>
+
+    <!-- Figura 6 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-05-v22.jpg" alt="Quatro ciências giram em torno do mesmo mundo como vozes de uma fuga de Bach — cada uma revela o que as outras não alcançam sozinhas" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Quatro ciências giram em torno do mesmo mundo como vozes de uma fuga de Bach &mdash; cada uma revela o que as outras não alcançam sozinhas.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A Escola de Minas de Ouro Preto, fundada em 1876 pelo geólogo francês Henri Gorceix a pedido de D. Pedro II, foi a primeira instituição de ciências aplicadas do Brasil a reunir, sob o mesmo teto, professores de Física, Química, Geologia e Mineralogia &mdash; exigindo que seus alunos dominassem essas linguagens em conjunto. Gorceix partiu de um diagnóstico preciso: o minério está lá com suas propriedades físicas, químicas e geológicas <em>simultaneamente</em>, e o engenheiro precisa falar todas as línguas ao mesmo tempo. Cento e cinquenta anos depois, o IFMG-OP continua esse mesmo projeto formativo &mdash; desta vez no nível técnico, com estudantes de quinze e dezesseis anos.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>As ciências da natureza &mdash; Física, Química, Biologia e Geologia &mdash; compartilham o mesmo compromisso metodológico: entender o mundo natural por meio de observação sistemática, hipótese, experimento e revisão. O que as diferencia é o <em>objeto de estudo</em> e o <em>tipo de pergunta</em> que cada uma faz ao mundo. A fronteira entre elas é real, mas porosa: um fenômeno de lixiviação em mina envolve, ao mesmo tempo, a Química das reações ácido-base, a Física do fluxo de fluido e a Geologia da estrutura da rocha encaixante. Identificar a qual ciência pertence cada aspecto do problema é o primeiro passo para escolher a ferramenta analítica correta.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O técnico em mineração opera cotidianamente na interseção dessas quatro ciências. Ele analisa rochas pela cor, textura e clivagem (Geologia), avalia reações de lixiviação e flotação (Química), monitora impactos em corpos d'água (Biologia) e calcula forças, pressões e fluxos de energia (Física). Saber a quem perguntar &mdash; qual ciência, qual equação &mdash; poupa tempo, evita erros e, em ambiente de mina, pode salvar vidas.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>A pergunta de cada ciência</strong></p>
+
+    <p>Sofia olhou para a fachada norte da praça: a Escola de Minas com suas janelas altas de ferro forjado, a calçada de quartzito esbranquiçado que subia levemente em direção à entrada, o jardim interno com espécies nativas que se via pela grade do portão. Ela pensou: o que cada ciência veria ali?</p>
+
+    <p>A <strong>Física</strong> pergunta: <em>como</em> as coisas se movem, interagem e trocam energia? Ela responde com equações que relacionam grandezas mensuráveis. Qual a força que o peso do telhado exerce sobre as colunas de pedra? Que velocidade teria um objeto caindo do cume do campanário vizinho? Qual a temperatura interna das paredes de pedra às três da tarde?</p>
+
+    <p>A <strong>Química</strong> pergunta: <em>de que</em> as coisas são feitas e como a matéria se transforma em nível atômico e molecular? Que minerais compõem o quartzito da calçada da Escola? Que reação ocorre quando a chuva levemente ácida ataca o calcário das molduras coloniais ao longo de décadas?</p>
+
+    <p>A <strong>Biologia</strong> pergunta: <em>como</em> os seres vivos se organizam, reproduzem e interagem com o ambiente? Que espécies de líquen crescem nas frestas do granito do monumento? Como o pombo da praça regula sua temperatura corporal com 10 °C a mais que o ar ao redor?</p>
+
+    <p>A <strong>Geologia</strong> pergunta: <em>como</em> a Terra se formou, como as rochas se originaram e como o relevo se transformou ao longo do tempo geológico? Quando e em que condições esse quartzito da calçada se consolidou? Qual a direção de mergulho das camadas que afloram na Serra do Itacolomi ao fundo do horizonte?</p>
+
+    <!-- QUADRO 2 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; As quatro ciências da natureza aplicadas à mineração no entorno de Ouro Preto</div>
+      <table>
+        <thead><tr><th>Ciência</th><th>Objeto central</th><th>Pergunta típica na mina</th><th>Exemplo regional</th></tr></thead>
+        <tbody>
+          <tr><td>Física</td><td>Energia, força, movimento, ondas</td><td>Qual pressão a coluna de rocha exerce sobre o suporte da galeria?</td><td>Cálculo de carga nas vigas da Mina de Passagem, Mariana</td></tr>
+          <tr><td>Química</td><td>Composição e transformação da matéria</td><td>Qual reagente separa o ouro do minério sulfetado com maior eficiência e menor impacto?</td><td>Processo de cianetação no tratamento de minério no Quadrilátero Ferrífero</td></tr>
+          <tr><td>Biologia</td><td>Seres vivos e relações ecológicas</td><td>Como o rejeito da mineração afeta a fauna do Rio Gualaxo?</td><td>Monitoramento ambiental após rompimento de Fundão (Mariana, 2015)</td></tr>
+          <tr><td>Geologia</td><td>Origem e estrutura das rochas e relevo</td><td>Onde está o filão de maior teor e qual é sua profundidade estimada?</td><td>Mapeamento das zonas de cisalhamento no Quadrilátero Ferrífero</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A Física não pergunta <em>de que</em> a pedra é feita &mdash; isso é Química. Não pergunta <em>como</em> ela se formou há 580 milhões de anos &mdash; isso é Geologia. Não pergunta <em>quais fungos crescem nas suas fraturas</em> &mdash; isso é Biologia.</p>
+
+    <p>A Física pergunta: <strong>qual é a força necessária para mover essa pedra? Qual energia foi liberada quando ela tombou? A que velocidade uma onda sísmica atravessa essa formação rochosa?</strong></p>
+
+    <p>E para responder, ela usa Matemática &mdash; não porque seja superior às outras ciências, mas porque o tipo de pergunta que ela faz exige respostas quantitativas, universais e verificáveis.</p>
+
+    <!-- EQUACAO 4 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Segunda Lei de Newton (força resultante)</div>
+      <div class="equacao-formula">F = m &times; a</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>Força resultante sobre o objeto</td><td>N (newton)</td></tr>
+          <tr><td>m</td><td>Massa do objeto</td><td>kg (quilograma)</td></tr>
+          <tr><td>a</td><td>Aceleração produzida pela força resultante</td><td>m/s²</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Para deslocar o bloco de granito de 540 kg com aceleração de 0,5 m/s²:<br>F = 540 &times; 0,5 = <strong>270 N</strong><br><br>Cada ciência responderia diferente ao mesmo objeto: a Química diria &ldquo;o granito é composto de quartzo, feldspato e mica em proporções variáveis&rdquo;. A Geologia diria &ldquo;esse granito consolidou-se há cerca de 580 milhões de anos, durante o Neoproterozoico da Faixa Araçuaí&rdquo;. A Física diz &ldquo;para mover esse granito com essa aceleração, são necessários 270 N de força resultante&rdquo;. Cada resposta é verdadeira. Cada uma pertence a uma ciência diferente. Nenhuma torna as outras dispensáveis.</div>
+    </div>
+
+    <p>Entender onde a Física começa e termina não é uma questão de territorialidade acadêmica. É uma questão prática e urgente: saber qual ferramenta usar poupa tempo, evita erros e salva vidas &mdash; especialmente em ambientes de mineração, onde as quatro ciências trabalham simultaneamente no mesmo metro quadrado de rocha.</p>
+
+    <p>No próximo tópico, Sofia vai descobrir que a própria Física se divide em áreas especializadas &mdash; e que cada grande fenômeno de uma mina tem um endereço dentro dessa divisão.</p>
+  </div>
+
+  <!-- ═══ TOPICO 4 ═══ -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Fenômenos naturais &times; áreas da Física</div>
+
+    <p>Cada fenômeno que Sofia observou naquela manhã tinha um endereço dentro da Física &mdash; e saber esse endereço é o primeiro passo para encontrar a equação certa.</p>
+
+    <!-- Figura 7 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-06-v22.jpg" alt="Ouro Preto vista de cima: raios, chamas, átomos e lentes brotam do mapa como flores invisíveis — a física mora em cada esquina, esperando ser nomeada" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Ouro Preto vista de cima: raios, chamas, átomos e lentes brotam do mapa como flores invisíveis &mdash; a física mora em cada esquina, esperando ser nomeada.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Ouro Preto foi erguida sobre o Quadrilátero Ferrífero, uma das formações geológicas mais ricas do planeta. Os colonizadores do século XVIII não conseguiam explicar os tremores de terra ocasionais, as correntes de ar frio que emergiam das galerias profundas, o brilho dourado das veias de quartzo à luz das tochas. Hoje, cada um desses fenômenos tem um endereço preciso dentro da Física &mdash; e uma equação que o descreve com exatidão. A história da Física é, em parte, a história de dar endereço e nome a fenômenos que antes eram apenas assombrosos ou sobrenaturais.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A Física se organiza em cinco grandes áreas, cada uma especializada em uma classe de fenômenos: Mecânica (movimento, força e equilíbrio), Termologia e Termodinâmica (calor, temperatura e fluxo de energia térmica), Óptica (luz, visão e radiação eletromagnética visível), Eletromagnetismo (campos elétricos, magnéticos e correntes elétricas) e Física Moderna (estrutura atômica, nuclear, relatividade e mecânica quântica). Essa divisão é uma estratégia analítica &mdash; a natureza não respeita as fronteiras entre as áreas, e um fenômeno real frequentemente envolve duas ou mais delas simultaneamente.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Em uma mina, os fenômenos físicos são simultaneamente riscos e recursos. A queda de um bloco de rocha é risco de Mecânica &mdash; calculável pela Segunda Lei de Newton e pela energia cinética. O calor das galerias profundas é risco de Termologia &mdash; monitorável pelo gradiente geotérmico. A corrente elétrica nas bombas de drenagem é recurso de Eletromagnetismo &mdash; dimensionável pela lei de Ohm e pela potência elétrica. O técnico que identifica a área da Física envolvida sabe qual equação aplicar, qual instrumento usar e qual norma consultar &mdash; especialmente a NR-22 (Segurança e Saúde Ocupacional na Mineração).</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Mapa: fenômenos &rarr; áreas da Física</strong></p>
+
+    <p>O professor Julio sacou um pequeno caderno do bolso do blusão e abriu em uma página em branco.</p>
+    <p>&mdash; Vou fazer uma lista &mdash; disse ele. &mdash; Você me diz o que acontece em cada caso.</p>
+    <p>E foi assim que Sofia aprendeu, no calçamento da Praça Tiradentes, que a Física tem cinco grandes divisões &mdash; e que todas elas aparecem simultaneamente em qualquer mina do Quadrilátero Ferrífero.</p>
+
+    <!-- QUADRO 3 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Fenômenos naturais e industriais e suas áreas da Física</div>
+      <table>
+        <thead><tr><th>Fenômeno observado</th><th>O que acontece</th><th>Área da Física</th><th>Grandeza central</th></tr></thead>
+        <tbody>
+          <tr><td>Bloco de rocha caindo em galeria</td><td>Aceleração progressiva, impacto com o chão</td><td>Mecânica (Dinâmica)</td><td>Força, aceleração, energia cinética</td></tr>
+          <tr><td>Tremor de terra no Quadrilátero Ferrífero</td><td>Vibração do solo, ondas propagadas em todas as direções</td><td>Mecânica (Ondas e vibrações)</td><td>Frequência, amplitude, velocidade de onda</td></tr>
+          <tr><td>Calor intenso nas galerias profundas (&gt;&thinsp;500 m)</td><td>Temperatura cresce ~3 °C a cada 100 m de profundidade</td><td>Termologia / Termodinâmica</td><td>Temperatura, fluxo de calor, gradiente geotérmico</td></tr>
+          <tr><td>Bombas elétricas de drenagem</td><td>Energia elétrica convertida em trabalho mecânico sobre a água</td><td>Eletromagnetismo</td><td>Tensão, corrente, potência elétrica</td></tr>
+          <tr><td>Raios X na análise de composição de minério</td><td>Ondas de alta energia penetram a rocha, revelam estrutura interna</td><td>Óptica / Física Moderna</td><td>Comprimento de onda, energia do fóton</td></tr>
+          <tr><td>Radioatividade em rochas uraníferas</td><td>Emissão espontânea de partículas do núcleo atômico</td><td>Física Nuclear (ramo da Física Moderna)</td><td>Atividade radioativa, meia-vida</td></tr>
+          <tr><td>Correia transportadora movendo minério</td><td>Força de tração convertida em deslocamento e potência</td><td>Mecânica (Estática e Dinâmica)</td><td>Força, velocidade, potência mecânica</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Um mesmo evento real pode envolver mais de uma área. Um deslizamento de talude, por exemplo, envolve <em>Mecânica</em> (forças e movimento da rocha), <em>Termodinâmica</em> (energia liberada no impacto) e <em>Ondas</em> (vibração sísmica gerada pela queda). A divisão em áreas é uma estratégia analítica &mdash; não uma divisão rígida da natureza.</p>
+
+    <!-- EQUACAO 5 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Energia cinética de um bloco em movimento</div>
+      <div class="equacao-formula">E<sub>c</sub> = m &times; v² / 2</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>E<sub>c</sub></td><td>Energia cinética</td><td>J (joule)</td></tr>
+          <tr><td>m</td><td>Massa do bloco</td><td>kg</td></tr>
+          <tr><td>v</td><td>Velocidade no instante considerado</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação &mdash; risco de queda em galeria: Um bloco de 540 kg que se desprende do teto e atinge 8 m/s antes do impacto:<br>E<sub>c</sub> = 540 &times; 8² / 2 = 540 &times; 64 / 2 = 17 280 J &asymp; <strong>17,3 kJ</strong><br><br>17 300 joules liberados em fração de segundo &mdash; energia equivalente à colisão de um carro de 1 000 kg a 35 km/h contra uma parede fixa. A Mecânica quantifica esse risco. O plano de suporte de rochas da mina é calculado a partir exatamente desse tipo de número.</div>
+    </div>
+
+    <p>As cinco áreas da Física não são disciplinas separadas &mdash; são janelas diferentes para o mesmo universo físico. Quanto mais janelas o técnico souber abrir, mais completo será o diagnóstico diante de qualquer problema de campo.</p>
+
+    <p>No último tópico do Ato II, Sofia vai descobrir como todas essas janelas se abrem simultaneamente em uma operação mineira real &mdash; e por que a Física não é um obstáculo entre ela e a profissão, mas o mapa que ela vai usar para navegar por ela.</p>
+  </div>
+
+  <!-- ═══ TOPICO 5 ═══ -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; A física na mineração</div>
+
+    <p>Tudo o que Sofia aprendeu naquela manhã &mdash; grandezas, equações, áreas da Física &mdash; converge para um lugar concreto: o chão de uma mina. A linguagem que ela começou a decifrar no calçamento da praça é a mesma que move correias, perfura rochas e drena galerias.</p>
+
+    <!-- Figura 8 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-07-v22.jpg" alt="Cinco máquinas da mineração contam a mesma história em dialetos diferentes — perfurar, transportar, drenar, ventilar, escavar: verbos da linguagem que Sofia aprende" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Cinco máquinas da mineração contam a mesma história em dialetos diferentes &mdash; perfurar, transportar, drenar, ventilar, escavar: verbos da linguagem que Sofia aprende.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O ouro de Minas Gerais financiou as igrejas barrocas de Aleijadinho, os chafarizes de bronze, a própria cidade de Ouro Preto &mdash; e virou o principal produto de exportação do Império Português no século XVIII. Por trás de toda essa riqueza havia técnica &mdash; e técnica é Física aplicada. Os capitães-de-mina e engenheiros coloniais calculavam pressões de água nas galerias, ângulos de estabilidade dos taludes, resistências das vigas de madeira nos suportes subterrâneos. Não conheciam o nome &ldquo;Física Clássica&rdquo; &mdash; mas aplicavam suas leis o tempo todo, com instrumentos rudimentares e conhecimento acumulado ao longo de gerações de mineradores.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A mineração moderna é, em grande medida, Física aplicada em escala industrial. Prospecção geofísica por ondas sísmicas e campos magnéticos, fragmentação de rocha por explosivos (termodinâmica e ondas de choque), transporte de minério por correias e polpas em tubulações (mecânica dos fluidos e potência mecânica), ventilação de galerias (dinâmica dos fluidos e termodinâmica) e estabilidade de taludes (mecânica dos sólidos e critérios de resistência de materiais) &mdash; cada processo obedece a leis físicas identificáveis, calculáveis e verificáveis. A Física não é pano de fundo da mineração: é a engenharia que a sustenta.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O Técnico em Mineração formado pelo IFMG-OP vai trabalhar em ambientes onde a Física não é disciplina escolar: é ferramenta de trabalho diário. Reconhecer os fenômenos físicos em campo, associá-los às equações corretas e tomar decisões baseadas em dados quantitativos é a diferença entre um técnico mediano e um técnico de referência. A NR-22 (Segurança e Saúde Ocupacional na Mineração) exige que projetos de ventilação, drenagem e estabilidade sejam fundamentados em cálculos físicos documentados &mdash; e o técnico precisa compreender esses cálculos para aplicá-los com autonomia.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Cinco processos, cinco leis</strong></p>
+
+    <p>Sofia olhou pela última vez para o monumento ao Tiradentes. O sol já estava alto &mdash; o granito havia perdido o brilho dourado da manhã e voltado ao cinza sereno de sempre. Mas ela agora sabia: aquele cinza pesava 540 kg por bloco. E o que acontecia em qualquer mina do Quadrilátero Ferrífero podia ser descrito com a mesma linguagem que ela havia começado a aprender naquele calçamento.</p>
+
+    <!-- PROCESSO 1 -->
+    <div class="processo-titulo">Processo 1 &mdash; Perfuração e detonação</div>
+    <p>Quando a perfuratriz abre um furo na rocha e o explosivo é detonado, a energia química converte-se em energia mecânica &mdash; uma onda de choque que fragmenta a rocha controladamente. A eficiência da detonação depende, entre outros fatores, da pressão gerada dentro do furo.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 6 &mdash; Pressão de detonação (modelo simplificado de Chapman-Jouguet)</div>
+      <div class="equacao-formula">P = &rho;<sub>e</sub> &times; D² / 8</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>P</td><td>Pressão de detonação</td><td>Pa (pascal)</td></tr>
+          <tr><td>&rho;<sub>e</sub></td><td>Densidade do explosivo</td><td>kg/m³</td></tr>
+          <tr><td>D</td><td>Velocidade de detonação da mistura</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><em>Observação:</em> Esta é uma aproximação de ordem de grandeza para projetos preliminares de desmonte. Parâmetros completos são obtidos por ensaios balísticos certificados e variam conforme o tipo de explosivo, o diâmetro do furo e o tipo de rocha encaixante.</div>
+    </div>
+
+    <!-- PROCESSO 2 -->
+    <div class="processo-titulo">Processo 2 &mdash; Transporte de minério por correia</div>
+    <p>A correia transportadora é o músculo da mina: move toneladas de minério fragmentado do ponto de extração até o britador ou o pátio de estocagem. A potência elétrica necessária depende da força de tração e da velocidade de deslocamento da correia.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 7 &mdash; Potência mecânica de tração</div>
+      <div class="equacao-formula">P = F &times; v</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>P</td><td>Potência mecânica</td><td>W (watt)</td></tr>
+          <tr><td>F</td><td>Força de tração necessária</td><td>N (newton)</td></tr>
+          <tr><td>v</td><td>Velocidade da correia</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Uma correia que exige 4 500 N de tração e se desloca a 2,0 m/s requer:<br>P = 4 500 &times; 2,0 = 9 000 W = <strong>9 kW</strong><br><br>Para dimensionar o motor elétrico, o engenheiro adiciona um fator de segurança e as perdas por atrito nos roletes e polias &mdash; mas a equação base é essa.</div>
+    </div>
+
+    <!-- PROCESSO 3 -->
+    <div class="processo-titulo">Processo 3 &mdash; Drenagem de galerias</div>
+    <p>A água subterrânea se infiltra permanentemente nas galerias. As bombas precisam vencer a pressão da coluna d'água para extrair esse volume. Quanto mais profunda a galeria, maior a pressão a superar.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 8 &mdash; Pressão hidrostática</div>
+      <div class="equacao-formula">P<sub>h</sub> = &rho; &times; g &times; h</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>P<sub>h</sub></td><td>Pressão hidrostática</td><td>Pa</td></tr>
+          <tr><td>&rho;</td><td>Densidade do fluido (água &asymp; 1 000 kg/m³)</td><td>kg/m³</td></tr>
+          <tr><td>g</td><td>Aceleração gravitacional (&asymp; 9,8 m/s²)</td><td>m/s²</td></tr>
+          <tr><td>h</td><td>Profundidade abaixo da superfície livre</td><td>m</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Em uma galeria a 80 m de profundidade:<br>P<sub>h</sub> = 1 000 &times; 9,8 &times; 80 = 784 000 Pa &asymp; 784 kPa &asymp; <strong>7,7 atm</strong><br><br>A bomba precisa ser dimensionada para superar essa pressão mais as perdas de atrito na tubulação. Um erro de cálculo nessa etapa pode significar uma bomba subdimensionada &mdash; e uma galeria alagada em questão de horas.</div>
+    </div>
+
+    <!-- PROCESSO 4 -->
+    <div class="processo-titulo">Processo 4 &mdash; Ventilação de galerias</div>
+    <p>Galerias subterrâneas acumulam gases tóxicos (CO, CO<sub>2</sub>, gases de detonação), calor e poeira respirável. A ventilação forçada repõe ar fresco e mantém as condições dentro dos limites estabelecidos pela NR-22. A vazão de ar é controlada pela geometria da galeria e pela velocidade do fluxo.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 9 &mdash; Vazão volumétrica de ar</div>
+      <div class="equacao-formula">Q = A &times; v</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>Q</td><td>Vazão volumétrica de ar</td><td>m³/s</td></tr>
+          <tr><td>A</td><td>Área da seção transversal da galeria</td><td>m²</td></tr>
+          <tr><td>v</td><td>Velocidade média do ar no trecho</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Uma galeria com seção de 4,0 m² e velocidade de ar de 1,5 m/s tem:<br>Q = 4,0 &times; 1,5 = 6,0 m³/s = <strong>360 m³/min</strong><br><br>A NR-22 estabelece valores mínimos de vazão por trabalhador e por equipamento diesel em operação. O técnico em mineração precisa saber calcular e verificar esses valores como parte de sua rotina de segurança.</div>
+    </div>
+
+    <!-- PROCESSO 5 -->
+    <div class="processo-titulo">Processo 5 &mdash; Estabilidade de taludes</div>
+    <p>Antes de abrir uma mina a céu aberto, engenheiros calculam o ângulo máximo que o talude pode assumir sem deslizar. O fator de segurança compara as forças estabilizadoras com as forças desestabilizadoras &mdash; e seu resultado é a diferença entre uma operação segura e um colapso.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 10 &mdash; Fator de segurança de talude (critério de Mohr-Coulomb simplificado)</div>
+      <div class="equacao-formula">FS = (c + &sigma; &times; tan &phi;) / &tau;</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>FS</td><td>Fator de segurança (adimensional)</td><td>&mdash;</td></tr>
+          <tr><td>c</td><td>Coesão do material rochoso</td><td>Pa</td></tr>
+          <tr><td>&sigma;</td><td>Tensão normal na superfície de ruptura potencial</td><td>Pa</td></tr>
+          <tr><td>&phi;</td><td>Ângulo de atrito interno do material (lê-se &ldquo;fi&rdquo;)</td><td>graus (°)</td></tr>
+          <tr><td>&tau;</td><td>Tensão cisalhante atuante na superfície de ruptura</td><td>Pa</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Critério de aceitação: FS &gt; 1,0 indica talude estável; FS &lt; 1,0 indica ruptura iminente. Projetos em mineração geralmente exigem FS &ge; 1,3 a 1,5, conforme o tipo de obra e as consequências de uma ruptura.</div>
+    </div>
+
+    <p>Sofia olhou para a fachada da Escola de Minas. Através das janelas altas de ferro forjado, ela imaginou os engenheiros que haviam estudado ali &mdash; os que projetaram as minas do Quadrilátero no final do século XIX, os que calcularam as correias e as bombas e os taludes das décadas seguintes. Eles aprenderam essas equações nos mesmos corredores que ela percorreria nos próximos três anos.</p>
+
+    <p>A Física não era um obstáculo entre ela e a profissão. Era o mapa.</p>
+  </div>
+
+</div><!-- fim ato II -->
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>O sol já estava alto quando Sofia voltou ao ponto onde havia começado &mdash; o mesmo calçamento de pedra-sabão, a mesma distância do pedestal de granito, o mesmo pombo que caminhava pelo lado norte da praça como se também estivesse fazendo a sua pesquisa matinal.</p>
+
+  <!-- Figura 9 — IT-08 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T01-IT-08-v22.jpg" alt="Sofia retorna ao ponto de partida, mas a Praça já não é a mesma — quem aprende a linguagem da física nunca mais vê pedra como apenas pedra" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; Sofia retorna ao ponto de partida, mas a Praça já não é a mesma &mdash; quem aprende a linguagem da física nunca mais vê pedra como apenas pedra.</figcaption>
+  </figure>
+
+  <p>Mas ela era outra.</p>
+
+  <p>Não que soubesse mais equações &mdash; sabia dez, que era muito mais do que zero, mas ainda era pouco diante do que viria nos próximos meses. O que havia mudado era uma outra coisa, mais difícil de nomear: ela havia aprendido a <em>ver</em>. O calçamento irregular não era apenas chão &mdash; era um conjunto de forças em equilíbrio, pedras distribuindo carga, juntas de areia absorvendo as variações térmicas entre a madrugada e o meio-dia. O vento que descia a Rua Conde de Bobadela não era apenas frio &mdash; era um fluxo de massa de ar com velocidade mensurável, transportando calor de um ponto a outro segundo as leis da termodinâmica. O sino da Igreja do Carmo, que marcou o fim da hora, não era apenas um som &mdash; era uma onda mecânica com frequência, amplitude e velocidade de propagação, atravessando o ar frio da praça e amortecendo contra as fachadas dos casarões coloniais.</p>
+
+  <p>Cinco janelas se haviam aberto naquela manhã.</p>
+
+  <p>A primeira mostrou que a Física começa com uma observação concreta e uma grandeza mensurável &mdash; e que o granito pesado de meia tonelada era, antes de tudo, uma pergunta: <em>como você sabe quanto pesa?</em> A segunda revelou que toda resposta teórica precisa de um experimento para ser confirmada &mdash; e que a diferença entre o que se calcula e o que se mede tem um nome, um número e consequências reais. A terceira localizou a Física dentro de um ecossistema de ciências que se completam &mdash; e mostrou que saber os limites de cada uma é tão importante quanto dominar os conceitos de uma só. A quarta mapeou os fenômenos do mundo em endereços dentro da Física &mdash; cada um com sua área, suas grandezas, suas equações características. A quinta conectou tudo isso ao chão firme da mineração: cinco processos industriais, cinco leis físicas, uma profissão inteira sustentada por essa linguagem.</p>
+
+  <p>O professor Julio parou ao seu lado, também olhando para o monumento.</p>
+  <p>&mdash; E então?</p>
+  <p>Sofia fechou o caderno.</p>
+  <p>&mdash; Preciso aprender a medir o tempo &mdash; ela disse. &mdash; Com a mesma precisão com que hoje calculei a massa.</p>
+  <p>&mdash; Na próxima trilha &mdash; respondeu o professor &mdash;, vamos aprender exatamente isso. Como os seres humanos aprenderam a medir o tempo com precisão de átomo.</p>
+
+  <p>Ela colocou o caderno na mochila, olhou uma última vez para o granito cinza-escuro do pedestal &mdash; aquele cinza sereno que havia brilhado dourado por trinta segundos ao amanhecer &mdash; e começou a caminhar em direção à escola.</p>
+
+  <p>A régua do mundo estava em suas mãos. Ela ainda não sabia usar todas as suas escalas &mdash; mas havia começado.</p>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CONEXOES INTERDISCIPLINARES ═══════════════════ -->
+<div id="conexoes">
+  <div class="ato-titulo">Conexões Interdisciplinares</div>
+
+  <p><em>Atividades que articulam a Física da Trilha T01 com outras disciplinas do currículo do Técnico em Mineração Integrado ao Ensino Médio. Cada atividade exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- C5 PROTOCOL -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; RCP: Resolução Científica de Problemas</div>
+    <p style="margin-bottom:12px;">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 10 — IT-09 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-09-v22.jpg" alt="Cinco fios partem da Física como raízes de uma árvore antiga — Matemática, Química, Geologia, Português, História: nenhuma ciência caminha sozinha" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco fios partem da Física como raízes de uma árvore antiga &mdash; Matemática, Química, Geologia, Português, História: nenhuma ciência caminha sozinha.</figcaption>
+    </figure>
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>O que está sendo pedido?</strong></td><td>Releia o enunciado. Escreva com suas palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td><strong>Quais são os dados?</strong></td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td><strong>Quais são as hipóteses?</strong></td><td>Declare o que vai assumir (atrito nulo, regime estacionário etc.).</td></tr>
+        <tr><td>4</td><td><strong>Qual é o desenho do problema?</strong></td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td><strong>Quais são as equações?</strong></td><td>Identifique a equação do TT. Isole a variável pedida.</td></tr>
+        <tr><td>6</td><td><strong>Cálculo com unidades</strong></td><td>Substitua os valores. Acompanhe as unidades até o resultado.</td></tr>
+        <tr><td>7</td><td><strong>Análise de resultados</strong></td><td>O resultado faz sentido? Compare com valores típicos.</td></tr>
+        <tr><td>8</td><td><strong>Responda o que foi pedido</strong></td><td>Formule a resposta completa ao que o problema perguntou.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Figura 11 — IT-11 (movido para após etapa 8) -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T01-IT-11-v22.jpg" alt="Livro aberto em 3D — identidade visual da Trilha T01: o livro da natureza com sulcos esculpidos em granito, sem texto legível" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; O livro da natureza se abre em oito etapas &mdash; do enunciado à resposta, o Protocolo C5 ensina a ler cada página com a precisão que a mineração exige.</figcaption>
+    </figure>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- ATIVIDADE 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Matemática &mdash; a geometria irregular do pedestal</div>
+    <p>O pedestal do monumento ao Tiradentes não é um paralelepípedo perfeito: ele tem uma base mais larga, molduras escalonadas e um topo mais estreito antes da estátua. Sofia estimou o bloco principal como 1,0 m &times; 0,5 m &times; 0,4 m &mdash; uma simplificação. Descreva um método matemático para decompor esse volume real em dois ou três sólidos geométricos simples (paralelepípedos, prismas) de modo a obter uma estimativa mais precisa. Apresente sua decomposição com um esboço numerado, calcule cada volume parcial e some ao total. Em seguida, calcule o erro relativo entre sua estimativa composta e a estimativa simples de Sofia (540 kg). Por fim, explique como esse raciocínio de decomposição geométrica é aplicado no cálculo de volume de jazidas minerais com geometria irregular &mdash; por que a subdivisão em blocos simples é a base do método de cubagem de reservas?</p>
+    <div class="conexao">Conexão: Geometria espacial &mdash; decomposição de sólidos compostos &mdash; erro relativo &mdash; cubagem de reservas minerais.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. Interpretação:</span><div class="rcp-step-text">Decompor o pedestal em sólidos simples para estimativa de volume mais precisa que o bloco único de Sofia; calcular erro relativo entre as duas abordagens; explicar aplicação em cubagem de reservas.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Inventário de dados:</span><div class="rcp-step-text">Estimativa de Sofia: c = 1,0 m; l = 0,5 m; h = 0,4 m &rarr; V<sub>Sof</sub> = 0,20 m³; m<sub>Sof</sub> = 540 kg. Sólido 1 (base escalonada): 1,0 &times; 0,6 &times; 0,3 m (valores hipotéticos). Sólido 2 (topo estreito): 0,8 &times; 0,4 &times; 0,1 m. &rho;<sub>granito</sub> = 2 700 kg/m³.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Hipóteses:</span><div class="rcp-step-text">Pedestal decomposto em exatamente dois paralelepípedos; densidade do granito uniforme em todo o volume; dimensões hipotéticas usadas como modelo &mdash; medição real exigiria fita métrica no local.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Representação visual:</span><div class="rcp-step-text">Bloco 1 (1,0 &times; 0,6 &times; 0,3 m) na base sobreposto por Bloco 2 (0,8 &times; 0,4 &times; 0,1 m) no topo; dimensões anotadas em cada face.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Seleção e manipulação:</span><div class="rcp-step-text">Equação (Tópico 1): V = c &times; l &times; h &rarr; V<sub>total</sub> = V<sub>1</sub> + V<sub>2</sub> &rarr; m = &rho; &times; V<sub>total</sub>. E<sub>r</sub> = |m<sub>comp</sub> &minus; m<sub>Sof</sub>| / m<sub>Sof</sub> &times; 100%.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">V<sub>1</sub> = 1,0 &times; 0,6 &times; 0,3 = 0,180 m³. V<sub>2</sub> = 0,8 &times; 0,4 &times; 0,1 = 0,032 m³. V<sub>total</sub> = 0,212 m³ &rarr; m<sub>comp</sub> = 2 700 &times; 0,212 = <strong>572 kg</strong>. E<sub>r</sub> = |572 &minus; 540| / 540 &times; 100% &asymp; <strong>5,9%</strong>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Um erro de 5,9% indica que o bloco único subestima a massa real. Na cubagem de jazidas &mdash; onde blocos representam milhões de toneladas &mdash; um desvio dessa magnitude pode distorcer contratos de lavra e estimativas de faturamento; daí a subdivisão em blocos menores (método de blocos de krigagem) ser padrão na indústria mineral.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A decomposição do pedestal em dois paralelepípedos resultou em massa estimada de 572 kg (E<sub>r</sub> &asymp; 5,9% em relação à estimativa simples de 540 kg). A subdivisão em sólidos menores aproxima melhor o volume real &mdash; princípio que fundamenta o método de cubagem de reservas minerais por blocos de krigagem.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Química &mdash; densidade como impressão digital do mineral</div>
+    <p>A densidade do granito (&rho; &asymp; 2 700 kg/m³) depende da composição mineralógica exata. Usando os dados a seguir &mdash; quartzo: &rho; = 2 650 kg/m³; feldspato potássico: &rho; = 2 560 kg/m³; biotita: &rho; = 3 050 kg/m³ &mdash; calcule a densidade média de um granito composto por 40% de quartzo, 45% de feldspato e 15% de biotita (use média aritmética ponderada pelas frações volumétricas). Compare o resultado com o valor de 2 700 kg/m³ utilizado por Sofia e calcule o erro relativo. Agora avalie: em que situações da mineração a composição mineralógica precisa ser determinada com precisão <em>antes</em> de qualquer cálculo físico de massa? Cite dois exemplos concretos em que um erro de composição levaria a uma decisão operacional incorreta.</p>
+    <div class="conexao">Conexão: Química mineral &mdash; composição mineralógica &mdash; média ponderada &mdash; propagação de erro em estimativas de campo.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. Interpretação:</span><div class="rcp-step-text">Calcular densidade média ponderada do granito a partir das frações mineralógicas; comparar com o valor de referência de Sofia; avaliar impacto operacional de erro na composição.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Inventário de dados:</span><div class="rcp-step-text">f<sub>quartzo</sub> = 0,40; &rho;<sub>q</sub> = 2 650 kg/m³. f<sub>feldspato</sub> = 0,45; &rho;<sub>f</sub> = 2 560 kg/m³. f<sub>biotita</sub> = 0,15; &rho;<sub>b</sub> = 3 050 kg/m³. &rho;<sub>referência</sub> = 2 700 kg/m³.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Hipóteses:</span><div class="rcp-step-text">Mistura volumétrica linear (frações aditivas e complementares); granito mineralogicamente homogêneo; frações somam exatamente 1,00.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Representação visual:</span><div class="rcp-step-text">Barra horizontal dividida em três segmentos proporcionais: 40% quartzo | 45% feldspato | 15% biotita &mdash; a biotita tem a maior densidade individual e puxa a média para cima.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Seleção e manipulação:</span><div class="rcp-step-text">&rho;<sub>calc</sub> = &Sigma;(f<sub>i</sub> &times; &rho;<sub>i</sub>) = f<sub>q</sub> &times; &rho;<sub>q</sub> + f<sub>f</sub> &times; &rho;<sub>f</sub> + f<sub>b</sub> &times; &rho;<sub>b</sub>. E<sub>r</sub> = |&rho;<sub>calc</sub> &minus; &rho;<sub>ref</sub>| / &rho;<sub>ref</sub> &times; 100%.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">&rho;<sub>calc</sub> = (0,40 &times; 2 650) + (0,45 &times; 2 560) + (0,15 &times; 3 050) = 1 060 + 1 152 + 457,5 = <strong>2 669,5 &asymp; 2 670 kg/m³</strong>. E<sub>r</sub> = |2 670 &minus; 2 700| / 2 700 &times; 100% &asymp; <strong>1,1%</strong>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Um E<sub>r</sub> de 1,1% confirma que 2 700 kg/m³ é boa aproximação para granito típico. Dois exemplos de risco operacional: (1) em flotação de minério sulfetado, onde a densidade determina o tempo de residência na polpa, uma variação de 1% pode reduzir a eficiência de separação; (2) no dimensionamento de correias transportadoras, subestimar a densidade implica motor subdimensionado e parada não prevista da planta.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A densidade média ponderada do granito é 2 670 kg/m³ (E<sub>r</sub> &asymp; 1,1%), confirmando 2 700 kg/m³ como aproximação adequada. A composição mineralógica precisa é crítica em flotação (tempo de residência na polpa) e dimensionamento de correias (potência do motor).</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Geologia &mdash; ondas sísmicas como tomografia da Terra</div>
+    <p>A prospecção geofísica por refração sísmica usa ondas mecânicas (área da Física: Mecânica das Ondas) para mapear camadas de rocha sem perfurar o terreno. A velocidade de propagação varia com o tipo de rocha: granito &asymp; 5 500 m/s; quartzito &asymp; 6 000 m/s; solo inconsolidado &asymp; 600 m/s. (a) Calcule o tempo que uma onda leva para percorrer 120 m em granito e em solo inconsolidado. (b) Explique como essa diferença de tempo de chegada permite identificar a presença e a profundidade de cada camada &mdash; qual o raciocínio físico por trás da interpretação? (c) Avalie: se o sinal sísmico registrado no campo chegou 0,18 s após a detonação e a distância entre a fonte e o receptor era de 108 m, que tipo de material provavelmente ocupa o subsolo nesse ponto? Justifique com cálculo.</p>
+    <div class="conexao">Conexão: Geologia estrutural &mdash; prospecção geofísica &mdash; velocidade de propagação de ondas mecânicas &mdash; raciocínio inverso.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. Interpretação:</span><div class="rcp-step-text">Calcular tempo de propagação de ondas sísmicas em granito e solo; explicar como a diferença de tempo de chegada revela a estrutura do subsolo; identificar material rochoso a partir de tempo registrado em campo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Inventário de dados:</span><div class="rcp-step-text">d = 120 m (itens a e b); v<sub>granito</sub> = 5 500 m/s; v<sub>solo</sub> = 600 m/s. Item c: t = 0,18 s; d = 108 m.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Hipóteses:</span><div class="rcp-step-text">Propagação retilínea das ondas (modelo de raio sísmico); interface horizontal entre camadas; velocidade uniforme em cada camada; o primeiro sinal registrado percorre o caminho de maior velocidade.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Representação visual:</span><div class="rcp-step-text">S &mdash;&mdash;d = 120 m&mdash;&mdash; R (linha de superfície); seta indicando onda penetrando o subsolo; caixas &ldquo;Granito (5 500 m/s)&rdquo; e &ldquo;Solo inconsolidado (600 m/s)&rdquo; em profundidades distintas.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Seleção e manipulação:</span><div class="rcp-step-text">Equação cinemática: t = d/v &rarr; para identificação inversa (item c): v = d/t.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">t<sub>granito</sub> = 120 / 5 500 &asymp; <strong>0,022 s = 22 ms</strong>. t<sub>solo</sub> = 120 / 600 = <strong>0,200 s = 200 ms</strong> &rarr; diferença detectável: 178 ms. Item c: v = 108 / 0,18 = <strong>600 m/s</strong> &rarr; solo inconsolidado.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">A diferença de 178 ms é claramente detectável por geofones modernos (resolução &lt; 1 ms). A identificação v = 600 m/s &rarr; solo inconsolidado é coerente com zonas de alteração superficial frequentes no Quadrilátero Ferrífero. Na prática, o técnico recomendaria sondagem adicional antes de qualquer escavação &mdash; solo inconsolidado próximo à superfície indica risco de subsidência e instabilidade de talude.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">O sinal com v = 600 m/s indica solo inconsolidado. A diferença de tempo de propagação (178 ms entre granito e solo) é detectável por geofones modernos e permite mapear a estrutura do subsolo sem perfuração &mdash; base da prospecção geofísica por refração sísmica.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Língua Portuguesa &mdash; a metáfora como instrumento científico</div>
+    <p>O título deste Tema 1 é <em>&ldquo;A Régua do Mundo: Medidas, Padrões e Escalas&rdquo;</em>. A expressão &ldquo;régua do mundo&rdquo; é uma metáfora &mdash; ela compara a Física a um instrumento de medição universal. (a) Identifique no texto do Ato I mais duas metáforas ou comparações usadas para tornar conceitos físicos acessíveis. Para cada uma: identifique o recurso linguístico e explique o conceito físico que ele comunica. (b) Avalie se cada metáfora é precisa ou se poderia induzir a uma compreensão incorreta do conceito &mdash; cite o risco específico. (c) Proponha uma metáfora original, não presente no texto, para explicar o conceito de <em>erro relativo</em> a um estudante de quinze anos sem formação técnica prévia. Explique por que sua metáfora é adequada e quais seriam seus limites de validade como analogia científica.</p>
+    <div class="conexao">Conexão: Língua Portuguesa &mdash; análise de recursos argumentativos &mdash; figuras de linguagem &mdash; comunicação científica &mdash; limites das analogias.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. Interpretação:</span><div class="rcp-step-text">Identificar duas metáforas do Ato I e analisar sua precisão conceitual; propor e justificar metáfora original para erro relativo dirigida a estudante de 16 anos.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Inventário de dados:</span><div class="rcp-step-text">Texto do Ato I disponível; definição de erro relativo: E<sub>r</sub> = |V<sub>m</sub> &minus; V<sub>t</sub>| / V<sub>t</sub> &times; 100%. Público-alvo: estudante de 16 anos sem formação técnica prévia.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Hipóteses:</span><div class="rcp-step-text">Metáfora eficaz: concreta, familiar ao público, preserva a estrutura relacional do conceito (comparação entre dois valores numéricos); metáfora ineficaz: induz confusão sobre magnitude, direção ou causalidade.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Representação visual:</span><div class="rcp-step-text">Tabela de análise &mdash; | Metáfora | Conceito físico comunicado | Risco de má interpretação |</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Seleção e manipulação:</span><div class="rcp-step-text">Análise qualitativa &mdash; critérios: (i) fidelidade conceitual; (ii) acessibilidade ao público; (iii) limite de validade declarado explicitamente.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Análise:</span><div class="rcp-step-text">Metáfora 1 &mdash; <em>&ldquo;os veios de quartzo no granito acendiam&rdquo;</em>: comunica variação de intensidade luminosa por reflexão direcional; risco: sugere que a pedra emite luz (incorreto &mdash; é reflexão especular, não emissão).<br>Metáfora 2 &mdash; <em>&ldquo;a praça como laboratório sem paredes&rdquo;</em>: comunica observação sistemática de fenômenos físicos em ambiente real; risco: laboratório implica controle rigoroso de variáveis, ausente em espaço aberto.<br>Metáfora proposta para E<sub>r</sub>: <em>&ldquo;Se você calculou que a viagem ia demorar 10 minutos e demorou 9, seu erro foi de 10% &mdash; não importa se chegou antes ou depois, o que conta é a diferença em relação ao previsto.&rdquo;</em> Preserva a estrutura |diferença|/valor esperado &times; 100%.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">A metáfora do tempo de deslocamento é eficaz porque adolescentes têm experiência concreta com estimativas de tempo; limite de validade: não captura a assimetria de consequências entre subestimar e superestimar (E<sub>r</sub> trata ambos pelo módulo), o que pode gerar dúvidas em contextos de engenharia onde a direção do erro importa &mdash; limite que deve ser declarado ao apresentar a metáfora.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Duas metáforas identificadas (reflexão especular como &ldquo;acender&rdquo; e praça como &ldquo;laboratório sem paredes&rdquo;) comunicam conceitos físicos com riscos de simplificação declaráveis. A metáfora proposta para erro relativo (tempo de viagem) preserva a estrutura matemática |diferença|/valor esperado &times; 100%, com o limite de não capturar a assimetria de consequências.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e História &mdash; a Física colonial da bateia</div>
+    <p>O ouro colonial era separado da areia de rio por lavagem em bateia &mdash; uma técnica que usa a diferença de densidades entre os materiais. O ouro tem densidade &rho; &asymp; 19 300 kg/m³; a areia de rio típica tem &rho; &asymp; 1 600 kg/m³. (a) Calcule a razão entre as duas densidades e explique fisicamente por que essa diferença faz o ouro depositar no fundo e a areia ser arrastada pela corrente d'água &mdash; use o conceito de empuxo (Princípio de Arquimedes) na explicação. (b) Avalie: os garimpeiros coloniais do século XVII aplicavam uma lei física &mdash; o Princípio de Arquimedes &mdash; sem nunca tê-la estudado formalmente. Isso significa que faziam ciência? Ou apenas técnica? Justifique à luz do que você aprendeu sobre método científico (observação, hipótese, experimento, revisão) nesta trilha. (c) Proponha um experimento simples, realizável em sala de aula com materiais de baixo custo, que demonstre o princípio da separação por densidade &mdash; e explique como ele seria usado para introduzir o Princípio de Arquimedes a uma turma que ainda não o estudou formalmente.</p>
+    <div class="conexao">Conexão: História de Minas Gerais &mdash; mineração colonial &mdash; Princípio de Arquimedes &mdash; epistemologia da ciência &mdash; design experimental.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. Interpretação:</span><div class="rcp-step-text">Calcular razão de densidades ouro/areia; explicar fisicamente a separação por empuxo; avaliar epistemologicamente se garimpeiros faziam ciência ou técnica; propor experimento didático de baixo custo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Inventário de dados:</span><div class="rcp-step-text">&rho;<sub>ouro</sub> = 19 300 kg/m³; &rho;<sub>areia</sub> = 1 600 kg/m³; &rho;<sub>água</sub> = 1 000 kg/m³; g = 9,8 m/s².</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Hipóteses:</span><div class="rcp-step-text">Grãos de ouro e areia imersos em água na bateia; separação por diferença de peso aparente (empuxo); temperatura constante; grãos de tamanho similar &mdash; para isolar o efeito da densidade.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Representação visual:</span><div class="rcp-step-text">Diagrama de forças em um grão submerso: F<sub>peso</sub> (= &rho;<sub>objeto</sub> &times; g &times; V) para baixo e F<sub>empuxo</sub> (= &rho;<sub>água</sub> &times; g &times; V) para cima; força líquida proporcional a (&rho;<sub>objeto</sub> &minus; &rho;<sub>água</sub>) &times; g &times; V &mdash; quanto maior &rho;<sub>objeto</sub>, maior a tendência a depositar no fundo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Seleção e manipulação:</span><div class="rcp-step-text">Razão de densidades: &rho;<sub>ouro</sub> / &rho;<sub>areia</sub>. Peso aparente de cada grão: F<sub>ap</sub> = (&rho;<sub>objeto</sub> &minus; &rho;<sub>água</sub>) &times; g &times; V. Razão dos pesos aparentes: (&rho;<sub>ouro</sub> &minus; &rho;<sub>água</sub>) / (&rho;<sub>areia</sub> &minus; &rho;<sub>água</sub>).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">Razão de densidades: 19 300 / 1 600 &asymp; <strong>12,1</strong> &mdash; o ouro é 12 vezes mais denso que a areia. Peso aparente do ouro: (19 300 &minus; 1 000) = 18 300 kg/m³ (proporcional). Peso aparente da areia: (1 600 &minus; 1 000) = 600 kg/m³. Razão dos pesos aparentes: 18 300 / 600 = <strong>30,5</strong> &mdash; o ouro deposita ~30 vezes mais facilmente.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">A razão 30,5 confirma a alta eficiência da bateia. Garimpeiros coloniais praticavam <em>técnica</em>, não ciência formal: observavam e repetiam o procedimento, mas sem hipótese explícita registrada, sem experimento controlado e sem ciclo de revisão &mdash; três pilares do método científico ausentes. Experimento didático: colocar areia, grãos de chumbo (&rho; &asymp; 11 300 kg/m³) e pedaços de isopor num balde com água e agitar &mdash; o chumbo deposita no fundo, o isopor flutua, a areia fica na posição intermediária &rarr; analogia direta com a bateia, sem ouro real, para introduzir o Princípio de Arquimedes.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A razão de pesos aparentes (30,5) explica a alta eficiência da bateia colonial. Garimpeiros praticavam técnica, não ciência formal &mdash; ausência de hipótese explícita, experimento controlado e ciclo de revisão. O experimento didático com chumbo, areia e isopor demonstra o princípio de separação por densidade em sala de aula sem necessidade de ouro real.</div></div>
+    </details>
+  </div>
+
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIENCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+
+  <div class="ciencia-arte-obra"><strong>Poesia:</strong> <em>A Máquina do Mundo</em> &mdash; Carlos Drummond de Andrade, <em>Claro Enigma</em> (1951)</div>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:24px; font-size:1.1rem;">
+    &ldquo;E como eu palmilhasse vagamente<br>
+    uma estrada de Minas, pedregosa&hellip;&rdquo;
+  </blockquote>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:16px; font-size:1.05rem;">
+    &ldquo;a máquina do mundo, repelida,<br>
+    se foi miudamente recompondo,<br>
+    enquanto eu, avaliando o que perdera,<br>
+    seguia vagaroso, de mãos pensas&rdquo;
+  </blockquote>
+
+  <!-- Figura 12 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T01-IT-10-v22.jpg" alt="A Máquina do Mundo — composição gráfica inspirada no poema de Drummond com paisagem mineira" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 12</span> &mdash; Granito, equações e poesia &mdash; a máquina do mundo se abre para quem ousa medir.</figcaption>
+  </figure>
+
+  <p style="margin-top:20px;"><strong>Análise da obra</strong></p>
+
+  <p>A linguagem da Física e a linguagem da poesia perseguem o mesmo objetivo por caminhos opostos: nomear o que existe. Drummond, em <em>A Máquina do Mundo</em>, descreve um caminhante que encontra, numa estrada de Minas, a revelação completa do funcionamento do universo &mdash; e recusa. O poema não é sobre Física; é sobre o peso de compreender. Mas a estrutura é a mesma: um observador diante de um fenômeno, uma linguagem que tenta capturá-lo, e a consciência de que toda representação é parcial.</p>
+
+  <p style="margin-top:16px;"><strong>Análise da trilha</strong></p>
+
+  <p>Sofia, diante do pedestal de granito, fez exatamente o que o caminhante de Drummond fez &mdash; olhou, nomeou, mediu. A diferença é que ela não recusou. Aceitou a equação como quem aceita um poema: sabendo que é uma aproximação, não a coisa em si.</p>
+
+  <div class="footnote">
+    <strong>Carlos Drummond de Andrade</strong> (Itabira do Mato Dentro, 1902 &mdash; Rio de Janeiro, 1987) foi poeta, contista e cronista brasileiro, considerado o maior poeta do país no século XX. Funcionário público por três décadas, publicou mais de 30 livros de poesia e prosa. Sua obra percorre o itinerário sentimental das Minas Gerais à metrópole carioca, do particular ao universal. <em>Claro Enigma</em> (1951), que contém <em>A Máquina do Mundo</em>, representa sua fase metafísica &mdash; a poesia como instrumento de investigação do real, tema que ecoa diretamente na proposta da Trilha T01.
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ REFERENCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo" style="font-size: 1.4rem; color: var(--azul);">Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:16px; font-size: 1.4rem; color: var(--azul);">Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+</div>
+
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T01 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T01-TT-v20';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

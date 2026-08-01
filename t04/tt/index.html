@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T04 · O SI e a Metrologia no Brasil — Texto Temático v11</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+.ctx-cotidiano .contexto-label { color: var(--verde); }
+.contexto p { font-size: 1.1rem; margin-bottom: 8px; }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .conteudo { padding: 0 14px; }
+  .toc-sidebar { width: 260px; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esse texto temático foi elaborado com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; Portal colonial da Mina da Passagem ao entardecer &mdash; Sofia diante da galeria que esconde o metro e o Pascal</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; Régua, balança, cronômetro &mdash; as três grandezas mecânicas que sustentam a metrologia da mina</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; Prof. Julio entre dois manômetros &mdash; PSI ou Pascal, a emergência exige escolha</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; Trio na plataforma de embarque &mdash; trilhos de 315 metros em perspectiva profunda</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Artesão colonial e metro-padrão &mdash; do antebraço à constante da natureza</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; Sete esferas luminosas &mdash; as grandezas fundamentais do SI em órbita subterrânea</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Pedro, paquímetro, minério &mdash; da granulometria ao micrômetro numa escala de prefixos</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Sofia com dois manômetros &mdash; a conversão que pode evitar ou causar uma emergência</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Lucas e o laudo &mdash; a grafia correta como gramática da segurança</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; Trio ascendendo no trole &mdash; cento e vinte metros de quartzo entre o lago e o céu</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco conexões partem do SI &mdash; Química, Matemática, Português, História, Segurança</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; Profeta de Aleijadinho e esferas SI &mdash; proporção é medida, medida é padrão</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Erik Satie &mdash; Gymnopédies &amp; Gnossiennes</div>
+  <div class="musica-detail">1888 &middot; piano solo &middot; ~45 min</div>
+  <a class="musica-link" href="https://music.youtube.com/search?q=Erik+Satie+Gymnopedies+Gnossiennes" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T04 &mdash;
+O SI e a Metrologia no Brasil /
+Julio Cesar Silva Azevedo;
+colaboração Felipe Beato. &mdash; 1. ed.
+&mdash; Ouro Preto, MG: Instituto
+Federal de Minas Gerais &mdash; Campus
+Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T04)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Sistema Internacional de
+   Unidades.
+4. Metrologia.
+5. Inmetro.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epigrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Topico 1 &mdash; MKS x SI</a>
+  <a href="#topico-2" class="toc-topico">Topico 2 &mdash; As 7 Grandezas Fundamentais</a>
+  <a href="#topico-3" class="toc-topico">Topico 3 &mdash; Prefixos e Submultiplos</a>
+  <a href="#topico-4" class="toc-topico">Topico 4 &mdash; Unidades Nao-SI</a>
+  <a href="#topico-5" class="toc-topico">Topico 5 &mdash; Inmetro, Grafia e Pronuncia</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Conexoes Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciencia e Arte</a>
+  <a href="#referencias" class="toc-extra">Referencias</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T04-IT-00.jpg" alt="Portal colonial da Mina da Passagem ao entardecer — trilhos convergindo para a entrada da galeria">
+  <div class="capa-label">Trilha de Aprendizagem 04</div>
+  <div class="capa-titulo">O SI e a Metrologia<br>no Brasil</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T04</span> &middot; O SI e a Metrologia no Brasil</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~35 min de leitura</div>
+</header>
+
+<!-- Figura 1 — IT-11 -->
+<figure class="figura">
+  <img class="figura-img" src="../_imagens/_web/T04-IT-11-v9.jpg" alt="Balança de precisão em silhueta minimalista com arco de sete esferas luminosas das 7 grandezas fundamentais do SI; símbolo atemporal da metrologia" loading="lazy">
+  <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; Régua, balança, cronômetro &mdash; as três grandezas mecânicas que sustentam a metrologia da mina</figcaption>
+</figure>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O sistema métrico é para todos os povos, para todos os tempos.&rdquo;</blockquote>
+  <div class="autor">&mdash; Nicolas de Condorcet (1743&ndash;1794)</div>
+  <div class="nota"><strong>Nicolas de Condorcet</strong> (1743&ndash;1794). Matemático, filósofo e político francês, um dos principais intelectuais do Iluminismo. Participou ativamente da Revolução Francesa e foi um dos arquitetos intelectuais do sistema métrico decimal. A citação é adaptada do <em>Rapport et projet de décret sur l&rsquo;organisation du corps des ingénieurs</em> (1791), documento que fundamentou a adoção do metro como padrão universal.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>A tarde caía sobre a Rodovia dos Inconfidentes quando o trole começou a descer. Pedro apertou a barra de ferro com as duas mãos &mdash; não de medo, mas de atenção. Os trilhos tinham exatamente 315&nbsp;metros de extensão e desciam até 120&nbsp;metros abaixo da superfície. Ele sabia disso porque tinha lido a placa na entrada da Mina da Passagem, ali no distrito de Passagem de Mariana, a meio caminho entre Ouro Preto e Mariana pela BR-356. O cabo de aço que puxava o trole &mdash; movido por uma máquina pneumática com quase duzentos anos de idade &mdash; vibrava sob os pés como uma corda de violão. O que Pedro não sabia ainda era o que aquele número &mdash; 120 metros &mdash; realmente significava no contexto de uma emergência.</p>
+
+  <p>Sofia olhava para os lados enquanto o ar esfriava de repente. A parede da galeria passava a centímetros do seu rosto, toda em quartzo branco cruzado por filões cor de mel. Ela tentou calcular a velocidade do trole pela sensação do vento, mas desistiu &mdash; sem instrumentos, era adivinhação, não ciência. Lucas, sentado à sua esquerda, estava em silêncio. Olhava para a pedra como se fosse lê-la: aquele quartzo tinha sido formado há centenas de milhões de anos, e agora três estudantes do técnico em mineração do IFMG-OP desciam por dentro dele como quem atravessa um livro de pedra.</p>
+
+  <p>No fundo da galeria, onde os trilhos terminavam, o lago subterrâneo se abria em azul profundo &mdash; temperatura da água estável em torno de 21&deg;C o ano inteiro, iluminado por refletores que revelavam a transparência de uma água que nunca havia visto o sol. Prof. Julio esperava na plataforma de chegada, ao lado de uma bancada de metal improvisada. Em cima da bancada: dois instrumentos de medição. Um com escala marcada em <em>feet</em>. Outro, em <em>metros</em>. Eram idênticos na função &mdash; ambos mediam pressão de água em galerias submersas &mdash; mas completamente diferentes na linguagem.</p>
+
+  <p>&ldquo;Imaginem que há uma emergência&rdquo;, disse Prof. Julio, sem preâmbulo. A voz ecoou nas paredes de quartzo. &ldquo;Uma bomba de drenagem parou de funcionar. Vocês têm trinta segundos para ler o nível crítico da água neste instrumento e informar ao supervisor na superfície. Qual dos dois vocês pegam?&rdquo;</p>
+
+  <p>Pedro olhou para os dois aparelhos. Um tinha escala em <em>feet per square inch</em>, o outro em <em>Pascal</em> e <em>bar</em>. Ele sabia o que era <em>Pascal</em> &mdash; tinha estudado na T03. Mas a escala em <em>psi</em> era uma sequência de números sem significado imediato para ele.</p>
+
+  <p>&ldquo;O de metros&rdquo;, disse Pedro, com a certeza de quem pega o martelo certo na oficina. &ldquo;Porque é o que eu entendo.&rdquo;</p>
+
+  <p>&ldquo;E se o único disponível fosse o outro?&rdquo;, perguntou Prof. Julio.</p>
+
+  <p>Silêncio. O lago refletia a luz dos refletores em ondas suaves. Lá no fundo, além do alcance visual, estavam os 240 metros restantes de profundidade &mdash; quilômetros de galerias inundadas que só a escuridão conhecia.</p>
+
+  <p>&ldquo;Então eu precisaria saber converter&rdquo;, disse Sofia, devagar. &ldquo;E para converter, eu precisaria entender de onde vieram essas unidades. Por que existem duas formas de medir a mesma coisa.&rdquo;</p>
+
+  <p>Lucas olhou para o lago. &ldquo;E quem pagou o custo de não ter esse padrão unificado&rdquo;, acrescentou ele, com a tranquilidade de quem já sabe que a história está sempre embutida nos números.</p>
+
+  <p>Era exatamente isso. A falta de uma linguagem comum de medidas não é uma abstração acadêmica: é uma falha que, ao longo da história, custou vidas, dinheiro e tempo. E a resposta da humanidade para esse problema foi o Sistema Internacional de Unidades &mdash; o SI. Aquele dia na Mina da Passagem começava com uma pergunta simples sobre dois instrumentos. Mas a resposta precisava de cinco tópicos.</p>
+
+  <!-- Figura 2 — IT-02 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T04-IT-02-v9.jpg" alt="Prof. Julio orquestrando o momento pedagógico central diante de dois manômetros; Pedro, Sofia e Lucas ao redor; lago azul ao fundo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; Prof. Julio entre dois manômetros &mdash; PSI ou Pascal, a emergência exige escolha.</figcaption>
+  </figure>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar no Google Maps</div>
+
+    <!-- Figura 3 — IT-01 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-01-v9.jpg" alt="Trio aguardando na plataforma de embarque da Mina da Passagem; portal colonial com trilhos em perspectiva profunda; luz dourada do entardecer" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; Trio na plataforma de embarque &mdash; trilhos de 315 metros em perspectiva profunda.</figcaption>
+    </figure>
+
+    <p>A Mina da Passagem existe exatamente como descrita acima &mdash; é a maior mina de ouro aberta à visitação do mundo, com trole puxado por cabo de aço, 315&nbsp;metros de percurso e um lago subterrâneo real a 120&nbsp;metros de profundidade. Fica no distrito de Passagem de Mariana, na Rua Eugênio Eduardo Rapallo, 192 &mdash; a cerca de 4&nbsp;km de Mariana e pouco mais de 7&nbsp;km de Ouro Preto pela BR-356 (Rodovia dos Inconfidentes).</p>
+    <p style="margin-top:10px;"><strong>Como acessar e usar o Street View:</strong> 1. Acesse o link abaixo &mdash; ou abra o Google Maps e pesquise por <strong>&ldquo;Mina da Passagem, Passagem de Mariana, MG&rdquo;</strong>. 2. Clique no ícone do <strong>boneco amarelo</strong> (Pegman) no canto inferior direito do mapa e arraste-o até a rua ou local desejado. 3. Solte o boneco sobre a rua destacada em azul &mdash; você entrará no modo <strong>Street View</strong>. 4. Use as <strong>setas</strong> na tela para caminhar e o <strong>mouse</strong> (ou o dedo, no celular) para girar a câmera 360°. 5. Procure o portal de entrada da mina em pedra e a plataforma de embarque do trole &mdash; os mesmos elementos descritos no Ato I.</p>
+    <p style="margin-top:10px;">Entre Ouro Preto e Mariana há cerca de 13 quilômetros pela Rodovia dos Inconfidentes (BR-356). A Mina da Passagem fica a meio caminho, no distrito que leva o seu nome.</p>
+    <p style="margin-top:14px;"><a href="https://maps.app.goo.gl/Tq4JXQBNA5djPPLdA" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ═══ TOPICO 1 ═══ -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; MKS &times; SI: a evolução do sistema de medidas</div>
+
+    <p>Antes de decidir qual instrumento confiar numa emergência, o trio precisava entender de onde vinham essas duas linguagens de medida &mdash; e por que elas ainda coexistem no chão de uma mina brasileira.</p>
+
+    <!-- Figura 4 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-03-v9.jpg" alt="Composição editorial: artesão colonial medindo tecido com o antebraço à esquerda; metro-padrão de platina nos Arquivos Nacionais de Paris à direita" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Artesão colonial e metro-padrão &mdash; do antebraço à constante da natureza.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Antes de 1790, cada região da Europa usava suas próprias unidades de medida: o <em>pé</em> variava de 28&nbsp;cm na França a 33&nbsp;cm na Alemanha; a <em>braça</em> brasileira colonial equivalia a 2,2&nbsp;metros, mas diferia da portuguesa. Em Minas Gerais, no século XVIII, o ouro era pesado em <em>oitavas</em> (3,59&nbsp;g) e <em>marcos</em> (229,5&nbsp;g) &mdash; unidades que confundiam negociantes e favoreciam fraudes nas Casas de Fundição. A Revolução Francesa de 1789 criou o impulso político para uma reforma radical: em 1791, o matemático Condorcet propôs um sistema baseado na natureza, e em 1799 o primeiro metro-padrão de platina foi depositado nos Arquivos Nacionais da França.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O sistema MKS (Metro-Quilograma-Segundo), formalizado no início do século XX, foi o precursor direto do SI. Enquanto o MKS cobria a mecânica clássica, faltavam unidades coerentes para eletricidade, temperatura e quantidade de substância. Em 1960, a 11.<sup>a</sup> Conferência Geral de Pesos e Medidas (CGPM) adotou o <em>Système International d&rsquo;Unités</em> &mdash; o SI &mdash; como extensão do MKS com 7 grandezas fundamentais, tornando-se o único sistema com cobertura universal das áreas da Física.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração brasileira moderna, a NR-22 (Norma Regulamentadora de Segurança e Saúde Ocupacional na Mineração) exige que todos os instrumentos de medição utilizados em operações subterrâneas sejam calibrados e identificados com suas unidades SI. Quando Pedro se deparou com o instrumento em <em>psi</em> na galeria, ele estava diante de um problema real: equipamentos importados dos Estados Unidos, que não adotaram o SI integralmente, chegam às minas brasileiras com escalas em unidades imperiais &mdash; e a conversão errada pode custar uma bomba queimada, ou pior.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Do pé ao metro: uma história de convenções</strong></p>
+
+    <p>Pedro, de volta na bancada com os dois instrumentos, perguntou ao Prof. Julio: &ldquo;Mas por que ainda existem unidades fora do SI? Se o sistema métrico foi criado em 1799, não deveriam ter sumido há duzentos anos?&rdquo;</p>
+
+    <p>A resposta veio na forma de uma lista mental: os Estados Unidos ainda usam polegadas, pés e milhas no cotidiano. A aviação internacional mede altitude em pés (<em>feet</em>). A pressão de pneus é dada em <em>psi</em> no Brasil todo. O <em>screen</em> de televisão é vendido em polegadas. &ldquo;É que sistemas de medida são também sistemas culturais&rdquo;, disse Prof. Julio. &ldquo;Mudar unidades é como mudar língua &mdash; as pessoas resistem.&rdquo;</p>
+
+    <p>O sistema MKS nasceu da necessidade de coerência na mecânica: se você mede força em Newton (N), massa em quilograma (kg) e aceleração em metros por segundo ao quadrado (m/s<sup>2</sup>), a equação F = m&middot;a funciona sem fator de conversão. Essa propriedade &mdash; chamada <em>coerência</em> &mdash; é o que torna o SI especialmente poderoso.</p>
+
+    <!-- EQUACAO 1 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Segunda Lei de Newton (SI coerente)</div>
+      <div class="equacao-formula">F = m &middot; a</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>Força</td><td>N (Newton = kg&middot;m&middot;s<sup>&minus;2</sup>)</td></tr>
+          <tr><td>m</td><td>Massa</td><td>kg (quilograma)</td></tr>
+          <tr><td>a</td><td>Aceleração</td><td>m/s<sup>2</sup> (metro por segundo ao quadrado)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Bomba de drenagem de 80&nbsp;kg acelerada a 2&nbsp;m/s<sup>2</sup>: F = 80 &times; 2 = <strong>160</strong>&nbsp;N.</div>
+    </div>
+
+    <p>O percurso histórico vai do caos medieval das unidades regionais ao MKS industrial do século XX, e deste ao SI de 1960 &mdash; que foi revisado pela última vez em 2019 para redefinir as 7 grandezas fundamentais com base em constantes físicas universais, eliminando os últimos artefatos físicos como referência de medida.</p>
+
+    <p><em>Do pé ao metro, do MKS ao SI: escolher um padrão nunca foi só ciência &mdash; foi sempre, também, uma decisão de convivência entre povos.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 2 ═══ -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; As 7 Grandezas Fundamentais do SI</div>
+
+    <p>Sete grandezas sustentam toda a Física &mdash; e cada uma delas aparece, de um jeito ou de outro, na rotina de quem trabalha debaixo da terra.</p>
+
+    <!-- Figura 5 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-04-v9.jpg" alt="Sete esferas luminosas das 7 grandezas fundamentais do SI em composição orbital; silhueta da galeria subterrânea e lago azul ao fundo" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; Sete esferas luminosas &mdash; as grandezas fundamentais do SI em órbita subterrânea.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A Escola de Minas de Ouro Preto, fundada em 1876 por Claude Henri Gorceix, foi a primeira instituição de ensino superior técnico-científico do Brasil. Seu laboratório de metrologia &mdash; um dos primeiros do país &mdash; usava instrumentos importados da França e da Alemanha, todos calibrados no sistema MKS. Quando a CGPM adotou o SI em 1960, o Brasil alinhou-se imediatamente: o Inmetro (Instituto Nacional de Metrologia, Qualidade e Tecnologia), criado em 1973, tornou-se o guardião nacional do SI, mantendo os padrões primários que rastreiam cada medição feita no país às definições internacionais.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O SI é construído sobre 7 grandezas fundamentais &mdash; chamadas assim porque são independentes entre si e suficientes para derivar todas as demais grandezas físicas (grandezas derivadas). Cada grandeza tem uma unidade de base, um símbolo oficial e, desde 2019, uma definição baseada em constantes físicas universais: a velocidade da luz (c), a constante de Planck (h), a carga elementar (e), a constante de Boltzmann (k), o número de Avogadro (N<sub>A</sub>), a eficácia luminosa (K<sub>cd</sub>) e a frequência de transição hiperfina do césio-133 (&Delta;&nu;<sub>Cs</sub>).</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na rotina de uma mina subterrânea, o técnico em mineração lida cotidianamente com ao menos 5 das 7 grandezas fundamentais: <em>comprimento</em> (metro) ao medir galerias e taludes; <em>massa</em> (quilograma) ao pesar minério e explosivos; <em>tempo</em> (segundo) ao controlar ciclos de detonação e ventilação; <em>temperatura</em> (kelvin/Celsius) ao monitorar o ambiente subterrâneo conforme a NR-22; e <em>corrente elétrica</em> (ampere) ao operar iluminação e bombas. Mol e candela aparecem, respectivamente, em análises químicas de minério e em laudos de iluminância dos ambientes de trabalho.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>As 7 grandezas, suas unidades e definições (SI-2019)</strong></p>
+
+    <p>Sofia abriu o caderno e pediu ao Prof. Julio para confirmar: eram realmente apenas sete grandezas que sustentavam todo o edifício da Física? &ldquo;Apenas sete&rdquo;, ele confirmou. &ldquo;Como as sete notas musicais &mdash; combinadas, geram toda a complexidade que existe.&rdquo;</p>
+
+    <!-- QUADRO 1 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; As 7 Grandezas Fundamentais do SI (revisão 2019)</div>
+      <table>
+        <thead><tr><th>Grandeza</th><th>Unidade</th><th>Símb.</th><th>Definição resumida (SI-2019)</th></tr></thead>
+        <tbody>
+          <tr><td>Comprimento</td><td>metro</td><td>m</td><td>Caminho da luz no vácuo em 1/299&nbsp;792&nbsp;458&nbsp;s</td></tr>
+          <tr><td>Massa</td><td>quilograma</td><td>kg</td><td>Constante de Planck: h = 6,626 &times; 10<sup>&minus;34</sup>&nbsp;J&middot;s</td></tr>
+          <tr><td>Tempo</td><td>segundo</td><td>s</td><td>9&nbsp;192&nbsp;631&nbsp;770 períodos do césio-133</td></tr>
+          <tr><td>Corrente elétrica</td><td>ampere</td><td>A</td><td>Fluxo de 1/(1,602 &times; 10<sup>&minus;19</sup>) elétrons/s</td></tr>
+          <tr><td>Temperatura</td><td>kelvin</td><td>K</td><td>Constante de Boltzmann: k = 1,381 &times; 10<sup>&minus;23</sup>&nbsp;J/K</td></tr>
+          <tr><td>Qtd. substância</td><td>mol</td><td>mol</td><td>6,022 &times; 10<sup>23</sup> entidades (Avogadro)</td></tr>
+          <tr><td>Intens. luminosa</td><td>candela</td><td>cd</td><td>Eficácia luminosa de 540&nbsp;THz = 683&nbsp;lm/W</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&ldquo;Repara numa coisa&rdquo;, disse Lucas, olhando para o quadro. &ldquo;Antes de 2019, o quilograma era definido por um objeto físico &mdash; um cilindro de platina-irídio guardado numa caixa em Paris. Uma definição que dependia de um artefato que envelhecia, que podia ser danificado, que não podia ser reproduzido em laboratório. Agora é definido por uma constante da natureza. Isso é metrologia filosófica: a medida saiu do mundo dos objetos e entrou no mundo das leis.&rdquo;</p>
+
+    <p>Cada grandeza fundamental gera, por multiplicação e divisão, as grandezas derivadas: velocidade (m/s), aceleração (m/s<sup>2</sup>), força (kg&middot;m&middot;s<sup>&minus;2</sup> = N), pressão (kg&middot;m<sup>&minus;1</sup>&middot;s<sup>&minus;2</sup> = Pa), energia (kg&middot;m<sup>2</sup>&middot;s<sup>&minus;2</sup> = J) e dezenas de outras. A estrutura é hierárquica e coerente: como andares de um edifício, cada grandeza derivada repousa sobre as fundações das sete fundamentais.</p>
+
+    <p><em>Sete grandezas bastam para descrever o universo mensurável &mdash; e desde 2019, nenhuma delas depende mais de um objeto guardado numa caixa.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 3 ═══ -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Prefixos e Submúltiplos do SI</div>
+
+    <p>Da distância entre Ouro Preto e o núcleo da Terra até o diâmetro de um grão de poeira respirável, o SI usa uma mesma ferramenta para não perder o fio da meada: os prefixos.</p>
+
+    <!-- Figura 6 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-05-v9.jpg" alt="Pedro medindo granulometria de minério com paquímetro no laboratório do IFMG-OP; linha logarítmica de escalas SI sobreposta ao fundo" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Pedro, paquímetro, minério &mdash; da granulometria ao micrômetro numa escala de prefixos.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os prefixos do SI foram introduzidos para resolver um problema prático que já assombrava os naturalistas do século XVIII: como escrever de forma compacta grandezas que variavam de bilhões de quilômetros (distâncias astronômicas) a frações de nanômetros (estruturas cristalinas)? A solução foi padronizada progressivamente pela CGPM: os primeiros prefixos (kilo-, hecto-, deca-, deci-, centi-, mili-) foram adotados com o metro em 1799. Os prefixos de menor escala (nano-, pico-, femto-) vieram no século XX, com a física atômica e nuclear. Em 2022, a CGPM adotou os prefixos mais extremos: ronna- (10<sup>27</sup>) e quetta- (10<sup>30</sup>) para o lado grande, e ronto- (10<sup>&minus;27</sup>) e quecto- (10<sup>&minus;30</sup>) para o lado pequeno.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Os prefixos SI são potências de 10 que se aplicam a qualquer unidade de base ou derivada. Eles formam um sistema decimal coerente: cada degrau equivale a multiplicar ou dividir por 10 (nos prefixos de deci-, centi-, mili-) ou por 1&nbsp;000 (nos prefixos maiores, de kilo- em diante). O uso correto dos prefixos elimina a necessidade de notação científica em expressões cotidianas: em vez de 0,000&nbsp;001&nbsp;m, escreve-se 1&nbsp;&micro;m (um micrômetro).</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, os técnicos trabalham simultaneamente em múltiplas escalas: a granulometria do minério após britagem é medida em milímetros (mm) e micrômetros (&micro;m); a capacidade das correias transportadoras, em toneladas por hora (t/h) &mdash; onde &ldquo;tonelada&rdquo; é um múltiplo não-SI do quilograma (1&nbsp;t = 10<sup>3</sup>&nbsp;kg = 1&nbsp;Mg); a extensão das galerias, em metros (m) e quilômetros (km); a concentração de poeira respirável no ar, em miligramas por metro cúbico (mg/m<sup>3</sup>), conforme os limites da NR-15. Dominar os prefixos é dominar a linguagem de escala da mineração.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Tabela completa de prefixos e submúltiplos do SI</strong></p>
+
+    <p>Pedro examinou o paquímetro que o Prof. Julio havia colocado sobre a bancada. A escala principal estava em milímetros; o nônio, em décimos de milímetro (0,1&nbsp;mm = 100&nbsp;&micro;m). Dois prefixos diferentes no mesmo instrumento.</p>
+
+    <!-- QUADRO 2 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Prefixos e Submúltiplos do SI (tabela completa)</div>
+      <table>
+        <thead><tr><th>Prefixo</th><th>Símb.</th><th>Fator</th><th>Exemplo de uso</th></tr></thead>
+        <tbody>
+          <tr><td>quetta-</td><td>Q</td><td>10<sup>30</sup></td><td>Massa da Terra: &sim;6 &times; 10<sup>24</sup>&nbsp;kg</td></tr>
+          <tr><td>ronna-</td><td>R</td><td>10<sup>27</sup></td><td>&mdash;</td></tr>
+          <tr><td>yotta-</td><td>Y</td><td>10<sup>24</sup></td><td>Massa do Sol: &sim;2 &times; 10<sup>30</sup>&nbsp;kg</td></tr>
+          <tr><td>zetta-</td><td>Z</td><td>10<sup>21</sup></td><td>Distâncias intergalácticas (zm)</td></tr>
+          <tr><td>exa-</td><td>E</td><td>10<sup>18</sup></td><td>Energia anual do sol (EJ)</td></tr>
+          <tr><td>peta-</td><td>P</td><td>10<sup>15</sup></td><td>Capacidade de datacenters (PB)</td></tr>
+          <tr><td>tera-</td><td>T</td><td>10<sup>12</sup></td><td>Frequência de laser (THz)</td></tr>
+          <tr><td>giga-</td><td>G</td><td>10<sup>9</sup></td><td>Processadores (GHz)</td></tr>
+          <tr><td>mega-</td><td>M</td><td>10<sup>6</sup></td><td>Rádio (MHz)</td></tr>
+          <tr><td>kilo-</td><td>k</td><td>10<sup>3</sup></td><td>Distâncias (km); forças (kN)</td></tr>
+          <tr><td>hecto-</td><td>h</td><td>10<sup>2</sup></td><td>Pressão atmosférica (hPa)</td></tr>
+          <tr><td>deca-</td><td>da</td><td>10<sup>1</sup></td><td>Decâmetros (dam) &mdash; uso raro</td></tr>
+          <tr><td><strong>(sem)</strong></td><td>&mdash;</td><td>10<sup>0</sup></td><td>Metro (m), quilograma (kg), segundo (s)</td></tr>
+          <tr><td>deci-</td><td>d</td><td>10<sup>&minus;1</sup></td><td>Decilitros (dL)</td></tr>
+          <tr><td>centi-</td><td>c</td><td>10<sup>&minus;2</sup></td><td>Centímetros (cm)</td></tr>
+          <tr><td>mili-</td><td>m</td><td>10<sup>&minus;3</sup></td><td>Milímetros (mm)</td></tr>
+          <tr><td>micro-</td><td>&micro;</td><td>10<sup>&minus;6</sup></td><td>Micrômetros (&micro;m) em granulometria</td></tr>
+          <tr><td>nano-</td><td>n</td><td>10<sup>&minus;9</sup></td><td>Nanômetros (nm) em cristalografia</td></tr>
+          <tr><td>pico-</td><td>p</td><td>10<sup>&minus;12</sup></td><td>Picofarads (pF)</td></tr>
+          <tr><td>femto-</td><td>f</td><td>10<sup>&minus;15</sup></td><td>Tamanho do núcleo atômico (&sim;1&nbsp;fm)</td></tr>
+          <tr><td>atto-</td><td>a</td><td>10<sup>&minus;18</sup></td><td>Carga de partículas subatômicas</td></tr>
+          <tr><td>zepto-</td><td>z</td><td>10<sup>&minus;21</sup></td><td>Raios gama duros</td></tr>
+          <tr><td>yocto-</td><td>y</td><td>10<sup>&minus;24</sup></td><td>Escala de quarks</td></tr>
+          <tr><td>ronto-</td><td>r</td><td>10<sup>&minus;27</sup></td><td>&mdash; (adotado em 2022)</td></tr>
+          <tr><td>quecto-</td><td>q</td><td>10<sup>&minus;30</sup></td><td>&mdash; (adotado em 2022)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:20px;"><strong>Regras de uso obrigatórias</strong></p>
+    <ul style="margin: 0 0 16px 20px; font-family: var(--serif); font-size: var(--fs-base); line-height: 1.85; color: oklch(0.85 0 0);">
+      <li>Símbolos de prefixo são escritos em romano, sem espaço antes do símbolo da unidade: <strong>km</strong>, não <strong>k m</strong>.</li>
+      <li>O prefixo kilo- usa letra minúscula (<strong>k</strong>); os prefixos de 10<sup>6</sup> em diante usam maiúscula (<strong>M, G, T, P&hellip;</strong>).</li>
+      <li>Nunca se combina dois prefixos: escreve-se <strong>nm</strong> (nanômetro), nunca <strong>m&micro;m</strong> (mili-micrômetro).</li>
+      <li>O quilograma é a única unidade de base que já contém um prefixo no nome; por isso os múltiplos usam o grama como base: <strong>Mg</strong> (megagrama = tonelada), não <strong>Mkg</strong>.</li>
+    </ul>
+
+    <p>A conversão entre prefixos é sempre uma multiplicação ou divisão por potência de 10:</p>
+
+    <!-- EQUACAO 2 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Conversão entre prefixos SI</div>
+      <div class="equacao-formula">x [unidade prefixada] = x &times; 10<sup>n</sup> [unidade base]</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>x</td><td>Valor numérico</td><td>qualquer grandeza</td></tr>
+          <tr><td>10<sup>n</sup></td><td>Fator do prefixo</td><td>adimensional</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Granulometria: 150&nbsp;mm = 150 &times; 10<sup>&minus;3</sup>&nbsp;m = <strong>0,150</strong>&nbsp;m.</div>
+    </div>
+
+    <p><em>Do quetta ao quecto, os prefixos são a régua que a linguagem usa para não se perder entre o infinitamente grande e o infinitamente pequeno.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 4 ═══ -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Unidades Não-SI em Uso Prático</div>
+
+    <p>O SI não erradicou as unidades antigas &mdash; aprendeu a conviver com elas, e o técnico de mineração precisa saber quando essa convivência é segura e quando é perigosa.</p>
+
+    <!-- Figura 7 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-06-v9.jpg" alt="Sofia segurando manômetro em psi na mão esquerda e em Pascal na mão direita; painel de controle da bomba de drenagem ao fundo na galeria" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Sofia com dois manômetros &mdash; a conversão que pode evitar ou causar uma emergência.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O Brasil adotou o sistema métrico decimal por lei em 1862 (Decreto n.<sup>o</sup>&nbsp;1.157), tornando-se um dos primeiros países do mundo a fazê-lo. Porém, unidades antigas persistiram na prática rural e comercial até meados do século XX: o <em>alqueire</em> (de terra e de grãos), a <em>légua</em> (de estrada) e a <em>braça</em> (de construção) conviveram com o metro por décadas. Na mineração colonial de Minas Gerais, o <em>marco</em> e a <em>oitava</em> sobreviveram nas Casas de Fundição até o século XIX. Hoje, as unidades não-SI mais presentes no cotidiano brasileiro são importadas do sistema imperial anglo-saxônico &mdash; especialmente em equipamentos, pneus e produtos eletrônicos de origem norte-americana.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O SI não proíbe o uso de certas unidades fora do sistema &mdash; ele as <em>tolera</em> com restrições. A CGPM classifica as unidades fora do SI em três grupos: (1) <strong>aceitas para uso com o SI</strong> &mdash; como minuto (min), hora (h), dia (d), litro (L), tonelada (t), grau Celsius (&deg;C), eletronvolt (eV); (2) <strong>toleradas em contextos específicos</strong> &mdash; como a milha náutica e o nó (navegação), o hectare (ha) em agrimensura, e o bar em meteorologia; (3) <strong>não recomendadas</strong> &mdash; como a caloria (cal), o psi (lbf/in<sup>2</sup>) e o &Aring;ngström (&Aring;).</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>A conversão de unidades não-SI para SI é tarefa cotidiana do técnico em mineração: pressão de bombas hidráulicas em <em>bar</em> &rarr; <em>Pascal</em>; temperatura de fornos em &deg;F &rarr; &deg;C ou K; ângulo de taludes em <em>graus sexagesimais</em> &rarr; <em>radianos</em>; capacidade de silos em <em>barris</em> &rarr; <em>metros cúbicos</em>. Erros de conversão em contextos industriais têm histórico documentado de acidentes: o acidente com o <em>Mars Climate Orbiter</em> (1999) &mdash; onde a confusão entre libra-força e Newton destruiu uma sonda de US$&nbsp;327 milhões &mdash; é o exemplo mais citado em treinamentos de segurança metrológica.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>As principais unidades fora do SI e suas conversões</strong></p>
+
+    <p>Sofia pegou o instrumento em <em>psi</em> e perguntou: &ldquo;Quanto é 1&nbsp;psi em Pascal?&rdquo;</p>
+
+    <!-- EQUACAO 3 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Conversão de psi para Pascal</div>
+      <div class="equacao-formula">1 psi = 1 lbf/in<sup>2</sup> &asymp; 6&nbsp;894,76 Pa</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>psi</td><td>libra-força por polegada quadrada</td><td>lbf/in<sup>2</sup></td></tr>
+          <tr><td>Pa</td><td>Pascal</td><td>N/m<sup>2</sup> = kg&middot;m<sup>&minus;1</sup>&middot;s<sup>&minus;2</sup></td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Manômetro em 15&nbsp;psi: 15 &times; 6&nbsp;894,76 = <strong>103&nbsp;421</strong>&nbsp;Pa &asymp; 1,034 &times; 10<sup>5</sup>&nbsp;Pa (&asymp; pressão atmosférica de 101&nbsp;325&nbsp;Pa).</div>
+    </div>
+
+    <!-- EQUACAO 4 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Conversão de Fahrenheit para Celsius e Kelvin</div>
+      <div class="equacao-formula">T(&deg;C) = [T(&deg;F) &minus; 32] &times; 5/9;&nbsp;&nbsp; T(K) = T(&deg;C) + 273,15</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>T(&deg;F)</td><td>Temperatura em Fahrenheit</td><td>&deg;F</td></tr>
+          <tr><td>T(&deg;C)</td><td>Temperatura em Celsius</td><td>&deg;C</td></tr>
+          <tr><td>T(K)</td><td>Temperatura em Kelvin</td><td>K</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Galeria a 63&nbsp;&deg;F: T = (63 &minus; 32) &times; 5/9 = <strong>17,2</strong>&nbsp;&deg;C. Em kelvin: 17,2 + 273,15 = <strong>290,35</strong>&nbsp;K.</div>
+    </div>
+
+    <!-- QUADRO 3 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Unidades não-SI de uso frequente na mineração</div>
+      <table>
+        <thead><tr><th>Unidade</th><th>Símb.</th><th>Área</th><th>Equivalência SI</th><th>Status CGPM</th></tr></thead>
+        <tbody>
+          <tr><td>Minuto</td><td>min</td><td>Tempo</td><td>60&nbsp;s</td><td>Aceita</td></tr>
+          <tr><td>Hora</td><td>h</td><td>Tempo</td><td>3&nbsp;600&nbsp;s</td><td>Aceita</td></tr>
+          <tr><td>Litro</td><td>L</td><td>Volume</td><td>10<sup>&minus;3</sup>&nbsp;m<sup>3</sup> = 1&nbsp;dm<sup>3</sup></td><td>Aceita</td></tr>
+          <tr><td>Tonelada</td><td>t</td><td>Massa</td><td>10<sup>3</sup>&nbsp;kg = 1&nbsp;Mg</td><td>Aceita</td></tr>
+          <tr><td>Grau Celsius</td><td>&deg;C</td><td>Temp.</td><td>T(&deg;C) = T(K) &minus; 273,15</td><td>Aceita</td></tr>
+          <tr><td>Hectare</td><td>ha</td><td>Área</td><td>10<sup>4</sup>&nbsp;m<sup>2</sup></td><td>Tolerada</td></tr>
+          <tr><td>Bar</td><td>bar</td><td>Pressão</td><td>10<sup>5</sup>&nbsp;Pa</td><td>Tolerada</td></tr>
+          <tr><td>Milha náutica</td><td>M</td><td>Comprim.</td><td>1&nbsp;852&nbsp;m</td><td>Tolerada</td></tr>
+          <tr><td>Grau (ângulo)</td><td>&deg;</td><td>Ângulo</td><td>&pi;/180&nbsp;rad</td><td>Tolerada</td></tr>
+          <tr><td>Eletronvolt</td><td>eV</td><td>Energia</td><td>1,602 &times; 10<sup>&minus;19</sup>&nbsp;J</td><td>Aceita</td></tr>
+          <tr><td>Quilate</td><td>ct</td><td>Massa</td><td>2 &times; 10<sup>&minus;4</sup>&nbsp;kg</td><td>Tolerada</td></tr>
+          <tr><td>Polegada</td><td>in</td><td>Comprim.</td><td>2,54 &times; 10<sup>&minus;2</sup>&nbsp;m</td><td>Não recom.</td></tr>
+          <tr><td>psi</td><td>psi</td><td>Pressão</td><td>6&nbsp;894,76&nbsp;Pa</td><td>Não recom.</td></tr>
+          <tr><td>Caloria</td><td>cal</td><td>Energia</td><td>4,186&nbsp;J</td><td>Não recom.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&ldquo;O problema do psi não é que ele não funcione&rdquo;, disse Pedro. &ldquo;O problema é que, numa emergência, ninguém faz mentalmente a divisão por 6.894. O sistema métrico foi criado para que a matemática seja simples. Múltiplos de 10, sempre.&rdquo;</p>
+
+    <p>Lucas completou: &ldquo;E para que qualquer técnico, em qualquer país, possa ler o mesmo instrumento e comunicar o mesmo valor ao supervisor. Essa é a parte que a história cobrou caro.&rdquo;</p>
+
+    <p><em>O SI tolera o que não inventou &mdash; mas cobra o preço da tolerância em forma de conversões que, numa emergência, ninguém tem tempo de fazer de cabeça.</em></p>
+  </div>
+
+  <!-- ═══ TOPICO 5 ═══ -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; O Quadro Geral do SI: Inmetro, Regras de Grafia e Pronúncia</div>
+
+    <p>Depois de entender as sete grandezas e os prefixos, resta uma pergunta prática: como escrever e pronunciar tudo isso sem erro &mdash; porque, numa mina, um símbolo errado pode custar caro.</p>
+
+    <!-- Figura 8 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-07-v9.jpg" alt="Lucas lendo laudo técnico no laboratório de metrologia do IFMG-OP; instrumentos calibrados e certificados Inmetro emoldurados na parede" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Lucas e o laudo &mdash; a grafia correta como gramática da segurança.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O Brasil criou o Sistema Nacional de Metrologia, Normalização e Qualidade Industrial (Sinmetro) pela Lei n.<sup>o</sup>&nbsp;5.966/1973, com o Inmetro como organismo executivo. Desde então, o Inmetro mantém os padrões primários nacionais rastreáveis ao BIPM (Bureau International des Poids et Mesures, em Sèvres, França) &mdash; a mesma instituição que guarda o metro-padrão de platina-irídio, hoje mantido apenas por razões históricas. A Portaria Inmetro n.<sup>o</sup>&nbsp;29/1995 regulamenta no Brasil o uso das unidades SI, determinando as regras de grafia e pronúncia que devem ser seguidas em documentos técnicos, embalagens e instrumentos calibrados.</p>
+    </div>
+
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>O SI é estruturado em três camadas: (1) as 7 unidades de base; (2) as 22 unidades derivadas com nome especial (como Newton, Pascal, Joule, Watt, Coulomb, Volt, Farad); e (3) um número ilimitado de unidades derivadas sem nome especial (como m/s, kg/m<sup>3</sup>, m<sup>2</sup>). As regras de grafia garantem que a notação seja inequívoca: um erro ortográfico pode criar ambiguidade real &mdash; o símbolo <strong>m</strong> (metro) e o símbolo <strong>M</strong> (mega-) têm significados completamente distintos.</p>
+    </div>
+
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O laudo técnico de um <em>blasting</em> (detonação controlada) em uma mina deve registrar, conforme a NR-22, as pressões de detonação em quilopascal (kPa), a massa do explosivo em quilograma (kg), o tempo de detonação em milissegundos (ms) e a distância de segurança em metros (m). Qualquer grafia incorreta &mdash; como &ldquo;Kg&rdquo; em vez de &ldquo;kg&rdquo;, ou &ldquo;KPa&rdquo; em vez de &ldquo;kPa&rdquo; &mdash; invalida o documento perante o Ministério do Trabalho. Não é pedantismo: é rastreabilidade legal.</p>
+    </div>
+
+    <p style="margin-top:20px;"><strong>As regras de grafia e pronúncia do SI (Inmetro)</strong></p>
+
+    <p>Lucas abriu o caderno e escreveu a lista. O Prof. Julio ditou devagar, porque cada regra tinha uma razão histórica.</p>
+
+    <p style="margin-top:20px;"><strong>Regras de grafia dos símbolos de unidades (SI / Inmetro)</strong></p>
+    <ol style="margin: 0 0 16px 20px; font-family: var(--serif); font-size: var(--fs-base); line-height: 1.85; color: oklch(0.85 0 0);">
+      <li><strong>Símbolos são invariáveis:</strong> não recebem plural nem ponto abreviativo. Escreve-se <strong>5&nbsp;kg</strong>, nunca <strong>5&nbsp;kgs</strong> nem <strong>5&nbsp;kg.</strong></li>
+      <li><strong>Maiúscula somente para homenagens:</strong> símbolos derivados de nomes próprios usam letra maiúscula &mdash; <strong>N</strong> (Newton), <strong>Pa</strong> (Pascal), <strong>J</strong> (Joule), <strong>W</strong> (Watt). Todos os outros usam minúscula &mdash; <strong>m</strong> (metro), <strong>kg</strong> (quilograma), <strong>s</strong> (segundo).</li>
+      <li><strong>Nomes por extenso: minúsculas.</strong> Escreve-se <em>newton</em>, <em>pascal</em>, <em>joule</em> &mdash; sempre em minúsculo quando por extenso, mesmo sendo nomes de cientistas. A inicial maiúscula fica no símbolo, não no nome.</li>
+      <li><strong>Separação obrigatória entre número e símbolo:</strong> escreve-se <strong>120&nbsp;m</strong>, nunca <strong>120m</strong>. A única exceção são os símbolos de ângulo plano (&deg;, &prime;, &Prime;) e porcentagem (%).</li>
+      <li><strong>Sem ponto como separador de milhar:</strong> em documentos técnicos, o separador é um espaço estreito. Escreve-se <strong>9&nbsp;192&nbsp;631&nbsp;770&nbsp;Hz</strong>, nunca <strong>9.192.631.770&nbsp;Hz</strong>.</li>
+      <li><strong>Separador decimal no Brasil:</strong> vírgula. Em documentos internacionais, ponto. Nunca misturar no mesmo documento.</li>
+      <li><strong>Produto de unidades:</strong> ponto elevado ou espaço &mdash; <strong>N&middot;m</strong> ou <strong>N&nbsp;m</strong>, nunca <strong>Nm</strong> (confundível com nanômetro).</li>
+      <li><strong>Quociente de unidades:</strong> barra ou expoente negativo &mdash; <strong>m/s</strong> ou <strong>m&middot;s<sup>&minus;1</sup></strong>.</li>
+    </ol>
+
+    <p style="margin-top:20px;"><strong>Regras de pronúncia</strong></p>
+
+    <!-- QUADRO 4 -->
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; Pronúncia correta das unidades SI (pt-BR)</div>
+      <table>
+        <thead><tr><th>Símb.</th><th>Por extenso</th><th>Pronúncia correta</th><th>Pronúncia incorreta (evitar)</th></tr></thead>
+        <tbody>
+          <tr><td>Pa</td><td>pascal</td><td><em>pás-cal</em></td><td><em>pá-scal</em></td></tr>
+          <tr><td>kPa</td><td>quilopascal</td><td><em>qui-lo-pás-cal</em></td><td><em>kilo-pás-cal</em></td></tr>
+          <tr><td>N</td><td>newton</td><td><em>néw-ton</em></td><td><em>né-u-ton</em></td></tr>
+          <tr><td>J</td><td>joule</td><td><em>djúl</em></td><td><em>jó-ul</em></td></tr>
+          <tr><td>W</td><td>watt</td><td><em>wát</em></td><td><em>vát</em> (confusão com volt)</td></tr>
+          <tr><td>Hz</td><td>hertz</td><td><em>hérts</em></td><td><em>hértz</em></td></tr>
+          <tr><td>mol</td><td>mol</td><td><em>mól</em></td><td><em>mó-ul</em></td></tr>
+          <tr><td>cd</td><td>candela</td><td><em>can-dé-la</em></td><td><em>cân-de-la</em></td></tr>
+          <tr><td>&micro;m</td><td>micrômetro</td><td><em>mi-crô-me-tro</em></td><td><em>mi-cron</em> (&micro;m &ne; mícron)</td></tr>
+          <tr><td>&Aring;</td><td>ångström</td><td><em>ângs-tr&ouml;m</em></td><td>&mdash; (unidade fora do SI)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Pedro leu a lista e franziu a testa. &ldquo;Então quando eu falo &lsquo;kilo-pás-cal&rsquo; separando o prefixo, estou certo tecnicamente, mas informalmente?&rdquo;</p>
+
+    <p>&ldquo;Você está certo&rdquo;, disse Prof. Julio. &ldquo;O prefixo e a unidade formam uma palavra única. Mas o importante é que todos na equipe entendam o mesmo valor. A pronúncia é a gramática da comunicação técnica.&rdquo;</p>
+
+    <p>O vagonete voltaria em quarenta minutos. Havia tempo para uma última questão.</p>
+
+    <!-- EQUACAO 5 -->
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Pressão hidrostática (SI coerente)</div>
+      <div class="equacao-formula">P = &rho; &middot; g &middot; h</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade</th></tr></thead>
+        <tbody>
+          <tr><td>P</td><td>Pressão</td><td>Pa (Pascal = N&middot;m<sup>&minus;2</sup>)</td></tr>
+          <tr><td>&rho;</td><td>Massa específica do fluido</td><td>kg/m<sup>3</sup></td></tr>
+          <tr><td>g</td><td>Aceleração da gravidade</td><td>m/s<sup>2</sup> (&asymp; 9,8&nbsp;m/s<sup>2</sup>)</td></tr>
+          <tr><td>h</td><td>Profundidade</td><td>m</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">Aplicação: Lago a 120&nbsp;m (&rho; = 1&nbsp;000&nbsp;kg/m<sup>3</sup>): P = 1&nbsp;000 &times; 9,8 &times; 120 = <strong>1&nbsp;176&nbsp;000</strong>&nbsp;Pa = 1&nbsp;176&nbsp;kPa &asymp; 11,76&nbsp;bar &asymp; 170&nbsp;psi.</div>
+    </div>
+
+    <p>&ldquo;Se eu soubesse calcular assim, teria entendido o instrumento em psi desde o início&rdquo;, disse Pedro.</p>
+
+    <p>&ldquo;É para isso que serve o SI&rdquo;, disse Prof. Julio. &ldquo;Não para dificultar. Para tornar tudo conversível.&rdquo;</p>
+
+    <p><em>Escrever certo uma unidade não é rigor gramatical vazio &mdash; é a diferença entre um laudo válido e um documento que uma auditoria pode derrubar.</em></p>
+  </div>
+
+</div><!-- fim ato II -->
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <!-- Figura 9 — IT-08 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T04-IT-08-v9.jpg" alt="Trio no trole subindo em direção à saída luminosa; Prof. Julio acenando da plataforma abaixo; quartzo nas paredes refletindo a luz crescente" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; Trio ascendendo no trole &mdash; cento e vinte metros de quartzo entre o lago e o céu.</figcaption>
+  </figure>
+
+  <p>O vagonete subiu devagar. A luz lá no alto &mdash; a abertura da galeria &mdash; crescia aos poucos, e Pedro percebeu que estava contando os metros instintivamente. Não em pés, não em braças: em metros. Cento e vinte deles, separando o lago azul do céu de Minas.</p>
+
+  <p>Sofia anotou a última frase no caderno: <em>&ldquo;O SI não mede o mundo &mdash; ele nos permite falar sobre o mundo da mesma forma.&rdquo;</em> Lucas releu e acrescentou mentalmente o corolário: <em>&ldquo;E quando não temos essa linguagem comum, o custo humano pode ser enorme.&rdquo;</em></p>
+
+  <p>Do MKS ao SI, das sete grandezas fundamentais à tabela de prefixos, das unidades não-SI às regras de grafia do Inmetro &mdash; eram cinco tópicos que formavam um único argumento: a medida é uma linguagem, e como toda linguagem precisa de gramática para funcionar. Sem gramática, há ambiguidade. Sem consenso, há erros. E em uma mina subterrânea, erros de medição não são abstrações.</p>
+
+  <p>Na próxima etapa desta trilha, o trio voltará ao laboratório do IFMG-OP para aplicar os conceitos em atividades de medição direta e indireta &mdash; transformando o que foi aprendido na galeria em prática calibrada com instrumentos reais.</p>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CONEXOES INTERDISCIPLINARES ═══════════════════ -->
+<div id="conexoes">
+  <div class="ato-titulo">Conexões Interdisciplinares</div>
+
+  <p><em>Atividades que articulam a Física da Trilha T04 com outras disciplinas do currículo do Técnico em Mineração Integrado ao Ensino Médio. Cada atividade exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- C5 PROTOCOL -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; RCP: Resolução Científica de Problemas</div>
+    <p style="margin-bottom:12px;">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 10 — IT-09 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T04-IT-09-v9.jpg" alt="Fluxograma dos oito passos do Protocolo C5 em estilo infográfico editorial; blocos numerados com ícones e setas direcionais" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco conexões partem do SI &mdash; Química, Matemática, Português, História, Segurança.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>O que está sendo pedido?</strong></td><td>Releia o enunciado. Escreva com suas palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td><strong>Quais são os dados?</strong></td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td><strong>Quais são as hipóteses?</strong></td><td>Declare o que vai assumir (atrito nulo, regime estacionário etc.).</td></tr>
+        <tr><td>4</td><td><strong>Qual é o desenho do problema?</strong></td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td><strong>Quais são as equações?</strong></td><td>Identifique a equação do TT. Isole a variável pedida.</td></tr>
+        <tr><td>6</td><td><strong>Cálculo com unidades</strong></td><td>Substitua os valores. Acompanhe as unidades até o resultado.</td></tr>
+        <tr><td>7</td><td><strong>Análise de resultados</strong></td><td>O resultado faz sentido? Compare com valores típicos.</td></tr>
+        <tr><td>8</td><td><strong>Responda o que foi pedido</strong></td><td>Formule a resposta completa ao que o problema perguntou.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- ATIVIDADE 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Química &mdash; concentração de ouro em ppm</div>
+    <p>Em análise mineralógica, a concentração de ouro em uma amostra de minério é expressa em <em>partes por milhão</em> (ppm = mg/kg). Converta a concentração de 3,5&nbsp;ppm para unidades SI (kg/kg) e para gramas por tonelada (g/t), justificando por que a tonelada, embora fora do SI, é unidade aceita neste contexto.</p>
+    <div class="conexao">Conexão: Química &mdash; concentração mássica (ppm) &mdash; conversão de unidades SI &mdash; teores de minério.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Converter concentração de ouro de 3,5&nbsp;ppm (mg/kg) para unidades SI (kg/kg) e para g/t; justificar o uso da tonelada no contexto minerário.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">C = 3,5&nbsp;ppm = 3,5&nbsp;mg/kg; 1&nbsp;mg = 10<sup>&minus;3</sup>&nbsp;g = 10<sup>&minus;6</sup>&nbsp;kg; 1&nbsp;t = 10<sup>3</sup>&nbsp;kg.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Amostra homogênea; concentração em base mássica; desprezar umidade.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Diagrama: [3,5&nbsp;mg Au] / [1&nbsp;kg minério] &rarr; converter numerador e denominador para unidades SI e para g/t.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">C (kg/kg) = C (mg/kg) &times; (10<sup>&minus;6</sup>&nbsp;kg/mg); C (g/t) = C (mg/kg) numericamente (fatores se cancelam).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">C (kg/kg) = 3,5 &times; 10<sup>&minus;6</sup>&nbsp;kg/kg. C (g/t) = <strong>3,5</strong>&nbsp;g/t.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">3,5&nbsp;g/t é típico de depósito aurífero economicamente viável (teores de &sim;1 a &gt;10&nbsp;g/t na mineração brasileira). Resultado coerente.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">A concentração equivale a 3,5 &times; 10<sup>&minus;6</sup>&nbsp;kg/kg ou 3,5&nbsp;g/t. A tonelada é aceita pelo SI por ser múltiplo decimal do kg (1&nbsp;t = 10<sup>3</sup>&nbsp;kg = 1&nbsp;Mg), facilitando comunicação em escala industrial &mdash; exigência da NR-22 para relatórios de produção.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Matemática &mdash; comprimento da galeria inclinada</div>
+    <p>A Mina da Passagem tem galeria principal de 315&nbsp;m de comprimento horizontal, descendo 120&nbsp;m em profundidade. Calcule o comprimento real do trilho (inclinado) usando o teorema de Pitágoras e expresse em metros e quilômetros usando os prefixos SI corretos.</p>
+    <div class="conexao">Conexão: Matemática &mdash; teorema de Pitágoras &mdash; trigonometria &mdash; prefixos SI.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Calcular o comprimento do trilho inclinado usando Pitágoras; expressar em m e km com grafia SI.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">&Delta;x = 315&nbsp;m (horizontal); &Delta;y = 120&nbsp;m (vertical); L = ?</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Galeria retilínea; componentes independentes; ignorar curvatura da Terra.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Triângulo retângulo: cateto horizontal = 315&nbsp;m, cateto vertical = 120&nbsp;m, hipotenusa = L.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">L<sup>2</sup> = &Delta;x<sup>2</sup> + &Delta;y<sup>2</sup>; L = &radic;(&Delta;x<sup>2</sup> + &Delta;y<sup>2</sup>).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">L = &radic;(315<sup>2</sup> + 120<sup>2</sup>) = &radic;(99&nbsp;225 + 14&nbsp;400) = &radic;113&nbsp;625 &asymp; <strong>337,1</strong>&nbsp;m = 0,3371&nbsp;km.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">337&nbsp;m &gt; 315&nbsp;m e &lt; 435&nbsp;m (soma dos catetos). Ângulo &theta; = arctan(120/315) &asymp; 20,8&deg;, típico de rampas de acesso (10&deg;&ndash;25&deg;).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">O comprimento real do trilho inclinado é L &asymp; 337,1&nbsp;m (0,3371&nbsp;km). O ângulo de &asymp;20,8&deg; explica o trole puxado por cabo de aço &mdash; rampa íngreme demais para caminhar carregado com equipamentos de mineração.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Língua Portuguesa &mdash; erros de grafia num laudo técnico</div>
+    <p>Analise um laudo técnico fictício e identifique cinco erros de grafia de unidades SI: <em>&ldquo;O equipamento mediu 5KG de pressão a 37&ordm;C, com desvio de 0.003&nbsp;Mts, operando a 60HZ.&rdquo;</em></p>
+    <div class="conexao">Conexão: Língua Portuguesa &mdash; norma culta técnica &mdash; grafia de unidades SI &mdash; Portaria Inmetro n.<sup>o</sup>&nbsp;29/1995.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Identificar 5 erros de grafia SI no texto; corrigir com justificativa baseada nas regras do Inmetro.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Texto com erros: &ldquo;5KG de pressão a 37&ordm;C, com desvio de 0.003&nbsp;Mts, operando a 60HZ&rdquo;. Referência: Portaria Inmetro n.<sup>o</sup>&nbsp;29/1995.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Cada token sublinhado corresponde a um erro; o erro semântico &ldquo;KG de pressão&rdquo; também é apontado.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Tabela de análise: Forma errada | Forma correta | Regra violada.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Aplicar as 8 regras de grafia do Tópico 5 a cada símbolo.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text"><strong>5KG</strong> &rarr; <strong>5&nbsp;kg</strong> (minúsculo, espaço obrigatório); <strong>37&ordm;C</strong> &rarr; <strong>37&nbsp;&deg;C</strong> (espaço antes); <strong>0.003&nbsp;Mts</strong> &rarr; <strong>0,003&nbsp;m</strong> (vírgula, sem plural); <strong>60HZ</strong> &rarr; <strong>60&nbsp;Hz</strong> (H maiúsc. z minúsc., espaço); <strong>KG de pressão</strong> &rarr; unidade errada (pressão = Pa).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Cinco erros reais e recorrentes em documentos técnicos informais. &ldquo;KPa&rdquo; grafado como &ldquo;KPA&rdquo; invalida laudo perante o Ministério do Trabalho (NR-22).</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">Os cinco erros corrigidos são: 5&nbsp;kg, 37&nbsp;&deg;C, 0,003&nbsp;m, 60&nbsp;Hz e a unidade de pressão trocada (deveria ser Pa, não KG). Rastreabilidade metrológica exige grafia inequívoca para que qualquer auditor, em qualquer país, interprete o valor sem ambiguidade.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e História &mdash; o sistema colonial e o SI</div>
+    <p>A Casa dos Contos de Ouro Preto foi o local de arrecadação do quinto (20%) do ouro extraído em Minas Gerais no século XVIII. O ouro era pesado em marcos (229,5&nbsp;g) e oitavas (3,59&nbsp;g). Compare esse sistema com o SI atual: quais são as vantagens metrológicas do SI para controle fiscal de extração mineral? Elabore um argumento com ao menos três critérios.</p>
+    <div class="conexao">Conexão: História &mdash; Casa dos Contos &mdash; sistema colonial de pesos &mdash; controle fiscal e metrologia.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Comparar sistema colonial (marco e oitava) com o SI; identificar 3 vantagens metrológicas para controle fiscal.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">Marco = 229,5&nbsp;g = 0,2295&nbsp;kg; oitava = 3,59&nbsp;g; 1&nbsp;marco = 64&nbsp;oitavas; unidade SI: kg.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Comparação restrita a propriedades metrológicas; padrões coloniais sujeitos a desgaste e falsificação.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Tabela comparativa: Sistema colonial &times; SI, com linhas para cada critério.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">Critérios: (1) universalidade e reprodutibilidade; (2) coerência decimal; (3) rastreabilidade e resistência à fraude.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text"><strong>1. Universalidade:</strong> 1&nbsp;kg definido pela constante de Planck &mdash; reproduzível em qualquer laboratório. <strong>2. Coerência decimal:</strong> 1&nbsp;marco = 64&nbsp;oitavas é não-decimal; 1&nbsp;kg = 10<sup>3</sup>&nbsp;g é direto. <strong>3. Rastreabilidade:</strong> cadeia Inmetro &rarr; BIPM certificada; pesos coloniais sujeitos a adulteração.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Três critérios rigorosos e historicamente fundamentados. A derrama de 1788&ndash;1789 foi causada em parte pela dificuldade de controle fiscal sem padrões unificados.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">O SI teria tornado o controle fiscal radicalmente mais transparente e auditável &mdash; a Inconfidência Mineira foi, em parte, consequência de um sistema metrológico falho.</div></div>
+    </details>
+  </div>
+
+  <!-- ATIVIDADE 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e Segurança do Trabalho &mdash; concentração de poeira (NR-22)</div>
+    <p>A NR-22 estabelece que a concentração de poeira respirável em ambientes subterrâneos não deve ultrapassar 2&nbsp;mg/m<sup>3</sup>. Se um sensor lê 0,0020&nbsp;g/m<sup>3</sup>, o valor está dentro do limite? Converta para as unidades da NR-22, justifique e indique qual prefixo SI está sendo usado implicitamente.</p>
+    <div class="conexao">Conexão: Segurança do Trabalho &mdash; NR-22 &mdash; higiene ocupacional &mdash; prefixo mili-.</div>
+
+    <details class="rcp">
+      <summary>RCP &mdash; Resolução Científica do Problema (Protocolo C5)</summary>
+      <div class="rcp-step"><span class="rcp-step-label">1. O que está sendo pedido?</span><div class="rcp-step-text">Verificar se 0,0020&nbsp;g/m<sup>3</sup> está dentro do limite NR-22 (2&nbsp;mg/m<sup>3</sup>); identificar prefixo SI implícito.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">2. Quais são os dados?</span><div class="rcp-step-text">C<sub>máx</sub> = 2&nbsp;mg/m<sup>3</sup> (NR-22); C<sub>sensor</sub> = 0,0020&nbsp;g/m<sup>3</sup>; 1&nbsp;g = 10<sup>3</sup>&nbsp;mg.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">3. Quais são as hipóteses?</span><div class="rcp-step-text">Condições padrão de T e P; poeira uniforme; sensor calibrado e rastreável ao Inmetro.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">4. Qual é o desenho do problema?</span><div class="rcp-step-text">Escala comparativa: [0 &mdash; 2&nbsp;mg/m<sup>3</sup> (limite NR-22) &mdash; ?] com seta da leitura convertida.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">5. Quais são as equações?</span><div class="rcp-step-text">C (mg/m<sup>3</sup>) = C (g/m<sup>3</sup>) &times; 10<sup>3</sup>&nbsp;mg/g. Comparar: C<sub>sensor</sub> (mg/m<sup>3</sup>) vs. C<sub>máx</sub>.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">6. Cálculo com unidades:</span><div class="rcp-step-text">C<sub>sensor</sub> = 0,0020 &times; 10<sup>3</sup> = <strong>2,0</strong>&nbsp;mg/m<sup>3</sup>. Valor <strong>exatamente igual</strong> ao limite. Prefixo implícito: <strong>mili-</strong> (m, 10<sup>&minus;3</sup>): 0,0020&nbsp;g = 2,0&nbsp;mg.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">7. Análise de resultados:</span><div class="rcp-step-text">Valor no limite = alerta máximo, não segurança. Ação imediata: ventilação, respirador P100, notificação ao SESMT. Reportar &ldquo;no limite&rdquo;, não &ldquo;dentro do limite&rdquo; &mdash; diferença semântica com implicação legal.</div></div>
+      <div class="rcp-step"><span class="rcp-step-label">8. Responda o que foi pedido:</span><div class="rcp-step-text">O sensor está exatamente no limite legal (2,0&nbsp;mg/m<sup>3</sup>), usando implicitamente o prefixo mili- (10<sup>&minus;3</sup>) &mdash; a unidade padrão de concentração de contaminantes em todas as NRs de saúde ocupacional do Brasil.</div></div>
+    </details>
+  </div>
+
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIENCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+
+  <div class="ciencia-arte-obra"><strong>Escultura:</strong> <em>Os Doze Profetas</em> (1800&ndash;1805) &mdash; Aleijadinho</div>
+
+  <blockquote style="text-align:center; border-left:none; margin-top:24px; font-size:1.1rem;">
+    &ldquo;A máquina do mundo se entreabre para quem sabe medir.&rdquo;
+  </blockquote>
+  <div class="ca-autor">&mdash; Carlos Drummond de Andrade (adapt.), (1902&ndash;1987)</div>
+
+  <!-- Figura 11 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T04-IT-10-v9.jpg" alt="Silhueta barroca do Profeta de Aleijadinho em pedra-sabão; símbolo SI integrado ao portal da mina; sete esferas das grandezas em arco" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; Profeta de Aleijadinho e esferas SI &mdash; proporção é medida, medida é padrão.</figcaption>
+  </figure>
+
+  <p style="margin-top:20px;">Entre 1800 e 1805, já debilitado por doença degenerativa que deformava suas mãos e pés, Antônio Francisco Lisboa esculpiu em pedra-sabão doze figuras de tamanho quase natural para o adro do Santuário do Bom Jesus de Matosinhos, em Congonhas. Cada profeta ocupa uma posição calculada na escadaria de forma que, visto de baixo, o conjunto aparenta altura uniforme apesar da inclinação do terreno &mdash; um problema metrológico resolvido com a mesma lógica que o engenheiro de minas aplica ao nivelar galerias.</p>
+
+  <p>Aleijadinho não conhecia o SI, mas dominava intuitivamente o que o sistema formaliza: a escolha de uma unidade de referência (o palmo mineiro), sua subdivisão em frações proporcionais e a verificação sistemática de que cada peça se encaixa no todo. Os Doze Profetas são, nesse sentido, um exercício de metrologia em pedra: proporção é medida, medida é padrão, padrão é a essência do SI.</p>
+
+  <div class="footnote">
+    <strong>Antônio Francisco Lisboa</strong>, o Aleijadinho (Vila Rica/Ouro Preto, c. 1738 &mdash; Ouro Preto, 1814), foi escultor e arquiteto brasileiro, o maior artista do Barroco colonial. Trabalhou em pedra-sabão e madeira policromada. Entre suas obras-primas estão a fachada e a talha da Igreja de São Francisco de Assis (Ouro Preto) e <em>Os Doze Profetas</em> (Congonhas) &mdash; esta última realizada quando a doença já o obrigava a amarrar os instrumentos aos pulsos.
+  </div>
+
+  <div class="footnote" style="margin-top:8px;">
+    <strong>Carlos Drummond de Andrade</strong> (Itabira, 1902 &mdash; Rio de Janeiro, 1987) foi poeta, contista e cronista, considerado o maior poeta brasileiro do século XX. A frase é adaptação do poema &ldquo;A Máquina do Mundo&rdquo; (1951), publicado em <em>Claro Enigma</em>.
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ REFERENCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo" style="font-size: 1.4rem; color: var(--azul);">Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:16px; font-size: 1.4rem; color: var(--azul);">Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+</div>
+
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG &mdash; NIDEC-CODAFIS Campus Ouro Preto &middot; FC1 &middot; T04 &middot; Julio Azevedo &amp; Felipe Beato &middot; 1&ordf; edição 2026.</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T04-TT-v11';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
