@@ -10,7 +10,16 @@
   body { background: #0d0d0d; color: #e8e8e8; font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; }
   .wrap { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
   h1 { font-family: 'Courier New', monospace; font-size: 1.6rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--ouro); padding-bottom: 12px; margin-bottom: 8px; }
-  .sub { font-size: 0.95rem; color: #aaa; margin-bottom: 40px; }
+  .sub { display: flex; align-items: flex-start; gap: 24px; border: 1px solid #444; padding: 24px 26px; margin-bottom: 44px; font-size: 0.95rem; color: #c4c4c4; }
+  .sub .marca { flex: 0 0 100px; width: 100px; height: 100px; margin-top: 4px; }
+  .sub p { margin-bottom: 11px; }
+  .sub p:last-child { margin-bottom: 0; }
+  .sub strong { color: var(--ouro); font-weight: normal; }
+  .intro-t { font-family: 'Courier New', monospace; font-size: 1.05rem; color: var(--verde); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 14px; }
+  @media (max-width: 560px) {
+    .sub { flex-direction: column; align-items: center; gap: 16px; padding: 20px 18px; }
+    .sub .marca { flex-basis: 76px; width: 76px; height: 76px; margin-top: 0; }
+  }
   h2 { font-family: 'Courier New', monospace; font-size: 1.05rem; color: #fff; margin: 32px 0 12px; }
   ul { list-style: none; }
   li { margin-bottom: 10px; }
@@ -26,7 +35,28 @@
 <div class="wrap">
   <h1>Trilhas de Aprendizagem - Física Conceitual 1 aplicada à Mineração</h1>
   <div class="sub">
-    Trilhas de Aprendizagem é uma metodologia que procura inovar, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica. </div>
+    <svg class="marca" viewBox="0 0 120 120" role="img" aria-label="Símbolo das Trilhas de Aprendizagem">
+      <g fill="none" stroke="#C8A84B" stroke-width="3">
+        <ellipse cx="60" cy="58" rx="46" ry="18"/>
+        <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(60 60 58)"/>
+        <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(120 60 58)"/>
+      </g>
+      <g fill="#C8A84B">
+        <circle cx="53" cy="53" r="7"/>
+        <circle cx="67" cy="53" r="7"/>
+        <circle cx="60" cy="64" r="9"/>
+        <circle cx="60" cy="110" r="4"/>
+      </g>
+    </svg>
+    <section>
+      <h2 class="intro-t">Trilhas de Aprendizagem</h2>
+      <p>Trilhas de Aprendizagem são percursos de estudo estruturados para orientar, apoiar e avaliar o aprendizado dos estudantes em sua caminhada pelo mundo da física.</p>
+      <p>Nasceram do diálogo entre docentes das Áreas de Física e de Mineração do IFMG campus Ouro Preto, com um objetivo: construir uma física aplicada ao curso Técnico em Mineração.</p>
+      <p>Cada trilha tem três paradas. A <strong>Pré-Aula</strong>, feita em casa, prepara e desafia o cérebro para o que será discutido em sala. A <strong>Aula</strong> é o encontro presencial, em que o professor conduz a construção do conhecimento. A <strong>Pós-Aula</strong>, feita no mesmo dia, consolida o que foi aprendido.</p>
+      <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
+      <p>Boas-vindas — e sucesso na sua caminhada pelo mundo da física.</p>
+    </section>
+  </div>
 
   <h2>T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h2>
   <ul>

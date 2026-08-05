@@ -518,6 +518,8 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T01-TM-v4-banco.md · Física, uma linguagem básica da ciência
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T01-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -540,15 +542,15 @@ const ITENS = {
     enunciado:"Um técnico estima teoricamente que um bloco de calcário tem <strong>800 kg</strong>. Na balança de campo, ele marca <strong>820 kg</strong>. <strong>Qual é o erro relativo dessa medição?</strong>",
     opcoes:[
       {letra:"A", texto:"0,25 %"},
-      {letra:"B", texto:"1,0 %"},
-      {letra:"C", texto:"2,5 %"},
+      {letra:"B", texto:"2,5 %"},
+      {letra:"C", texto:"1,0 %"},
       {letra:"D", texto:"20,0 %"}
     ],
-    correta:"C",
+    correta:"B",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Er = |820 − 800| / 800 × 100 % = 20/800 × 100 % = 2,5 %.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O denominador é o valor TEÓRICO — é ele que serve de referência.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Um desvio de 2,5 % em contrato de minério muda o preço de carregamentos inteiros.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Er = |820 − 800| / 800 × 100 % = 20/800 × 100 % = 2,5 %.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O denominador é o valor TEÓRICO — é ele que serve de referência.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Um desvio de 2,5 % em contrato de minério muda o preço de carregamentos inteiros.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 20/800 = 0,025 — falta multiplicar por 100 % para chegar a 2,5 %.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — conversão para porcentagem esquecida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 820/800 − 1 = 0,025 = 2,5 %, não 1,0 %.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético na conversão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça a divisão com atenção às casas decimais.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 820/800 − 1 = 0,025 = 2,5 %, não 1,0 %.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético na conversão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça a divisão com atenção às casas decimais.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 20 é a diferença absoluta em kg, não o erro relativo — falta dividir por 800.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — erro absoluto tomado como relativo.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Erro relativo é sempre uma razão, por isso vem em porcentagem.</div>"}
     } },
 
@@ -556,15 +558,15 @@ const ITENS = {
     enunciado:"<strong>Segundo o Tópico 3 do Texto Temático, qual par associa corretamente cada ciência à sua pergunta típica?</strong>",
     opcoes:[
       {letra:"A", texto:"Física: “de que a pedra é feita?” · Química: “qual força é necessária para mover essa pedra?”"},
-      {letra:"B", texto:"Física: “como as coisas se movem e interagem?” · Química: “de que as coisas são feitas?”"},
-      {letra:"C", texto:"Física e Química fazem a mesma pergunta; o que muda é apenas o instrumento usado."},
+      {letra:"B", texto:"Física e Química fazem a mesma pergunta; o que muda é apenas o instrumento usado."},
+      {letra:"C", texto:"Física: “como as coisas se movem e interagem?” · Química: “de que as coisas são feitas?”"},
       {letra:"D", texto:"Física: “de que a pedra é feita?” · Química: “como ela se transforma com o tempo?”"}
     ],
-    correta:"B",
+    correta:"C",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A Física trata de movimento e interação; a Química, de composição e transformação da matéria.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada ciência tem seu objeto e sua pergunta — é o que o Quadro 2 do Tópico 3 organiza.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Diante de um mesmo evento, como Fundão, cada ciência pergunta algo diferente.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A Física trata de movimento e interação; a Química, de composição e transformação da matéria.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada ciência tem seu objeto e sua pergunta — é o que o Quadro 2 do Tópico 3 organiza.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Diante de um mesmo evento, como Fundão, cada ciência pergunta algo diferente.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> As perguntas estão trocadas: “qual força?” é Física; “de que é feita?” é Química.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão entre as ciências.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O que distingue as ciências é a PERGUNTA, não o instrumento — as duas usam balança e microscópio.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — critério de distinção trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Tópico 3 do Texto Temático (TT).</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O que distingue as ciências é a PERGUNTA, não o instrumento — as duas usam balança e microscópio.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — critério de distinção trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Tópico 3 do Texto Temático (TT).</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “De que é feita?” é da Química; a Física pergunta como as coisas se movem e interagem.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão parcial.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 3.</div>"}
     } },
 
@@ -587,15 +589,15 @@ const ITENS = {
   R5: { id:"T01-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Pela Equação 7 (<strong>P = F × v</strong>), a potência necessária para mover uma correia transportadora:",
     opcoes:[
-      {letra:"A", texto:"aumenta se a força de tração aumentar, mas diminui se a velocidade aumentar."},
-      {letra:"B", texto:"aumenta com a força e também com a velocidade — as duas são diretamente proporcionais à potência."},
+      {letra:"A", texto:"aumenta com a força e também com a velocidade — as duas são diretamente proporcionais à potência."},
+      {letra:"B", texto:"aumenta se a força de tração aumentar, mas diminui se a velocidade aumentar."},
       {letra:"C", texto:"depende apenas da força de tração; a velocidade não entra na conta."},
       {letra:"D", texto:"diminui com a força e aumenta com a velocidade."}
     ],
-    correta:"B",
+    correta:"A",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Em P = F × v os dois fatores multiplicam: dobrar qualquer um deles dobra a potência.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Acelerar a correia sem trocar o motor é o erro clássico de projeto.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” desta tarefa aplica a equação com dados reais de usina.</div>"},
-      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A velocidade está multiplicando, não dividindo — se v cresce e F fica igual, P cresce.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — relação invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 5.</div>"},
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Em P = F × v os dois fatores multiplicam: dobrar qualquer um deles dobra a potência.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Acelerar a correia sem trocar o motor é o erro clássico de projeto.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” desta tarefa aplica a equação com dados reais de usina.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A velocidade está multiplicando, não dividindo — se v cresce e F fica igual, P cresce.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — relação invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 5.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A velocidade está explicitamente na equação: P = F × v.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — fator ignorado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Escreva a equação antes de julgar a dependência.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os dois fatores atuam no mesmo sentido — nenhum deles reduz a potência ao crescer.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — relação invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Teste com números: F = 1 000 N e v = 1 e depois 2 m/s.</div>"}
     } },
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T01-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Considere o cálculo da massa de um bloco de granito por <strong>m = ρ × V</strong>.</em><br><br><strong>Quais são as sete grandezas fundamentais do SI e quais delas sustentam esse cálculo?</strong>",
     opcoes:[
-      {letra:"A", texto:"Comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria — e o cálculo se apoia em comprimento e massa."},
-      {letra:"B", texto:"Comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria — e o cálculo se apoia em massa e tempo."},
+      {letra:"A", texto:"Comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria — e o cálculo se apoia em massa e tempo."},
+      {letra:"B", texto:"Comprimento, massa, tempo, temperatura, corrente elétrica, intensidade luminosa e quantidade de matéria — e o cálculo se apoia em comprimento e massa."},
       {letra:"C", texto:"Comprimento, massa, tempo, força, energia, temperatura e pressão — e o cálculo se apoia em massa e força."},
       {letra:"D", texto:"As sete do SI — mas o cálculo se apoia apenas em massa, já que densidade e volume são valores tabelados."}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = c × l × h vem de comprimento; m é fundamental; e ρ = m/V combina as duas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Nenhuma outra das sete entra: o cálculo se sustenta em duas raízes só.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Rastrear a equação até as fundamentais é como se verifica coerência de unidades.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A lista está certa, mas o tempo não aparece em m = ρ × V — quem entra é o comprimento, via volume.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — grandeza trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Decomponha o volume: c × l × h, três comprimentos.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = c × l × h vem de comprimento; m é fundamental; e ρ = m/V combina as duas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Nenhuma outra das sete entra: o cálculo se sustenta em duas raízes só.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Rastrear a equação até as fundamentais é como se verifica coerência de unidades.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A lista está certa, mas o tempo não aparece em m = ρ × V — quem entra é o comprimento, via volume.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — grandeza trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Decomponha o volume: c × l × h, três comprimentos.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Força, energia e pressão são DERIVADAS. Faltam corrente, intensidade luminosa e quantidade de matéria na lista.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — lista das fundamentais incorreta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Contextualização científica do Texto Temático (TT), Tópico 1.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ser tabelada não retira a densidade da conta: ela carrega massa e comprimento na sua própria definição.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — valor tabelado tratado como sem dimensão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> ρ = m/V, em kg/m³ — duas fundamentais dentro de uma unidade.</div>"}
     } },
@@ -619,33 +621,33 @@ const ITENS = {
   F2: { id:"T01-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Sofia calculou a massa do bloco de granito do monumento: m = ρ × V = 2 700 × 0,20 = <strong>540 kg</strong>. Pesada na balança de campo, a rocha marcou <strong>556 kg</strong> — erro relativo de cerca de 3,0 %.</em><br><br><strong>A leitura correta dessa diferença é:</strong>",
     opcoes:[
-      {letra:"A", texto:"O cálculo é Física teórica e a pesagem é Física experimental; a diferença mede o quanto o modelo simplificou (ao supor densidade uniforme) e indica que modelo ou experimento precisa de revisão."},
-      {letra:"B", texto:"O cálculo está errado, pois só o valor da balança é confiável."},
-      {letra:"C", texto:"A balança está descalibrada, pois o valor teórico é exato por definição."},
+      {letra:"A", texto:"O cálculo está errado, pois só o valor da balança é confiável."},
+      {letra:"B", texto:"A balança está descalibrada, pois o valor teórico é exato por definição."},
+      {letra:"C", texto:"O cálculo é Física teórica e a pesagem é Física experimental; a diferença mede o quanto o modelo simplificou (ao supor densidade uniforme) e indica que modelo ou experimento precisa de revisão."},
       {letra:"D", texto:"Teoria e experimento medem grandezas diferentes e por isso não devem ser comparados."}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A teoria prevê, o experimento testa, e o erro relativo quantifica a distância entre os dois.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Granito real tem veios e poros — a densidade uniforme é uma simplificação assumida.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse ciclo previsão → medição → revisão que define o método científico.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Nenhum dos dois é “o certo”: a diferença é informação sobre o modelo, não veredicto sobre o cálculo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — experimento tomado como verdade absoluta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 1 do Texto Temático (TT), Tópico 2.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Valor teórico não é exato por definição — ele depende das hipóteses assumidas no modelo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E4 — causa e efeito invertidos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Descalibração se diagnostica com padrão certificado, não com um cálculo.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A teoria prevê, o experimento testa, e o erro relativo quantifica a distância entre os dois.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Granito real tem veios e poros — a densidade uniforme é uma simplificação assumida.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse ciclo previsão → medição → revisão que define o método científico.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Nenhum dos dois é “o certo”: a diferença é informação sobre o modelo, não veredicto sobre o cálculo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — experimento tomado como verdade absoluta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 1 do Texto Temático (TT), Tópico 2.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Valor teórico não é exato por definição — ele depende das hipóteses assumidas no modelo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E4 — causa e efeito invertidos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Descalibração se diagnostica com padrão certificado, não com um cálculo.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> São a MESMA grandeza — massa — obtida por dois caminhos. É justamente por isso que se comparam.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Comparar previsão e medida é o que o erro relativo faz.</div>"}
     } },
 
   F3: { id:"T01-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>O Tópico 5 do Texto Temático apresenta cinco processos industriais da mineração, cada um com sua área da Física, sua grandeza central e sua equação.</em><br><br><strong>Qual associação está inteiramente correta?</strong>",
     opcoes:[
-      {letra:"A", texto:"Transporte por correia · Mecânica · Potência · P = F × v"},
-      {letra:"B", texto:"Drenagem de galerias · Óptica · Vazão · Q = A × v"},
-      {letra:"C", texto:"Ventilação · Termodinâmica · Pressão · P_h = ρ × g × h"},
-      {letra:"D", texto:"Estabilidade de talude · Física Moderna · Energia · E = m × c²"}
+      {letra:"A", texto:"Drenagem de galerias · Óptica · Vazão · Q = A × v"},
+      {letra:"B", texto:"Ventilação · Termodinâmica · Pressão · P_h = ρ × g × h"},
+      {letra:"C", texto:"Estabilidade de talude · Física Moderna · Energia · E = m × c²"},
+      {letra:"D", texto:"Transporte por correia · Mecânica · Potência · P = F × v"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Correia é Dinâmica: a potência do motor vence a força de tração à velocidade de operação.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Drenagem é Hidrostática (P_h = ρgh), ventilação é vazão (Q = A × v) e talude é Mecânica dos Sólidos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cinco processos, cinco áreas — a Física da mina inteira num quadro só.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Drenagem é Mecânica dos Fluidos (Hidrostática), com pressão P_h = ρgh — não Óptica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — área e equação trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 6 a 10 do Texto Temático (TT), Tópico 5.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ventilação é Mecânica dos Fluidos e sua grandeza é a VAZÃO (Q = A × v); ρgh é da drenagem.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — grandeza e equação trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Tópico 5 do Texto Temático (TT).</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Estabilidade de talude é Mecânica dos Sólidos, com fator de segurança — E = mc² é Física Moderna e não se aplica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E12 — transferência para contexto errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 6 a 10 do Texto Temático (TT), Tópico 5.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Correia é Dinâmica: a potência do motor vence a força de tração à velocidade de operação.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Drenagem é Hidrostática (P_h = ρgh), ventilação é vazão (Q = A × v) e talude é Mecânica dos Sólidos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cinco processos, cinco áreas — a Física da mina inteira num quadro só.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Drenagem é Mecânica dos Fluidos (Hidrostática), com pressão P_h = ρgh — não Óptica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — área e equação trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 6 a 10 do Texto Temático (TT), Tópico 5.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ventilação é Mecânica dos Fluidos e sua grandeza é a VAZÃO (Q = A × v); ρgh é da drenagem.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — grandeza e equação trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Tópico 5 do Texto Temático (TT).</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Estabilidade de talude é Mecânica dos Sólidos, com fator de segurança — E = mc² é Física Moderna e não se aplica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E12 — transferência para contexto errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 6 a 10 do Texto Temático (TT), Tópico 5.</div>"}
     } },
 
   F4: { id:"T01-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T01-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>Na usina de beneficiamento da Mineração Passagem (Mariana-MG), uma correia leva minério britado do britador ao pátio de homogeneização. A força de tração necessária é <strong>7 500 N</strong> e a velocidade de operação, <strong>2,5 m/s</strong>.</em><br><br><strong>Pela Equação 7 (P = F × v), a potência mínima do motor é:</strong>",
     opcoes:[
-      {letra:"A", texto:"18 750 W ≈ 18,8 kW"},
-      {letra:"B", texto:"3 000 W ≈ 3,0 kW"},
+      {letra:"A", texto:"3 000 W ≈ 3,0 kW"},
+      {letra:"B", texto:"18 750 W ≈ 18,8 kW"},
       {letra:"C", texto:"18 750 kW"},
       {letra:"D", texto:"1 875 W ≈ 1,9 kW"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> P = 7 500 N × 2,5 m/s = 18 750 W ≈ 18,8 kW.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> N × m/s = J/s = W — as unidades confirmam a equação.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse número que dimensiona o motor comprado para a correia.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 7 500 ÷ 2,5 = 3 000 — você dividiu. A equação multiplica: P = F × v.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira pelas unidades: N ÷ (m/s) não dá watt.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> P = 7 500 N × 2,5 m/s = 18 750 W ≈ 18,8 kW.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> N × m/s = J/s = W — as unidades confirmam a equação.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse número que dimensiona o motor comprado para a correia.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 7 500 ÷ 2,5 = 3 000 — você dividiu. A equação multiplica: P = F × v.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira pelas unidades: N ÷ (m/s) não dá watt.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O resultado é 18 750 W, que são 18,75 kW — e não 18 750 kW (18,75 MW, potência de uma pequena usina).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza do prefixo.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 kW = 1 000 W.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 7 500 × 2,5 = 18 750, não 1 875 — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 7 500 × 2 = 15 000; some ainda meia vez.</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T01-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>Uma equipe do IFMG-OP coletou um bloco de itabirito de <strong>1,0 m × 0,4 m × 0,3 m</strong> para análise de teor. A densidade do itabirito é <strong>3 800 kg/m³</strong>.</em><br><br><strong>Pelas Equações 1 e 2, o volume e a massa do bloco são:</strong>",
     opcoes:[
-      {letra:"A", texto:"V = 0,120 m³ · m = 456 kg"},
-      {letra:"B", texto:"V = 1,20 m³ · m = 4 560 kg"},
-      {letra:"C", texto:"V = 0,120 m³ · m = 31 667 kg"},
+      {letra:"A", texto:"V = 1,20 m³ · m = 4 560 kg"},
+      {letra:"B", texto:"V = 0,120 m³ · m = 31 667 kg"},
+      {letra:"C", texto:"V = 0,120 m³ · m = 456 kg"},
       {letra:"D", texto:"V = 1,70 m³ · m = 6 460 kg"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = 1,0 × 0,4 × 0,3 = 0,120 m³; m = 3 800 × 0,120 = 456 kg.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Quase meia tonelada num bloco que cabe num carrinho — é o que a densidade do itabirito significa.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O resultado decide se a caixaria disponível aguenta a amostra.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,0 × 0,4 × 0,3 = 0,120 m³, não 1,20 — uma casa decimal a mais no volume levou a massa junto.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Multiplique os três valores com calma.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O volume está certo, mas m = ρ × V MULTIPLICA — 3 800 ÷ 0,120 é a operação inversa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Pelas unidades: kg/m³ × m³ = kg.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = 1,0 × 0,4 × 0,3 = 0,120 m³; m = 3 800 × 0,120 = 456 kg.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Quase meia tonelada num bloco que cabe num carrinho — é o que a densidade do itabirito significa.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O resultado decide se a caixaria disponível aguenta a amostra.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,0 × 0,4 × 0,3 = 0,120 m³, não 1,20 — uma casa decimal a mais no volume levou a massa junto.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Multiplique os três valores com calma.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O volume está certo, mas m = ρ × V MULTIPLICA — 3 800 ÷ 0,120 é a operação inversa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Pelas unidades: kg/m³ × m³ = kg.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,0 + 0,4 + 0,3 = 1,7 soma as dimensões; volume é produto.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — soma no lugar do produto.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"}
     } },
 
   U3: { id:"T01-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>Na Mina de Passagem (Mariana-MG), o técnico de drenagem precisa dimensionar uma bomba para um trecho a <strong>150 m</strong> abaixo da superfície freática. Densidade da água = <strong>1 000 kg/m³</strong>; g = <strong>9,8 m/s²</strong>.</em><br><br><strong>Pela Equação 8 (P_h = ρ × g × h), a pressão que a bomba precisa vencer é:</strong>",
     opcoes:[
-      {letra:"A", texto:"1,47 × 10⁶ Pa ≈ 14,7 atm"},
-      {letra:"B", texto:"1,47 × 10⁵ Pa ≈ 1,47 atm"},
-      {letra:"C", texto:"1,53 × 10³ Pa ≈ 0,015 atm"},
-      {letra:"D", texto:"1,47 × 10⁶ Pa ≈ 147 atm"}
+      {letra:"A", texto:"1,47 × 10⁵ Pa ≈ 1,47 atm"},
+      {letra:"B", texto:"1,53 × 10³ Pa ≈ 0,015 atm"},
+      {letra:"C", texto:"1,47 × 10⁶ Pa ≈ 147 atm"},
+      {letra:"D", texto:"1,47 × 10⁶ Pa ≈ 14,7 atm"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> P_h = 1 000 × 9,8 × 150 = 1 470 000 Pa; com 1 atm ≈ 100 000 Pa, são ≈ 14,7 atm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cerca de 10 m de coluna d'água valem 1 atm — 150 m dão ~15 atm.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É a pressão que define o modelo da bomba a ser comprada.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1 000 × 9,8 × 150 = 1 470 000 Pa, e não 147 000 — faltou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 9,8 × 150 = 1 470; multiplique por 1 000.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A densidade ficou de fora: sem ρ a conta perde um fator 1 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — fator omitido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> P_h = ρ × g × h — são três fatores.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A pressão em pascal está certa, mas 1 470 000 ÷ 100 000 = 14,7 atm, não 147.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — conversão para atm.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 147 atm seriam 1 500 m de coluna d'água.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> P_h = 1 000 × 9,8 × 150 = 1 470 000 Pa; com 1 atm ≈ 100 000 Pa, são ≈ 14,7 atm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cerca de 10 m de coluna d'água valem 1 atm — 150 m dão ~15 atm.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É a pressão que define o modelo da bomba a ser comprada.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1 000 × 9,8 × 150 = 1 470 000 Pa, e não 147 000 — faltou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 9,8 × 150 = 1 470; multiplique por 1 000.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A densidade ficou de fora: sem ρ a conta perde um fator 1 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — fator omitido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> P_h = ρ × g × h — são três fatores.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A pressão em pascal está certa, mas 1 470 000 ÷ 100 000 = 14,7 atm, não 147.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — conversão para atm.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 147 atm seriam 1 500 m de coluna d'água.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T01-TM-v5-estudante.html
+   Arquivo fonte: T01-TM-v6-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T01-TM-v5-estudante.html';
+var ARQUIVO_FONTE = 'T01-TM-v6-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
