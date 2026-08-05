@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia &mdash; Estudante</title>
+<!--
+  IMPORTACAO EM MOODLE:
+  1. Adicionar atividade > Recurso > Arquivo
+  2. Upload deste .html > "Abrir em nova janela" > salvar.
+  OU iframe: <iframe src="T01-TR-v1-estudante.html" width="100%" height="3600"></iframe>
+
+  Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
+  localStorage: prefixo ifmg_fc1_t01_tr_
+-->
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: oklch(0.14 0.02 260);
+  border-top: 3px solid var(--ouro);
+  padding: 14px 20px;
+}
+.header-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.header h1 {
+  font-size: 1.4rem; font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.header h1 .trilha-code { color: var(--azul); }
+.header .badge {
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r);
+  font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 900px; margin: 4px auto 0;
+  font-size: .88rem; color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* MAIN */
+main {
+  max-width: 900px; margin: 0 auto;
+  padding: 20px 16px;
+}
+
+/* PANEL */
+.panel {
+  background: var(--superficie);
+  border-left: 3px solid var(--cinza-borda);
+  margin-bottom: 24px;
+  padding: 0;
+  overflow: hidden;
+}
+.panel-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid oklch(0.30 0.02 260);
+  background: oklch(0.20 0.02 260);
+}
+.panel-num {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .85rem;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.panel-title {
+  font-size: .95rem; font-weight: 700;
+  font-family: var(--serif);
+  color: var(--azul-claro);
+}
+.panel-tag {
+  margin-left: auto;
+  font-size: .6rem; font-weight: 600;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  background: var(--ouro-claro);
+  color: var(--ouro);
+}
+.panel-body { padding: 18px; }
+
+/* VERSION SELECTOR */
+.version-selector {
+  display: flex; gap: 0; margin-bottom: 24px;
+  border: 1px solid var(--cinza-borda);
+  overflow: hidden;
+}
+.version-btn {
+  flex: 1;
+  background: var(--input-bg);
+  color: var(--cinza);
+  border: none;
+  padding: 14px 16px;
+  font-family: var(--font);
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  border-right: 1px solid var(--cinza-borda);
+}
+.version-btn:last-child { border-right: none; }
+.version-btn:hover { background: var(--hover-bg); color: var(--texto); }
+.version-btn.active {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+}
+.version-btn .version-letter {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+.version-btn .version-name {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.version-content { display: none; }
+.version-content.active { display: block; }
+
+/* STUDENT ID */
+.student-id {
+  background: var(--superficie);
+  border-left: 3px solid var(--ouro);
+  padding: 18px;
+  margin-bottom: 24px;
+}
+.student-id-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 12px;
+}
+.field-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 0;
+}
+.field {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.field-label {
+  font-size: .65rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 600;
+}
+.field input[type="text"],
+.field input[type="date"],
+.field select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: .85rem;
+  border-radius: var(--r);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+}
+.field input:focus,
+.field select:focus {
+  border-color: var(--ouro);
+}
+
+/* INSTRUCTIONS BOX */
+.instrucoes-box {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  border-left: 3px solid var(--azul);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  font-size: .82rem;
+  line-height: 1.6;
+}
+.instrucoes-box strong { color: var(--azul-claro); }
+.instrucoes-box ul { margin: 8px 0 0 18px; }
+.instrucoes-box li { margin-bottom: 4px; }
+
+/* CENARIO */
+.cenario-box {
+  background: oklch(0.16 0.03 45);
+  border-left: 3px solid var(--azul);
+  padding: 18px;
+  margin-bottom: 18px;
+  font-family: var(--serif);
+  font-size: .88rem;
+  line-height: 1.7;
+}
+.cenario-box .cenario-title {
+  font-family: var(--font);
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--azul-claro);
+  margin-bottom: 10px;
+}
+.cenario-box em { color: oklch(0.80 0.10 95); font-style: italic; }
+
+/* DADOS TABLE */
+.dados-section {
+  margin-bottom: 18px;
+}
+.dados-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 8px;
+}
+.dados-list {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 14px 18px;
+  font-family: var(--mono);
+  font-size: .8rem;
+  line-height: 1.8;
+}
+.dados-list .dado-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.dado-label { color: var(--cinza); }
+.dado-value { color: var(--ouro); font-weight: 700; }
+
+/* DATA TABLE (for version C) */
+.dados-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .78rem;
+  margin-bottom: 12px;
+}
+.dados-table th {
+  background: oklch(0.20 0.02 260);
+  color: var(--ouro);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 1px solid var(--cinza-borda);
+}
+.dados-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--cinza-borda);
+  font-family: var(--mono);
+  font-size: .8rem;
+}
+.dados-table td:first-child {
+  font-family: var(--font);
+  color: var(--cinza);
+}
+
+/* PERGUNTAS */
+.perguntas-box {
+  background: oklch(0.18 0.03 95);
+  border-left: 3px solid var(--ouro);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.perguntas-box .perguntas-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 8px;
+}
+.perguntas-box p {
+  font-size: .82rem;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* EQUATION DISPLAY */
+.equation-display {
+  background: oklch(0.14 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 10px 16px;
+  margin: 10px 0;
+  font-family: var(--mono);
+  font-size: .88rem;
+  color: var(--ouro);
+  text-align: center;
+  font-weight: 700;
+}
+
+/* C5 STEP */
+.c5-step {
+  margin-bottom: 20px;
+}
+.c5-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.c5-step-num {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .75rem;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.c5-step-title {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--azul-claro);
+}
+.c5-step-hint {
+  font-size: .72rem;
+  color: var(--cinza);
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+/* TEXTAREAS */
+.tr-textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 10px 12px;
+  font-family: var(--font);
+  font-size: .82rem;
+  line-height: 1.5;
+  border-radius: var(--r);
+  outline: none;
+  resize: vertical;
+  transition: border-color .2s;
+}
+.tr-textarea:focus { border-color: var(--ouro); }
+.char-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: .62rem;
+  color: var(--cinza);
+  font-family: var(--mono);
+  margin-top: 3px;
+}
+.char-counter.min-ok { color: var(--verde); }
+
+/* PARTE 3 EXTENSION OPTIONS */
+.extensao-opcoes {
+  margin-bottom: 16px;
+}
+.extensao-opcao {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: .8rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+.extensao-opcao:hover { border-color: var(--azul); }
+.extensao-opcao.selected {
+  border-color: var(--azul);
+  background: var(--azul-bg);
+}
+.extensao-opcao .opcao-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--azul-claro);
+  margin-right: 6px;
+}
+
+/* UPLOAD SIM */
+.upload-sim {
+  border: 2px dashed var(--cinza-borda);
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.upload-sim:hover {
+  border-color: var(--ouro);
+  background: oklch(0.16 0.02 260);
+}
+.upload-sim .upload-icon {
+  font-size: 1.6rem;
+  color: var(--cinza);
+  margin-bottom: 6px;
+}
+.upload-sim .upload-text {
+  font-size: .75rem;
+  color: var(--cinza);
+}
+.upload-sim .upload-hint {
+  font-size: .65rem;
+  color: oklch(0.45 0.02 260);
+  margin-top: 4px;
+}
+.upload-sim.has-file {
+  border-color: var(--verde);
+  background: var(--verde-claro);
+}
+.upload-sim.has-file .upload-icon { color: var(--verde); }
+.upload-sim.has-file .upload-text { color: var(--verde); }
+
+/* CRITERIOS */
+.criterios-box {
+  margin-top: 16px;
+}
+.criterios-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--verde);
+  margin-bottom: 8px;
+}
+.criterios-list {
+  font-size: .78rem;
+  line-height: 1.6;
+}
+.criterio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.criterio-check {
+  width: 16px; height: 16px;
+  border: 1px solid var(--cinza-borda);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.criterios-sub-title {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+/* RUBRICA TABLE */
+.rubrica-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .72rem;
+  margin-top: 8px;
+}
+.rubrica-table th {
+  background: oklch(0.20 0.02 260);
+  color: var(--ouro);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 1px solid var(--cinza-borda);
+}
+.rubrica-table td {
+  padding: 8px 10px;
+  border: 1px solid var(--cinza-borda);
+  vertical-align: top;
+  line-height: 1.4;
+}
+.rubrica-table td:nth-child(3) {
+  font-family: var(--mono);
+  text-align: center;
+  font-weight: 700;
+  color: var(--ouro);
+}
+.rubrica-formula {
+  font-family: var(--mono);
+  font-size: .8rem;
+  color: var(--ouro);
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* CONTEXT NOTE */
+.context-note {
+  background: var(--ouro-claro);
+  border-left: 3px solid var(--ouro);
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+.context-note strong { color: var(--ouro); }
+
+/* BTN */
+.btn {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  cursor: pointer;
+  font-family: var(--font);
+  border-radius: var(--r);
+  transition: background .2s;
+}
+.btn:hover { background: var(--azul-claro); }
+.btn-ouro {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+}
+.btn-ouro:hover { background: oklch(0.90 0.18 95); }
+.btn-sec {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+.btn-sec:hover { background: var(--ouro-claro); }
+.btn-erro {
+  background: var(--erro);
+  color: var(--branco);
+}
+.btn-erro:hover { background: oklch(0.65 0.22 25); }
+.btn-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* PROGRESS */
+.progress-bar-container {
+  margin-bottom: 24px;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .68rem;
+  color: var(--cinza);
+  font-family: var(--mono);
+  margin-bottom: 4px;
+}
+.progress-track {
+  height: 6px;
+  background: var(--cinza-borda);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ouro);
+  transition: width .3s;
+  width: 0%;
+}
+
+/* SECTION TITLE */
+.section-title {
+  font-family: var(--serif);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--ouro);
+  padding-bottom: 6px;
+  border-bottom: 1px solid oklch(0.25 0.04 95);
+  margin-bottom: 12px;
+  margin-top: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ENCERRAMENTO */
+.encerramento { max-width:900px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  font-size: .7rem;
+  color: var(--cinza);
+  padding: 16px 0;
+  margin-top: 12px;
+  letter-spacing: .5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .header-inner { flex-direction: column; text-align: center; }
+  .field-group { grid-template-columns: 1fr; }
+  .version-selector { flex-direction: column; }
+  .version-btn { border-right: none; border-bottom: 1px solid var(--cinza-borda); }
+  .version-btn:last-child { border-bottom: none; }
+  .panel-header { flex-wrap: wrap; }
+  .panel-tag { margin-left: 0; }
+  .rubrica-table { font-size: .65rem; }
+  .dados-table { font-size: .7rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; font-size: 10pt; }
+  .header { border-top-color: #333; background: #f5f5f5; }
+  .header h1 .trilha-code { color: #333; }
+  .header .badge { background: #555; color: #fff; }
+  .header-sub { color: #666; }
+  .piazzi-bar { display: none; }
+  .panel { border-left-color: #888; break-inside: avoid; }
+  .panel-header { background: #eee; }
+  .panel-num { background: #555; color: #fff; }
+  .panel-title { color: #333; }
+  .panel-tag { background: #eee; color: #555; }
+  .version-selector { border-color: #ccc; }
+  .version-btn { background: #f5f5f5; color: #666; border-color: #ccc; }
+  .version-btn.active { background: #555; color: #fff; }
+  .student-id { border-left-color: #888; background: #fafafa; }
+  .instrucoes-box { border-color: #ccc; border-left-color: #555; background: #fafafa; }
+  .cenario-box { background: #f8f8f0; border-left-color: #555; }
+  .dados-list { background: #fafafa; border-color: #ccc; }
+  .perguntas-box { background: #fdf8f0; border-left-color: #888; }
+  .tr-textarea { border-color: #aaa; background: #fff; min-height: 80px; }
+  .c5-step-num { background: #555; color: #fff; }
+  .rubrica-table th { background: #eee; color: #333; border-color: #ccc; }
+  .rubrica-table td { border-color: #ccc; }
+  .dados-table th { background: #eee; color: #333; border-color: #ccc; }
+  .dados-table td { border-color: #ccc; }
+  .btn-row { display: none; }
+  .upload-sim { border-color: #aaa; }
+  .char-counter { display: none; }
+  .progress-bar-container { display: none; }
+  .encerramento { border-top-color: #333; }
+  .footer { color: #999; }
+  .equation-display { border-color: #ccc; background: #fafafa; color: #333; }
+  .context-note { background: #fdf8f0; border-left-color: #888; }
+  .context-note strong { color: #333; }
+  .version-content { display: none !important; }
+  .version-content.active { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+    <span class="badge">Trabalho (TR)</span>
+  </div>
+  <div class="header-sub">3 vers&otilde;es (Sofia / Pedro / Lucas) &middot; Bloom L5&ndash;L6 &middot; peso 20%</div>
+</header>
+
+<main>
+
+<!-- PIAZZI BAR -->
+<div class="piazzi-bar">
+  <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+  <span class="piazzi-tag">Ler</span>
+  <span class="piazzi-tag">Escrever</span>
+  <span class="piazzi-tag">Medir</span>
+  <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
+  <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+</div>
+
+<!-- ===== IDENTIFICATION ===== -->
+<div class="student-id">
+  <div class="student-id-title">Identifica&ccedil;&atilde;o do Estudante</div>
+  <div class="field-group">
+    <div class="field">
+      <span class="field-label">Nome completo</span>
+      <input type="text" id="id-nome" placeholder="Seu nome completo">
+    </div>
+    <div class="field">
+      <span class="field-label">Turma</span>
+      <select id="id-turma">
+        <option value="">Selecione...</option>
+        <option value="MIN1A">MIN1A</option>
+        <option value="MIN1B">MIN1B</option>
+        <option value="MIN1C">MIN1C</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="field-label">Data</span>
+      <input type="date" id="id-data">
+    </div>
+  </div>
+</div>
+
+<!-- ===== VERSION SELECTOR ===== -->
+<div class="version-selector">
+  <button class="version-btn active" data-version="A" onclick="selectVersion('A')">
+    <span class="version-letter">A</span>
+    <span class="version-name">Sofia</span>
+  </button>
+  <button class="version-btn" data-version="B" onclick="selectVersion('B')">
+    <span class="version-letter">B</span>
+    <span class="version-name">Pedro</span>
+  </button>
+  <button class="version-btn" data-version="C" onclick="selectVersion('C')">
+    <span class="version-letter">C</span>
+    <span class="version-name">Lucas</span>
+  </button>
+</div>
+
+<!-- ===== PROGRESS ===== -->
+<div class="progress-bar-container">
+  <div class="progress-label">
+    <span>Progresso</span>
+    <span id="progress-text">0 / 9 campos preenchidos</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<!-- ===== INSTRUCOES GERAIS ===== -->
+<div class="instrucoes-box">
+  <strong>Instru&ccedil;&otilde;es gerais</strong>
+  <p style="margin-top:8px;">Avalia&ccedil;&atilde;o somativa p&oacute;s-aula. <strong>3 partes obrigat&oacute;rias</strong>, peso 20%.</p>
+  <p>Prazo: <strong>23h50 do 6&ordm; dia ap&oacute;s a aula</strong>.</p>
+  <p>Entrega: arquivo &uacute;nico (Word, PDF ou Markdown) no Moodle.</p>
+  <p style="margin-top:8px;"><strong>Estrutura obrigat&oacute;ria:</strong></p>
+  <ul>
+    <li><strong>Situa&ccedil;&atilde;o-problema</strong> &mdash; leia com aten&ccedil;&atilde;o a narrativa e identifique o que est&aacute; sendo pedido.</li>
+    <li><strong>Resolu&ccedil;&atilde;o t&eacute;cnica</strong> &mdash; apresente as 7 etapas do Componente 5 completo.</li>
+    <li><strong>Extens&atilde;o criativa</strong> &mdash; proposta original, fundamentada no Texto Tem&aacute;tico.</li>
+  </ul>
+  <p style="margin-top:8px;">Consulte livremente: Texto Tem&aacute;tico, Cart&otilde;es Did&aacute;ticos, Folha de Atividades, Tarefa Complementar.</p>
+</div>
+
+<!-- =============================================================== -->
+<!-- ==================== VERSAO A — SOFIA ========================= -->
+<!-- =============================================================== -->
+<div class="version-content active" id="version-A">
+
+  <!-- PARTE 1 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o A &middot; Sofia</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">Cen&aacute;rio</div>
+        <p>Sofia &eacute; t&eacute;cnica em minera&ccedil;&atilde;o rec&eacute;m-contratada da Mineradora Itacolomi, que opera uma mina subterr&acirc;nea de ouro pr&oacute;xima a Ouro Preto. Ap&oacute;s uma esta&ccedil;&atilde;o de chuvas excepcionalmente forte, a galeria principal &mdash; situada a <strong>110 m de profundidade</strong> &mdash; est&aacute; completamente alagada. A produ&ccedil;&atilde;o est&aacute; paralisada h&aacute; tr&ecirc;s dias, gerando preju&iacute;zo di&aacute;rio estimado em R$ 85 000.</p>
+        <p style="margin-top:8px;">O gerente de opera&ccedil;&otilde;es convocou Sofia para uma reuni&atilde;o de emerg&ecirc;ncia no barrac&atilde;o de equipamentos. Sobre a mesa, dois cat&aacute;logos t&eacute;cnicos abertos: as especifica&ccedil;&otilde;es de <strong>duas bombas centr&iacute;fugas</strong> dispon&iacute;veis no almoxarifado. O gerente quer uma an&aacute;lise t&eacute;cnica em 24 horas para autorizar a compra de mangueiras e o acionamento do grupo gerador.</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div class="dados-list">
+          <div class="dado-item"><span class="dado-label">Profundidade da galeria:</span> <span class="dado-value">h = 110 m</span></div>
+          <div class="dado-item"><span class="dado-label">Se&ccedil;&atilde;o transversal:</span> <span class="dado-value">A = 8,0 m&sup2;</span></div>
+          <div class="dado-item"><span class="dado-label">Comprimento da galeria alagada:</span> <span class="dado-value">L = 110 m (galeria vertical)</span></div>
+          <div class="dado-item"><span class="dado-label">Bomba A:</span> <span class="dado-value">press&atilde;o m&aacute;x. 950 kPa, vaz&atilde;o m&aacute;x. 0,015 m&sup3;/s</span></div>
+          <div class="dado-item"><span class="dado-label">Bomba B:</span> <span class="dado-value">press&atilde;o m&aacute;x. 1 400 kPa, vaz&atilde;o m&aacute;x. 0,008 m&sup3;/s</span></div>
+          <div class="dado-item"><span class="dado-label">Densidade da &aacute;gua:</span> <span class="dado-value">&rho; = 1 000 kg/m&sup3;</span></div>
+          <div class="dado-item"><span class="dado-label">Acelera&ccedil;&atilde;o gravitacional:</span> <span class="dado-value">g = 9,8 m/s&sup2;</span></div>
+          <div class="dado-item"><span class="dado-label">Perdas de carga (atrito):</span> <span class="dado-value">20% da press&atilde;o hidrost&aacute;tica</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">O gerente precisa saber em 24 horas:</div>
+        <p><strong>(a)</strong> Qual bomba &eacute; capaz de vencer a press&atilde;o total (hidrost&aacute;tica + perdas)? Justifique com c&aacute;lculo.</p>
+        <p><strong>(b)</strong> Quanto tempo levar&aacute; para esvaziar a galeria com a bomba escolhida?</p>
+      </div>
+
+      <div class="equation-display">P<sub>h</sub> = &rho; &times; g &times; h &nbsp;&nbsp;&nbsp; t = V / Q</div>
+    </div>
+  </div>
+
+  <!-- PARTE 2 — C5 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">7 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">Interpreta&ccedil;&atilde;o</span></div>
+        <div class="c5-step-hint">Identifique claramente o(s) problema(s) a resolver. O que se pede?</div>
+        <textarea class="tr-textarea" data-key="A_e1" rows="4" placeholder="Descreva o que voc&ecirc; precisa resolver..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Invent&aacute;rio de dados</span></div>
+        <div class="c5-step-hint">Liste todas as grandezas com valores, unidades e s&iacute;mbolos.</div>
+        <textarea class="tr-textarea" data-key="A_e2" rows="5" placeholder="&rho; = ... &middot; g = ... &middot; h = ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Hip&oacute;teses simplificadoras</span></div>
+        <div class="c5-step-hint">Liste pelo menos 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas e plaus&iacute;veis.</div>
+        <textarea class="tr-textarea" data-key="A_e3" rows="5" placeholder="1. A coluna d'&aacute;gua est&aacute; em repouso...&#10;2. ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Representa&ccedil;&atilde;o visual</span></div>
+        <div class="c5-step-hint">Desenhe um esquema com as grandezas identificadas (pode usar texto/ASCII).</div>
+        <textarea class="tr-textarea" data-key="A_e4" rows="8" placeholder="  SUPERF&Iacute;CIE&#10;     |&#10;  110 m  tubula&ccedil;&atilde;o&#10;     |&#10;  GALERIA (8 m&sup2;)" style="font-family:var(--mono);"></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Sele&ccedil;&atilde;o e manipula&ccedil;&atilde;o de equa&ccedil;&otilde;es</span></div>
+        <div class="c5-step-hint">Identifique as equa&ccedil;&otilde;es necess&aacute;rias e mostre como manipul&aacute;-las.</div>
+        <textarea class="tr-textarea" data-key="A_e5" rows="5" placeholder="Ph = &rho; &times; g &times; h&#10;P_total = Ph &times; 1,20&#10;..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">C&aacute;lculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores, mantenha as unidades e apresente o resultado.</div>
+        <textarea class="tr-textarea" data-key="A_e6" rows="8" placeholder="Ph = 1 000 kg/m&sup3; &times; 9,8 m/s&sup2; &times; 110 m = ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">An&aacute;lise de plausibilidade</span></div>
+        <div class="c5-step-hint">O resultado faz sentido? Compare com refer&ecirc;ncias. Fa&ccedil;a recomenda&ccedil;&atilde;o t&eacute;cnica.</div>
+        <textarea class="tr-textarea" data-key="A_e7" rows="6" placeholder="A press&atilde;o calculada &eacute; coerente porque...&#10;Recomenda&ccedil;&atilde;o t&eacute;cnica: ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARTE 3 — EXTENSAO CRIATIVA -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos seguintes desafios derivados do problema de Sofia:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>plano de conting&ecirc;ncia</strong> para reduzir o tempo de esvaziamento usando as duas bombas em combina&ccedil;&atilde;o (s&eacute;rie ou paralelo). Qual configura&ccedil;&atilde;o faz sentido f&iacute;sico? Calcule o ganho de tempo estimado.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Um <strong>sistema de monitoramento cont&iacute;nuo</strong> do n&iacute;vel d'&aacute;gua usando sensores de press&atilde;o &mdash; descreva os princ&iacute;pios f&iacute;sicos (P<sub>h</sub> = &rho;gh) que permitem inferir o n&iacute;vel pela press&atilde;o medida no fundo da galeria.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>reformula&ccedil;&atilde;o do projeto da galeria</strong> que reduza a press&atilde;o hidrost&aacute;tica &mdash; por exemplo, escava&ccedil;&atilde;o de po&ccedil;os intermedi&aacute;rios de drenagem. Calcule a nova press&atilde;o hidrost&aacute;tica m&aacute;xima se a galeria fosse dividida em dois segmentos de 55 m cada.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="A_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-A" onclick="simulateUpload('A')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <!-- CRITERIOS -->
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta est&aacute; relacionada ao conte&uacute;do da trilha T01 (press&atilde;o hidrost&aacute;tica, drenagem)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta &eacute; coerente com os dados e o cen&aacute;rio da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no TT (citado ou parafraseado)</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado num&eacute;rico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, minera&ccedil;&atilde;o colonial ou patrim&ocirc;nio</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conex&atilde;o com outra disciplina do curso t&eacute;cnico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limita&ccedil;&atilde;o do pr&oacute;prio racioc&iacute;nio (metacogni&ccedil;&atilde;o)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Prop&otilde;e experimento ou verifica&ccedil;&atilde;o poss&iacute;vel</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUBRICA A -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o A</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa os dados fornecidos na E2; menciona o cen&aacute;rio na E7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; Interpreta&ccedil;&atilde;o</strong></td><td>Identifica claramente os dois sub-problemas (press&atilde;o + tempo)</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Invent&aacute;rio</strong></td><td>Todas as grandezas com valores, unidades e s&iacute;mbolos corretos</td><td>4,4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Hip&oacute;teses</strong></td><td>&ge; 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas e plaus&iacute;veis</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Representa&ccedil;&atilde;o</strong></td><td>Esquema com coluna, bomba e cotas identificados</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Equa&ccedil;&otilde;es</strong></td><td>P<sub>h</sub>=&rho;gh e t=V/Q identificadas e manipuladas corretamente</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; C&aacute;lculo</strong></td><td>Substitui&ccedil;&atilde;o com unidades; resultado correto (&plusmn;5%)</td><td>11%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Plausibilidade</strong></td><td>Avalia a margem de seguran&ccedil;a; recomenda&ccedil;&atilde;o t&eacute;cnica expl&iacute;cita</td><td>15,4%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente, fundamentada, com equa&ccedil;&atilde;o</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-A -->
+
+
+<!-- =============================================================== -->
+<!-- ==================== VERSAO B — PEDRO ========================= -->
+<!-- =============================================================== -->
+<div class="version-content" id="version-B">
+
+  <!-- PARTE 1 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o B &middot; Pedro</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">Cen&aacute;rio</div>
+        <p>Pedro &eacute; t&eacute;cnico em minera&ccedil;&atilde;o na planta de britagem prim&aacute;ria de uma mineradora de ferro no Quadril&aacute;tero Ferr&iacute;fero. A <strong>correia transportadora</strong> principal &mdash; que leva o min&eacute;rio britado do silo ao vag&atilde;o de carregamento &mdash; opera com um motor el&eacute;trico de <strong>22 kW</strong> de pot&ecirc;ncia mec&acirc;nica efetiva.</p>
+        <p style="margin-top:8px;">Na reuni&atilde;o de planejamento mensal, o gerente de produ&ccedil;&atilde;o apresentou uma meta: <strong>aumentar a produ&ccedil;&atilde;o em 30%</strong> sem trocar o motor, apenas elevando a velocidade da correia. Pedro foi designado para responder tecnicamente se isso &eacute; vi&aacute;vel &mdash; ele tem o turno da tarde para entregar a an&aacute;lise antes da reuni&atilde;o de amanh&atilde; de manh&atilde;.</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div class="dados-list">
+          <div class="dado-item"><span class="dado-label">Pot&ecirc;ncia mec&acirc;nica do motor:</span> <span class="dado-value">P<sub>motor</sub> = 22 kW = 22 000 W</span></div>
+          <div class="dado-item"><span class="dado-label">For&ccedil;a de tra&ccedil;&atilde;o atual:</span> <span class="dado-value">F<sub>atual</sub> = 3 200 N</span></div>
+          <div class="dado-item"><span class="dado-label">Velocidade atual da correia:</span> <span class="dado-value">v<sub>atual</sub> = 2,5 m/s</span></div>
+          <div class="dado-item"><span class="dado-label">Meta de aumento de produ&ccedil;&atilde;o:</span> <span class="dado-value">30% (velocidade 30% maior)</span></div>
+          <div class="dado-item"><span class="dado-label">Aumento estimado de for&ccedil;a:</span> <span class="dado-value">15% a mais (mais carga, mais atrito)</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">Pedro precisa responder:</div>
+        <p><strong>(a)</strong> O motor atual suporta a nova velocidade? (calcule a pot&ecirc;ncia demandada e compare com P<sub>motor</sub>)</p>
+        <p><strong>(b)</strong> Se n&atilde;o suportar: qual &eacute; a velocidade m&aacute;xima poss&iacute;vel com o motor atual?</p>
+      </div>
+
+      <div class="equation-display">P = F &times; v</div>
+    </div>
+  </div>
+
+  <!-- PARTE 2 — C5 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">7 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">Interpreta&ccedil;&atilde;o</span></div>
+        <div class="c5-step-hint">Identifique claramente o(s) problema(s) a resolver. O que se pede?</div>
+        <textarea class="tr-textarea" data-key="B_e1" rows="4" placeholder="Descreva o que voc&ecirc; precisa resolver..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Invent&aacute;rio de dados</span></div>
+        <div class="c5-step-hint">Liste todas as grandezas com valores, unidades e s&iacute;mbolos.</div>
+        <textarea class="tr-textarea" data-key="B_e2" rows="5" placeholder="P_motor = ... &middot; F_atual = ... &middot; v_atual = ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Hip&oacute;teses simplificadoras</span></div>
+        <div class="c5-step-hint">Liste pelo menos 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas e plaus&iacute;veis.</div>
+        <textarea class="tr-textarea" data-key="B_e3" rows="5" placeholder="1. O motor opera em regime permanente...&#10;2. ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Representa&ccedil;&atilde;o visual</span></div>
+        <div class="c5-step-hint">Desenhe um esquema com as grandezas identificadas (pode usar texto/ASCII).</div>
+        <textarea class="tr-textarea" data-key="B_e4" rows="8" placeholder="  MOTOR (22 kW)&#10;     |&#10;  [TAMBOR] ---- correia ----&gt; [TAMBOR] &gt; VAG&Atilde;O&#10;     F_tra&ccedil;&atilde;o  &middot;  velocidade" style="font-family:var(--mono);"></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Sele&ccedil;&atilde;o e manipula&ccedil;&atilde;o de equa&ccedil;&otilde;es</span></div>
+        <div class="c5-step-hint">Identifique as equa&ccedil;&otilde;es necess&aacute;rias e mostre como manipul&aacute;-las.</div>
+        <textarea class="tr-textarea" data-key="B_e5" rows="5" placeholder="P = F &times; v&#10;v_nova = v_atual &times; 1,30&#10;F_nova = F_atual &times; 1,15&#10;..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">C&aacute;lculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores, mantenha as unidades e apresente o resultado.</div>
+        <textarea class="tr-textarea" data-key="B_e6" rows="8" placeholder="v_nova = 2,5 m/s &times; 1,30 = ...&#10;F_nova = 3 200 N &times; 1,15 = ...&#10;P_dem = ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">An&aacute;lise de plausibilidade</span></div>
+        <div class="c5-step-hint">O resultado faz sentido? Compare com refer&ecirc;ncias. Fa&ccedil;a recomenda&ccedil;&atilde;o t&eacute;cnica.</div>
+        <textarea class="tr-textarea" data-key="B_e7" rows="6" placeholder="A pot&ecirc;ncia demandada &eacute;... comparada com P_motor...&#10;Recomenda&ccedil;&atilde;o a Pedro: ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARTE 3 — EXTENSAO CRIATIVA -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos seguintes desafios:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>sistema de controle autom&aacute;tico</strong> de velocidade que ajuste a correia dinamicamente conforme o volume de min&eacute;rio presente (sensor de peso na entrada do silo). Descreva como P = F &times; v guia o projeto do controle.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Uma <strong>an&aacute;lise energ&eacute;tica comparativa</strong>: calcule o consumo de energia el&eacute;trica mensal (em kWh) antes e depois do aumento de velocidade, considerando turno de 8 horas, 22 dias/m&ecirc;s. Impacto financeiro a R$ 0,75/kWh.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>proposta de redesenho</strong> da correia para reduzir F<sub>tra&ccedil;&atilde;o</sub> &mdash; troca de material das lonas ou divis&atilde;o em trechos menores com tambores intermedi&aacute;rios. Calcule como a redu&ccedil;&atilde;o de F impacta v<sub>max</sub>.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou c&aacute;lculo de suporte, e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="B_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;C&aacute;lculo/diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-B" onclick="simulateUpload('B')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <!-- CRITERIOS -->
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta est&aacute; relacionada ao conte&uacute;do da trilha T01 (pot&ecirc;ncia, for&ccedil;a, velocidade)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta &eacute; coerente com o cen&aacute;rio da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no TT</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado num&eacute;rico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conex&atilde;o com outra disciplina do curso t&eacute;cnico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limita&ccedil;&atilde;o do pr&oacute;prio racioc&iacute;nio (metacogni&ccedil;&atilde;o)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Prop&otilde;e verifica&ccedil;&atilde;o experimental poss&iacute;vel</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUBRICA B -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o B</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa dados fornecidos na E2; contexto da correia aparece na E7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; Interpreta&ccedil;&atilde;o</strong></td><td>Identifica os dois sub-problemas (verifica&ccedil;&atilde;o + v<sub>max</sub>)</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Invent&aacute;rio</strong></td><td>Todas as grandezas com valores, unidades e s&iacute;mbolos</td><td>4,4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Hip&oacute;teses</strong></td><td>&ge; 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas e plaus&iacute;veis</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Representa&ccedil;&atilde;o</strong></td><td>Esquema da correia com motor, for&ccedil;a e velocidade rotulados</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Equa&ccedil;&otilde;es</strong></td><td>P=F&middot;v identificada; v<sub>nova</sub>, F<sub>nova</sub> e v<sub>max</sub> manipulados</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; C&aacute;lculo</strong></td><td>Substitui&ccedil;&atilde;o com unidades; resultado correto (&plusmn;5%)</td><td>11%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Plausibilidade</strong></td><td>Compara P<sub>dem</sub> com P<sub>motor</sub>; superdimensionamento; recomenda&ccedil;&atilde;o</td><td>15,4%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente, com equa&ccedil;&atilde;o e racioc&iacute;nio expl&iacute;cito</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-B -->
+
+
+<!-- =============================================================== -->
+<!-- ==================== VERSAO C — LUCAS ========================= -->
+<!-- =============================================================== -->
+<div class="version-content" id="version-C">
+
+  <!-- PARTE 1 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o C &middot; Lucas</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">Cen&aacute;rio</div>
+        <p>Lucas &eacute; t&eacute;cnico em geotecnia de uma empresa de minera&ccedil;&atilde;o a c&eacute;u aberto na regi&atilde;o de Mariana, perto de onde ocorreu o rompimento da barragem de Fund&atilde;o em 2015. Ap&oacute;s chuvas intensas no fim de semana, os sensores de inclin&ocirc;metro registraram movimenta&ccedil;&atilde;o em dois taludes da cava. A opera&ccedil;&atilde;o foi suspensa automaticamente &agrave;s 03h15 da madrugada.</p>
+        <p style="margin-top:8px;">&Agrave;s 07h, o engenheiro chefe chega ao escrit&oacute;rio e pede a Lucas uma an&aacute;lise t&eacute;cnica dos dois taludes antes das 09h, quando decide se autoriza a retomada das opera&ccedil;&otilde;es. A suspens&atilde;o de produ&ccedil;&atilde;o custa R$ 120 000 por hora. A responsabilidade t&eacute;cnica &mdash; e as consequ&ecirc;ncias de uma decis&atilde;o errada em qualquer sentido &mdash; est&aacute; sobre os ombros de Lucas.</p>
+        <p style="margin-top:8px;font-style:italic;color:oklch(0.70 0.08 95);">&ldquo;Em geotecnia, o que voc&ecirc; n&atilde;o sabe pode matar &mdash; e o que voc&ecirc; n&atilde;o calcula com rigor pode matar mais ainda.&rdquo;</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div style="overflow-x:auto;">
+          <table class="dados-table">
+            <thead>
+              <tr><th>Par&acirc;metro</th><th>Talude Norte</th><th>Talude Sul</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Coes&atilde;o do material (c)</td><td>80 kPa</td><td>110 kPa</td></tr>
+              <tr><td>Tens&atilde;o normal (&sigma;)</td><td>220 kPa</td><td>280 kPa</td></tr>
+              <tr><td>&Acirc;ngulo de atrito interno (&phi;)</td><td>32&deg;</td><td>28&deg;</td></tr>
+              <tr><td>Tens&atilde;o cisalhante atuante (&tau;)</td><td>145 kPa</td><td>195 kPa</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dados-list" style="margin-top:8px;">
+          <div class="dado-item"><span class="dado-label">Norma interna da empresa:</span> <span class="dado-value">FS &ge; 1,30</span></div>
+          <div class="dado-item"><span class="dado-label">Norma regulat&oacute;ria federal (ANM):</span> <span class="dado-value">FS &ge; 1,15 (m&iacute;nimo absoluto)</span></div>
+          <div class="dado-item"><span class="dado-label">Refer&ecirc;ncia:</span> <span class="dado-value">tan(32&deg;) &asymp; 0,625 &nbsp;&middot;&nbsp; tan(28&deg;) &asymp; 0,532</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">Lucas precisa responder ao engenheiro chefe:</div>
+        <p><strong>(a)</strong> Qual(is) talude(s) atende(m) &agrave; norma interna (FS &ge; 1,30)?</p>
+        <p><strong>(b)</strong> Qual(is) atende(m) ao m&iacute;nimo regulat&oacute;rio (FS &ge; 1,15)?</p>
+        <p><strong>(c)</strong> Qual &eacute; a recomenda&ccedil;&atilde;o t&eacute;cnica para cada talude?</p>
+      </div>
+
+      <div class="equation-display">FS = (c + &sigma; &times; tan &phi;) / &tau;</div>
+    </div>
+  </div>
+
+  <!-- PARTE 2 — C5 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">7 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">Interpreta&ccedil;&atilde;o</span></div>
+        <div class="c5-step-hint">Identifique claramente o(s) problema(s) a resolver. O que se pede?</div>
+        <textarea class="tr-textarea" data-key="C_e1" rows="4" placeholder="Descreva o que voc&ecirc; precisa resolver..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Invent&aacute;rio de dados</span></div>
+        <div class="c5-step-hint">Liste todas as grandezas com valores, unidades e s&iacute;mbolos.</div>
+        <textarea class="tr-textarea" data-key="C_e2" rows="5" placeholder="Norte: c=... &middot; &sigma;=... &middot; &phi;=... &middot; &tau;=...&#10;Sul: c=... &middot; &sigma;=... &middot; &phi;=... &middot; &tau;=..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Hip&oacute;teses simplificadoras</span></div>
+        <div class="c5-step-hint">Liste pelo menos 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas e plaus&iacute;veis.</div>
+        <textarea class="tr-textarea" data-key="C_e3" rows="5" placeholder="1. Material de cada talude &eacute; homog&ecirc;neo...&#10;2. ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Representa&ccedil;&atilde;o visual</span></div>
+        <div class="c5-step-hint">Desenhe um esquema dos dois taludes com as grandezas identificadas.</div>
+        <textarea class="tr-textarea" data-key="C_e4" rows="8" placeholder="  TALUDE NORTE        TALUDE SUL&#10;    &sigma;=220 kPa         &sigma;=280 kPa&#10;    &tau;=145 kPa          &tau;=195 kPa&#10;    &phi;=32&deg;, c=80       &phi;=28&deg;, c=110" style="font-family:var(--mono);"></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Sele&ccedil;&atilde;o e manipula&ccedil;&atilde;o de equa&ccedil;&otilde;es</span></div>
+        <div class="c5-step-hint">Identifique as equa&ccedil;&otilde;es necess&aacute;rias e mostre como aplic&aacute;-las.</div>
+        <textarea class="tr-textarea" data-key="C_e5" rows="5" placeholder="FS = (c + &sigma; &times; tan &phi;) / &tau;&#10;Aplicar para cada talude..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">C&aacute;lculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores, mantenha as unidades e apresente o resultado para cada talude.</div>
+        <textarea class="tr-textarea" data-key="C_e6" rows="8" placeholder="Talude Norte:&#10;FS_N = (80 + 220 &times; 0,625) / 145 = ...&#10;&#10;Talude Sul:&#10;FS_S = (110 + 280 &times; 0,532) / 195 = ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">An&aacute;lise de plausibilidade</span></div>
+        <div class="c5-step-hint">Compare os FS com os crit&eacute;rios normativos. Emita recomenda&ccedil;&atilde;o t&eacute;cnica justificada para cada talude.</div>
+        <textarea class="tr-textarea" data-key="C_e7" rows="6" placeholder="Talude Norte: FS = ... vs. 1,30 (norma) e 1,15 (federal)&#10;Talude Sul: FS = ... vs. 1,30 e 1,15&#10;Recomenda&ccedil;&atilde;o: ..."></textarea>
+        <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARTE 3 — EXTENSAO CRIATIVA -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos seguintes desafios:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>plano de monitoramento cont&iacute;nuo</strong> que use os princ&iacute;pios da equa&ccedil;&atilde;o de Mohr-Coulomb &mdash; descreva quais grandezas (c, &sigma;, &phi;, &tau;) s&atilde;o monitor&aacute;veis em campo, com quais sensores, e como uma varia&ccedil;&atilde;o de 10% em &tau; afetaria o FS do Talude Sul.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Uma <strong>an&aacute;lise de cen&aacute;rio extremo</strong>: o que acontece com o FS do Talude Norte se a coes&atilde;o cair de 80 kPa para 50 kPa ap&oacute;s mais 48h de chuva intensa? Calcule o novo FS e a nova recomenda&ccedil;&atilde;o t&eacute;cnica.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>conex&atilde;o hist&oacute;rica</strong>: como os engenheiros do s&eacute;c. XVIII calculavam a estabilidade de muros de arrimo das igrejas barrocas de Ouro Preto (sem Mohr-Coulomb, desenvolvida em 1776)? Proponha um paralelo entre a pr&aacute;tica hist&oacute;rica e o FS calculado nesta avalia&ccedil;&atilde;o.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), diagrama ou c&aacute;lculo, e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="C_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama/c&aacute;lculo: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-C" onclick="simulateUpload('C')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <!-- CRITERIOS -->
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta est&aacute; relacionada ao conte&uacute;do da trilha T01 (fator de seguran&ccedil;a, estabilidade)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta &eacute; coerente com o cen&aacute;rio da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no TT</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado num&eacute;rico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, Mariana, minera&ccedil;&atilde;o colonial ou patrim&ocirc;nio hist&oacute;rico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica limita&ccedil;&atilde;o do modelo (ex.: superf&iacute;cie de ruptura plana vs. curva)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Prop&otilde;e verifica&ccedil;&atilde;o experimental poss&iacute;vel</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita ou parafraseia a ep&iacute;grafe na argumenta&ccedil;&atilde;o (+5%)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUBRICA C -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o C</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa os dados da tabela na E2; menciona contexto (Mariana, chuvas) na E7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; Interpreta&ccedil;&atilde;o</strong></td><td>Identifica claramente os tr&ecirc;s sub-problemas (FS Norte, FS Sul, recomenda&ccedil;&atilde;o)</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Invent&aacute;rio</strong></td><td>Todos os par&acirc;metros com valores, unidades e s&iacute;mbolos</td><td>4,4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Hip&oacute;teses</strong></td><td>&ge; 2 hip&oacute;teses f&iacute;sicas expl&iacute;citas (homogeneidade, superf&iacute;cie plana)</td><td>5,5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Representa&ccedil;&atilde;o</strong></td><td>Esquema dos dois taludes com &sigma;, &tau; e &phi; identificados</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Equa&ccedil;&otilde;es</strong></td><td>FS = (c + &sigma; tan&phi;)/&tau; identificada; aplicada aos dois taludes</td><td>6,6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; C&aacute;lculo</strong></td><td>Substitui&ccedil;&atilde;o com unidades; FS<sub>N</sub> &asymp; 1,50 e FS<sub>S</sub> &asymp; 1,33 (&plusmn;5%)</td><td>11%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Plausibilidade</strong></td><td>Compara com crit&eacute;rios normativos; recomenda&ccedil;&atilde;o diferenciada; refer&ecirc;ncia hist&oacute;rica</td><td>15,4%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente, com equa&ccedil;&atilde;o e racioc&iacute;nio expl&iacute;cito</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-C -->
+
+
+<!-- ===== ACTIONS ===== -->
+<div class="btn-row" style="justify-content:center;margin-top:24px;">
+  <button class="btn btn-ouro" onclick="exportJSON()" type="button">Exportar JSON</button>
+  <button class="btn btn-sec" onclick="window.print()" type="button">Imprimir</button>
+  <button class="btn btn-erro" onclick="confirmClear()" type="button">Limpar tudo</button>
+</div>
+
+</main>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T01 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<script>
+// ===== STORAGE =====
+var PREFIX = 'ifmg_fc1_t01_tr_';
+function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
+function load(k, d) { try { var v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
+
+// ===== VERSION SELECTOR =====
+var currentVersion = load('versao', 'A');
+
+function selectVersion(v) {
+  currentVersion = v;
+  save('versao', v);
+  // Update buttons
+  var btns = document.querySelectorAll('.version-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-version') === v);
+  });
+  // Update content
+  var contents = document.querySelectorAll('.version-content');
+  contents.forEach(function(c) {
+    c.classList.toggle('active', c.id === 'version-' + v);
+  });
+  updateProgress();
+}
+
+// ===== STUDENT ID =====
+var idNome = document.getElementById('id-nome');
+var idTurma = document.getElementById('id-turma');
+var idData = document.getElementById('id-data');
+
+function saveId() {
+  save('meta', {
+    nome: idNome.value,
+    turma: idTurma.value,
+    data: idData.value
+  });
+}
+
+idNome.addEventListener('input', saveId);
+idTurma.addEventListener('change', saveId);
+idData.addEventListener('input', saveId);
+
+// ===== TEXTAREA PERSISTENCE & CHAR COUNTER =====
+var allTextareas = document.querySelectorAll('.tr-textarea');
+allTextareas.forEach(function(ta) {
+  var key = ta.getAttribute('data-key');
+  // Restore
+  var saved = load(key, '');
+  if (saved) ta.value = saved;
+  // Update counter
+  updateCharCounter(ta);
+
+  // Events
+  ta.addEventListener('input', function() {
+    save(key, ta.value);
+    updateCharCounter(ta);
+    updateProgress();
+  });
+});
+
+function updateCharCounter(ta) {
+  var counter = ta.parentElement.querySelector('.cc-count');
+  if (counter) {
+    var len = ta.value.length;
+    counter.textContent = len;
+    var container = counter.closest('.char-counter');
+    if (container) {
+      container.classList.toggle('min-ok', len >= 50);
+    }
+  }
+}
+
+// ===== PROGRESS BAR =====
+function updateProgress() {
+  var v = currentVersion;
+  var keys = [v+'_e1', v+'_e2', v+'_e3', v+'_e4', v+'_e5', v+'_e6', v+'_e7', v+'_p3'];
+  var filled = 0;
+  var total = keys.length + 1; // +1 for student ID
+  keys.forEach(function(k) {
+    var val = load(k, '');
+    if (val && val.trim().length > 10) filled++;
+  });
+  // Check student ID
+  var meta = load('meta', {});
+  if (meta.nome && meta.nome.trim().length > 2 && meta.turma) filled++;
+
+  var pct = Math.round((filled / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = filled + ' / ' + total + ' campos preenchidos';
+}
+
+// ===== UPLOAD SIMULATION =====
+function simulateUpload(v) {
+  var el = document.getElementById('upload-' + v);
+  if (el.classList.contains('has-file')) {
+    el.classList.remove('has-file');
+    el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
+    save('upload_' + v, false);
+  } else {
+    el.classList.add('has-file');
+    el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
+    save('upload_' + v, true);
+  }
+}
+
+// ===== EXPORT JSON =====
+function exportJSON() {
+  var v = currentVersion;
+  var meta = load('meta', {});
+  var data = {
+    versao: v,
+    estudante: meta,
+    timestamp: new Date().toISOString(),
+    trilha: 'T01',
+    tipo: 'TR',
+    etapas: {}
+  };
+  var keys = ['e1','e2','e3','e4','e5','e6','e7','p3'];
+  var labels = ['Interpretacao','Inventario','Hipoteses','Representacao','Equacoes','Calculo','Plausibilidade','ExtensaoCriativa'];
+  keys.forEach(function(k, i) {
+    data.etapas[labels[i]] = load(v + '_' + k, '');
+  });
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T01-TR-v1-versao' + v + '-' + (meta.nome || 'estudante').replace(/\s+/g, '_') + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ===== CLEAR ALL =====
+function confirmClear() {
+  if (confirm('Tem certeza que deseja apagar TODAS as respostas? Esta acao nao pode ser desfeita.')) {
+    var allKeys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key && key.indexOf(PREFIX) === 0) {
+        allKeys.push(key);
+      }
+    }
+    allKeys.forEach(function(k) { localStorage.removeItem(k); });
+    // Reset form
+    idNome.value = '';
+    idTurma.value = '';
+    idData.value = '';
+    allTextareas.forEach(function(ta) {
+      ta.value = '';
+      updateCharCounter(ta);
+    });
+    // Reset uploads
+    ['A','B','C'].forEach(function(v) {
+      var el = document.getElementById('upload-' + v);
+      if (el) {
+        el.classList.remove('has-file');
+        el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
+      }
+    });
+    updateProgress();
+  }
+}
+
+// ===== RESTORE STATE =====
+function restoreState() {
+  // Student ID
+  var meta = load('meta', {});
+  if (meta.nome) idNome.value = meta.nome;
+  if (meta.turma) idTurma.value = meta.turma;
+  if (meta.data) idData.value = meta.data;
+
+  // Version
+  var v = load('versao', 'A');
+  selectVersion(v);
+
+  // Upload states
+  ['A','B','C'].forEach(function(ver) {
+    if (load('upload_' + ver, false)) {
+      var el = document.getElementById('upload-' + ver);
+      if (el) {
+        el.classList.add('has-file');
+        el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
+      }
+    }
+  });
+
+  updateProgress();
+}
+
+// Init
+restoreState();
+</script>
+</body>
+</html>

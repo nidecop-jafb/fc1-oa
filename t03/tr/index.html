@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T03 &middot; Sistema de Numera&ccedil;&atilde;o de Base 10 &mdash; Estudante</title>
+<!--
+  IMPORTACAO EM MOODLE:
+  1. Adicionar atividade > Recurso > Arquivo
+  2. Upload deste .html > "Abrir em nova janela" > salvar.
+  OU iframe: <iframe src="T03-TR-v2-estudante.html" width="100%" height="3600"></iframe>
+
+  Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
+  localStorage: prefixo ifmg_fc1_t01_tr_
+-->
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: oklch(0.14 0.02 260);
+  border-top: 3px solid var(--ouro);
+  padding: 14px 20px;
+}
+.header-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.header h1 {
+  font-size: 1.4rem; font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.header h1 .trilha-code { color: var(--azul); }
+.header .badge {
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r);
+  font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 900px; margin: 4px auto 0;
+  font-size: .88rem; color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* MAIN */
+main {
+  max-width: 900px; margin: 0 auto;
+  padding: 20px 16px;
+}
+
+/* PANEL */
+.panel {
+  background: var(--superficie);
+  border-left: 3px solid var(--cinza-borda);
+  margin-bottom: 24px;
+  padding: 0;
+  overflow: hidden;
+}
+.panel-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid oklch(0.30 0.02 260);
+  background: oklch(0.20 0.02 260);
+}
+.panel-num {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .85rem;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.panel-title {
+  font-size: .95rem; font-weight: 700;
+  font-family: var(--serif);
+  color: var(--azul-claro);
+}
+.panel-tag {
+  margin-left: auto;
+  font-size: .6rem; font-weight: 600;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  background: var(--ouro-claro);
+  color: var(--ouro);
+}
+.panel-body { padding: 18px; }
+
+/* VERSION SELECTOR */
+.version-selector {
+  display: flex; gap: 0; margin-bottom: 24px;
+  border: 1px solid var(--cinza-borda);
+  overflow: hidden;
+}
+.version-btn {
+  flex: 1;
+  background: var(--input-bg);
+  color: var(--cinza);
+  border: none;
+  padding: 14px 16px;
+  font-family: var(--font);
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  border-right: 1px solid var(--cinza-borda);
+}
+.version-btn:last-child { border-right: none; }
+.version-btn:hover { background: var(--hover-bg); color: var(--texto); }
+.version-btn.active {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+}
+.version-btn .version-letter {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+.version-btn .version-name {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.version-content { display: none; }
+.version-content.active { display: block; }
+
+/* STUDENT ID */
+.student-id {
+  background: var(--superficie);
+  border-left: 3px solid var(--ouro);
+  padding: 18px;
+  margin-bottom: 24px;
+}
+.student-id-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 12px;
+}
+.field-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 0;
+}
+.field {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.field-label {
+  font-size: .65rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 600;
+}
+.field input[type="text"],
+.field input[type="date"],
+.field select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: .85rem;
+  border-radius: var(--r);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+}
+.field input:focus,
+.field select:focus {
+  border-color: var(--ouro);
+}
+
+/* INSTRUCTIONS BOX */
+.instrucoes-box {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  border-left: 3px solid var(--azul);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  font-size: .82rem;
+  line-height: 1.6;
+}
+.instrucoes-box strong { color: var(--azul-claro); }
+.instrucoes-box ul { margin: 8px 0 0 18px; }
+.instrucoes-box li { margin-bottom: 4px; }
+
+/* CENARIO */
+.cenario-box {
+  background: oklch(0.16 0.03 45);
+  border-left: 3px solid var(--azul);
+  padding: 18px;
+  margin-bottom: 18px;
+  font-family: var(--serif);
+  font-size: .88rem;
+  line-height: 1.7;
+}
+.cenario-box .cenario-title {
+  font-family: var(--font);
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--azul-claro);
+  margin-bottom: 10px;
+}
+.cenario-box em { color: oklch(0.80 0.10 95); font-style: italic; }
+
+/* DADOS TABLE */
+.dados-section {
+  margin-bottom: 18px;
+}
+.dados-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 8px;
+}
+.dados-list {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 14px 18px;
+  font-family: var(--mono);
+  font-size: .8rem;
+  line-height: 1.8;
+}
+.dados-list .dado-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.dado-label { color: var(--cinza); }
+.dado-value { color: var(--ouro); font-weight: 700; }
+
+/* DATA TABLE (for version C) */
+.dados-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .78rem;
+  margin-bottom: 12px;
+}
+.dados-table th {
+  background: oklch(0.20 0.02 260);
+  color: var(--ouro);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 1px solid var(--cinza-borda);
+}
+.dados-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--cinza-borda);
+  font-family: var(--mono);
+  font-size: .8rem;
+}
+.dados-table td:first-child {
+  font-family: var(--font);
+  color: var(--cinza);
+}
+
+/* PERGUNTAS */
+.perguntas-box {
+  background: oklch(0.18 0.03 95);
+  border-left: 3px solid var(--ouro);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.perguntas-box .perguntas-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ouro);
+  margin-bottom: 8px;
+}
+.perguntas-box p {
+  font-size: .82rem;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* EQUATION DISPLAY */
+.equation-display {
+  background: oklch(0.14 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 10px 16px;
+  margin: 10px 0;
+  font-family: var(--mono);
+  font-size: .88rem;
+  color: var(--ouro);
+  text-align: center;
+  font-weight: 700;
+}
+
+/* C5 STEP */
+.c5-step {
+  margin-bottom: 20px;
+}
+.c5-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.c5-step-num {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .75rem;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.c5-step-title {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--azul-claro);
+}
+.c5-step-hint {
+  font-size: .72rem;
+  color: var(--cinza);
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+/* TEXTAREAS */
+.tr-textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 10px 12px;
+  font-family: var(--font);
+  font-size: .82rem;
+  line-height: 1.5;
+  border-radius: var(--r);
+  outline: none;
+  resize: vertical;
+  transition: border-color .2s;
+}
+.tr-textarea:focus { border-color: var(--ouro); }
+.char-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: .62rem;
+  color: var(--cinza);
+  font-family: var(--mono);
+  margin-top: 3px;
+}
+.char-counter.min-ok { color: var(--verde); }
+
+/* PARTE 3 EXTENSION OPTIONS */
+.extensao-opcoes {
+  margin-bottom: 16px;
+}
+.extensao-opcao {
+  background: oklch(0.16 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: .8rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+.extensao-opcao:hover { border-color: var(--azul); }
+.extensao-opcao.selected {
+  border-color: var(--azul);
+  background: var(--azul-bg);
+}
+.extensao-opcao .opcao-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--azul-claro);
+  margin-right: 6px;
+}
+
+/* UPLOAD SIM */
+.upload-sim {
+  border: 2px dashed var(--cinza-borda);
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.upload-sim:hover {
+  border-color: var(--ouro);
+  background: oklch(0.16 0.02 260);
+}
+.upload-sim .upload-icon {
+  font-size: 1.6rem;
+  color: var(--cinza);
+  margin-bottom: 6px;
+}
+.upload-sim .upload-text {
+  font-size: .75rem;
+  color: var(--cinza);
+}
+.upload-sim .upload-hint {
+  font-size: .65rem;
+  color: oklch(0.45 0.02 260);
+  margin-top: 4px;
+}
+.upload-sim.has-file {
+  border-color: var(--verde);
+  background: var(--verde-claro);
+}
+.upload-sim.has-file .upload-icon { color: var(--verde); }
+.upload-sim.has-file .upload-text { color: var(--verde); }
+
+/* CRITERIOS */
+.criterios-box {
+  margin-top: 16px;
+}
+.criterios-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--verde);
+  margin-bottom: 8px;
+}
+.criterios-list {
+  font-size: .78rem;
+  line-height: 1.6;
+}
+.criterio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.criterio-check {
+  width: 16px; height: 16px;
+  border: 1px solid var(--cinza-borda);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.criterios-sub-title {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+/* RUBRICA TABLE */
+.rubrica-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .72rem;
+  margin-top: 8px;
+}
+.rubrica-table th {
+  background: oklch(0.20 0.02 260);
+  color: var(--ouro);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 1px solid var(--cinza-borda);
+}
+.rubrica-table td {
+  padding: 8px 10px;
+  border: 1px solid var(--cinza-borda);
+  vertical-align: top;
+  line-height: 1.4;
+}
+.rubrica-table td:nth-child(3) {
+  font-family: var(--mono);
+  text-align: center;
+  font-weight: 700;
+  color: var(--ouro);
+}
+.rubrica-formula {
+  font-family: var(--mono);
+  font-size: .8rem;
+  color: var(--ouro);
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* CONTEXT NOTE */
+.context-note {
+  background: var(--ouro-claro);
+  border-left: 3px solid var(--ouro);
+  padding: 10px 14px;
+  margin-top: 14px;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+.context-note strong { color: var(--ouro); }
+
+/* BTN */
+.btn {
+  background: var(--azul);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  cursor: pointer;
+  font-family: var(--font);
+  border-radius: var(--r);
+  transition: background .2s;
+}
+.btn:hover { background: var(--azul-claro); }
+.btn-ouro {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+}
+.btn-ouro:hover { background: oklch(0.90 0.18 95); }
+.btn-sec {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+.btn-sec:hover { background: var(--ouro-claro); }
+.btn-erro {
+  background: var(--erro);
+  color: var(--branco);
+}
+.btn-erro:hover { background: oklch(0.65 0.22 25); }
+.btn-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* PROGRESS */
+.progress-bar-container {
+  margin-bottom: 24px;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .68rem;
+  color: var(--cinza);
+  font-family: var(--mono);
+  margin-bottom: 4px;
+}
+.progress-track {
+  height: 6px;
+  background: var(--cinza-borda);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ouro);
+  transition: width .3s;
+  width: 0%;
+}
+
+/* SECTION TITLE */
+.section-title {
+  font-family: var(--serif);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--ouro);
+  padding-bottom: 6px;
+  border-bottom: 1px solid oklch(0.25 0.04 95);
+  margin-bottom: 12px;
+  margin-top: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ENCERRAMENTO */
+.encerramento { max-width:900px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  font-size: .7rem;
+  color: var(--cinza);
+  padding: 16px 0;
+  margin-top: 12px;
+  letter-spacing: .5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .header-inner { flex-direction: column; text-align: center; }
+  .field-group { grid-template-columns: 1fr; }
+  .version-selector { flex-direction: column; }
+  .version-btn { border-right: none; border-bottom: 1px solid var(--cinza-borda); }
+  .version-btn:last-child { border-bottom: none; }
+  .panel-header { flex-wrap: wrap; }
+  .panel-tag { margin-left: 0; }
+  .rubrica-table { font-size: .65rem; }
+  .dados-table { font-size: .7rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; font-size: 10pt; }
+  .header { border-top-color: #333; background: #f5f5f5; }
+  .header h1 .trilha-code { color: #333; }
+  .header .badge { background: #555; color: #fff; }
+  .header-sub { color: #666; }
+  .piazzi-bar { display: none; }
+  .panel { border-left-color: #888; break-inside: avoid; }
+  .panel-header { background: #eee; }
+  .panel-num { background: #555; color: #fff; }
+  .panel-title { color: #333; }
+  .panel-tag { background: #eee; color: #555; }
+  .version-selector { border-color: #ccc; }
+  .version-btn { background: #f5f5f5; color: #666; border-color: #ccc; }
+  .version-btn.active { background: #555; color: #fff; }
+  .student-id { border-left-color: #888; background: #fafafa; }
+  .instrucoes-box { border-color: #ccc; border-left-color: #555; background: #fafafa; }
+  .cenario-box { background: #f8f8f0; border-left-color: #555; }
+  .dados-list { background: #fafafa; border-color: #ccc; }
+  .perguntas-box { background: #fdf8f0; border-left-color: #888; }
+  .tr-textarea { border-color: #aaa; background: #fff; min-height: 80px; }
+  .c5-step-num { background: #555; color: #fff; }
+  .rubrica-table th { background: #eee; color: #333; border-color: #ccc; }
+  .rubrica-table td { border-color: #ccc; }
+  .dados-table th { background: #eee; color: #333; border-color: #ccc; }
+  .dados-table td { border-color: #ccc; }
+  .btn-row { display: none; }
+  .upload-sim { border-color: #aaa; }
+  .char-counter { display: none; }
+  .progress-bar-container { display: none; }
+  .encerramento { border-top-color: #333; }
+  .footer { color: #999; }
+  .equation-display { border-color: #ccc; background: #fafafa; color: #333; }
+  .context-note { background: #fdf8f0; border-left-color: #888; }
+  .context-note strong { color: #333; }
+  .version-content { display: none !important; }
+  .version-content.active { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T03</span> &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h1>
+    <span class="badge">Trabalho (TR)</span>
+  </div>
+  <div class="header-sub">3 vers&otilde;es (Sofia / Pedro / Lucas) &middot; Componente 5 em 8 etapas &middot; Bloom L5&ndash;L6 &middot; peso 20%</div>
+</header>
+
+<main>
+
+<div class="piazzi-bar">
+  <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+  <span class="piazzi-tag">Ler</span>
+  <span class="piazzi-tag">Escrever</span>
+  <span class="piazzi-tag">Medir</span>
+  <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/search?q=Schubert+Impromptus+D899+piano" target="_blank" rel="noopener">YouTube Music</a>
+  <span class="piazzi-text">Franz Schubert &mdash; Impromptus, D. 899 &middot; 1827 &middot; piano solo &middot; ~30 min</span>
+</div>
+
+<div class="student-id">
+  <div class="student-id-title">Identifica&ccedil;&atilde;o do Estudante</div>
+  <div class="field-group">
+    <div class="field">
+      <span class="field-label">Nome completo</span>
+      <input type="text" id="id-nome" placeholder="Seu nome completo">
+    </div>
+    <div class="field">
+      <span class="field-label">Turma</span>
+      <select id="id-turma">
+        <option value="">Selecione...</option>
+        <option value="MIN1A">MIN1A</option>
+        <option value="MIN1B">MIN1B</option>
+        <option value="MIN1C">MIN1C</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="field-label">Data</span>
+      <input type="date" id="id-data">
+    </div>
+  </div>
+</div>
+
+<div class="version-selector">
+  <button class="version-btn active" data-version="A" onclick="selectVersion('A')">
+    <span class="version-letter">A</span>
+    <span class="version-name">Sofia</span>
+  </button>
+  <button class="version-btn" data-version="B" onclick="selectVersion('B')">
+    <span class="version-letter">B</span>
+    <span class="version-name">Pedro</span>
+  </button>
+  <button class="version-btn" data-version="C" onclick="selectVersion('C')">
+    <span class="version-letter">C</span>
+    <span class="version-name">Lucas</span>
+  </button>
+</div>
+
+<div class="progress-bar-container">
+  <div class="progress-label">
+    <span>Progresso</span>
+    <span id="progress-text">0 / 10 campos preenchidos</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<div class="instrucoes-box">
+  <strong>Instru&ccedil;&otilde;es gerais</strong>
+  <p style="margin-top:8px;">Avalia&ccedil;&atilde;o somativa p&oacute;s-aula. <strong>3 partes obrigat&oacute;rias</strong>, peso 20%.</p>
+  <p>Prazo: <strong>23h50 do 6&ordm; dia ap&oacute;s a aula</strong>.</p>
+  <p>Entrega: <strong>1 foto da Parte 3 manuscrita</strong> no Moodle (as Partes 1 e 2 voc&ecirc; resolve aqui ou no caderno).</p>
+  <p style="margin-top:8px;"><strong>Estrutura obrigat&oacute;ria:</strong></p>
+  <ul>
+    <li><strong>Situa&ccedil;&atilde;o-problema</strong> &mdash; leia a narrativa e identifique o que est&aacute; sendo pedido.</li>
+    <li><strong>Resolu&ccedil;&atilde;o t&eacute;cnica</strong> &mdash; apresente as <strong>8 etapas do Componente 5</strong>, na ordem, como no Texto Tem&aacute;tico (TT) da trilha.</li>
+    <li><strong>Extens&atilde;o criativa</strong> &mdash; proposta original, fundamentada no Texto Tem&aacute;tico (TT).</li>
+  </ul>
+  <p style="margin-top:8px;">Consulte livremente: Texto Tem&aacute;tico (TT), Mapa Conceitual (MC), Cart&otilde;es Did&aacute;ticos (CD), Folha de Atividades (FA) e Tarefa Complementar (TC).</p>
+  <p style="margin-top:8px;">Escolha <strong>uma</strong> das tr&ecirc;s vers&otilde;es &mdash; a que o seu professor indicar.</p>
+</div>
+
+<div class="version-content active" id="version-A">
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o A &middot; Sofia</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">Qual instrumento assina a ficha técnica</div>
+        <p>Sofia recebeu no laboratório do IFMG-OP uma chapa de aço usada na blindagem de um chute de transferência. A ficha técnica do fornecedor precisa ser conferida antes de a peça ir para a oficina, e a tolerância do projeto é apertada: a espessura pode variar no máximo <strong>±0,10 mm</strong> em relação ao valor nominal.</p>
+        <p style="margin-top:8px;">Ela tem dois instrumentos sobre a bancada: uma régua milimetrada e um paquímetro cuja menor divisão é 0,05 mm. Mede a mesma chapa com os dois e anota o que cada um mostra — dois números parecidos que dizem coisas muito diferentes sobre o que se pode afirmar.</p>
+        <p style="margin-top:8px;">A ficha técnica exige o valor <strong>em metros</strong>. E exige uma assinatura: alguém precisa declarar que a medida atende à tolerância do projeto.</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div class="dados-list">
+          <div class="dado-item"><span class="dado-label">Leitura com a régua milimetrada:</span> <span class="dado-value">8,5 mm (menor divisão 1 mm)</span></div>
+          <div class="dado-item"><span class="dado-label">Leitura com o paquímetro:</span> <span class="dado-value">8,45 mm (menor divisão 0,05 mm)</span></div>
+          <div class="dado-item"><span class="dado-label">Espessura nominal de projeto:</span> <span class="dado-value">8,40 mm</span></div>
+          <div class="dado-item"><span class="dado-label">Tolerância do projeto:</span> <span class="dado-value">&plusmn; 0,10 mm</span></div>
+          <div class="dado-item"><span class="dado-label">Regra de incerteza adotada:</span> <span class="dado-value">metade da menor divisão do instrumento</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Escreva <strong>cada leitura no formato (valor &plusmn; incerteza)</strong>, com o número correto de algarismos significativos.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Converta a leitura do paquímetro para <strong>metros</strong>, preservando os algarismos significativos.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Decida <strong>qual dos dois instrumentos</strong> pode assinar a conferência da tolerância de ±0,10 mm e justifique fisicamente a escolha.</div>
+      </div>
+
+      <div class="equation-display">Resultado = valor &plusmn; incerteza (Eq. 4) &nbsp;&middot;&nbsp; incerteza = menor divisão &divide; 2 &nbsp;&middot;&nbsp; L(m) = L(mm) &times; 10<sup>&minus;3</sup> (Eq. 3)</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">8 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
+        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+      <textarea class="tr-textarea" data-key="A_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
+        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+      <textarea class="tr-textarea" data-key="A_e2" rows="5" placeholder="régua: ... &middot; paquímetro: ... &middot; tolerância: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
+        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (medição, o que se despreza).</div>
+      <textarea class="tr-textarea" data-key="A_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
+        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+      <textarea class="tr-textarea" data-key="A_e4" rows="4" placeholder="Esboço das duas escalas..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
+        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+      <textarea class="tr-textarea" data-key="A_e5" rows="4" placeholder="Equações: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+      <textarea class="tr-textarea" data-key="A_e6" rows="5" placeholder="régua = ... &middot; paquímetro = ... &middot; em metros = ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
+        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da metrologia e do cotidiano.</div>
+      <textarea class="tr-textarea" data-key="A_e7" rows="4" placeholder="Análise: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
+        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+      <textarea class="tr-textarea" data-key="A_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados da conferência de Sofia:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Uma <strong>regra de escolha de instrumento</strong> para o laboratório: dada uma tolerância de projeto, qual resolução mínima exigir? Proponha a regra com número (por exemplo, uma razão entre incerteza e tolerância) e teste-a nos dados da Parte 1.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Um <strong>modelo de ficha de conferência</strong> que impeça alguém de registrar mais casas do que o instrumento mede. Mostre o campo que bloqueia o erro e explique por que ele funciona.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>análise de risco</strong>: qual a chance de uma chapa fora de especificação ser aprovada se a conferência for feita com régua? Use a incerteza de ±0,5 mm e a tolerância de ±0,10 mm para argumentar com números.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="A_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-A" onclick="simulateUpload('A')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de valor posicional, conversão decimal ou algarismos significativos (conteúdo da T03)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o A</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa as duas leituras e a tolerância na etapa 2; retoma a exigência da ficha técnica na etapa 7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo a escolha do instrumento</td><td>5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>Leituras, menores divisões, nominal e tolerância com unidades</td><td>4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (espessura uniforme, instrumentos calibrados)</td><td>5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Escalas comparadas com a faixa de tolerância indicada</td><td>6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 4 com incerteza = menor divisão &divide; 2 e Equação 3 para a conversão</td><td>6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>(8,5 &plusmn; 0,5) mm, (8,450 &plusmn; 0,025) mm e 0,008450 m corretos</td><td>10%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Compara incerteza de cada instrumento com a tolerância do projeto</td><td>12%</td></tr>
+          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) e conclui pelo paquímetro, com a chapa aprovada</td><td>7%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com a metrologia do laboratório, com cálculo e equação</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-A -->
+
+<div class="version-content" id="version-B">
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o B &middot; Pedro</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">O fechamento que não fechou</div>
+        <p>Pedro acompanha o fechamento do turno na sala de controle. Três frentes de lavra enviam a produção do dia por rádio, e um auxiliar digita os números no sistema. No fim do turno, o total do sistema não bate com a soma das balanças — e a diferença é grande demais para ser arredondamento.</p>
+        <p style="margin-top:8px;">Conferindo linha por linha, Pedro encontra dois lançamentos suspeitos: numa frente, o auxiliar digitou os algarismos <strong>sem a vírgula</strong>; noutra, digitou o número <strong>sem o zero final</strong>, dizendo depois que “zero no fim não muda nada”.</p>
+        <p style="margin-top:8px;">O relatório do dia já foi enviado à gerência. Pedro precisa mostrar, com contas, o tamanho do estrago e propor a correção.</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div class="dados-list">
+          <div class="dado-item"><span class="dado-label">Frente Norte (balança):</span> <span class="dado-value">1.204,5 t &mdash; digitado como 12045</span></div>
+          <div class="dado-item"><span class="dado-label">Frente Leste (balança):</span> <span class="dado-value">96,80 t &mdash; digitado corretamente</span></div>
+          <div class="dado-item"><span class="dado-label">Frente Sul (balança):</span> <span class="dado-value">830 t &mdash; digitado como 83</span></div>
+          <div class="dado-item"><span class="dado-label">Total exibido pelo sistema:</span> <span class="dado-value">12.224,8 t</span></div>
+          <div class="dado-item"><span class="dado-label">Capacidade real de expedição do dia:</span> <span class="dado-value">&asymp; 2.200 t</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Calcule o <strong>total correto</strong> do turno somando as três balanças.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Identifique, para cada lançamento errado, <strong>qual ordem decimal</strong> foi afetada e por qual fator o número mudou.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Compare o total do sistema com a capacidade de expedição e explique por que <strong>um simples teste de plausibilidade</strong> teria barrado o erro antes do envio à gerência.</div>
+      </div>
+
+      <div class="equation-display">N = a<sub>n</sub>&middot;10<sup>n</sup> + ... + a<sub>0</sub>&middot;10<sup>0</sup> + a<sub>&minus;1</sub>&middot;10<sup>&minus;1</sup> (Eq. 1) &nbsp;&middot;&nbsp; N = PI + PD (Eq. 2)</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">8 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
+        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+      <textarea class="tr-textarea" data-key="B_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
+        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+      <textarea class="tr-textarea" data-key="B_e2" rows="5" placeholder="Norte = ... &middot; Leste = ... &middot; Sul = ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
+        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (medição, o que se despreza).</div>
+      <textarea class="tr-textarea" data-key="B_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
+        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+      <textarea class="tr-textarea" data-key="B_e4" rows="4" placeholder="Esboço das colunas decimais..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
+        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+      <textarea class="tr-textarea" data-key="B_e5" rows="4" placeholder="Equações: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+      <textarea class="tr-textarea" data-key="B_e6" rows="5" placeholder="Total correto = ... &middot; fatores = ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
+        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
+      <textarea class="tr-textarea" data-key="B_e7" rows="4" placeholder="Análise: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
+        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+      <textarea class="tr-textarea" data-key="B_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do fechamento de Pedro:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>teste de plausibilidade</strong> automático para a sala de controle: qual faixa aceitar para o total do turno e o que o sistema deve fazer fora dela. Justifique os limites com os dados da Parte 1.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Um <strong>padrão de digitação</strong> que elimine os dois erros de uma vez (vírgula perdida e zero suprimido). Descreva a regra, dê exemplos certos e errados e explique o princípio posicional por trás dela.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>estimativa do prejuízo</strong>: se o relatório errado orientar o planejamento da semana, quantos caminhões e quantas horas de frota seriam programados a mais? Adote e declare os dados que faltarem.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="B_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-B" onclick="simulateUpload('B')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de valor posicional, conversão decimal ou algarismos significativos (conteúdo da T03)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o B</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa as três balanças e a capacidade de expedição na etapa 2; retoma o envio à gerência na etapa 7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo o teste de plausibilidade</td><td>5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>Os três valores de balança, os digitados e a capacidade, com unidades</td><td>4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (balanças calibradas, um reporte por frente)</td><td>5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Quadro de ordens decimais com os números alinhados</td><td>6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 1 para decompor e Equação 2 para separar PI e PD antes de somar</td><td>6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>Total 2.131,3 t, fatores 10 e 1/10 e diferença 10.093,5 t corretos</td><td>10%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Compara o total do sistema com a capacidade e conclui pela impossibilidade física</td><td>12%</td></tr>
+          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) identificando a ordem afetada em cada erro</td><td>7%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com a sala de controle, com cálculo e equação</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-B -->
+
+<div class="version-content" id="version-C">
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">1</div>
+      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
+      <span class="panel-tag">Vers&atilde;o C &middot; Lucas</span>
+    </div>
+    <div class="panel-body">
+      <div class="cenario-box">
+        <div class="cenario-title">Quantas casas o laudo pode declarar</div>
+        <p>Lucas faz estágio no laboratório de análises químicas que atende as minas da região. Uma amostra de minério do Quadrilátero Ferrífero foi processada e a massa de ouro recuperada foi pesada numa balança analítica; a massa da amostra bruta veio da balança de bancada.</p>
+        <p style="margin-top:8px;">O laudo precisa informar o <strong>teor em gramas por tonelada</strong> — o número que decide se a frente entra ou não na planta de beneficiamento. A calculadora do laboratório mostra uma sequência longa de dígitos, e o técnico mais antigo diz para “copiar tudo, que fica mais confiável”.</p>
+        <p style="margin-top:8px;">Lucas desconfia. Ele sabe que o instrumento define quantos algarismos a medida sustenta, e que copiar dígitos da calculadora não é o mesmo que medir.</p>
+      </div>
+
+      <div class="dados-section">
+        <div class="dados-title">Dados fornecidos</div>
+        <div class="dados-list">
+          <div class="dado-item"><span class="dado-label">Massa de ouro recuperada:</span> <span class="dado-value">0,000275 kg</span></div>
+          <div class="dado-item"><span class="dado-label">Incerteza da balança analítica:</span> <span class="dado-value">&plusmn; 0,000005 kg</span></div>
+          <div class="dado-item"><span class="dado-label">Massa da amostra bruta:</span> <span class="dado-value">4,20 kg (3 algarismos significativos)</span></div>
+          <div class="dado-item"><span class="dado-label">Leitura da calculadora para o teor:</span> <span class="dado-value">65,476190... g/t</span></div>
+          <div class="dado-item"><span class="dado-label">Conversão:</span> <span class="dado-value">1 kg/kg = 10<sup>6</sup> g/t</span></div>
+        </div>
+      </div>
+
+      <div class="perguntas-box">
+        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Escreva a massa de ouro em <strong>notação científica</strong>, no formato (valor &plusmn; incerteza), com os algarismos significativos corretos.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Calcule o <strong>teor em g/t</strong> e determine quantos algarismos significativos o resultado pode ter.</div>
+        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Decida <strong>como o laudo deve registrar</strong> o teor e explique por que copiar os dígitos da calculadora seria um erro técnico — não apenas de estilo.</div>
+      </div>
+
+      <div class="equation-display">N = a &times; 10<sup>n</sup>, 1 &le; a &lt; 10 (Eq. 5) &nbsp;&middot;&nbsp; Resultado = valor &plusmn; incerteza (Eq. 4) &nbsp;&middot;&nbsp; teor(g/t) = (m<sub>Au</sub> / m<sub>amostra</sub>) &times; 10<sup>6</sup></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">2</div>
+      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
+      <span class="panel-tag">8 etapas</span>
+    </div>
+    <div class="panel-body">
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
+        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+      <textarea class="tr-textarea" data-key="C_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
+        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+      <textarea class="tr-textarea" data-key="C_e2" rows="5" placeholder="m(Au) = ... &middot; m(amostra) = ... &middot; incerteza = ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
+        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (medição, o que se despreza).</div>
+      <textarea class="tr-textarea" data-key="C_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
+        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+      <textarea class="tr-textarea" data-key="C_e4" rows="4" placeholder="Esboço do fluxo da amostra..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
+        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+      <textarea class="tr-textarea" data-key="C_e5" rows="4" placeholder="Equações: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
+        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+      <textarea class="tr-textarea" data-key="C_e6" rows="5" placeholder="m(Au) = ... &middot; teor = ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
+        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
+      <textarea class="tr-textarea" data-key="C_e7" rows="4" placeholder="Análise: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+      <div class="c5-step">
+        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
+        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+      <textarea class="tr-textarea" data-key="C_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">3</div>
+      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
+      <span class="panel-tag">25%</span>
+    </div>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do laudo de Lucas:</p>
+
+      <div class="extensao-opcoes">
+        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>guia de arredondamento</strong> de uma página para o laboratório: quantos algarismos manter em cada etapa do cálculo e por que só se arredonda no fim. Demonstre com os números da Parte 1.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Uma <strong>proposta de melhoria da medição</strong>: qual das duas balanças limita o resultado e o que mudaria no teor declarado se ela fosse trocada por uma de 4 algarismos? Calcule o novo teor e discuta se o ganho compensa.</div>
+        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Um <strong>argumento técnico por escrito</strong> ao colega que manda copiar o visor, dirigido a quem não estudou algarismos significativos. Use uma analogia verificável e pelo menos um número da Parte 1.</div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
+
+      <textarea class="tr-textarea" data-key="C_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
+      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
+
+      <div class="upload-sim" id="upload-C" onclick="simulateUpload('C')">
+        <div class="upload-icon">&#128247;</div>
+        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
+        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
+      </div>
+
+      <div class="criterios-box">
+        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
+        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de valor posicional, conversão decimal ou algarismos significativos (conteúdo da T03)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
+        </div>
+        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
+        <div class="criterios-list">
+          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
+          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-num">R</div>
+      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
+      <span class="panel-tag">Vers&atilde;o C</span>
+    </div>
+    <div class="panel-body">
+      <table class="rubrica-table">
+        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa as massas e a incerteza na etapa 2; retoma a exigência do laudo na etapa 7</td><td>20%</td></tr>
+          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo a decisão sobre o registro no laudo</td><td>5%</td></tr>
+          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>Massas, incerteza e fator de conversão com unidades e algarismos</td><td>4%</td></tr>
+          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (amostra representativa, recuperação total)</td><td>5%</td></tr>
+          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Fluxo da amostra com os algarismos significativos anotados</td><td>6%</td></tr>
+          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 5 para a notação científica e Equação 4 para o formato com incerteza</td><td>6%</td></tr>
+          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>(2,75 &plusmn; 0,05) × 10<sup>&minus;4</sup> kg e teor 65,5 g/t corretos</td><td>10%</td></tr>
+          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Explica por que os dígitos do visor não são medida e situa a ordem de grandeza</td><td>12%</td></tr>
+          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) e conclui pelo registro de 65,5 g/t</td><td>7%</td></tr>
+          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com o laboratório, com cálculo e equação</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
+    </div>
+  </div>
+
+</div><!-- /version-C -->
+  <button class="btn btn-ouro" onclick="exportJSON()" type="button">Exportar JSON</button>
+  <button class="btn btn-sec" onclick="window.print()" type="button">Imprimir</button>
+  <button class="btn btn-erro" onclick="confirmClear()" type="button">Limpar tudo</button>
+</div>
+
+</main>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Voc&ecirc; fechou a P&oacute;s-Aula desta trilha &mdash; na pr&oacute;xima, o movimento vira <strong>gr&aacute;fico</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T03 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<script>
+// ===== STORAGE =====
+var PREFIX = 'ifmg_fc1_t03_tr_';
+function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
+function load(k, d) { try { var v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
+
+// ===== VERSION SELECTOR =====
+var currentVersion = load('versao', 'A');
+
+function selectVersion(v) {
+  currentVersion = v;
+  save('versao', v);
+  // Update buttons
+  var btns = document.querySelectorAll('.version-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-version') === v);
+  });
+  // Update content
+  var contents = document.querySelectorAll('.version-content');
+  contents.forEach(function(c) {
+    c.classList.toggle('active', c.id === 'version-' + v);
+  });
+  updateProgress();
+}
+
+// ===== STUDENT ID =====
+var idNome = document.getElementById('id-nome');
+var idTurma = document.getElementById('id-turma');
+var idData = document.getElementById('id-data');
+
+function saveId() {
+  save('meta', {
+    nome: idNome.value,
+    turma: idTurma.value,
+    data: idData.value
+  });
+}
+
+idNome.addEventListener('input', saveId);
+idTurma.addEventListener('change', saveId);
+idData.addEventListener('input', saveId);
+
+// ===== TEXTAREA PERSISTENCE & CHAR COUNTER =====
+var allTextareas = document.querySelectorAll('.tr-textarea');
+allTextareas.forEach(function(ta) {
+  var key = ta.getAttribute('data-key');
+  // Restore
+  var saved = load(key, '');
+  if (saved) ta.value = saved;
+  // Update counter
+  updateCharCounter(ta);
+
+  // Events
+  ta.addEventListener('input', function() {
+    save(key, ta.value);
+    updateCharCounter(ta);
+    updateProgress();
+  });
+});
+
+function updateCharCounter(ta) {
+  var counter = ta.parentElement.querySelector('.cc-count');
+  if (counter) {
+    var len = ta.value.length;
+    counter.textContent = len;
+    var container = counter.closest('.char-counter');
+    if (container) {
+      container.classList.toggle('min-ok', len >= 50);
+    }
+  }
+}
+
+// ===== PROGRESS BAR =====
+function updateProgress() {
+  var v = currentVersion;
+  var keys = [v+'_e1', v+'_e2', v+'_e3', v+'_e4', v+'_e5', v+'_e6', v+'_e7', v+'_e8', v+'_p3'];
+  var filled = 0;
+  var total = keys.length + 1; // +1 for student ID
+  keys.forEach(function(k) {
+    var val = load(k, '');
+    if (val && val.trim().length > 10) filled++;
+  });
+  // Check student ID
+  var meta = load('meta', {});
+  if (meta.nome && meta.nome.trim().length > 2 && meta.turma) filled++;
+
+  var pct = Math.round((filled / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = filled + ' / ' + total + ' campos preenchidos';
+}
+
+// ===== UPLOAD SIMULATION =====
+function simulateUpload(v) {
+  var el = document.getElementById('upload-' + v);
+  if (el.classList.contains('has-file')) {
+    el.classList.remove('has-file');
+    el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
+    save('upload_' + v, false);
+  } else {
+    el.classList.add('has-file');
+    el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
+    save('upload_' + v, true);
+  }
+}
+
+// ===== EXPORT JSON =====
+function exportJSON() {
+  var v = currentVersion;
+  var meta = load('meta', {});
+  var data = {
+    versao: v,
+    estudante: meta,
+    timestamp: new Date().toISOString(),
+    trilha: 'T03',
+    tipo: 'TR',
+    etapas: {}
+  };
+  var keys = ['e1','e2','e3','e4','e5','e6','e7','e8','p3'];
+  var labels = ['OQuePedido','Dados','Hipoteses','Desenho','Equacoes','CalculoComUnidades','AnaliseResultados','Resposta','ExtensaoCriativa'];
+  keys.forEach(function(k, i) {
+    data.etapas[labels[i]] = load(v + '_' + k, '');
+  });
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T03-TR-v2-versao' + v + '-' + (meta.nome || 'estudante').replace(/\s+/g, '_') + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ===== CLEAR ALL =====
+function confirmClear() {
+  if (confirm('Tem certeza que deseja apagar TODAS as respostas? Esta acao nao pode ser desfeita.')) {
+    var allKeys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key && key.indexOf(PREFIX) === 0) {
+        allKeys.push(key);
+      }
+    }
+    allKeys.forEach(function(k) { localStorage.removeItem(k); });
+    // Reset form
+    idNome.value = '';
+    idTurma.value = '';
+    idData.value = '';
+    allTextareas.forEach(function(ta) {
+      ta.value = '';
+      updateCharCounter(ta);
+    });
+    // Reset uploads
+    ['A','B','C'].forEach(function(v) {
+      var el = document.getElementById('upload-' + v);
+      if (el) {
+        el.classList.remove('has-file');
+        el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
+      }
+    });
+    updateProgress();
+  }
+}
+
+// ===== RESTORE STATE =====
+function restoreState() {
+  // Student ID
+  var meta = load('meta', {});
+  if (meta.nome) idNome.value = meta.nome;
+  if (meta.turma) idTurma.value = meta.turma;
+  if (meta.data) idData.value = meta.data;
+
+  // Version
+  var v = load('versao', 'A');
+  selectVersion(v);
+
+  // Upload states
+  ['A','B','C'].forEach(function(ver) {
+    if (load('upload_' + ver, false)) {
+      var el = document.getElementById('upload-' + ver);
+      if (el) {
+        el.classList.add('has-file');
+        el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
+      }
+    }
+  });
+
+  updateProgress();
+}
+
+// Init
+restoreState();
+</script>
+</body>
+</html>
