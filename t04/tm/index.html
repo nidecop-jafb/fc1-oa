@@ -518,20 +518,22 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T04-TM-v1-banco.md · O SI e a Metrologia no Brasil
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T04-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Num laudo técnico aparece a grafia <strong>Kg</strong> para quilograma. <strong>Segundo as regras de grafia do SI (Tópico 3):</strong>",
     opcoes:[
-      {letra:"A", texto:"Está correta — é a abreviatura de uma palavra e por isso leva inicial maiúscula."},
-      {letra:"B", texto:"Está errada — o símbolo é kg, tudo minúsculo; K maiúsculo é o símbolo do kelvin."},
+      {letra:"A", texto:"Está errada — o símbolo é kg, tudo minúsculo; K maiúsculo é o símbolo do kelvin."},
+      {letra:"B", texto:"Está correta — é a abreviatura de uma palavra e por isso leva inicial maiúscula."},
       {letra:"C", texto:"Está correta — todo símbolo de unidade de massa leva inicial maiúscula."},
       {letra:"D", texto:"Está errada apenas por estética: as duas grafias são aceitas em documentos internos."}
     ],
-    correta:"B",
+    correta:"A",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> “Kg” não existe no SI. Só têm inicial maiúscula os símbolos derivados de nomes de cientistas — Pa, Hz, N.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> K maiúsculo sozinho é kelvin: trocar kg por Kg troca massa por temperatura.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 3 do Tópico 3 reúne todas as regras de grafia cobradas em laudo.</div>"},
-      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Símbolo de unidade não é abreviatura: não segue ortografia, segue norma. “quilograma” não vem de nome próprio.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — símbolo tratado como abreviatura.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> “Kg” não existe no SI. Só têm inicial maiúscula os símbolos derivados de nomes de cientistas — Pa, Hz, N.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> K maiúsculo sozinho é kelvin: trocar kg por Kg troca massa por temperatura.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 3 do Tópico 3 reúne todas as regras de grafia cobradas em laudo.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Símbolo de unidade não é abreviatura: não segue ortografia, segue norma. “quilograma” não vem de nome próprio.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — símbolo tratado como abreviatura.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Não existe regra por tipo de grandeza — a inicial maiúscula marca homenagem a cientista (N de Newton, Pa de Pascal).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — regra inventada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Não é estética: “Kg” é ambíguo porque K já designa outra unidade. Em metrologia, grafia é conteúdo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E10 — norma tratada como preferência.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"}
     } },
@@ -540,31 +542,31 @@ const ITENS = {
     enunciado:"O Sistema Internacional de Unidades, na revisão de 2019, é formado por <strong>quantas unidades de base independentes?</strong>",
     opcoes:[
       {letra:"A", texto:"5 — comprimento, massa, tempo, temperatura e corrente elétrica."},
-      {letra:"B", texto:"6 — as cinco anteriores mais o mol."},
-      {letra:"C", texto:"7 — comprimento, massa, tempo, corrente, temperatura, quantidade de matéria e intensidade luminosa."},
+      {letra:"B", texto:"7 — comprimento, massa, tempo, corrente, temperatura, quantidade de matéria e intensidade luminosa."},
+      {letra:"C", texto:"6 — as cinco anteriores mais o mol."},
       {letra:"D", texto:"10 — incluindo newton, pascal e joule."}
     ],
-    correta:"C",
+    correta:"B",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> São 7: metro, quilograma, segundo, ampere, kelvin, mol e candela (Tópico 2, Quadro 2).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Todas as demais unidades — inclusive newton e pascal — são DERIVADAS dessas sete.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Desde 2019 as sete são definidas por constantes da natureza, não por artefatos.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> São 7: metro, quilograma, segundo, ampere, kelvin, mol e candela (Tópico 2, Quadro 2).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Todas as demais unidades — inclusive newton e pascal — são DERIVADAS dessas sete.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Desde 2019 as sete são definidas por constantes da natureza, não por artefatos.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltaram o mol (quantidade de matéria) e a candela (intensidade luminosa).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — lista incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 2.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltou a candela — a unidade de intensidade luminosa também é de base.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — lista incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 2.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltou a candela — a unidade de intensidade luminosa também é de base.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — lista incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 2.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Newton, pascal e joule são unidades DERIVADAS — combinações das sete de base.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — base confundida com derivada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Pa = kg/(m·s²) — três unidades de base numa só.</div>"}
     } },
 
   R3: { id:"T04-TM-R3", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"O compressor de ar de uma mina opera a <strong>6 bar</strong>. <strong>Pela Equação 5 (P(Pa) = P(bar) × 10⁵), essa pressão equivale a:</strong>",
     opcoes:[
-      {letra:"A", texto:"6 × 10⁵ Pa = 600 kPa"},
-      {letra:"B", texto:"6 × 10⁵ Pa = 6 000 kPa"},
-      {letra:"C", texto:"6 × 10³ Pa = 6 kPa"},
+      {letra:"A", texto:"6 × 10⁵ Pa = 6 000 kPa"},
+      {letra:"B", texto:"6 × 10³ Pa = 6 kPa"},
+      {letra:"C", texto:"6 × 10⁵ Pa = 600 kPa"},
       {letra:"D", texto:"6 × 10⁵ Pa = 60 kPa"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 6 bar × 10⁵ = 6 × 10⁵ Pa; como 1 kPa = 10³ Pa, são 600 kPa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas conversões encadeadas: bar → Pa (10⁵) e Pa → kPa (10³).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O manômetro marca bar; o relatório técnico exige pascal — é o dia a dia da manutenção.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 6 × 10⁵ Pa ÷ 10³ = 600 kPa, não 6 000 — a divisão por mil foi feita ao contrário.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro na conversão de prefixo.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior (kPa) ⇒ número menor.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O fator bar → Pa é 10⁵, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 6 bar × 10⁵ = 6 × 10⁵ Pa; como 1 kPa = 10³ Pa, são 600 kPa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas conversões encadeadas: bar → Pa (10⁵) e Pa → kPa (10³).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O manômetro marca bar; o relatório técnico exige pascal — é o dia a dia da manutenção.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 6 × 10⁵ Pa ÷ 10³ = 600 kPa, não 6 000 — a divisão por mil foi feita ao contrário.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro na conversão de prefixo.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior (kPa) ⇒ número menor.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O fator bar → Pa é 10⁵, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 600 000 Pa ÷ 1 000 = 600 kPa. Ficou faltando uma casa decimal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 6 × 10⁵ ÷ 10³ = 6 × 10².</div>"}
     } },
 
@@ -573,29 +575,29 @@ const ITENS = {
     opcoes:[
       {letra:"A", texto:"1 265 K — porque 1 538 − 273 = 1 265."},
       {letra:"B", texto:"1 538 K — porque °C e K coincidem em altas temperaturas."},
-      {letra:"C", texto:"1 811 K — porque 1 538 + 273,15 ≈ 1 811."},
-      {letra:"D", texto:"1 264 K — porque 1 538 − 274 = 1 264."}
+      {letra:"C", texto:"1 264 K — porque 1 538 − 274 = 1 264."},
+      {letra:"D", texto:"1 811 K — porque 1 538 + 273,15 ≈ 1 811."}
     ],
-    correta:"C",
+    correta:"D",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> T(K) = 1 538 + 273,15 = 1 811,15 K ≈ 1 811 K. Sempre soma-se.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O zero do kelvin está em −273,15 °C — não há temperatura negativa em kelvin.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Esse é o limite que separa a zona de queima da fusão numa usina de pelotização.</div>"},
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> T(K) = 1 538 + 273,15 = 1 811,15 K ≈ 1 811 K. Sempre soma-se.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O zero do kelvin está em −273,15 °C — não há temperatura negativa em kelvin.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Esse é o limite que separa a zona de queima da fusão numa usina de pelotização.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Você subtraiu — a conversão °C → K SOMA 273,15.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Subtrair é o caminho inverso: K → °C.</div>"},
       B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> As duas escalas têm o mesmo TAMANHO de grau, mas zeros diferentes — a diferença de 273,15 nunca desaparece.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — modelo mental incorreto.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 2 do Texto Temático (TT), Tópico 2.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Além de subtrair em vez de somar, o valor usado foi 274 — a constante é 273,15.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação e constante trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 2 do Texto Temático (TT), Tópico 2.</div>"}
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Além de subtrair em vez de somar, o valor usado foi 274 — a constante é 273,15.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação e constante trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 2 do Texto Temático (TT), Tópico 2.</div>"}
     } },
 
   R5: { id:"T04-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Num documento técnico aparecem os símbolos <strong>ms</strong> e <strong>Ms</strong>. <strong>Sobre eles, é correto afirmar:</strong>",
     opcoes:[
-      {letra:"A", texto:"Representam a mesma unidade — a caixa da letra é indiferente em documentos técnicos."},
-      {letra:"B", texto:"ms é milissegundo (10⁻³ s) e Ms é megassegundo (10⁶ s): um fator de 10⁹ separa os dois."},
+      {letra:"A", texto:"ms é milissegundo (10⁻³ s) e Ms é megassegundo (10⁶ s): um fator de 10⁹ separa os dois."},
+      {letra:"B", texto:"Representam a mesma unidade — a caixa da letra é indiferente em documentos técnicos."},
       {letra:"C", texto:"ms é megassegundo e Ms é milissegundo — a maiúscula indica o menor múltiplo."},
       {letra:"D", texto:"Ms não existe no SI; apenas ms é um símbolo válido."}
     ],
-    correta:"B",
+    correta:"A",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> m minúsculo = mili = 10⁻³; M maiúsculo = mega = 10⁶. A distância entre eles é 10⁹.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um erro de caixa aqui é da mesma ordem de trocar um segundo por trinta anos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É por isso que o Quadro 3 do Tópico 3 trata caixa alta e baixa como conteúdo, não formatação.</div>"},
-      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> No SI a caixa é significado: m e M são prefixos diferentes por um fator de um bilhão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E10 — norma tratada como formatação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> m minúsculo = mili = 10⁻³; M maiúsculo = mega = 10⁶. A distância entre eles é 10⁹.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um erro de caixa aqui é da mesma ordem de trocar um segundo por trinta anos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É por isso que o Quadro 3 do Tópico 3 trata caixa alta e baixa como conteúdo, não formatação.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> No SI a caixa é significado: m e M são prefixos diferentes por um fator de um bilhão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E10 — norma tratada como formatação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> É o contrário: maiúsculo M = mega (grande); minúsculo m = mili (pequeno).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — prefixos invertidos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Regra prática: prefixos ≥ 10⁶ usam maiúscula.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ms existe e vale 10⁶ s — pouco usado, mas perfeitamente válido.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — definição parcial.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Qualquer prefixo SI pode se combinar com qualquer unidade.</div>"}
     } },
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T04-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Seu Antônio escreveu no relatório diário da Mina do Paschoal: “A correia transportadora move <strong>350 Kgs</strong> de minério por <strong>Min</strong>, operando a <strong>3,2 M/S</strong>, com temperatura de <strong>28°c</strong> e pressão de <strong>0,101 Mpa</strong>.”</em><br><br><strong>A reescrita correta segundo o SI é:</strong>",
     opcoes:[
-      {letra:"A", texto:"350 kg · por min · 3,2 m/s · 28 °C · 0,101 MPa"},
-      {letra:"B", texto:"350 Kg · por min · 3,2 m/s · 28°C · 0,101 mPa"},
+      {letra:"A", texto:"350 Kg · por min · 3,2 m/s · 28°C · 0,101 mPa"},
+      {letra:"B", texto:"350 kg · por min · 3,2 m/s · 28 °C · 0,101 MPa"},
       {letra:"C", texto:"350 kgs · por Min · 3,2 m/S · 28 °c · 0,101 MPA"},
       {letra:"D", texto:"350 kg · por min · 3,2 M/s · 28 °C · 0,101 mpa"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Cinco correções: símbolo não vai ao plural (kg), min minúsculo, m/s minúsculos, espaço antes de °C e MPa com M de mega e Pa de Pascal.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “Mpa” não existe: ou é MPa (megapascal) ou mPa (milipascal) — um bilhão de vezes menor.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É exatamente esse tipo de laudo que a NR-22 exige em grafia normalizada.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Sobraram três erros: Kg (é kg), falta o espaço em 28 °C e mPa é milipascal, não megapascal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo e caixa incorretos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Cinco correções: símbolo não vai ao plural (kg), min minúsculo, m/s minúsculos, espaço antes de °C e MPa com M de mega e Pa de Pascal.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “Mpa” não existe: ou é MPa (megapascal) ou mPa (milipascal) — um bilhão de vezes menor.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É exatamente esse tipo de laudo que a NR-22 exige em grafia normalizada.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Sobraram três erros: Kg (é kg), falta o espaço em 28 °C e mPa é milipascal, não megapascal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo e caixa incorretos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Símbolo não tem plural (kgs), min é minúsculo, m/s é todo minúsculo e °C leva C maiúsculo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — símbolo tratado como palavra.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “M/s” usaria mega no lugar de metro, e “mpa” não é símbolo válido de pressão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo confundido com unidade.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> M = mega; m = metro OU mili, conforme a posição.</div>"}
     } },
@@ -619,33 +621,33 @@ const ITENS = {
   F2: { id:"T04-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Complete a tabela de prefixos do SI usada nos relatórios da mina.</em><br><br><strong>Os fatores de mega (M), kilo (k), mili (m) e micro (µ) são, respectivamente:</strong>",
     opcoes:[
-      {letra:"A", texto:"10⁶ · 10³ · 10⁻³ · 10⁻⁶"},
-      {letra:"B", texto:"10⁶ · 10³ · 10⁻² · 10⁻⁶"},
-      {letra:"C", texto:"10⁹ · 10³ · 10⁻³ · 10⁻⁹"},
+      {letra:"A", texto:"10⁶ · 10³ · 10⁻² · 10⁻⁶"},
+      {letra:"B", texto:"10⁹ · 10³ · 10⁻³ · 10⁻⁹"},
+      {letra:"C", texto:"10⁶ · 10³ · 10⁻³ · 10⁻⁶"},
       {letra:"D", texto:"10⁶ · 10⁴ · 10⁻³ · 10⁻⁵"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Mega 10⁶, kilo 10³, mili 10⁻³ e micro 10⁻⁶ — os prefixos andam de três em três casas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Exemplos da mina: 170 MPa (granito), 2,4 km (galeria), 1 mm (malha de peneira), 1 µm (partícula fina).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 5 do Tópico 5 traz a escala completa, de tera a nano.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Mili é 10⁻³, não 10⁻². 10⁻² é o centi.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁹ é giga e 10⁻⁹ é nano — mega e micro estão uma casa de três antes.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixos deslocados.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Mega 10⁶, kilo 10³, mili 10⁻³ e micro 10⁻⁶ — os prefixos andam de três em três casas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Exemplos da mina: 170 MPa (granito), 2,4 km (galeria), 1 mm (malha de peneira), 1 µm (partícula fina).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 5 do Tópico 5 traz a escala completa, de tera a nano.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Mili é 10⁻³, não 10⁻². 10⁻² é o centi.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁹ é giga e 10⁻⁹ é nano — mega e micro estão uma casa de três antes.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixos deslocados.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Kilo é 10³ (mil) e micro é 10⁻⁶ — não existem prefixos SI para 10⁴ nem 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — potências inventadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Os prefixos usuais vão de três em três expoentes.</div>"}
     } },
 
   F3: { id:"T04-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<strong>Classificando metro (m), pascal (Pa), tonelada (t) e bar quanto ao Sistema Internacional:</strong>",
     opcoes:[
-      {letra:"A", texto:"m = base · Pa = derivada · t = fora do SI (aceita) · bar = fora do SI (tolerada)"},
-      {letra:"B", texto:"m = base · Pa = base · t = derivada · bar = derivada"},
-      {letra:"C", texto:"m = base · Pa = derivada · t = base · bar = derivada"},
-      {letra:"D", texto:"todas são unidades de base, pois todas aparecem em relatórios técnicos."}
+      {letra:"A", texto:"m = base · Pa = base · t = derivada · bar = derivada"},
+      {letra:"B", texto:"m = base · Pa = derivada · t = base · bar = derivada"},
+      {letra:"C", texto:"todas são unidades de base, pois todas aparecem em relatórios técnicos."},
+      {letra:"D", texto:"m = base · Pa = derivada · t = fora do SI (aceita) · bar = fora do SI (tolerada)"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Pa = kg/(m·s²) é derivada; 1 t = 10³ kg e 1 bar = 10⁵ Pa são unidades de fora do SI toleradas no uso.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Três categorias distintas: base (7), derivada (combinação) e fora do SI (aceita por conveniência).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mineração vive das duas últimas — tonelada e bar estão em todo relatório.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Pascal não é de base (é kg/(m·s²)) e tonelada não é derivada — é unidade de fora do SI aceita.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — categorias trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 (Tópico 2) e o Quadro 4 (Tópico 4).</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A unidade de base de massa é o quilograma, não a tonelada; e o bar está fora do SI.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — categorias trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> As sete de base estão no Quadro 2 — confira a lista.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Aparecer em relatório não define a categoria: só 7 unidades são de base, e nem todas as usadas pertencem ao SI.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — critério inventado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 2.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Pa = kg/(m·s²) é derivada; 1 t = 10³ kg e 1 bar = 10⁵ Pa são unidades de fora do SI toleradas no uso.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Três categorias distintas: base (7), derivada (combinação) e fora do SI (aceita por conveniência).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mineração vive das duas últimas — tonelada e bar estão em todo relatório.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Pascal não é de base (é kg/(m·s²)) e tonelada não é derivada — é unidade de fora do SI aceita.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — categorias trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 (Tópico 2) e o Quadro 4 (Tópico 4).</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A unidade de base de massa é o quilograma, não a tonelada; e o bar está fora do SI.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — categorias trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> As sete de base estão no Quadro 2 — confira a lista.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Aparecer em relatório não define a categoria: só 7 unidades são de base, e nem todas as usadas pertencem ao SI.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — critério inventado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 2.</div>"}
     } },
 
   F4: { id:"T04-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T04-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O manômetro do compressor de ar da galeria de acesso à Mina do Paschoal marca <strong>4,5 bar</strong>. O engenheiro precisa registrar o valor em pascal e em quilopascal no relatório técnico.</em><br><br><strong>Pela Equação 5 (P(Pa) = P(bar) × 10⁵), os dois valores são:</strong>",
     opcoes:[
-      {letra:"A", texto:"4,5 × 10⁵ Pa = 450 kPa"},
-      {letra:"B", texto:"4,5 × 10⁵ Pa = 4 500 kPa"},
+      {letra:"A", texto:"4,5 × 10⁵ Pa = 4 500 kPa"},
+      {letra:"B", texto:"4,5 × 10⁵ Pa = 450 kPa"},
       {letra:"C", texto:"4,5 × 10³ Pa = 4,5 kPa"},
       {letra:"D", texto:"4,5 × 10⁶ Pa = 4 500 kPa"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 4,5 × 10⁵ Pa = 450 000 Pa; dividindo por 10³, são 450 kPa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Registrar em kPa evita relatórios cheios de zeros — é para isso que servem os prefixos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A NR-22 exige a pressão em unidade SI no laudo de manutenção.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 450 000 Pa ÷ 1 000 = 450 kPa. Você multiplicou onde devia dividir.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — conversão de prefixo invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> kPa é MAIOR que Pa, logo o número fica menor.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 4,5 × 10⁵ Pa = 450 000 Pa; dividindo por 10³, são 450 kPa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Registrar em kPa evita relatórios cheios de zeros — é para isso que servem os prefixos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A NR-22 exige a pressão em unidade SI no laudo de manutenção.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 450 000 Pa ÷ 1 000 = 450 kPa. Você multiplicou onde devia dividir.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — conversão de prefixo invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> kPa é MAIOR que Pa, logo o número fica menor.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O fator bar → Pa é 10⁵, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,5 bar dão 4,5 × 10⁵ Pa; 10⁶ seria 45 bar.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira o expoente antes de converter o prefixo.</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T04-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O laboratório de flotação da Escola de Minas usa <strong>380 L</strong> de solução de xantato de potássio num ensaio piloto. O relatório científico exige o volume em metro cúbico.</em><br><br><strong>Pela Equação 4 (V(m³) = V(L) × 10⁻³), o volume é:</strong>",
     opcoes:[
-      {letra:"A", texto:"0,380 m³ = 3,80 × 10⁻¹ m³"},
-      {letra:"B", texto:"380 000 m³ = 3,80 × 10⁵ m³"},
-      {letra:"C", texto:"3,80 × 10⁻² m³"},
+      {letra:"A", texto:"380 000 m³ = 3,80 × 10⁵ m³"},
+      {letra:"B", texto:"3,80 × 10⁻² m³"},
+      {letra:"C", texto:"0,380 m³ = 3,80 × 10⁻¹ m³"},
       {letra:"D", texto:"38,0 m³"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 380 × 10⁻³ = 0,380 m³ = 3,80 × 10⁻¹ m³ — o litro é a milésima parte do metro cúbico.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Menos de meio metro cúbico: um tambor grande, e não um tanque.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Verificar a plausibilidade do resultado é a última etapa do Protocolo C5.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Você multiplicou por 10³ em vez de 10⁻³ — 380 000 m³ é o volume de uma barragem.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior (m³) ⇒ número menor.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,80 × 10⁻² m³ são 38 L, não 380 L — faltou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 380 ÷ 1 000 = 0,380.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 380 × 10⁻³ = 0,380 m³ = 3,80 × 10⁻¹ m³ — o litro é a milésima parte do metro cúbico.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Menos de meio metro cúbico: um tambor grande, e não um tanque.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Verificar a plausibilidade do resultado é a última etapa do Protocolo C5.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Você multiplicou por 10³ em vez de 10⁻³ — 380 000 m³ é o volume de uma barragem.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior (m³) ⇒ número menor.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,80 × 10⁻² m³ são 38 L, não 380 L — faltou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 380 ÷ 1 000 = 0,380.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 38,0 m³ seriam 38 000 L — a divisão foi por 10 em vez de 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m³ = 1 000 L.</div>"}
     } },
 
   U3: { id:"T04-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A correia da britagem primária da Mina do Chico Rei percorre <strong>90 m</strong> em <strong>30 s</strong>. O técnico deve calcular a velocidade média e registrá-la no painel com a grafia SI correta.</em><br><br><strong>O resultado e a grafia adequada são:</strong>",
     opcoes:[
-      {letra:"A", texto:"3 m/s — e nunca “3 ms”, que no SI significa 3 milissegundos."},
-      {letra:"B", texto:"3 M/S — as maiúsculas destacam a unidade no painel de controle."},
-      {letra:"C", texto:"3 ms — abreviação usual de metro por segundo em painéis industriais."},
-      {letra:"D", texto:"0,33 m/s — divide-se o tempo pelo deslocamento."}
+      {letra:"A", texto:"3 M/S — as maiúsculas destacam a unidade no painel de controle."},
+      {letra:"B", texto:"3 ms — abreviação usual de metro por segundo em painéis industriais."},
+      {letra:"C", texto:"0,33 m/s — divide-se o tempo pelo deslocamento."},
+      {letra:"D", texto:"3 m/s — e nunca “3 ms”, que no SI significa 3 milissegundos."}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> v = Δs/Δt = 90 m ÷ 30 s = 3 m/s, com espaço entre número e unidade e barra de divisão.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “3 ms” já é um símbolo ocupado: 3 milissegundos. O painel ficaria ambíguo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Grafia errada em painel de controle é risco operacional, não detalhe de estilo.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “M/S” lê-se mega por siemens — nada a ver com velocidade. Destaque se faz com fonte, não com caixa alta.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo no lugar da unidade.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> ms é milissegundo. Metro por segundo exige a barra: m/s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — símbolo composto sem o operador de divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 3.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Velocidade é deslocamento DIVIDIDO pelo tempo: 90 ÷ 30 = 3 m/s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da razão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A unidade denuncia a ordem: metro POR segundo.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> v = Δs/Δt = 90 m ÷ 30 s = 3 m/s, com espaço entre número e unidade e barra de divisão.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “3 ms” já é um símbolo ocupado: 3 milissegundos. O painel ficaria ambíguo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Grafia errada em painel de controle é risco operacional, não detalhe de estilo.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “M/S” lê-se mega por siemens — nada a ver com velocidade. Destaque se faz com fonte, não com caixa alta.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo no lugar da unidade.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 3.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> ms é milissegundo. Metro por segundo exige a barra: m/s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — símbolo composto sem o operador de divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 3.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Velocidade é deslocamento DIVIDIDO pelo tempo: 90 ÷ 30 = 3 m/s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da razão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A unidade denuncia a ordem: metro POR segundo.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T04-TM-v1-estudante.html
+   Arquivo fonte: T04-TM-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T04-TM-v1-estudante.html';
+var ARQUIVO_FONTE = 'T04-TM-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
