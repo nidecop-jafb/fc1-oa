@@ -518,6 +518,8 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T02-TM-v2-banco.md · Sistema de Numeração de Base 12
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T02-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -540,48 +542,48 @@ const ITENS = {
     enunciado:"A ficha de uma haste de perfuratriz importada especifica o diâmetro nominal como <strong>2B₁₂</strong> (base 12, com B = 11). <strong>Convertido para base 10, o valor é:</strong>",
     opcoes:[
       {letra:"A", texto:"23₁₀"},
-      {letra:"B", texto:"31₁₀"},
-      {letra:"C", texto:"35₁₀"},
+      {letra:"B", texto:"35₁₀"},
+      {letra:"C", texto:"31₁₀"},
       {letra:"D", texto:"43₁₀"}
     ],
-    correta:"C",
+    correta:"B",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 2B₁₂ = 2 × 12¹ + 11 × 12⁰ = 24 + 11 = 35₁₀.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Em base 12, A = 10 e B = 11 — dois símbolos a mais que o decimal.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É a mesma Equação 1 do sistema posicional, com 12 no lugar de 10.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 2B₁₂ = 2 × 12¹ + 11 × 12⁰ = 24 + 11 = 35₁₀.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Em base 12, A = 10 e B = 11 — dois símbolos a mais que o decimal.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É a mesma Equação 1 do sistema posicional, com 12 no lugar de 10.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 2 + 11 = 23 soma os dígitos sem os pesos posicionais: o 2 vale 2 × 12.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — sistema posicional ignorado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 31 sai de 2 × 12 + 7 — B foi lido como 7. B é o décimo segundo símbolo: 11.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — valor do símbolo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A = 10, B = 11.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 31 sai de 2 × 12 + 7 — B foi lido como 7. B é o décimo segundo símbolo: 11.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — valor do símbolo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A = 10, B = 11.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 43 sai de 2 × 13 + 11 — a base é 12, não 13.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — base trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"}
     } },
 
   R3: { id:"T02-TM-R3", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"<strong>Sobre o radiano, unidade do SI para ângulo plano:</strong>",
     opcoes:[
-      {letra:"A", texto:"1 rad é o ângulo central que subtende um arco de comprimento igual ao raio; uma volta completa vale 2π rad ≈ 6,283 rad."},
-      {letra:"B", texto:"1 rad é o ângulo central que subtende um arco igual ao diâmetro; uma volta completa vale π rad."},
-      {letra:"C", texto:"1 rad equivale a 1°; uma volta completa vale 360 rad."},
+      {letra:"A", texto:"1 rad é o ângulo central que subtende um arco igual ao diâmetro; uma volta completa vale π rad."},
+      {letra:"B", texto:"1 rad equivale a 1°; uma volta completa vale 360 rad."},
+      {letra:"C", texto:"1 rad é o ângulo central que subtende um arco de comprimento igual ao raio; uma volta completa vale 2π rad ≈ 6,283 rad."},
       {letra:"D", texto:"O radiano não pertence ao SI — a unidade oficial de ângulo é o grau."}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A circunferência mede 2π r, e cada radiano “consome” um raio de arco — logo, 2π rad na volta.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> É dessa definição que sai a conversão θ(rad) = θ(°) × π/180.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O radiano é adimensional: razão entre dois comprimentos.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A definição usa o RAIO, não o diâmetro — por isso a volta vale 2π rad, e não π.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — raio confundido com diâmetro.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Contexto científico do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1 rad ≈ 57,3°. Uma volta tem ~6,3 rad, não 360.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Se 1 rad fosse 1°, a conversão π/180 não existiria.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A circunferência mede 2π r, e cada radiano “consome” um raio de arco — logo, 2π rad na volta.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> É dessa definição que sai a conversão θ(rad) = θ(°) × π/180.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O radiano é adimensional: razão entre dois comprimentos.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A definição usa o RAIO, não o diâmetro — por isso a volta vale 2π rad, e não π.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — raio confundido com diâmetro.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Contexto científico do Texto Temático (TT), Tópico 3.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1 rad ≈ 57,3°. Uma volta tem ~6,3 rad, não 360.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Se 1 rad fosse 1°, a conversão π/180 não existiria.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O radiano é a unidade do SI para ângulo plano; o grau é tolerado por conveniência prática.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — definição parcial.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Tópico 3 do Texto Temático (TT).</div>"}
     } },
 
   R4: { id:"T02-TM-R4", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Pedro precisa representar <strong>47₁₀</strong> em base 12 para preencher uma ficha técnica. <strong>A representação correta é:</strong>",
     opcoes:[
-      {letra:"A", texto:"3B₁₂"},
-      {letra:"B", texto:"40₁₂"},
-      {letra:"C", texto:"3A₁₂"},
-      {letra:"D", texto:"4B₁₂"}
+      {letra:"A", texto:"40₁₂"},
+      {letra:"B", texto:"3A₁₂"},
+      {letra:"C", texto:"4B₁₂"},
+      {letra:"D", texto:"3B₁₂"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 47 ÷ 12 = 3 com resto 11 → dígito das dúzias 3, unidades B. Verificação: 3 × 12 + 11 = 47.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Converter para base 12 é dividir por 12: quociente e resto viram os dígitos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Três caixas de uma dúzia mais onze peças soltas — a leitura prática do almoxarifado.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 40₁₂ = 4 × 12 + 0 = 48 ≠ 47. Sobrou uma unidade não contabilizada.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — resto descartado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira sempre pela volta: dígito × 12 + resto.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3A₁₂ = 3 × 12 + 10 = 46 ≠ 47. A vale 10; o resto aqui é 11 = B.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — símbolo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A = 10, B = 11.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4B₁₂ = 4 × 12 + 11 = 59 ≠ 47. O quociente de 47 ÷ 12 é 3, não 4.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — quociente errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça a divisão inteira antes de montar os dígitos.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 47 ÷ 12 = 3 com resto 11 → dígito das dúzias 3, unidades B. Verificação: 3 × 12 + 11 = 47.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Converter para base 12 é dividir por 12: quociente e resto viram os dígitos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Três caixas de uma dúzia mais onze peças soltas — a leitura prática do almoxarifado.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 40₁₂ = 4 × 12 + 0 = 48 ≠ 47. Sobrou uma unidade não contabilizada.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — resto descartado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira sempre pela volta: dígito × 12 + resto.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3A₁₂ = 3 × 12 + 10 = 46 ≠ 47. A vale 10; o resto aqui é 11 = B.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — símbolo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A = 10, B = 11.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4B₁₂ = 4 × 12 + 11 = 59 ≠ 47. O quociente de 47 ÷ 12 é 3, não 4.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — quociente errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça a divisão inteira antes de montar os dígitos.</div>"}
     } },
 
   R5: { id:"T02-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T02-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>O almoxarifado da Mina do Engenho (Mariana-MG) recebeu um pedido de <strong>143 parafusos</strong>. O fornecedor registra quantidades em base 12.</em><br><br><strong>Como fica 143₁₀ em base 12, e o que isso significa em caixas?</strong>",
     opcoes:[
-      {letra:"A", texto:"BB₁₂ — onze dúzias (132 peças) mais 11 unidades avulsas."},
-      {letra:"B", texto:"11₁₂ — onze dúzias exatas, sem sobra."},
+      {letra:"A", texto:"11₁₂ — onze dúzias exatas, sem sobra."},
+      {letra:"B", texto:"BB₁₂ — onze dúzias (132 peças) mais 11 unidades avulsas."},
       {letra:"C", texto:"BB₁₂ — onze dúzias mais 12 unidades avulsas."},
       {letra:"D", texto:"AB₁₂ — dez dúzias mais onze unidades avulsas."}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 143 ÷ 12 = 11 com resto 11 → quociente B, resto B: BB₁₂. Verificação: 11 × 12 + 11 = 143.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Onze caixas fechadas de uma dúzia e onze peças soltas.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É o mesmo raciocínio de quociente e resto de qualquer mudança de base.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 11₁₂ = 1 × 12 + 1 = 13. Onze dúzias exatas seriam 132, e ainda sobram 11 peças.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — dígitos decimais escritos como se fossem duodecimais.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Em base 12, onze é um único símbolo: B.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 143 ÷ 12 = 11 com resto 11 → quociente B, resto B: BB₁₂. Verificação: 11 × 12 + 11 = 143.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Onze caixas fechadas de uma dúzia e onze peças soltas.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É o mesmo raciocínio de quociente e resto de qualquer mudança de base.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 11₁₂ = 1 × 12 + 1 = 13. Onze dúzias exatas seriam 132, e ainda sobram 11 peças.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — dígitos decimais escritos como se fossem duodecimais.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Em base 12, onze é um único símbolo: B.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O resto nunca chega a 12 — se chegasse, formaria mais uma dúzia. Aqui o resto é 11.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — resto igual à base.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Numa base b, os restos vão de 0 a b − 1.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> AB₁₂ = 10 × 12 + 11 = 131 ≠ 143. O quociente de 143 ÷ 12 é 11 (B), não 10 (A).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — quociente errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira multiplicando de volta.</div>"}
     } },
@@ -619,33 +621,33 @@ const ITENS = {
   F2: { id:"T02-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>A NR-22 exige que os retardos de detonação sejam registrados em milissegundos. Pedro tem três retardos programados: <strong>250 ms</strong>, <strong>500 ms</strong> e <strong>1 750 ms</strong> (1 s = 1 000 ms = 1 000 000 µs).</em><br><br><strong>Convertidos para segundos e microssegundos, os três são:</strong>",
     opcoes:[
-      {letra:"A", texto:"0,25 s e 250 000 µs · 0,5 s e 500 000 µs · 1,75 s e 1 750 000 µs"},
-      {letra:"B", texto:"2,5 s e 25 000 µs · 5 s e 50 000 µs · 17,5 s e 175 000 µs"},
-      {letra:"C", texto:"0,25 s e 25 000 µs · 0,5 s e 50 000 µs · 1,75 s e 175 000 µs"},
+      {letra:"A", texto:"2,5 s e 25 000 µs · 5 s e 50 000 µs · 17,5 s e 175 000 µs"},
+      {letra:"B", texto:"0,25 s e 25 000 µs · 0,5 s e 50 000 µs · 1,75 s e 175 000 µs"},
+      {letra:"C", texto:"0,25 s e 250 000 µs · 0,5 s e 500 000 µs · 1,75 s e 1 750 000 µs"},
       {letra:"D", texto:"0,025 s e 250 000 µs · 0,05 s e 500 000 µs · 0,175 s e 1 750 000 µs"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> ms → s divide por 10³; ms → µs multiplica por 10³. As unidades se cancelam na fração unitária.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas conversões em sentidos opostos a partir da mesma medida.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Um retardo mal convertido muda a sequência de fogo — e a NR-22 cobra o registro em ms.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os dois sentidos ficaram invertidos: 250 ms são 0,25 s (menos que um segundo), não 2,5 s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sentido da conversão invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior ⇒ número menor.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os segundos estão certos, mas 1 ms = 1 000 µs: 250 ms = 250 000 µs, não 25 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> De mili para micro são três casas.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> ms → s divide por 10³; ms → µs multiplica por 10³. As unidades se cancelam na fração unitária.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas conversões em sentidos opostos a partir da mesma medida.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Um retardo mal convertido muda a sequência de fogo — e a NR-22 cobra o registro em ms.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os dois sentidos ficaram invertidos: 250 ms são 0,25 s (menos que um segundo), não 2,5 s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sentido da conversão invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior ⇒ número menor.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os segundos estão certos, mas 1 ms = 1 000 µs: 250 ms = 250 000 µs, não 25 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> De mili para micro são três casas.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 250 ÷ 1 000 = 0,25 s, não 0,025 — a divisão foi por 10 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 s = 1 000 ms.</div>"}
     } },
 
   F3: { id:"T02-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>A planta de lavra da Mina de Passagem registra dois pontos na mesma longitude: <strong>P1 = 20°30'00\"S</strong> e <strong>P2 = 20°30'30\"S</strong>. No Tópico 5, 1\" ≈ 31 m.</em><br><br><strong>Em graus decimais e com a distância estimada entre eles:</strong>",
     opcoes:[
-      {letra:"A", texto:"P1 = 20,500°S · P2 = 20,508°S · distância ≈ 930 m"},
-      {letra:"B", texto:"P1 = 20,500°S · P2 = 20,530°S · distância ≈ 930 m"},
-      {letra:"C", texto:"P1 = 20,300°S · P2 = 20,308°S · distância ≈ 930 m"},
-      {letra:"D", texto:"P1 = 20,500°S · P2 = 20,508°S · distância ≈ 31 m"}
+      {letra:"A", texto:"P1 = 20,500°S · P2 = 20,530°S · distância ≈ 930 m"},
+      {letra:"B", texto:"P1 = 20,300°S · P2 = 20,308°S · distância ≈ 930 m"},
+      {letra:"C", texto:"P1 = 20,500°S · P2 = 20,508°S · distância ≈ 31 m"},
+      {letra:"D", texto:"P1 = 20,500°S · P2 = 20,508°S · distância ≈ 930 m"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> DD = graus + min/60 + seg/3 600: 20 + 0,5000 + 0,00833 = 20,508°S; e 30\" × 31 m ≈ 930 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Segundos de arco entram divididos por 3 600, não por 60.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Meio minuto de arco separa quase um quilômetro de galeria.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os 30 segundos foram divididos por 60 (viraram 0,030) em vez de 3 600 (0,00833).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — divisor de segundos trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 4.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os 30 minutos foram copiados como 0,300 — o correto é 30/60 = 0,500.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — minutos copiados sem dividir.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Meio grau é 0,5°, não 0,3°.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 31 m é a distância de UM segundo de arco; aqui a diferença é de 30 segundos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — fator unitário usado como resultado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Multiplique 31 m pelo número de segundos.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> DD = graus + min/60 + seg/3 600: 20 + 0,5000 + 0,00833 = 20,508°S; e 30\" × 31 m ≈ 930 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Segundos de arco entram divididos por 3 600, não por 60.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Meio minuto de arco separa quase um quilômetro de galeria.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os 30 segundos foram divididos por 60 (viraram 0,030) em vez de 3 600 (0,00833).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — divisor de segundos trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 4.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os 30 minutos foram copiados como 0,300 — o correto é 30/60 = 0,500.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — minutos copiados sem dividir.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Meio grau é 0,5°, não 0,3°.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 31 m é a distância de UM segundo de arco; aqui a diferença é de 30 segundos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — fator unitário usado como resultado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Multiplique 31 m pelo número de segundos.</div>"}
     } },
 
   F4: { id:"T02-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T02-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A ficha técnica de uma haste de perfuratriz de diamante usada no Quadrilátero Ferrífero especifica o comprimento nominal como <strong>A5₁₂</strong> mm (base 12, com A = 10). Pedro precisa registrar o valor em base 10 no controle de estoque.</em><br><br><strong>Pela Equação 1, o comprimento em milímetros é:</strong>",
     opcoes:[
-      {letra:"A", texto:"125 mm"},
-      {letra:"B", texto:"105 mm"},
+      {letra:"A", texto:"105 mm"},
+      {letra:"B", texto:"125 mm"},
       {letra:"C", texto:"65 mm"},
       {letra:"D", texto:"15 mm"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A5₁₂ = 10 × 12¹ + 5 × 12⁰ = 120 + 5 = 125 mm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O primeiro dígito conta dúzias; o segundo, unidades.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Registrar 105 ou 65 mm no estoque significaria comprar a haste errada.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 105 sai de 10 × 10 + 5 — o peso posicional usado foi 10, mas a base é 12.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — base trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A5₁₂ = 10 × 12¹ + 5 × 12⁰ = 120 + 5 = 125 mm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O primeiro dígito conta dúzias; o segundo, unidades.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Registrar 105 ou 65 mm no estoque significaria comprar a haste errada.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 105 sai de 10 × 10 + 5 — o peso posicional usado foi 10, mas a base é 12.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — base trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 65 sai de 5 × 12 + 5 — A vale 10, não 5.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — valor do símbolo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A = 10, B = 11.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10 + 5 = 15 soma os dígitos sem os pesos posicionais.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — sistema posicional ignorado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Cada dígito multiplica uma potência de 12.</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T02-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O GPS registra a posição de um furo de sondagem em Santa Bárbara (MG) como <strong>19°54'36\"S</strong>. A ANM exige a posição em graus decimais no banco georreferenciado.</em><br><br><strong>Pela Equação 4 (DD = graus + min/60 + seg/3 600), o valor é:</strong>",
     opcoes:[
-      {letra:"A", texto:"19,910°S"},
-      {letra:"B", texto:"19,546°S"},
-      {letra:"C", texto:"19,900°S"},
+      {letra:"A", texto:"19,546°S"},
+      {letra:"B", texto:"19,900°S"},
+      {letra:"C", texto:"19,910°S"},
       {letra:"D", texto:"19,090°S"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 19 + 54/60 + 36/3 600 = 19 + 0,9000 + 0,0100 = 19,910°S.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Minutos dividem por 60; segundos, por 3 600 — herança sexagesimal da base 12.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse número que entra no software de geoprocessamento da mina.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 19,546 apenas concatena os três valores — minutos e segundos precisam ser divididos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — DMS copiado como decimal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> DMS e DD não são o mesmo formato de escrita.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltou a parcela dos segundos: 36/3 600 = 0,0100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — parcela omitida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Some as três parcelas; 0,01° vale cerca de 1,1 km.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 19 + 54/60 + 36/3 600 = 19 + 0,9000 + 0,0100 = 19,910°S.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Minutos dividem por 60; segundos, por 3 600 — herança sexagesimal da base 12.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse número que entra no software de geoprocessamento da mina.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 19,546 apenas concatena os três valores — minutos e segundos precisam ser divididos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — DMS copiado como decimal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> DMS e DD não são o mesmo formato de escrita.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltou a parcela dos segundos: 36/3 600 = 0,0100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — parcela omitida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Some as três parcelas; 0,01° vale cerca de 1,1 km.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 54/60 = 0,90, e não 0,09 — uma casa decimal se perdeu.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 54 minutos são quase um grau inteiro.</div>"}
     } },
 
   U3: { id:"T02-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A Galeria Leste da Mina do Engenho segue em azimute <strong>145°</strong> por <strong>200 m</strong>. O topógrafo precisa do contra-azimute de retorno e quer saber o desvio lateral que um erro de leitura de 1° causaria (desvio ≈ comprimento × 0,01746).</em><br><br><strong>Os dois resultados são:</strong>",
     opcoes:[
-      {letra:"A", texto:"contra-azimute 325° · desvio ≈ 3,5 m"},
-      {letra:"B", texto:"contra-azimute 325° · desvio ≈ 5,2 m"},
-      {letra:"C", texto:"contra-azimute 35° · desvio ≈ 3,5 m"},
-      {letra:"D", texto:"contra-azimute 325° · desvio ≈ 0,35 m"}
+      {letra:"A", texto:"contra-azimute 325° · desvio ≈ 5,2 m"},
+      {letra:"B", texto:"contra-azimute 35° · desvio ≈ 3,5 m"},
+      {letra:"C", texto:"contra-azimute 325° · desvio ≈ 0,35 m"},
+      {letra:"D", texto:"contra-azimute 325° · desvio ≈ 3,5 m"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Az = 145° &lt; 180° → contra = 145° + 180° = 325°; desvio = 200 × 0,01746 ≈ 3,5 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um grau de erro em 200 m tira a galeria três metros e meio do alvo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A 300 m o mesmo erro daria 5,2 m — o desvio cresce com a distância.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 5,2 m é o desvio a 300 m, valor de referência do Tópico 3. Aqui a galeria tem 200 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E7 — valor de referência usado como resultado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique o fator ao comprimento do enunciado.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 35° sai de 360° − 325°. A regra soma 180° quando Az &lt; 180°: 145° + 180° = 325°.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra do contra-azimute mal aplicada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 5.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 200 × 0,01746 ≈ 3,5 m — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1,7 % de 200 m é cerca de 3,5 m.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Az = 145° &lt; 180° → contra = 145° + 180° = 325°; desvio = 200 × 0,01746 ≈ 3,5 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um grau de erro em 200 m tira a galeria três metros e meio do alvo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A 300 m o mesmo erro daria 5,2 m — o desvio cresce com a distância.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 5,2 m é o desvio a 300 m, valor de referência do Tópico 3. Aqui a galeria tem 200 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E7 — valor de referência usado como resultado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique o fator ao comprimento do enunciado.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 35° sai de 360° − 325°. A regra soma 180° quando Az &lt; 180°: 145° + 180° = 325°.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra do contra-azimute mal aplicada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 5.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 200 × 0,01746 ≈ 3,5 m — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1,7 % de 200 m é cerca de 3,5 m.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T02-TM-v2-estudante.html
+   Arquivo fonte: T02-TM-v3-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T02-TM-v2-estudante.html';
+var ARQUIVO_FONTE = 'T02-TM-v3-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
