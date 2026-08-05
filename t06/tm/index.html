@@ -518,20 +518,22 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T06-TM-v2-banco.md (aprovado) · ancorado em T06-TT-v9.md
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T06-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Um furo de sondagem no Quadrilátero Ferrífero atingiu <strong>480 m</strong> de profundidade. <strong>Qual é a ordem de grandeza dessa profundidade?</strong>",
     opcoes:[
-      {letra:"A", texto:"10² m — em notação científica 480 m = 4,8 × 10² m, e a ordem de grandeza é sempre o expoente que aparece ali."},
-      {letra:"B", texto:"10³ m — como o coeficiente 4,8 é maior que 3,16, soma-se 1 ao expoente."},
+      {letra:"A", texto:"10³ m — como o coeficiente 4,8 é maior que 3,16, soma-se 1 ao expoente."},
+      {letra:"B", texto:"10² m — em notação científica 480 m = 4,8 × 10² m, e a ordem de grandeza é sempre o expoente que aparece ali."},
       {letra:"C", texto:"10⁴ m — arredonda-se 480 para 1 000 e depois soma-se 1 ao expoente."},
       {letra:"D", texto:"4,8 × 10² m — a ordem de grandeza é o próprio valor escrito em notação científica."}
     ],
-    correta:"B",
+    correta:"A",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> log₁₀(480) ≈ 2,68 e round(2,68) = 3, logo OG = 10³ m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A fronteira entre duas ordens de grandeza está em 3,16 × 10ⁿ (√10), não em 10ⁿ.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” desta tarefa aplica a mesma regra a um volume de água.</div>"},
-      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente só é a ordem de grandeza quando o coeficiente é menor que 3,16 — aqui 4,8 ≥ 3,16, logo OG = 10³ m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Regra da fronteira no Texto Temático (TT), Tópico 1.</div>"},
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> log₁₀(480) ≈ 2,68 e round(2,68) = 3, logo OG = 10³ m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A fronteira entre duas ordens de grandeza está em 3,16 × 10ⁿ (√10), não em 10ⁿ.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” desta tarefa aplica a mesma regra a um volume de água.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente só é a ordem de grandeza quando o coeficiente é menor que 3,16 — aqui 4,8 ≥ 3,16, logo OG = 10³ m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Regra da fronteira no Texto Temático (TT), Tópico 1.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Arredondar 480 para 1 000 já leva a 10³; somar mais 1 aplica a mesma regra duas vezes.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Use OG(x) = round(log₁₀ x) uma única vez.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A ordem de grandeza é sempre uma potência de 10 inteira; 4,8 × 10² m é a notação científica, não a OG.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 1 do Texto Temático (TT), Tópico 1.</div>"}
     } },
@@ -556,15 +558,15 @@ const ITENS = {
     enunciado:"Uma galeria de mina histórica tem ordem de grandeza 10¹ m e o diâmetro da Terra, 10⁷ m. <strong>Quantas galerias cabem no diâmetro da Terra?</strong>",
     opcoes:[
       {letra:"A", texto:"10⁸ — somam-se os expoentes das duas ordens de grandeza."},
-      {letra:"B", texto:"10⁶ — subtraem-se os expoentes, como manda a Equação 4."},
-      {letra:"C", texto:"10⁷ — basta usar o expoente do maior dos dois objetos."},
+      {letra:"B", texto:"10⁷ — basta usar o expoente do maior dos dois objetos."},
+      {letra:"C", texto:"10⁶ — subtraem-se os expoentes, como manda a Equação 4."},
       {letra:"D", texto:"7 — divide-se um expoente pelo outro."}
     ],
-    correta:"B",
+    correta:"C",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Comparar escalas é dividir — e dividir potências de 10 significa subtrair expoentes: razão = 10^(7 − 1) = 10⁶.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um milhão de galerias enfileiradas, não cem milhões.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma Equação 4 liga o grão de quartzo ao Quadrilátero Ferrífero (10⁸).</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Comparar escalas é dividir — e dividir potências de 10 significa subtrair expoentes: razão = 10^(7 − 1) = 10⁶.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um milhão de galerias enfileiradas, não cem milhões.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma Equação 4 liga o grão de quartzo ao Quadrilátero Ferrífero (10⁸).</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes equivale a MULTIPLICAR as grandezas; comparar exige subtrair: 7 − 1 = 6.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente do maior sozinho ignora o tamanho do menor — a razão é relativa aos dois.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique razão = 10^(n₂ − n₁).</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente do maior sozinho ignora o tamanho do menor — a razão é relativa aos dois.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique razão = 10^(n₂ − n₁).</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Expoentes não se dividem entre si: a razão é 10 elevado à DIFERENÇA deles.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação incorreta com potências.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"}
     } },
 
@@ -573,29 +575,29 @@ const ITENS = {
     opcoes:[
       {letra:"A", texto:"aos últimos 10 dias do ano."},
       {letra:"B", texto:"às últimas 10 horas do ano."},
-      {letra:"C", texto:"aos últimos 10 segundos do ano."},
-      {letra:"D", texto:"ao mês inteiro de dezembro."}
+      {letra:"C", texto:"ao mês inteiro de dezembro."},
+      {letra:"D", texto:"aos últimos 10 segundos do ano."}
     ],
-    correta:"C",
+    correta:"D",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 300 anos / 4,6 × 10⁹ anos ≈ 6,5 × 10⁻⁸ do ano comprimido — o Quadro 4 registra 31/12, 23h59min50s.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Entre quem extrai (10⁰–10² anos) e o que é extraído (10⁹ anos) há nove casas decimais.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É por isso que uma reserva mineral é não renovável na escala humana.</div>"},
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 300 anos / 4,6 × 10⁹ anos ≈ 6,5 × 10⁻⁸ do ano comprimido — o Quadro 4 registra 31/12, 23h59min50s.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Entre quem extrai (10⁰–10² anos) e o que é extraído (10⁹ anos) há nove casas decimais.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É por isso que uma reserva mineral é não renovável na escala humana.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Dez dias são ~1/36 do ano comprimido, ou seja ~1,3 × 10⁸ anos reais — cem milhões, não trezentos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 4 do Texto Temático (TT), Tópico 4.</div>"},
       B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Dez horas equivalem a ~5 × 10⁶ anos reais; a mineração em Ouro Preto tem ~3 × 10² anos — quatro ordens de grandeza a menos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Compare os expoentes antes de escolher.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Dezembro inteiro corresponde a ~3,9 × 10⁸ anos — a era dos primeiros animais complexos, não a história humana.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E7 — leitura da tabela.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 4 do Texto Temático (TT), Tópico 4.</div>"}
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Dezembro inteiro corresponde a ~3,9 × 10⁸ anos — a era dos primeiros animais complexos, não a história humana.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E7 — leitura da tabela.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 4 do Texto Temático (TT), Tópico 4.</div>"}
     } },
 
   R5: { id:"T06-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"Uma mina dobra a sua taxa anual de lavra e mantém a mesma reserva provada. <strong>Pela Equação 6 (t = Q/I), a vida útil estimada da jazida:</strong>",
     opcoes:[
-      {letra:"A", texto:"dobra — assim como uma lanterna dura mais quando é ligada no modo de maior potência."},
-      {letra:"B", texto:"cai pela metade, porque a taxa de consumo está no denominador."},
+      {letra:"A", texto:"cai pela metade, porque a taxa de consumo está no denominador."},
+      {letra:"B", texto:"dobra — assim como uma lanterna dura mais quando é ligada no modo de maior potência."},
       {letra:"C", texto:"não muda, porque a reserva continua a mesma."},
       {letra:"D", texto:"cai a um quarto, porque o efeito da taxa é quadrático."}
     ],
-    correta:"B",
+    correta:"A",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Em t = Q/I o que está embaixo divide: dobrar I com Q constante corta t pela metade.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Reserva de 50 Mt lavrada a 5 Mt/ano dura 10 anos; a 10 Mt/ano, dura 5.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A lanterna no modo mais forte consome mais corrente e dura menos — a mesma equação.</div>"},
-      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Maior potência significa maior corrente I — e I no denominador REDUZ o tempo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da relação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 e o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Em t = Q/I o que está embaixo divide: dobrar I com Q constante corta t pela metade.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Reserva de 50 Mt lavrada a 5 Mt/ano dura 10 anos; a 10 Mt/ano, dura 5.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A lanterna no modo mais forte consome mais corrente e dura menos — a mesma equação.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Maior potência significa maior corrente I — e I no denominador REDUZ o tempo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da relação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 e o Quadro 5 do Texto Temático (TT), Tópico 5.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A vida útil depende de DUAS grandezas: a reserva e a taxa. Mudar uma delas muda o resultado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — modelo mental incorreto.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 5.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A relação é inversamente proporcional, não quadrática: dobrar I divide t por 2, não por 4.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro na proporção.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Teste com números: Q = 50 Mt, I = 5 e depois 10 Mt/ano.</div>"}
     } },
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T06-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>O método de Fermi (Tópico 1) tem cinco passos: identificar a grandeza-alvo, decompô-la em fatores estimáveis, estimar cada fator, combinar os fatores e encontrar o expoente do resultado.</em><br><br>Aplicando-o à pergunta <em>“quantos sacos de 5 kg seriam necessários para ensacar toda a pilha de britado do pátio da mina?”</em>, <strong>qual decomposição chega ao resultado?</strong>",
     opcoes:[
-      {letra:"A", texto:"N = (V × ρ) / m_saco — volume da pilha (≈ 500 m³), densidade aparente do britado (≈ 1,7 t/m³) e massa do saco (5 kg = 0,005 t): a resposta cai na casa de 10⁵ sacos."},
-      {letra:"B", texto:"N = V / m_saco — o volume da pilha dividido pela massa do saco basta; a densidade não entra na conta."},
+      {letra:"A", texto:"N = V / m_saco — o volume da pilha dividido pela massa do saco basta; a densidade não entra na conta."},
+      {letra:"B", texto:"N = (V × ρ) / m_saco — volume da pilha (≈ 500 m³), densidade aparente do britado (≈ 1,7 t/m³) e massa do saco (5 kg = 0,005 t): a resposta cai na casa de 10⁵ sacos."},
       {letra:"C", texto:"N = (m_saco × ρ) / V — parte-se da massa do saco e divide-se pelo volume da pilha."},
       {letra:"D", texto:"Não é possível estimar: sem levantamento topográfico da pilha, nenhum número tem validade."}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Volume × densidade dá a massa total; dividida pela massa do saco, resulta o número de sacos — três fatores estimáveis, um resultado por ordem de grandeza.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada fator pode errar por 2 ou 3, mas os erros tendem a se compensar: raramente se erra uma casa inteira.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É assim que o técnico decide se vale a pena chamar a topografia.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Volume (m³) dividido por massa (t) não dá um número de sacos — falta a densidade para converter volume em massa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas (volume × massa).</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Acompanhe as unidades passo a passo, como manda o Protocolo C5.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Volume × densidade dá a massa total; dividida pela massa do saco, resulta o número de sacos — três fatores estimáveis, um resultado por ordem de grandeza.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada fator pode errar por 2 ou 3, mas os erros tendem a se compensar: raramente se erra uma casa inteira.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É assim que o técnico decide se vale a pena chamar a topografia.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Volume (m³) dividido por massa (t) não dá um número de sacos — falta a densidade para converter volume em massa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas (volume × massa).</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Acompanhe as unidades passo a passo, como manda o Protocolo C5.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A conta está de cabeça para baixo: o volume da pilha é o que se divide, não o divisor.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Escreva a equação a partir das unidades desejadas (sacos).</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A estimativa de Fermi existe justamente para responder ANTES do levantamento formal — e é ela que decide se o levantamento se justifica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — modelo mental de “só vale o que foi medido”.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o método de Fermi no Texto Temático (TT), Tópico 1.</div>"}
     } },
@@ -636,16 +638,16 @@ const ITENS = {
     enunciado:"<em>Regra da fronteira: a ordem de grandeza muda em 3,16 × 10ⁿ, não em 10ⁿ.</em><br><br>Considere: <strong>(I)</strong> grão de quartzo de 2 mm; <strong>(II)</strong> extensão urbana de Ouro Preto, 4 km; <strong>(III)</strong> extensão do Quadrilátero Ferrífero, 100 km. <strong>As ordens de grandeza, em metros, são respectivamente:</strong>",
     opcoes:[
       {letra:"A", texto:"10⁻³ · 10³ · 10⁵"},
-      {letra:"B", texto:"10⁻³ · 10⁴ · 10⁵"},
-      {letra:"C", texto:"10⁻² · 10⁴ · 10⁵"},
-      {letra:"D", texto:"10⁻³ · 10⁴ · 10⁶"}
+      {letra:"B", texto:"10⁻² · 10⁴ · 10⁵"},
+      {letra:"C", texto:"10⁻³ · 10⁴ · 10⁶"},
+      {letra:"D", texto:"10⁻³ · 10⁴ · 10⁵"}
     ],
-    correta:"B",
+    correta:"D",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 2 mm = 2 × 10⁻³ m (2 &lt; 3,16 → 10⁻³); 4 km = 4 × 10³ m (4 ≥ 3,16 → 10⁴); 100 km = 1 × 10⁵ m → 10⁵.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Pela Equação 4, o grão cabe 10^(5 − (−3)) = 10⁸ vezes na extensão do Quadrilátero — cem milhões de vezes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O mesmo par (grão e região) abre a tabela de escalas do Tópico 3.</div>"},
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 2 mm = 2 × 10⁻³ m (2 &lt; 3,16 → 10⁻³); 4 km = 4 × 10³ m (4 ≥ 3,16 → 10⁴); 100 km = 1 × 10⁵ m → 10⁵.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Pela Equação 4, o grão cabe 10^(5 − (−3)) = 10⁸ vezes na extensão do Quadrilátero — cem milhões de vezes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O mesmo par (grão e região) abre a tabela de escalas do Tópico 3.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Faltou aplicar a regra do 3,16 em 4 km: como 4 ≥ 3,16, a ordem de grandeza é 10⁴, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Regra da fronteira no Texto Temático (TT), Tópico 1.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 2 mm = 2 × 10⁻³ m e 2 &lt; 3,16, logo a ordem de grandeza é 10⁻³, não 10⁻².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — regra do 3,16 aplicada onde não cabe.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A regra só soma 1 ao expoente quando o coeficiente é ≥ 3,16.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 100 km = 1 × 10⁵ m e 1 &lt; 3,16 — a ordem de grandeza é 10⁵, não 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Converta para metros antes de aplicar a regra.</div>"}
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 2 mm = 2 × 10⁻³ m e 2 &lt; 3,16, logo a ordem de grandeza é 10⁻³, não 10⁻².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — regra do 3,16 aplicada onde não cabe.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A regra só soma 1 ao expoente quando o coeficiente é ≥ 3,16.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 100 km = 1 × 10⁵ m e 1 &lt; 3,16 — a ordem de grandeza é 10⁵, não 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Converta para metros antes de aplicar a regra.</div>"}
     } },
 
   F4: { id:"T06-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T06-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A usina de beneficiamento de uma mina do Quadrilátero Ferrífero consome <strong>180 L</strong> de água por tonelada processada e produz <strong>2 500 t</strong> por dia. O técnico de processo precisa informar à equipe ambiental o consumo diário e sua ordem de grandeza para o relatório de outorga.</em><br><br><strong>O volume consumido em um dia e a sua ordem de grandeza são:</strong>",
     opcoes:[
-      {letra:"A", texto:"4,5 × 10⁵ L · OG = 10⁶ L"},
-      {letra:"B", texto:"4,5 × 10⁵ L · OG = 10⁵ L"},
+      {letra:"A", texto:"4,5 × 10⁵ L · OG = 10⁵ L"},
+      {letra:"B", texto:"4,5 × 10⁵ L · OG = 10⁶ L"},
       {letra:"C", texto:"4,5 × 10⁴ L · OG = 10⁵ L"},
       {letra:"D", texto:"4,5 × 10⁶ L · OG = 10⁷ L"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = 180 L/t × 2 500 t = 450 000 L = 4,5 × 10⁵ L; como 4,5 ≥ 3,16, OG = 10⁶ L.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Para a outorga, o que decide é a casa decimal: “na casa do milhão de litros por dia”.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Mesma Equação 1 da questão de Revisão Conceitual, agora com dados de processo.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O volume está certo, mas faltou a regra da fronteira: 4,5 ≥ 3,16, logo a OG é 10⁶ L, não 10⁵ L.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira log₁₀(450 000) ≈ 5,65 → round = 6.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> V = 180 L/t × 2 500 t = 450 000 L = 4,5 × 10⁵ L; como 4,5 ≥ 3,16, OG = 10⁶ L.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Para a outorga, o que decide é a casa decimal: “na casa do milhão de litros por dia”.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Mesma Equação 1 da questão de Revisão Conceitual, agora com dados de processo.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O volume está certo, mas faltou a regra da fronteira: 4,5 ≥ 3,16, logo a OG é 10⁶ L, não 10⁵ L.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira log₁₀(450 000) ≈ 5,65 → round = 6.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 180 × 2 500 = 450 000 L = 4,5 × 10⁵ L — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça a multiplicação acompanhando as unidades (L/t × t = L).</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,5 × 10⁶ L seriam 4,5 milhões de litros — dez vezes o valor real de 450 000 L.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça 180 × 2 500 antes de aplicar a regra do 3,16.</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T06-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>Dois furos de sondagem atravessaram o mesmo filão em uma mina do entorno de Ouro Preto: teores de <strong>0,4 g/t</strong> e <strong>640 g/t</strong>. Antes de decidir se a lavra é viável, a equipe precisa de um valor central que não seja dominado pelo furo mais rico.</em><br><br><strong>Pela Equação 2 (G = √(a · b)), o valor central e a sua ordem de grandeza são:</strong>",
     opcoes:[
-      {letra:"A", texto:"G = 16 g/t · OG = 10¹ g/t"},
-      {letra:"B", texto:"G = 320,2 g/t · OG = 10² g/t"},
-      {letra:"C", texto:"G = 256 g/t · OG = 10² g/t"},
+      {letra:"A", texto:"G = 320,2 g/t · OG = 10² g/t"},
+      {letra:"B", texto:"G = 256 g/t · OG = 10² g/t"},
+      {letra:"C", texto:"G = 16 g/t · OG = 10¹ g/t"},
       {letra:"D", texto:"G = 1,6 g/t · OG = 10⁰ g/t"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> G = √(0,4 × 640) = √256 = 16 g/t = 1,6 × 10¹ g/t → OG = 10¹ g/t.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A média aritmética daria 320,2 g/t — vinte vezes maior e praticamente igual ao teor máximo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Superestimar o teor central é o caminho mais curto para um plano de lavra superdimensionado.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 320,2 g/t é a média ARITMÉTICA (0,4 + 640)/2 — a questão pede a geométrica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — equação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 2 e 3 do Texto Temático (TT), Tópico 2.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 256 é o PRODUTO 0,4 × 640; falta extrair a raiz quadrada: √256 = 16 g/t.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — etapa da equação omitida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> G = √(a · b) — o produto é só o primeiro passo.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> G = √(0,4 × 640) = √256 = 16 g/t = 1,6 × 10¹ g/t → OG = 10¹ g/t.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A média aritmética daria 320,2 g/t — vinte vezes maior e praticamente igual ao teor máximo.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Superestimar o teor central é o caminho mais curto para um plano de lavra superdimensionado.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 320,2 g/t é a média ARITMÉTICA (0,4 + 640)/2 — a questão pede a geométrica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — equação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 2 e 3 do Texto Temático (TT), Tópico 2.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 256 é o PRODUTO 0,4 × 640; falta extrair a raiz quadrada: √256 = 16 g/t.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — etapa da equação omitida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> G = √(a · b) — o produto é só o primeiro passo.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> √256 = 16, não 1,6 — a vírgula escorregou uma casa e a OG foi junto.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 16 × 16 = 256.</div>"}
     } },
 
   U3: { id:"T06-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A NR-22 exige iluminação individual confiável no subsolo. Antes de uma visita técnica a uma galeria, o técnico de segurança confere a lanterna de capacete: carga armazenada <strong>Q = 4,3 × 10³ C</strong> e corrente de consumo do LED <strong>I = 0,60 A</strong>.</em><br><br><strong>Pela Equação 6 (t = Q/I), a autonomia e a sua ordem de grandeza são:</strong>",
     opcoes:[
-      {letra:"A", texto:"t ≈ 7,2 × 10³ s (≈ 2,0 h) · OG = 10⁴ s"},
-      {letra:"B", texto:"t ≈ 7,2 × 10³ s (≈ 2,0 h) · OG = 10³ s"},
-      {letra:"C", texto:"t ≈ 2,6 × 10³ s (≈ 0,72 h) · OG = 10³ s"},
-      {letra:"D", texto:"t ≈ 7,2 × 10² s (≈ 12 min) · OG = 10³ s"}
+      {letra:"A", texto:"t ≈ 7,2 × 10³ s (≈ 2,0 h) · OG = 10³ s"},
+      {letra:"B", texto:"t ≈ 2,6 × 10³ s (≈ 0,72 h) · OG = 10³ s"},
+      {letra:"C", texto:"t ≈ 7,2 × 10² s (≈ 12 min) · OG = 10³ s"},
+      {letra:"D", texto:"t ≈ 7,2 × 10³ s (≈ 2,0 h) · OG = 10⁴ s"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> t = 4,3 × 10³ C / 0,60 A ≈ 7,2 × 10³ s ≈ 2,0 h; como 7,2 ≥ 3,16, a OG é 10⁴ s.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas horas não cobrem um turno inteiro — a resposta é uma decisão de segurança, não só um número.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma equação prevê a vida útil de uma jazida: t = Reserva / Taxa.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O tempo está certo, mas faltou a regra da fronteira: 7,2 ≥ 3,16, logo a OG é 10⁴ s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira log₁₀(7 200) ≈ 3,86 → round = 4.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,3 × 10³ × 0,60 seria MULTIPLICAR; a equação divide: t = Q/I.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Acompanhe as unidades: C / A = s.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4 300 / 0,60 ≈ 7 200 s, não 720 s — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Dividir por 0,60 AUMENTA o resultado; refaça a conta.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> t = 4,3 × 10³ C / 0,60 A ≈ 7,2 × 10³ s ≈ 2,0 h; como 7,2 ≥ 3,16, a OG é 10⁴ s.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas horas não cobrem um turno inteiro — a resposta é uma decisão de segurança, não só um número.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma equação prevê a vida útil de uma jazida: t = Reserva / Taxa.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O tempo está certo, mas faltou a regra da fronteira: 7,2 ≥ 3,16, logo a OG é 10⁴ s.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira log₁₀(7 200) ≈ 3,86 → round = 4.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,3 × 10³ × 0,60 seria MULTIPLICAR; a equação divide: t = Q/I.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Acompanhe as unidades: C / A = s.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4 300 / 0,60 ≈ 7 200 s, não 720 s — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Dividir por 0,60 AUMENTA o resultado; refaça a conta.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T06-TM-v2-estudante.html
+   Arquivo fonte: T06-TM-v3-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T06-TM-v2-estudante.html';
+var ARQUIVO_FONTE = 'T06-TM-v3-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
