@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T05 · Notação Científica — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* VERSION SELECTOR */
+.version-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.version-btn {
+  flex: 1; padding: 12px;
+  background: var(--input-bg); border: 2px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--mono); font-size: 1rem;
+  font-weight: 700; cursor: pointer; text-align: center;
+  transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.version-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.version-label { font-size: 0.7rem; color: var(--cinza); text-align: center; margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none; background: var(--ouro-claro); border: 1px solid var(--ouro);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 0.875rem; color: var(--ouro); align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro); color: oklch(0.10 0.02 260); border: none;
+  padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap;
+}
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+
+/* PROGRESS BAR */
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
+.progress-seg {
+  height: 6px; background: var(--cinza-claro);
+  border-radius: var(--r-sm); transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.certo { background: var(--verde); }
+.progress-seg.errado { background: var(--erro); }
+.progress-seg.parcial { background: var(--ouro); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 16px; margin-bottom: 28px;
+}
+.id-form label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.id-form input, .id-form select {
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  color: var(--texto); padding: 8px 10px; font-family: var(--font);
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+}
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 20px; margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro);
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
+
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* MC ALTERNATIVES */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  text-align: left; width: 100%; font-family: var(--font);
+  font-size: 0.9rem; color: var(--texto); line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; }
+.alt-btn.correct { border-color: var(--verde); background: var(--verde-claro); }
+.alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.alt-btn.correct-answer { border-color: var(--verde); }
+.alt-letra {
+  font-family: var(--mono); font-weight: 700; color: var(--cinza);
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correct .alt-letra { color: var(--verde); }
+.alt-btn.incorrect .alt-letra { color: var(--erro); }
+
+/* MM CHECKBOXES */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.check-item:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.check-item.selected { background: var(--azul-bg); border-color: var(--azul); }
+.check-item.locked { cursor: default; }
+.check-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.check-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.check-item.missed { border-color: var(--ouro); border-style: dashed; }
+.check-box {
+  width: 18px; height: 18px; border: 2px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; margin-top: 2px;
+}
+.check-item.selected .check-box { border-color: var(--azul); color: var(--azul-claro); }
+.check-item.correct .check-box { border-color: var(--verde); color: var(--verde); }
+.check-item.incorrect .check-box { border-color: var(--erro); color: var(--erro); }
+
+/* VF STATEMENTS */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; transition: border-color 0.2s;
+}
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn {
+  width: 36px; height: 36px; border: 2px solid var(--cinza-borda);
+  background: transparent; color: var(--cinza); font-family: var(--mono);
+  font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.vf-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.locked { cursor: default; }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+.vf-resultado { font-family: var(--mono); font-size: 0.75rem; margin-top: 4px; }
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-top: 8px; -webkit-overflow-scrolling: touch; }
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px;
+}
+.matrix-table th {
+  background: oklch(0.18 0.02 260); border: 1px solid var(--cinza-borda);
+  padding: 8px 6px; font-family: var(--mono); font-size: 0.7rem;
+  font-weight: 600; text-align: center; color: var(--azul-claro); vertical-align: bottom;
+}
+.matrix-table th:first-child { text-align: left; min-width: 130px; font-size: 0.72rem; }
+.matrix-table td {
+  border: 1px solid var(--cinza-borda); padding: 8px 6px;
+  text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-size: 0.84rem; }
+.matrix-table tbody tr:hover td { background: var(--hover-bg); }
+.matrix-table input[type="radio"] {
+  width: 18px; height: 18px; accent-color: var(--azul); cursor: pointer;
+}
+.matrix-table tr.row-correct td { background: var(--verde-claro); }
+.matrix-table tr.row-incorrect td { background: var(--erro-claro); }
+.matrix-table td.cell-correct-answer { outline: 2px solid var(--verde); outline-offset: -2px; }
+.matrix-table input[type="radio"]:disabled { cursor: default; }
+
+/* FEEDBACK */
+.q-feedback {
+  display: none; margin-top: 12px; padding: 12px 14px;
+  font-size: 0.85rem; line-height: 1.6; border-left: 3px solid;
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+.q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+.q-feedback.parcial { border-color: var(--ouro); background: var(--ouro-claro); color: var(--ouro); }
+.fb-title { font-weight: 700; margin-bottom: 6px; }
+.fb-level { margin-bottom: 4px; font-size: 0.82rem; }
+.fb-level strong { font-weight: 700; }
+.q-score-detail { font-family: var(--mono); font-size: 0.78rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid; opacity: 0.8; }
+
+/* SCORE BOX */
+.score-box {
+  display: none; background: var(--superficie); border: 2px solid var(--ouro);
+  padding: 24px; margin-bottom: 20px; text-align: center;
+}
+.score-box.show { display: block; }
+.score-value { font-family: var(--mono); font-size: 3rem; font-weight: 700; color: var(--ouro); }
+.score-label {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
+}
+.score-breakdown {
+  display: flex; justify-content: center; gap: 16px; margin-top: 12px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+}
+.score-breakdown span { display: flex; align-items: center; gap: 4px; }
+.score-breakdown .dot { width: 8px; height: 8px; display: inline-block; }
+.score-breakdown .dot-ok { background: var(--verde); }
+.score-breakdown .dot-nok { background: var(--erro); }
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  padding: 12px 24px; border: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
+
+/* TOAST */
+.toast-container {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px;
+  color: var(--texto); border: 1px solid; max-width: 320px;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn, .check-item { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .vf-item { flex-direction: column; gap: 8px; }
+  .vf-toggles { align-self: flex-start; }
+  .matrix-table { font-size: 0.75rem; }
+  .matrix-table th { font-size: 0.65rem; padding: 6px 4px; }
+  .matrix-table td { padding: 6px 4px; }
+  .version-btn { padding: 10px 8px; font-size: 0.9rem; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector, .version-label { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn, .check-item { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct, .check-item.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect, .check-item.incorrect { border-color: #c00; background: #fbe9e7; }
+  .q-feedback { display: block !important; }
+  .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
+  .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
+  .score-box { display: block !important; border-color: #333; background: #fff; }
+  .score-value { color: #111; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
+  <div class="restore-banner" id="restoreBanner">
+    <span id="restoreMsg"></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T05</span> &middot; Notação Científica</h1>
+      <span class="badge">Tarefa Mínima (TM)</span>
+    </div>
+    <div class="header-sub">8 questões &middot; 10 pontos &middot; ~22 min &middot; consulta livre ao TT</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/search?q=Debussy+Clair+de+Lune+Suite+Bergamasque" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Claude Debussy &mdash; Suite Bergamasque (Clair de Lune) &middot; 1890 &middot; piano solo &middot; ~17 min</span>
+  </div>
+
+  <!-- VERSION SELECTOR -->
+  <div class="version-label" id="versionLabel">Selecione sua versão</div>
+  <div class="version-selector" id="versionSelector">
+    <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
+    <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
+    <button class="version-btn" data-v="C" onclick="switchVersion('C')">Versão C</button>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg" id="prog-0"></div>
+    <div class="progress-seg" id="prog-1"></div>
+    <div class="progress-seg" id="prog-2"></div>
+    <div class="progress-seg" id="prog-3"></div>
+    <div class="progress-seg" id="prog-4"></div>
+    <div class="progress-seg" id="prog-5"></div>
+    <div class="progress-seg" id="prog-6"></div>
+    <div class="progress-seg" id="prog-7"></div>
+  </div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- SCORE BOX -->
+  <div class="score-box" id="scoreBox">
+    <div class="score-value" id="scoreValue">0/10</div>
+    <div class="score-label">Pontuação Final</div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+  <div class="fecho-acao">Aula dada, aula estudada HOJE! Não esqueça de fazer a <strong>TAREFA COMPLEMENTAR</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T05 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+/* ============================================================
+   BANCO DE QUESTÕES — 3 VERSÕES (A, B, C) × 8 QUESTÕES
+   Tarefa Mínima (TM digital) — janela deslizante sobre 12 itens
+   (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
+   Fonte: T05-TM-v1-banco.md · ancorado em T05-TT-v8.md
+   ============================================================ */
+const ITENS = {
+
+  R1: { id:"T05-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
+    enunciado:"A produção brasileira de minério de ferro é de <strong>411 000 000 t</strong> por ano (Quadro 2 do Texto Temático). <strong>Na forma canônica da notação científica (1 ≤ |a| &lt; 10), esse valor é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"4,11 × 10⁸ t"},
+      {letra:"B", texto:"41,1 × 10⁷ t"},
+      {letra:"C", texto:"411 × 10⁶ t"},
+      {letra:"D", texto:"4,11 × 10⁻⁸ t"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A vírgula desloca 8 casas para a esquerda: coeficiente 4,11 ∈ [1, 10) e expoente +8.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Número maior que 10 sempre tem expoente positivo (Tópico 2, Equação 3).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> É esse valor que a Tarefa Complementar usa para comparar Carajás com um garimpo familiar.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas não é canônico: 41,1 é maior que 10. Desloque mais uma casa: 4,11 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 411 está muito acima do intervalo [1, 10) — faltaram dois deslocamentos da vírgula.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Desloque a vírgula até sobrar UM algarismo antes dela.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Expoente negativo indica número MENOR que 1. Aqui são 411 milhões de toneladas: o expoente é +8.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"}
+    } },
+
+  R2: { id:"T05-TM-R2", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
+    enunciado:"A espessura de uma folha de ouro batido — como as das igrejas de Ouro Preto — é <strong>0,000 050 m</strong>. <strong>Qual alternativa expressa esse número na forma canônica?</strong>",
+    opcoes:[
+      {letra:"A", texto:"50 × 10⁻⁶ m"},
+      {letra:"B", texto:"0,5 × 10⁻⁴ m"},
+      {letra:"C", texto:"5,0 × 10⁻⁵ m"},
+      {letra:"D", texto:"5,0 × 10⁵ m"}
+    ],
+    correta:"C",
+    feedbacks:{
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A vírgula desloca 5 casas para a direita: 5,0 × 10⁻⁵ m, com coeficiente 5,0 ∈ [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Número menor que 1 sempre tem expoente negativo (Tópico 2, Equação 2).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 5,0 × 10⁻⁵ m = 50 µm — a espessura que o mestre dourador do século XVIII conseguia bater à mão.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 50 × 10⁻⁶ é numericamente equivalente, mas não é canônico: o coeficiente 50 é maior que 10. Ajuste para 5,0 × 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 2 do Texto Temático (TT), Tópico 2.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,5 é menor que 1 — também fora do intervalo [1, 10). Ajuste para 5,0 × 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O coeficiente precisa ter exatamente um algarismo diferente de zero antes da vírgula.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 5,0 × 10⁵ m são 500 km. O número é menor que 1, logo o expoente é negativo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Zeros à esquerda ⇒ expoente negativo.</div>"}
+    } },
+
+  R3: { id:"T05-TM-R3", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
+    enunciado:"O Brasil produz por ano <strong>4,11 × 10⁸ t</strong> de minério de ferro e <strong>8,8 × 10¹ t</strong> de ouro. <strong>Em ordem de grandeza, quantas vezes se produz mais ferro do que ouro?</strong>",
+    opcoes:[
+      {letra:"A", texto:"cerca de 10⁷ vezes — a diferença entre os expoentes é 8 − 1 = 7."},
+      {letra:"B", texto:"cerca de 10⁹ vezes — somam-se os expoentes das duas produções."},
+      {letra:"C", texto:"cerca de 10⁸ vezes — usa-se o expoente da maior das duas."},
+      {letra:"D", texto:"7 vezes — a diferença entre os expoentes é o próprio resultado."}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Equação 4: razão = 10^(n₁ − n₂) = 10^(8−1) = 10⁷. A razão exata (≈ 4,67 × 10⁶) está nessa mesma casa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Comparar escalas é dividir — e dividir potências de 10 é subtrair expoentes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Dez milhões de vezes mais ferro que ouro: a razão explica por que o ferro é medido em trens e o ouro, em cofres.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes equivale a MULTIPLICAR as duas produções; comparar exige subtrair.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente do maior sozinho ignora o tamanho do menor — a razão depende dos dois.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique razão = 10^(n₁ − n₂).</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 7 é o EXPOENTE do resultado, não o resultado: a razão é 10⁷, ou seja, dez milhões.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — expoente confundido com o valor.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"}
+    } },
+
+  R4: { id:"T05-TM-R4", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
+    enunciado:"Pedro calcula a massa de ferro contida na produção anual de minério, cujo teor médio é <strong>6,5 × 10⁻¹</strong>. <strong>O produto (4,11 × 10⁸ t) × (6,5 × 10⁻¹) é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"2,67 × 10⁷ t de Fe"},
+      {letra:"B", texto:"2,67 × 10⁸ t de Fe"},
+      {letra:"C", texto:"26,7 × 10⁷ t de Fe"},
+      {letra:"D", texto:"4,76 × 10⁸ t de Fe"}
+    ],
+    correta:"B",
+    feedbacks:{
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (4,11 × 6,5) × 10^(8−1) = 26,7 × 10⁷ = 2,67 × 10⁸ t — coeficientes multiplicam, expoentes somam, depois ajusta-se a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O ajuste final é a etapa que mais se esquece (Tópico 4, Equação 5).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 267 milhões de toneladas de ferro metálico por ano.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O coeficiente está certo, mas ao passar de 26,7 × 10⁷ para 2,67 o expoente sobe: 2,67 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro no ajuste do expoente.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Ao dividir o coeficiente por 10, some 1 ao expoente.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Numericamente correto, mas não canônico: 26,7 é maior que 10. Ajuste para 2,67 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,11 ÷ 6,5 ≈ 0,63 e 4,11 × 6,5 = 26,7 — a operação pedida é multiplicação.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — divisão no lugar da multiplicação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"}
+    } },
+
+  R5: { id:"T05-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
+    enunciado:"Os rejeitos liberados em Mariana (<strong>4,0 × 10⁷ m³</strong>) e em Brumadinho (<strong>1,2 × 10⁷ m³</strong>) somados dão:",
+    opcoes:[
+      {letra:"A", texto:"5,2 × 10⁷ m³ — os expoentes já são iguais, então somam-se os coeficientes."},
+      {letra:"B", texto:"5,2 × 10¹⁴ m³ — somam-se também os expoentes."},
+      {letra:"C", texto:"5,2 × 10⁸ m³ — ao somar coeficientes, soma-se 1 ao expoente."},
+      {letra:"D", texto:"4,0 × 10⁷ m³ — na adição prevalece o maior dos dois valores."}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Equação 7 — expoentes iguais, somam-se os coeficientes: (4,0 + 1,2) × 10⁷ = 5,2 × 10⁷ m³.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Só a adição e a subtração exigem expoentes iguais; multiplicação e divisão, não.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 52 milhões de metros cúbicos — a questão “Pense e Use” transforma isso em viagens de caminhão.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes é regra da MULTIPLICAÇÃO. Na adição com expoentes iguais, o expoente é conservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra da multiplicação aplicada à soma.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Só se ajusta o expoente quando o coeficiente sai do intervalo [1, 10) — e 5,2 está dentro dele.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — ajuste indevido do expoente.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira se o coeficiente precisa de ajuste antes de mexer no expoente.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Adição não é seleção do maior: o rejeito de Brumadinho também está no total.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — operação substituída por comparação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 4.</div>"}
+    } },
+
+  F1: { id:"T05-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
+    enunciado:"<em>Converta para a forma canônica: (I) produção brasileira de bauxita, 32 000 000 t/ano; (II) teor de ouro numa mina típica, 0,000 010 t de Au por tonelada; (III) raio médio da Terra, 6 370 000 m.</em><br><br><strong>Os três valores são, respectivamente:</strong>",
+    opcoes:[
+      {letra:"A", texto:"3,2 × 10⁷ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
+      {letra:"B", texto:"3,2 × 10⁸ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
+      {letra:"C", texto:"3,2 × 10⁷ t/ano · 1,0 × 10⁻⁶ t/t · 6,37 × 10⁷ m"},
+      {letra:"D", texto:"32 × 10⁶ t/ano · 10 × 10⁻⁶ t/t · 63,7 × 10⁵ m"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 7 casas à esquerda em (I), 5 à direita em (II) e 6 à esquerda em (III) — os três coeficientes ficam em [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Conte os deslocamentos da vírgula: esse número É o expoente.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma regra vale de um teor de ouro ao raio da Terra — 12 ordens de grandeza na mesma linha.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 32 000 000 tem 7 casas de deslocamento, não 8: 3,2 × 10⁷.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Recontagem: 3,2 → 32 → 320 … até 32 000 000.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,000 010 → 5 casas → 1,0 × 10⁻⁵; e 6 370 000 → 6 casas → 6,37 × 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Marque a vírgula e conte casa por casa.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os três valores estão numericamente certos, mas nenhum coeficiente está no intervalo [1, 10).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 2 e 3 do Texto Temático (TT), Tópico 2.</div>"}
+    } },
+
+  F2: { id:"T05-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
+    enunciado:"<em>Complete a tabela de equivalências:</em><br><br>411 000 000&nbsp;&nbsp;↔&nbsp;&nbsp;?<br>?&nbsp;&nbsp;↔&nbsp;&nbsp;1,36 × 10⁵<br>0,000 000 001 6&nbsp;&nbsp;↔&nbsp;&nbsp;?<br><br><strong>A sequência correta é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"4,11 × 10⁸ · 136 000 · 1,6 × 10⁻⁹"},
+      {letra:"B", texto:"4,11 × 10⁸ · 13 600 · 1,6 × 10⁻⁸"},
+      {letra:"C", texto:"4,11 × 10⁹ · 1 360 000 · 1,6 × 10⁻⁹"},
+      {letra:"D", texto:"41,1 × 10⁷ · 136 000 · 16 × 10⁻¹⁰"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 411 000 000 = 4,11 × 10⁸; 1,36 × 10⁵ = 136 000; 0,000 000 001 6 = 1,6 × 10⁻⁹.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A conversão vai nos dois sentidos com a mesma contagem de casas.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Ir e voltar entre as duas notações é o teste mais rápido de que você entendeu a Equação 3.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,36 × 10⁵ = 136 000 (5 casas à direita), não 13 600; e 0,000 000 001 6 tem 9 casas, não 8.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Conte os zeros um a um antes de responder.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 411 000 000 tem 8 casas de deslocamento (4,11 × 10⁸) e 1,36 × 10⁵ é 136 000, não 1 360 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Verifique cada linha isoladamente.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os valores equivalem, mas 41,1 e 16 estão fora do intervalo [1, 10).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"}
+    } },
+
+  F3: { id:"T05-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
+    enunciado:"<em>Resolva as três operações:</em><br><br>(a) (3,0 × 10²) × (2,0 × 10³)<br>(b) (8,8 × 10¹) ÷ (8,8 × 10⁶)<br>(c) (4,0 × 10⁷) + (1,2 × 10⁷)<br><br><strong>Os resultados, na forma canônica, são:</strong>",
+    opcoes:[
+      {letra:"A", texto:"6,0 × 10⁵ · 1,0 × 10⁻⁵ · 5,2 × 10⁷"},
+      {letra:"B", texto:"6,0 × 10⁶ · 1,0 × 10⁵ · 5,2 × 10¹⁴"},
+      {letra:"C", texto:"6,0 × 10⁵ · 1,0 × 10⁵ · 5,2 × 10⁷"},
+      {letra:"D", texto:"5,0 × 10⁵ · 1,0 × 10⁻⁵ · 4,8 × 10⁷"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Multiplicação soma expoentes (2+3=5); divisão subtrai (1−6=−5); adição com expoentes iguais conserva o expoente.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Três operações, três regras distintas — é o coração do Tópico 4.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” encadeia essas três regras num único problema real.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Na divisão o expoente é 1 − 6 = −5 (não +5), e na adição o expoente se conserva (10⁷, não 10¹⁴).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regras trocadas entre as operações.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5, 6 e 7 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Só a divisão saiu errada: 10¹ ÷ 10⁶ = 10^(1−6) = 10⁻⁵. Dividir por um número maior dá resultado menor que 1.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente na divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,0 × 2,0 = 6,0 (não 5,0) e 4,0 + 1,2 = 5,2 (não 4,8) — os expoentes estão certos, os coeficientes não.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético nos coeficientes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça as contas dos coeficientes separadamente.</div>"}
+    } },
+
+  F4: { id:"T05-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
+    enunciado:"<em>A placa de bronze da Estação Ferroviária de Ouro Preto informa que, entre 1693 e 1800, foram exportados <strong>8,0 × 10⁸ g</strong> de ouro. A produção anual atual do Brasil é <strong>8,8 × 10¹ t</strong>.</em><br><br><strong>Convertido para toneladas e comparado à produção atual, o ouro colonial equivale a:</strong>",
+    opcoes:[
+      {letra:"A", texto:"8,0 × 10² t — cerca de 9 anos da produção anual de hoje."},
+      {letra:"B", texto:"8,0 × 10⁵ t — cerca de 9 mil anos da produção anual de hoje."},
+      {letra:"C", texto:"8,0 × 10² t — cerca de 90 anos da produção anual de hoje."},
+      {letra:"D", texto:"8,0 × 10¹¹ t — cerca de 10¹⁰ anos da produção anual de hoje."}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 8,0 × 10⁸ g ÷ 10³ = 8,0 × 10⁵ kg ÷ 10³ = 8,0 × 10² t = 800 t; e 800 ÷ 88 ≈ 9.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada divisão por 1 000 tira 3 do expoente (Tópico 4, Equação 6).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Um século inteiro de mineração colonial cabe em nove anos de produção moderna.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 8,0 × 10⁵ é o valor em QUILOGRAMAS; falta a segunda divisão por 1 000 para chegar a toneladas.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — conversão interrompida na metade.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> g → kg → t: são duas divisões por 10³.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A conversão está certa, mas a razão é 8,0 × 10² ÷ 8,8 × 10¹ ≈ 9, não 90.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro no expoente da divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 10² ÷ 10¹ = 10¹, e (8,0/8,8) ≈ 0,91 — logo ≈ 9.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Converter g para t DIVIDE por 10⁶; multiplicar levaria a 800 bilhões de toneladas de ouro.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação na conversão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior ⇒ número menor.</div>"}
+    } },
+
+  U1: { id:"T05-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"<em>O Brasil produziu <strong>1,36 × 10⁵ t</strong> de nióbio em 2023 (Quadro 2 do Texto Temático). O gerente de produção precisa da média mensal para planejar os embarques.</em><br><br><strong>Pela Equação 6 (divisão em notação científica), a produção média mensal é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"1,13 × 10⁴ t/mês"},
+      {letra:"B", texto:"1,13 × 10⁵ t/mês"},
+      {letra:"C", texto:"1,63 × 10⁶ t/mês"},
+      {letra:"D", texto:"11,3 × 10³ t/mês"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (1,36 ÷ 1,2) × 10^(5−1) = 1,13 × 10⁴ t/mês.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Escrever 12 como 1,2 × 10¹ deixa a divisão de expoentes explícita.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 11 300 t por mês — o Brasil responde por mais de 90 % do nióbio do mundo.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente cai na divisão: 10^(5−1) = 10⁴. Dividir por 12 não pode manter a mesma casa decimal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — expoente não atualizado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,36 × 1,2 = 1,63 — você multiplicou. A produção mensal é uma DIVISÃO por 12.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A média mensal é sempre menor que o total anual.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas 11,3 é maior que 10 — a forma canônica é 1,13 × 10⁴.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Ajuste o coeficiente para o intervalo [1, 10).</div>"}
+    } },
+
+  U2: { id:"T05-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"<em>A equipe de topografia da Mina do Paschoal mede uma frente de lavra retangular: comprimento <strong>3,0 × 10² m</strong> e largura <strong>4,0 × 10¹ m</strong>. O relatório técnico exige a área em notação científica.</em><br><br><strong>Pela Equação 5 (multiplicação em notação científica), a área é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"1,2 × 10⁴ m²"},
+      {letra:"B", texto:"12,0 × 10³ m²"},
+      {letra:"C", texto:"1,2 × 10³ m²"},
+      {letra:"D", texto:"7,0 × 10² m²"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (3,0 × 4,0) × 10^(2+1) = 12,0 × 10³ = 1,2 × 10⁴ m² — com o ajuste final para a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> 12 000 m² é pouco mais que um campo de futebol.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Área em notação científica entra direto no cálculo de volume e de massa lavrada.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas falta o ajuste: 12,0 é maior que 10, logo 1,2 × 10⁴ m².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O ajuste é a última etapa da Equação 5.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ao passar de 12,0 × 10³ para 1,2, o expoente SOBE para 10⁴.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — ajuste do expoente na direção errada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Dividiu o coeficiente por 10? Some 1 ao expoente.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,0 + 4,0 = 7,0 — área é produto, não soma.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Área de retângulo = comprimento × largura.</div>"}
+    } },
+
+  U3: { id:"T05-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"<em>O relatório ambiental da Mina do Chico Rei registra dois depósitos de rejeito: o norte com <strong>2,4 × 10⁶ m³</strong> e o sul com <strong>8,0 × 10⁵ m³</strong>. O técnico precisa do volume total para o plano de fechamento.</em><br><br><strong>Pela Equação 7 (adição em notação científica), o volume total é:</strong>",
+    opcoes:[
+      {letra:"A", texto:"3,2 × 10⁶ m³"},
+      {letra:"B", texto:"1,04 × 10⁷ m³"},
+      {letra:"C", texto:"3,2 × 10¹¹ m³"},
+      {letra:"D", texto:"2,4 × 10⁶ m³"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Iguala-se o expoente — 8,0 × 10⁵ = 0,80 × 10⁶ — e soma-se: (2,4 + 0,80) × 10⁶ = 3,2 × 10⁶ m³.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Na adição, igualar expoentes vem ANTES de somar coeficientes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 3,2 milhões de metros cúbicos é o número que dimensiona o plano de fechamento da mina.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar 2,4 + 8,0 direto ignora que os expoentes são diferentes — 8,0 × 10⁵ vale 0,80 × 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — soma sem igualar expoentes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes é regra da multiplicação; na adição o expoente comum é conservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra da multiplicação aplicada à soma.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5 e 7 do Texto Temático (TT), Tópico 4.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O depósito sul não desaparece por ser menor: ele acrescenta 0,80 × 10⁶ m³ ao total.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — parcela descartada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Some as duas parcelas depois de igualar os expoentes.</div>"}
+    } }
+};
+
+/* Janela deslizante (T05-TM-v1-banco.md, Matriz de Montagem A/B/C):
+   A: R1 R2 R3 | F1 F2 F3 | U1 U2
+   B: R2 R3 R4 | F2 F3 F4 | U2 U3
+   C: R3 R4 R5 | F3 F4 F1 | U3 U1                                   */
+const BANCO = {
+  A: [ITENS.R1, ITENS.R2, ITENS.R3, ITENS.F1, ITENS.F2, ITENS.F3, ITENS.U1, ITENS.U2].map((q,i)=>({...q, num:i+1})),
+  B: [ITENS.R2, ITENS.R3, ITENS.R4, ITENS.F2, ITENS.F3, ITENS.F4, ITENS.U2, ITENS.U3].map((q,i)=>({...q, num:i+1})),
+  C: [ITENS.R3, ITENS.R4, ITENS.R5, ITENS.F3, ITENS.F4, ITENS.F1, ITENS.U3, ITENS.U1].map((q,i)=>({...q, num:i+1}))
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const PREFIX = 'ifmg_fc1_t05_tm_';
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   Default embutido pelo autor; a Equipe de Professores pode sobrescrever via
+   aba `config` da planilha (o coletor injetado chama aplicarConfigOA). ── */
+var OA_ID = { trilha: 'T05', oa: 'TM' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'auto',   /* 'auto' (por RA) | 'A' | 'B' | 'C' | 'livre' */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    const cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema) {
+      if (cache.versao_precarga) OA_CFG.versao_precarga = cache.versao_precarga;
+      if (cache.tentativas) OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+let tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
+let currentVersion = null;
+let respostas = {};
+let submitted = false;
+let saveTimer = null;
+let bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
+let precargaAtiva = false;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  setupInputListeners();
+  checkLocalStorage();
+});
+
+/* ============================================================
+   VERSION SELECTOR
+   ============================================================ */
+function switchVersion(v) {
+  if (submitted) return;
+  if (currentVersion === v) return;
+
+  /* Save current version state before switching */
+  if (currentVersion) saveToLocalStorage();
+
+  currentVersion = v;
+
+  /* Update buttons */
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === v);
+  });
+
+  /* Try to restore this version's state */
+  const saved = loadVersionState(v);
+  if (saved) {
+    respostas = saved.respostas || {};
+    if (saved.nome) document.getElementById('inputNome').value = saved.nome;
+    if (saved.turma) document.getElementById('inputTurma').value = saved.turma;
+    if (saved.data) document.getElementById('inputData').value = saved.data;
+    if (saved.submitted) {
+      buildQuestions();
+      submitQuiz(true);
+      return;
+    }
+  } else {
+    respostas = {};
+  }
+
+  buildQuestions();
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ============================================================
+   BUILD QUESTIONS
+   ============================================================ */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+
+  qs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomMap = {'L1-L2':'Bloom L1-L2','L2-L3':'Bloom L2-L3','L3':'Bloom L3','L3-L4':'Bloom L3-L4','L4':'Bloom L4','L4-L5':'Bloom L4-L5','L5':'Bloom L5'};
+    const bloomLabel = bloomMap[q.bloom] || q.bloom;
+
+    let bodyHTML = '';
+
+    switch (q.tipo) {
+      case 'MC':
+        bodyHTML = buildMC(q);
+        break;
+      case 'MM':
+        bodyHTML = buildMM(q);
+        break;
+      case 'VF':
+        bodyHTML = buildVF(q);
+        break;
+      case 'MATRIZ':
+        bodyHTML = buildMATRIZ(q);
+        break;
+    }
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${q.num}</div>
+        <div class="q-tags">
+          <span class="tag tag-bloom">${bloomLabel}</span>
+          <span class="tag tag-pts">${q.pts} pt</span>
+          <span class="tag tag-tipo">${q.tipoLabel}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.enunciado}</div>
+      ${bodyHTML}
+      <div class="q-feedback" id="fb-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  /* Restore visual state for answers already in respostas */
+  restoreVisualState();
+}
+
+/* ── MC builder ── */
+function buildMC(q) {
+  return `<div class="alt-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <button class="alt-btn" data-qid="${q.id}" data-letra="${o.letra}" onclick="selectMC('${q.id}','${o.letra}')">
+        <span class="alt-letra">${o.letra}.</span>
+        <span>${o.texto}</span>
+      </button>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MM builder ── */
+function buildMM(q) {
+  return `<div class="check-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <div class="check-item" data-qid="${q.id}" data-key="${o.key}" onclick="toggleMM('${q.id}','${o.key}')">
+        <div class="check-box" id="cb-${q.id}-${o.key}"></div>
+        <span>${o.texto}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── VF builder ── */
+function buildVF(q) {
+  return `<div class="vf-list" id="alts-${q.id}">
+    ${q.afirmacoes.map((af, i) => `
+      <div class="vf-item" id="vf-${q.id}-${i}">
+        <div class="vf-toggles">
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="V" onclick="selectVF('${q.id}',${i},'V')">V</button>
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="F" onclick="selectVF('${q.id}',${i},'F')">F</button>
+        </div>
+        <div class="vf-texto">${af.texto}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MATRIZ builder ── */
+function buildMATRIZ(q) {
+  return `<div class="matrix-wrap"><table class="matrix-table" id="alts-${q.id}">
+    <thead><tr>
+      <th>Processo / Âncora</th>
+      ${q.colunas.map(c => `<th>${c}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${q.linhas.map((l, ri) => `<tr id="mrow-${q.id}-${ri}">
+        <td>${l}</td>
+        ${q.colunas.map((_, ci) => `<td>
+          <input type="radio" name="mat-${q.id}-${ri}" value="${ci}"
+            onchange="selectMATRIZ('${q.id}',${ri},${ci})">
+        </td>`).join('')}
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ============================================================
+   INTERACTION HANDLERS
+   ============================================================ */
+function selectMC(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function toggleMM(qid, key) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [];
+  const idx = respostas[qid].indexOf(key);
+  if (idx >= 0) respostas[qid].splice(idx, 1);
+  else respostas[qid].push(key);
+
+  const item = document.querySelector(`[data-qid="${qid}"][data-key="${key}"]`);
+  item.classList.toggle('selected', idx < 0);
+  const cb = document.getElementById('cb-' + qid + '-' + key);
+  cb.textContent = idx < 0 ? '✓' : '';
+
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectVF(qid, idx, val) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][idx] = val;
+
+  document.querySelectorAll(`[data-qid="${qid}"][data-idx="${idx}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.val === val);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectMATRIZ(qid, row, col) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][row] = col;
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+/* ============================================================
+   RESTORE VISUAL STATE (after buildQuestions)
+   ============================================================ */
+function restoreVisualState() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach(q => {
+    const r = respostas[q.id];
+    if (r == null) return;
+
+    switch (q.tipo) {
+      case 'MC':
+        document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+          b.classList.toggle('selected', b.dataset.letra === r);
+        });
+        break;
+      case 'MM':
+        if (Array.isArray(r)) {
+          r.forEach(key => {
+            const item = document.querySelector(`[data-qid="${q.id}"][data-key="${key}"]`);
+            if (item) { item.classList.add('selected'); }
+            const cb = document.getElementById('cb-' + q.id + '-' + key);
+            if (cb) cb.textContent = '✓';
+          });
+        }
+        break;
+      case 'VF':
+        if (Array.isArray(r)) {
+          r.forEach((val, i) => {
+            if (val) {
+              document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+                b.classList.toggle('selected', b.dataset.val === val);
+              });
+            }
+          });
+        }
+        break;
+      case 'MATRIZ':
+        if (Array.isArray(r)) {
+          r.forEach((col, row) => {
+            if (col != null) {
+              const radio = document.querySelector(`input[name="mat-${q.id}-${row}"][value="${col}"]`);
+              if (radio) radio.checked = true;
+            }
+          });
+        }
+        break;
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+function updateProgress() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      const sc = questionScore(q);
+      if (sc >= q.pts) seg.classList.add('certo');
+      else if (sc > 0) seg.classList.add('parcial');
+      else if (isAnswered(q)) seg.classList.add('errado');
+    } else if (isAnswered(q)) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+function isAnswered(q) {
+  const r = respostas[q.id];
+  if (r == null) return false;
+  switch (q.tipo) {
+    case 'MC': return !!r;
+    case 'MM': return Array.isArray(r) && r.length > 0;
+    case 'VF': return Array.isArray(r) && r.every(v => v != null);
+    case 'MATRIZ': return Array.isArray(r) && r.every(v => v != null);
+  }
+  return false;
+}
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function questionScore(q) {
+  const r = respostas[q.id];
+  if (r == null) return 0;
+
+  switch (q.tipo) {
+    case 'MC':
+      return r === q.correta ? q.pts : 0;
+
+    case 'MM': {
+      if (!Array.isArray(r)) return 0;
+      const nCorretas = q.opcoes.filter(o => o.correta).length;
+      let acertos = 0, erros = 0;
+      q.opcoes.forEach(o => {
+        const sel = r.includes(o.key);
+        if (sel && o.correta) acertos++;
+        else if (sel && !o.correta) erros++;
+      });
+      return Math.max(0, Math.min(q.pts, (acertos * q.pts / nCorretas) - (erros * 0.5)));
+    }
+
+    case 'VF': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.afirmacoes.forEach((af, i) => {
+        if (r[i] === af.correta) acertos++;
+      });
+      return acertos * q.pts / q.afirmacoes.length;
+    }
+
+    case 'MATRIZ': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.gabarito.forEach((g, i) => {
+        if (r[i] === g) acertos++;
+      });
+      return acertos * q.pts / q.gabarito.length;
+    }
+  }
+  return 0;
+}
+
+function totalScore() {
+  if (!currentVersion) return 0;
+  let total = 0;
+  BANCO[currentVersion].forEach(q => { total += questionScore(q); });
+  return Math.round(total * 10) / 10;
+}
+
+/* ============================================================
+   SUBMIT CHECK
+   ============================================================ */
+function checkSubmitReady() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const turma = document.getElementById('inputTurma').value;
+  if (!currentVersion || !nome || !turma) {
+    document.getElementById('btnSubmit').disabled = true;
+    return;
+  }
+  const allAnswered = BANCO[currentVersion].every(q => isAnswered(q));
+  document.getElementById('btnSubmit').disabled = !allAnswered;
+}
+
+/* ── Exportar JSON: visivel apenas como plano B ──
+   Com o coletor ativo (site), o envio e automatico; o botao so aparece
+   se o envio falhar. Sem coletor (offline/professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  const btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  const temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  const st = document.getElementById('coletaStatus');
+  const falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function submitQuiz(isRestore) {
+  if (submitted && !isRestore) return;
+  submitted = true;
+  esconderBanner();
+
+  /* Lock inputs */
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+  document.querySelectorAll('.version-btn').forEach(b => b.classList.add('locked'));
+
+  const qs = BANCO[currentVersion];
+  let score = totalScore();
+
+  qs.forEach(q => {
+    const sc = questionScore(q);
+    switch (q.tipo) {
+      case 'MC': showFeedbackMC(q); break;
+      case 'MM': showFeedbackMM(q, sc); break;
+      case 'VF': showFeedbackVF(q, sc); break;
+      case 'MATRIZ': showFeedbackMATRIZ(q, sc); break;
+    }
+  });
+
+  /* Score box */
+  const scoreBox = document.getElementById('scoreBox');
+  scoreBox.classList.add('show');
+  document.getElementById('scoreValue').textContent = score + '/10';
+
+  /* Breakdown */
+  const bd = document.getElementById('scoreBreakdown');
+  bd.innerHTML = qs.map(q => {
+    const sc = questionScore(q);
+    const pct = Math.round(sc / q.pts * 100);
+    return `<span>Q${q.num}: ${sc.toFixed(1)}/${q.pts}</span>`;
+  }).join('');
+
+  updateProgress();
+
+  /* Placar junto ao envio — abaixo do status de coleta na copia publicada */
+  const actionsBarEl = document.getElementById('actionsBar');
+  actionsBarEl.parentNode.insertBefore(scoreBox, actionsBarEl);
+
+  document.getElementById('btnSubmit').style.display = 'none';
+  /* CFG-OA: apos o envio nao ha Recomecar/Descartar — nada e restauravel */
+  document.getElementById('btnReset').style.display = 'none';
+  atualizarExportVisivel();
+  const stColeta = document.getElementById('coletaStatus');
+  if (stColeta && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(stColeta, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  saveToLocalStorage();
+  avaliarSegundaTentativa();
+
+  if (!isRestore) toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`);
+  enviarColeta();
+}
+
+/* ── MC feedback ── */
+function showFeedbackMC(q) {
+  const chosen = respostas[q.id];
+  const isCorrect = chosen === q.correta;
+
+  document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+    b.classList.add('locked');
+    b.classList.remove('selected');
+    if (b.dataset.letra === q.correta) b.classList.add('correct');
+    if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+    if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const fbData = q.feedbacks[chosen] || q.feedbacks[q.correta];
+  fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+  fb.innerHTML = fbData.html;
+}
+
+/* ── MM feedback ── */
+function showFeedbackMM(q, sc) {
+  const selected = respostas[q.id] || [];
+  let hasError = false;
+  let errorTexts = [];
+
+  q.opcoes.forEach(o => {
+    const item = document.querySelector(`[data-qid="${q.id}"][data-key="${o.key}"]`);
+    const cb = document.getElementById('cb-' + q.id + '-' + o.key);
+    item.classList.add('locked');
+    item.classList.remove('selected');
+
+    const sel = selected.includes(o.key);
+    if (sel && o.correta) {
+      item.classList.add('correct');
+      cb.textContent = '✓';
+    } else if (sel && !o.correta) {
+      item.classList.add('incorrect');
+      cb.textContent = '✗';
+      hasError = true;
+      if (q.feedbackErros && q.feedbackErros[o.key]) {
+        errorTexts.push(q.feedbackErros[o.key]);
+      }
+    } else if (!sel && o.correta) {
+      item.classList.add('missed');
+      cb.textContent = '—';
+      hasError = true;
+    } else {
+      cb.textContent = '';
+    }
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  if (perfect) {
+    fb.className = 'q-feedback show ok';
+    fb.innerHTML = q.feedbackOk;
+  } else {
+    fb.className = 'q-feedback show ' + (sc > 0 ? 'parcial' : 'nok');
+    let html = '<div class="fb-title">' + (sc > 0 ? '⚠ Parcialmente correto' : '❌ Atenção!') + '</div>';
+    if (errorTexts.length) {
+      html += errorTexts.map(t => '<div class="fb-level">' + t + '</div>').join('');
+    }
+    html += `<div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+    fb.innerHTML = html;
+  }
+}
+
+/* ── VF feedback ── */
+function showFeedbackVF(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.afirmacoes.forEach((af, i) => {
+    const item = document.getElementById('vf-' + q.id + '-' + i);
+    const correct = answers[i] === af.correta;
+    item.classList.add(correct ? 'correct' : 'incorrect');
+
+    /* Color the buttons */
+    document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.val === af.correta) b.classList.add('correct');
+      if (b.dataset.val === answers[i] && !correct) b.classList.add('incorrect');
+    });
+
+    /* Add justification */
+    const justDiv = document.createElement('div');
+    justDiv.className = 'vf-resultado';
+    justDiv.style.color = correct ? 'var(--verde)' : 'var(--erro)';
+    justDiv.innerHTML = (correct ? '✓ ' : '✗ ') + af.just;
+    item.appendChild(justDiv);
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ── MATRIZ feedback ── */
+function showFeedbackMATRIZ(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.linhas.forEach((_, ri) => {
+    const row = document.getElementById('mrow-' + q.id + '-' + ri);
+    const correct = answers[ri] === q.gabarito[ri];
+    row.classList.add(correct ? 'row-correct' : 'row-incorrect');
+
+    /* Disable radios and mark correct cell */
+    document.querySelectorAll(`input[name="mat-${q.id}-${ri}"]`).forEach(r => {
+      r.disabled = true;
+    });
+
+    /* Highlight the correct cell */
+    const correctCell = row.children[q.gabarito[ri] + 1];
+    if (correctCell) correctCell.classList.add('cell-correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ============================================================
+   EXPORT JSON
+   ============================================================ */
+function montarPacote() {
+  var now = new Date();
+  const qs = BANCO[currentVersion];
+  return {
+    schema: 'ifmg-fc1-tarefa-minima-v1',
+    trilha: 'T05',
+    tipo: 'TM',
+    versao: currentVersion,
+    tentativa: tentativaAtual,
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: qs.map(q => {
+      const sc = questionScore(q);
+      return {
+        id: q.id,
+        bloom: q.bloom,
+        tipo: q.tipo,
+        pts_max: q.pts,
+        pts_obtidos: Math.round(sc * 100) / 100,
+        resposta: respostas[q.id] || null,
+        gabarito: q.tipo === 'MC' ? q.correta : (q.tipo === 'MM' ? q.opcoes.filter(o=>o.correta).map(o=>o.key) : (q.tipo === 'VF' ? q.afirmacoes.map(a=>a.correta) : q.gabarito)),
+        acertou: sc >= q.pts
+      };
+    }),
+    pontuacao: totalScore(),
+    total: 10
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
+  a.download = `T05-TM-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'Comprovante exportado com sucesso');
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+function resetQuiz() {
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================ */
+function storageKey() {
+  return PREFIX + 'v' + currentVersion;
+}
+
+function saveToLocalStorage() {
+  if (!currentVersion) return;
+  try {
+    const state = {
+      versao: currentVersion,
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(storageKey(), JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', currentVersion);
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function loadVersionState(v) {
+  try {
+    const raw = localStorage.getItem(PREFIX + 'v' + v);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function clearLocalStorage() {
+  ['A','B','C'].forEach(v => localStorage.removeItem(PREFIX + 'v' + v));
+  localStorage.removeItem(PREFIX + 'lastVersion');
+}
+
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, PRE-CARGA A/B/C
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function versaoSalva() {
+  const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+  if (lastV && loadVersionState(lastV)) return lastV;
+  for (const v of ['A','B','C']) { if (loadVersionState(v)) return v; }
+  return null;
+}
+
+function checkLocalStorage() {
+  try {
+    const v = versaoSalva();
+    if (!v) return; /* sem estado salvo: pre-carga fica a cargo de aplicarPrecargaOA */
+    const state = loadVersionState(v);
+    if (state.submitted) {
+      /* Envio ja realizado: restaura a visao corrigida (switchVersion chama
+         submitQuiz(true)); avaliarSegundaTentativa decide se ha Restaurar */
+      switchVersion(v);
+    } else {
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      switchVersion(v);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas — Versão ' + v);
+    }
+  } catch(e) {}
+}
+
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  const msg = document.getElementById('restoreMsg');
+  const btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
+  }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
+}
+
+function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    const v = currentVersion || versaoSalva();
+    const state = loadVersionState(v) || {};
+    state.submitted = false;
+    if (!comRespostas) state.respostas = {};
+    localStorage.setItem(PREFIX + 'v' + v, JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', v);
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.versao_precarga && ['auto','A','B','C','livre'].indexOf(cfg.versao_precarga) !== -1) {
+    OA_CFG.versao_precarga = cfg.versao_precarga;
+  }
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  if (precargaAtiva) travarSeletorVersao();
+  avaliarSegundaTentativa();
+}
+
+/* Pre-carga da versao A/B/C (chamada pelo coletor apos identificar o RA).
+   Estado salvo do estudante SEMPRE prevalece — nunca descartar trabalho. */
+function aplicarPrecargaOA(aluno) {
+  const modo = OA_CFG.versao_precarga;
+  if (modo === 'livre') return;
+  let alvo = null;
+  if (modo === 'A' || modo === 'B' || modo === 'C') alvo = modo;
+  else if (modo === 'auto' && aluno && aluno.ra) alvo = ['A','B','C'][parseInt(aluno.ra, 10) % 3];
+  if (!alvo && !currentVersion) return; /* auto sem RA e sem estado salvo: escolha livre */
+  precargaAtiva = true;
+  if (!currentVersion && alvo) {
+    switchVersion(alvo);
+    toast('info', 'Versão ' + alvo + ' carregada automaticamente para você');
+  }
+  travarSeletorVersao();
+}
+
+function travarSeletorVersao() {
+  if (!precargaAtiva || !currentVersion) return;
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    if (btn.dataset.v !== currentVersion) btn.classList.add('locked');
+  });
+  const lbl = document.getElementById('versionLabel');
+  if (lbl) lbl.textContent = 'Versão definida automaticamente';
+}
+
+/* ============================================================
+   INPUT LISTENERS & DEBOUNCED SAVE
+   ============================================================ */
+function setupInputListeners() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', () => { checkSubmitReady(); debouncedSave(); });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveToLocalStorage(), 1500);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(type, msg) {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T05-TM-v1-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T05-TM-v1-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+/* CFG-OA v1: comprovante por tentativa (t1 = chave legada; t2 = sufixo _t2).
+   OAs legados sem oaTentativaAtual() continuam na chave unica. */
+function comprovanteKey_() {
+  var t = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  return PREFIX + 'comprovante' + (t > 1 ? '_t' + t : '');
+}
+
+/* CFG-OA v1: override remoto da Equipe de Professores (aba `config` da planilha).
+   So roda em OAs que expoem OA_ID + aplicarConfigOA; falha de rede e ignorada. */
+function buscarConfigOA() {
+  if (!COLETA_URL || typeof OA_ID === 'undefined' || typeof aplicarConfigOA !== 'function') return;
+  fetch(COLETA_URL + '?cfg=1&trilha=' + encodeURIComponent(OA_ID.trilha) + '&oa=' + encodeURIComponent(OA_ID.oa))
+    .then(function (r) { return r.json(); })
+    .then(function (res) { if (res && res.ok && res.cfg) aplicarConfigOA(res.cfg); })
+    .catch(function () {});
+}
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  buscarConfigOA();
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+  /* CFG-OA v1: pre-carga da versao A/B/C apos identificar o RA */
+  if (typeof aplicarPrecargaOA === 'function') { try { aplicarPrecargaOA(aluno); } catch (e) {} }
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(comprovanteKey_());
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(comprovanteKey_())) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  payload.tentativa = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(comprovanteKey_(), res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+</script>
+</body>
+</html>
