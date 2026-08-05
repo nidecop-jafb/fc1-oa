@@ -518,6 +518,8 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T03-TM-v1-banco.md · Sistema de Numeração de Base 10
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T03-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -540,31 +542,31 @@ const ITENS = {
     enunciado:"Um sulco esculpido por Aleijadinho na pedra-sabão tem “alguns milímetros” de profundidade. <strong>O prefixo SI “mili” corresponde a:</strong>",
     opcoes:[
       {letra:"A", texto:"10³ — é o prefixo do quilômetro."},
-      {letra:"B", texto:"10⁻² — o centímetro é 10⁻² m."},
-      {letra:"C", texto:"10⁻³ — 1 mm = 10⁻³ m."},
+      {letra:"B", texto:"10⁻³ — 1 mm = 10⁻³ m."},
+      {letra:"C", texto:"10⁻² — o centímetro é 10⁻² m."},
       {letra:"D", texto:"10⁻⁶ — é o prefixo do micrômetro."}
     ],
-    correta:"C",
+    correta:"B",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> “Mili” significa milésimo: 1 mm = 1 × 10⁻³ m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um sulco de 5 mm é 5 × 10⁻³ m — a régua do barroco em unidade do SI.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 1 do Tópico 2 traz a escala completa dos prefixos.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> “Mili” significa milésimo: 1 mm = 1 × 10⁻³ m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Um sulco de 5 mm é 5 × 10⁻³ m — a régua do barroco em unidade do SI.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 1 do Tópico 2 traz a escala completa dos prefixos.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10³ é “quilo” — mil vezes MAIOR. “Mili” vai na direção oposta.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 1 do Texto Temático (TT), Tópico 2.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁻² é “centi” (cm). “Mili” é dez vezes menor: 10⁻³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo vizinho trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 cm = 10 mm.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁻² é “centi” (cm). “Mili” é dez vezes menor: 10⁻³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo vizinho trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 cm = 10 mm.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁻⁶ é “micro” (µm) — mil vezes menor que o milímetro.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 mm = 1 000 µm.</div>"}
     } },
 
   R3: { id:"T03-TM-R3", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"A coluna do pórtico da Igreja de São Francisco de Assis tem <strong>3,4 m</strong> e o detalhe mais fino esculpido por Aleijadinho, <strong>5 mm</strong>. <strong>Pela Equação 3 (F = D_maior / D_menor), o fator de escala entre os dois é:</strong>",
     opcoes:[
-      {letra:"A", texto:"680"},
-      {letra:"B", texto:"0,68"},
-      {letra:"C", texto:"6 800"},
+      {letra:"A", texto:"0,68"},
+      {letra:"B", texto:"6 800"},
+      {letra:"C", texto:"680"},
       {letra:"D", texto:"17"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 5 mm = 5 × 10⁻³ m; F = 3,4 ÷ 0,005 = 680, adimensional.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Converter para a MESMA unidade antes de dividir é a etapa que decide o resultado.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A coluna inteira cabe 680 vezes no detalhe — a mão do artista trabalhando em duas escalas.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,4 ÷ 5 = 0,68 trata os 5 mm como 5 m — faltou converter.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — unidades diferentes na mesma divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Um fator de escala menor que 1 diria que a coluna é MENOR que o sulco.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 6 800 sairia de 5 × 10⁻⁴ m, ou seja, 0,5 mm — uma casa a mais na conversão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza na conversão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 5 mm = 0,005 m, não 0,0005 m.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 5 mm = 5 × 10⁻³ m; F = 3,4 ÷ 0,005 = 680, adimensional.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Converter para a MESMA unidade antes de dividir é a etapa que decide o resultado.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A coluna inteira cabe 680 vezes no detalhe — a mão do artista trabalhando em duas escalas.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,4 ÷ 5 = 0,68 trata os 5 mm como 5 m — faltou converter.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — unidades diferentes na mesma divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Um fator de escala menor que 1 diria que a coluna é MENOR que o sulco.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 6 800 sairia de 5 × 10⁻⁴ m, ou seja, 0,5 mm — uma casa a mais na conversão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza na conversão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 5 mm = 0,005 m, não 0,0005 m.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,4 × 5 = 17 — fator de escala é razão, não produto.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 3.</div>"}
     } },
 
@@ -572,16 +574,16 @@ const ITENS = {
     enunciado:"Pedro quer a extensão em metros de uma galeria nova que mede <strong>3,8 km</strong>. <strong>Pela conversão em cadeia do Tópico 4, o resultado é:</strong>",
     opcoes:[
       {letra:"A", texto:"380 m — quilômetro ÷ 10 = metro."},
-      {letra:"B", texto:"3 800 m — 1 km = 1 000 m."},
-      {letra:"C", texto:"38 000 m — 10 km = 10 000 m."},
-      {letra:"D", texto:"0,038 m — o prefixo indica 10⁻³."}
+      {letra:"B", texto:"38 000 m — 10 km = 10 000 m."},
+      {letra:"C", texto:"0,038 m — o prefixo indica 10⁻³."},
+      {letra:"D", texto:"3 800 m — 1 km = 1 000 m."}
     ],
-    correta:"B",
+    correta:"D",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 3,8 km × (1 000 m / 1 km) = 3 800 m — a unidade km se cancela na fração unitária.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “Quilo” é 10³: mil metros em cada quilômetro.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Escrever a fração unitária evita errar o sentido da conversão.</div>"},
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 3,8 km × (1 000 m / 1 km) = 3 800 m — a unidade km se cancela na fração unitária.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> “Quilo” é 10³: mil metros em cada quilômetro.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Escrever a fração unitária evita errar o sentido da conversão.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 380 m seriam 0,38 km. O fator é × 1 000, não × 100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 3 do Texto Temático (TT), Tópico 4.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 38 000 m seriam 38 km — dez vezes a galeria descrita.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 3,8 × 1 000.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “Quilo” é 10³, não 10⁻³ — a galeria não tem 3,8 centímetros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Verifique a plausibilidade do resultado antes de registrar.</div>"}
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 38 000 m seriam 38 km — dez vezes a galeria descrita.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira: 3,8 × 1 000.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> “Quilo” é 10³, não 10⁻³ — a galeria não tem 3,8 centímetros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Verifique a plausibilidade do resultado antes de registrar.</div>"}
     } },
 
   R5: { id:"T03-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T03-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Sofia recebeu uma planta com três medidas em unidades diferentes: <strong>(I)</strong> largura da fachada, 12 000 mm; <strong>(II)</strong> altura das paredes, 850 cm; <strong>(III)</strong> extensão das galerias da Mina do Chico Rei, 300 m.</em><br><br><strong>Convertidas todas para metros pela conversão em cadeia:</strong>",
     opcoes:[
-      {letra:"A", texto:"12,0 m · 8,5 m · 300 m"},
-      {letra:"B", texto:"12,0 m · 85,0 m · 300 m"},
+      {letra:"A", texto:"12,0 m · 85,0 m · 300 m"},
+      {letra:"B", texto:"12,0 m · 8,5 m · 300 m"},
       {letra:"C", texto:"1 200 m · 8,5 m · 300 m"},
       {letra:"D", texto:"12,0 m · 8,5 m · 0,300 m"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 12 000 mm × (1 m/1 000 mm) = 12,0 m; 850 cm × (1 m/100 cm) = 8,5 m; 300 m já está em metros.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A fração unitária cancela a unidade antiga e deixa a nova — é a garantia de não errar o sentido.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Toda planta arquitetônica mistura mm e cm; o orçamento cobra metros.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 850 cm ÷ 100 = 8,5 m — uma parede de 85 m teria a altura de um prédio de 28 andares.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 100 cm.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 12 000 mm × (1 m/1 000 mm) = 12,0 m; 850 cm × (1 m/100 cm) = 8,5 m; 300 m já está em metros.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A fração unitária cancela a unidade antiga e deixa a nova — é a garantia de não errar o sentido.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Toda planta arquitetônica mistura mm e cm; o orçamento cobra metros.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 850 cm ÷ 100 = 8,5 m — uma parede de 85 m teria a altura de um prédio de 28 andares.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 100 cm.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 12 000 mm ÷ 1 000 = 12,0 m — a divisão foi por 10 em vez de 1 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 1 000 mm.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A terceira medida JÁ está em metros: 300 m permanece 300 m. 0,300 m seria a conversão de 300 mm.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — conversão aplicada onde não havia o que converter.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Confira a unidade de origem antes de converter.</div>"}
     } },
@@ -619,33 +621,33 @@ const ITENS = {
   F2: { id:"T03-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Complete a tabela de prefixos SI usada nos relatórios da mina.</em><br><br><strong>Os fatores de giga (G), quilo (k), mili (m) e micro (µ) são, respectivamente:</strong>",
     opcoes:[
-      {letra:"A", texto:"10⁹ · 10³ · 10⁻³ · 10⁻⁶"},
-      {letra:"B", texto:"10⁶ · 10³ · 10⁻³ · 10⁻⁶"},
-      {letra:"C", texto:"10⁹ · 10² · 10⁻³ · 10⁻⁹"},
+      {letra:"A", texto:"10⁶ · 10³ · 10⁻³ · 10⁻⁶"},
+      {letra:"B", texto:"10⁹ · 10² · 10⁻³ · 10⁻⁹"},
+      {letra:"C", texto:"10⁹ · 10³ · 10⁻³ · 10⁻⁶"},
       {letra:"D", texto:"10⁹ · 10³ · 10⁻² · 10⁻⁶"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Giga 10⁹, quilo 10³, mili 10⁻³ e micro 10⁻⁶ — os prefixos avançam de três em três casas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Exemplos da geologia: 1 GPa (metamorfismo), 1 km (galeria), 1 mm (sulco), 1 µm (grão).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 1 do Tópico 2 traz a tabela completa.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁶ é mega. Giga é 10⁹ — mil vezes maior.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 1 do Texto Temático (TT), Tópico 2.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Quilo é 10³ (não 10²) e micro é 10⁻⁶ (10⁻⁹ é nano).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — dois prefixos deslocados.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 10² é “hecto”, prefixo raro fora do hectare.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Giga 10⁹, quilo 10³, mili 10⁻³ e micro 10⁻⁶ — os prefixos avançam de três em três casas.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Exemplos da geologia: 1 GPa (metamorfismo), 1 km (galeria), 1 mm (sulco), 1 µm (grão).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O Quadro 1 do Tópico 2 traz a tabela completa.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁶ é mega. Giga é 10⁹ — mil vezes maior.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 1 do Texto Temático (TT), Tópico 2.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Quilo é 10³ (não 10²) e micro é 10⁻⁶ (10⁻⁹ é nano).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — dois prefixos deslocados.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 10² é “hecto”, prefixo raro fora do hectare.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Mili é 10⁻³; 10⁻² é centi.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — prefixo vizinho trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 cm = 10 mm.</div>"}
     } },
 
   F3: { id:"T03-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Três objetos geológicos: <strong>(I)</strong> grão mineral de esteatita; <strong>(II)</strong> afloramento rochoso; <strong>(III)</strong> extensão do Quadrilátero Ferrífero.</em><br><br><strong>As dimensões típicas e os prefixos adequados a cada um são:</strong>",
     opcoes:[
-      {letra:"A", texto:"10–500 µm (10⁻⁶ m) · 1–50 m (10⁰ m) · 10⁵–10⁶ m (quilômetros)"},
-      {letra:"B", texto:"10–500 mm (10⁻³ m) · 1–50 km (10³ m) · 10⁵ m (quilômetros)"},
-      {letra:"C", texto:"10–500 nm (10⁻⁹ m) · 1–50 m (10⁰ m) · 10³ m (quilômetros)"},
-      {letra:"D", texto:"As três estão na mesma escala, pois todas são medidas de comprimento em metros."}
+      {letra:"A", texto:"10–500 mm (10⁻³ m) · 1–50 km (10³ m) · 10⁵ m (quilômetros)"},
+      {letra:"B", texto:"10–500 nm (10⁻⁹ m) · 1–50 m (10⁰ m) · 10³ m (quilômetros)"},
+      {letra:"C", texto:"As três estão na mesma escala, pois todas são medidas de comprimento em metros."},
+      {letra:"D", texto:"10–500 µm (10⁻⁶ m) · 1–50 m (10⁰ m) · 10⁵–10⁶ m (quilômetros)"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Do grão (10⁻⁶ m) à região (10⁶ m) são doze ordens de grandeza no mesmo objeto de estudo.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada escala pede um instrumento: lupa, trena e imagem de satélite.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Escolher o prefixo certo é escolher a escala de observação.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Grão mineral de esteatita se mede em micrômetros, não milímetros; e um afloramento tem metros, não quilômetros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — duas escalas deslocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁻⁹ m é escala molecular — um grão mineral é mil vezes maior. E o Quadrilátero tem ~10⁵ m, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Compare com objetos conhecidos antes de escolher o prefixo.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Unidade comum não é escala comum: entre o grão e a região há um fator de 10¹².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E3 — interpretação literal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> É a potência de dez, não a unidade, que define a escala.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Do grão (10⁻⁶ m) à região (10⁶ m) são doze ordens de grandeza no mesmo objeto de estudo.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada escala pede um instrumento: lupa, trena e imagem de satélite.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Escolher o prefixo certo é escolher a escala de observação.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Grão mineral de esteatita se mede em micrômetros, não milímetros; e um afloramento tem metros, não quilômetros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — duas escalas deslocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o Quadro 2 do Texto Temático (TT), Tópico 3.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 10⁻⁹ m é escala molecular — um grão mineral é mil vezes maior. E o Quadrilátero tem ~10⁵ m, não 10³.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Compare com objetos conhecidos antes de escolher o prefixo.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Unidade comum não é escala comum: entre o grão e a região há um fator de 10¹².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E3 — interpretação literal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> É a potência de dez, não a unidade, que define a escala.</div>"}
     } },
 
   F4: { id:"T03-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T03-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O projeto de revestimento de uma galeria nova especifica concreto projetado com espessura de <strong>120 mm</strong>. O engenheiro precisa do valor em metros (para o orçamento) e em centímetros (para a equipe de campo).</em><br><br><strong>As duas conversões são:</strong>",
     opcoes:[
-      {letra:"A", texto:"0,120 m e 12,0 cm"},
-      {letra:"B", texto:"1,20 m e 12,0 cm"},
+      {letra:"A", texto:"1,20 m e 12,0 cm"},
+      {letra:"B", texto:"0,120 m e 12,0 cm"},
       {letra:"C", texto:"0,120 m e 1,20 cm"},
       {letra:"D", texto:"12,0 m e 120 cm"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 120 mm × (1 m/1 000 mm) = 0,120 m; 120 mm × (1 cm/10 mm) = 12,0 cm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas frações unitárias diferentes para a mesma medida — cada público, sua unidade.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Doze centímetros de concreto projetado: espessura típica de revestimento de galeria.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 120 ÷ 1 000 = 0,120 m — a divisão foi por 100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 1 000 mm.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 120 mm × (1 m/1 000 mm) = 0,120 m; 120 mm × (1 cm/10 mm) = 12,0 cm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Duas frações unitárias diferentes para a mesma medida — cada público, sua unidade.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Doze centímetros de concreto projetado: espessura típica de revestimento de galeria.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 120 ÷ 1 000 = 0,120 m — a divisão foi por 100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 1 000 mm.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 120 mm ÷ 10 = 12,0 cm — a divisão para centímetros foi por 100.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — fator de conversão errado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 cm = 10 mm.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Doze metros de concreto seriam a altura de um prédio de quatro andares — o sentido da conversão inverteu.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — multiplicou onde devia dividir.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade maior ⇒ número menor.</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T03-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>Na planta da Mina do Chico Rei, a extensão total estimada das galerias é <strong>300 m</strong> e a abertura mínima de uma fresta de ventilação é <strong>50 mm</strong>.</em><br><br><strong>Pela Equação 3, o fator de escala F = D_maior / D_menor é:</strong>",
     opcoes:[
-      {letra:"A", texto:"6 000"},
-      {letra:"B", texto:"6"},
-      {letra:"C", texto:"60 000"},
+      {letra:"A", texto:"6"},
+      {letra:"B", texto:"60 000"},
+      {letra:"C", texto:"6 000"},
       {letra:"D", texto:"1,7 × 10⁻⁴"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 50 mm = 0,050 m; F = 300 ÷ 0,050 = 6 000, adimensional.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A galeria inteira é seis mil vezes a fresta — e ambas aparecem na mesma planta.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Fator de escala é razão entre iguais: o resultado não tem unidade.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 300 ÷ 50 = 6 trata os 50 mm como 50 m — faltou converter para metros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — unidades diferentes na mesma divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Converta antes de dividir; sempre.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 60 000 sairia de 5 mm, não de 50 mm — uma casa a mais na conversão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 50 mm = 0,050 m, não 0,005 m.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 50 mm = 0,050 m; F = 300 ÷ 0,050 = 6 000, adimensional.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A galeria inteira é seis mil vezes a fresta — e ambas aparecem na mesma planta.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Fator de escala é razão entre iguais: o resultado não tem unidade.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 300 ÷ 50 = 6 trata os 50 mm como 50 m — faltou converter para metros.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — unidades diferentes na mesma divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Converta antes de dividir; sempre.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 60 000 sairia de 5 mm, não de 50 mm — uma casa a mais na conversão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 50 mm = 0,050 m, não 0,005 m.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A razão foi invertida: divide-se o maior pelo menor, não o contrário.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da razão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Um fator de escala menor que 1 diria que a galeria é menor que a fresta.</div>"}
     } },
 
   U3: { id:"T03-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O relatório da Mina do Chico Rei informa que o sistema de galerias tem extensão total de <strong>0,300 km</strong>. O engenheiro precisa da medida em três unidades para documentos distintos.</em><br><br><strong>Convertida para metros, centímetros e milímetros:</strong>",
     opcoes:[
-      {letra:"A", texto:"300 m · 3,0 × 10⁴ cm · 3,0 × 10⁵ mm"},
-      {letra:"B", texto:"300 m · 3,0 × 10³ cm · 3,0 × 10⁴ mm"},
-      {letra:"C", texto:"3 000 m · 3,0 × 10⁵ cm · 3,0 × 10⁶ mm"},
-      {letra:"D", texto:"300 m · 3,0 × 10⁵ cm · 3,0 × 10⁴ mm"}
+      {letra:"A", texto:"300 m · 3,0 × 10³ cm · 3,0 × 10⁴ mm"},
+      {letra:"B", texto:"3 000 m · 3,0 × 10⁵ cm · 3,0 × 10⁶ mm"},
+      {letra:"C", texto:"300 m · 3,0 × 10⁵ cm · 3,0 × 10⁴ mm"},
+      {letra:"D", texto:"300 m · 3,0 × 10⁴ cm · 3,0 × 10⁵ mm"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 0,300 km × 1 000 = 300 m; × 100 = 30 000 cm; × 1 000 = 300 000 mm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada elo da cadeia multiplica por uma potência de 10 — nunca se pula etapa.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O mesmo trecho de galeria, escrito de três formas, para três leitores diferentes.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 300 m × 100 = 30 000 cm (3,0 × 10⁴) e 300 m × 1 000 = 300 000 mm (3,0 × 10⁵) — as duas ficaram uma casa abaixo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 100 cm = 1 000 mm.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,300 km são 300 m, não 3 000 m — o 0,300 foi lido como 3,00.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — leitura do decimal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 0,300 km é menos de meio quilômetro.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os expoentes de cm e mm estão trocados: há MAIS milímetros que centímetros na mesma extensão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — unidades trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade menor ⇒ número maior.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 0,300 km × 1 000 = 300 m; × 100 = 30 000 cm; × 1 000 = 300 000 mm.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Cada elo da cadeia multiplica por uma potência de 10 — nunca se pula etapa.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> O mesmo trecho de galeria, escrito de três formas, para três leitores diferentes.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 300 m × 100 = 30 000 cm (3,0 × 10⁴) e 300 m × 1 000 = 300 000 mm (3,0 × 10⁵) — as duas ficaram uma casa abaixo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 1 m = 100 cm = 1 000 mm.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,300 km são 300 m, não 3 000 m — o 0,300 foi lido como 3,00.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — leitura do decimal.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 0,300 km é menos de meio quilômetro.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os expoentes de cm e mm estão trocados: há MAIS milímetros que centímetros na mesma extensão.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — unidades trocadas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Unidade menor ⇒ número maior.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T03-TM-v1-estudante.html
+   Arquivo fonte: T03-TM-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T03-TM-v1-estudante.html';
+var ARQUIVO_FONTE = 'T03-TM-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
