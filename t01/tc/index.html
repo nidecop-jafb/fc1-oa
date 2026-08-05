@@ -25,7 +25,6 @@
   --hover-bg: oklch(0.22 0.02 260);
   --r: 0px;
   --r-sm: 0px;
-  --shadow: 0 1px 0 oklch(0.3 0.02 260);
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
   --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
@@ -66,211 +65,97 @@ body {
 .piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
 .piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
 
-/* ENCERRAMENTO */
-.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
-.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
-.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
-.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
-.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+/* VERSION SELECTOR */
+.version-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.version-btn {
+  flex: 1; padding: 12px;
+  background: var(--input-bg); border: 2px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--mono); font-size: 1rem;
+  font-weight: 700; cursor: pointer; text-align: center;
+  transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.version-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.version-label { font-size: 0.7rem; color: var(--cinza); text-align: center; margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* RESTORATION BANNER */
 .restore-banner {
-  display: none;
-  background: var(--ouro-claro);
-  border: 1px solid var(--ouro);
-  border-radius: var(--r);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  font-size: 0.875rem;
-  color: var(--ouro);
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: none; background: var(--ouro-claro); border: 1px solid var(--ouro);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 0.875rem; color: var(--ouro); align-items: center;
+  justify-content: space-between; gap: 12px;
 }
 .restore-banner.show { display: flex; }
 .restore-banner button {
-  background: var(--ouro);
-  color: oklch(0.10 0.02 260);
-  border: none;
-  padding: 6px 14px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  white-space: nowrap;
+  background: var(--ouro); color: oklch(0.10 0.02 260); border: none;
+  padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap;
 }
-.restore-banner .btn-discard {
-  background: transparent;
-  color: var(--ouro);
-  border: 1px solid var(--ouro);
-}
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
 
 /* PROGRESS BAR */
-.progress-bar {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 3px;
-  margin-bottom: 24px;
-}
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
 .progress-seg {
-  height: 6px;
-  background: var(--cinza-claro);
-  border-radius: var(--r-sm);
-  transition: background 0.3s;
+  height: 6px; background: var(--cinza-claro);
+  border-radius: var(--r-sm); transition: background 0.3s;
 }
 .progress-seg.resp { background: var(--azul); }
 .progress-seg.certo { background: var(--verde); }
 .progress-seg.errado { background: var(--erro); }
+.progress-seg.parcial { background: var(--ouro); }
 
 /* STUDENT ID FORM */
 .id-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  padding: 16px;
-  margin-bottom: 28px;
-  border-radius: var(--r);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 16px; margin-bottom: 28px;
 }
 .id-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  display: flex; flex-direction: column; gap: 4px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
-.id-form input,
-.id-form select {
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  color: var(--texto);
-  padding: 8px 10px;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  border-radius: var(--r-sm);
-  outline: none;
-  transition: border-color 0.2s;
+.id-form input, .id-form select {
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  color: var(--texto); padding: 8px 10px; font-family: var(--font);
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
 }
-.id-form input:focus,
-.id-form select:focus { border-color: var(--azul); }
-.id-form input:disabled,
-.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* QUESTION CARD */
 .q-card {
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 20px;
-  margin-bottom: 16px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 20px; margin-bottom: 16px;
 }
 .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .q-num {
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--azul-bg);
-  border: 2px solid var(--azul);
-  color: var(--azul-claro);
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  border-radius: 50%;
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro);
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%;
 }
 .q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .tag {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.04em;
 }
 .tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
 .tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
-.tag-diff { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
+.tag-tipo { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
 
-/* TEXTO-BASE */
-.texto-base {
-  background: oklch(0.16 0.02 260);
-  border-left: 3px solid var(--ouro);
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: oklch(0.82 0 0);
-}
-.texto-base p { margin-bottom: 8px; }
-.texto-base p:last-child { margin-bottom: 0; }
-.texto-base table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
-  font-size: 0.85rem;
-  overflow-x: auto;
-  display: block;
-}
-.texto-base th, .texto-base td {
-  border: 1px solid var(--cinza-borda);
-  padding: 6px 10px;
-  text-align: center;
-}
-.texto-base th {
-  background: oklch(0.20 0.02 260);
-  font-weight: 700;
-  color: var(--ouro);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.texto-base td {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-}
-.texto-base .formula {
-  font-family: var(--mono);
-  background: oklch(0.20 0.02 260);
-  padding: 2px 6px;
-  font-size: 0.85rem;
-  color: var(--azul-claro);
-}
-
-/* ENUNCIADO */
-.q-text {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 16px;
-  color: var(--texto);
-  font-weight: 600;
-}
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
 .q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
 
-/* ALTERNATIVES */
+/* MC ALTERNATIVES */
 .alt-list { display: flex; flex-direction: column; gap: 6px; }
 .alt-btn {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 12px 14px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  text-align: left;
-  width: 100%;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  color: var(--texto);
-  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  text-align: left; width: 100%; font-family: var(--font);
+  font-size: 0.9rem; color: var(--texto); line-height: 1.5;
 }
 .alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
 .alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
@@ -279,70 +164,125 @@ body {
 .alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
 .alt-btn.correct-answer { border-color: var(--verde); }
 .alt-letra {
-  font-family: var(--mono);
-  font-weight: 700;
-  color: var(--cinza);
-  min-width: 20px;
-  flex-shrink: 0;
-  padding-top: 1px;
+  font-family: var(--mono); font-weight: 700; color: var(--cinza);
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
 }
 .alt-btn.selected .alt-letra { color: var(--azul-claro); }
 .alt-btn.correct .alt-letra { color: var(--verde); }
 .alt-btn.incorrect .alt-letra { color: var(--erro); }
 
+/* MM CHECKBOXES */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.check-item:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.check-item.selected { background: var(--azul-bg); border-color: var(--azul); }
+.check-item.locked { cursor: default; }
+.check-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.check-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.check-item.missed { border-color: var(--ouro); border-style: dashed; }
+.check-box {
+  width: 18px; height: 18px; border: 2px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; margin-top: 2px;
+}
+.check-item.selected .check-box { border-color: var(--azul); color: var(--azul-claro); }
+.check-item.correct .check-box { border-color: var(--verde); color: var(--verde); }
+.check-item.incorrect .check-box { border-color: var(--erro); color: var(--erro); }
+
+/* VF STATEMENTS */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; transition: border-color 0.2s;
+}
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn {
+  width: 36px; height: 36px; border: 2px solid var(--cinza-borda);
+  background: transparent; color: var(--cinza); font-family: var(--mono);
+  font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.vf-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.locked { cursor: default; }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+.vf-resultado { font-family: var(--mono); font-size: 0.75rem; margin-top: 4px; }
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-top: 8px; -webkit-overflow-scrolling: touch; }
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px;
+}
+.matrix-table th {
+  background: oklch(0.18 0.02 260); border: 1px solid var(--cinza-borda);
+  padding: 8px 6px; font-family: var(--mono); font-size: 0.7rem;
+  font-weight: 600; text-align: center; color: var(--azul-claro); vertical-align: bottom;
+}
+.matrix-table th:first-child { text-align: left; min-width: 130px; font-size: 0.72rem; }
+.matrix-table td {
+  border: 1px solid var(--cinza-borda); padding: 8px 6px;
+  text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-size: 0.84rem; }
+.matrix-table tbody tr:hover td { background: var(--hover-bg); }
+.matrix-table input[type="radio"] {
+  width: 18px; height: 18px; accent-color: var(--azul); cursor: pointer;
+}
+.matrix-table tr.row-correct td { background: var(--verde-claro); }
+.matrix-table tr.row-incorrect td { background: var(--erro-claro); }
+.matrix-table td.cell-correct-answer { outline: 2px solid var(--verde); outline-offset: -2px; }
+.matrix-table input[type="radio"]:disabled { cursor: default; }
+
 /* FEEDBACK */
 .q-feedback {
-  display: none;
-  margin-top: 12px;
-  padding: 12px 14px;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  border-left: 3px solid;
-  border-radius: var(--r);
+  display: none; margin-top: 12px; padding: 12px 14px;
+  font-size: 0.85rem; line-height: 1.6; border-left: 3px solid;
 }
 .q-feedback.show { display: block; }
 .q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
 .q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+.q-feedback.parcial { border-color: var(--ouro); background: var(--ouro-claro); color: var(--ouro); }
+.fb-title { font-weight: 700; margin-bottom: 6px; }
+.fb-level { margin-bottom: 4px; font-size: 0.82rem; }
+.fb-level strong { font-weight: 700; }
+.q-score-detail { font-family: var(--mono); font-size: 0.78rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid; opacity: 0.8; }
 
-/* SCORE DISPLAY */
+/* SCORE BOX */
 .score-box {
-  display: none;
-  background: var(--superficie);
-  border: 2px solid var(--ouro);
-  border-radius: var(--r);
-  padding: 24px;
-  margin-bottom: 20px;
-  text-align: center;
+  display: none; background: var(--superficie); border: 2px solid var(--ouro);
+  padding: 24px; margin-bottom: 20px; text-align: center;
 }
 .score-box.show { display: block; }
-.score-value {
-  font-family: var(--mono);
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--ouro);
-}
+.score-value { font-family: var(--mono); font-size: 3rem; font-weight: 700; color: var(--ouro); }
 .score-label {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 4px;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
 }
+.score-breakdown {
+  display: flex; justify-content: center; gap: 16px; margin-top: 12px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+}
+.score-breakdown span { display: flex; align-items: center; gap: 4px; }
+.score-breakdown .dot { width: 8px; height: 8px; display: inline-block; }
+.score-breakdown .dot-ok { background: var(--verde); }
+.score-breakdown .dot-nok { background: var(--erro); }
 
 /* BUTTONS */
 .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .btn {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-radius: var(--r);
-  transition: opacity 0.2s;
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  padding: 12px 24px; border: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.2s;
 }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
@@ -353,25 +293,22 @@ body {
 .btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
 .btn-reset:hover { background: var(--erro-claro); }
 
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
+
 /* TOAST */
 .toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
 }
 .toast {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  padding: 10px 16px;
-  border-radius: var(--r);
-  color: var(--texto);
-  border: 1px solid;
+  font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px;
+  color: var(--texto); border: 1px solid; max-width: 320px;
   animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-  max-width: 320px;
 }
 .toast-info { background: var(--azul-bg); border-color: var(--azul); }
 .toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
@@ -385,11 +322,16 @@ body {
   .header h1 { font-size: 1.2rem; }
   .id-form { grid-template-columns: 1fr; }
   .q-card { padding: 14px; }
-  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .alt-btn, .check-item { padding: 10px 12px; font-size: 0.85rem; }
   .actions { flex-direction: column; }
   .btn { width: 100%; text-align: center; }
   .restore-banner { flex-direction: column; align-items: stretch; }
-  .texto-base { padding: 10px 12px; font-size: 0.85rem; }
+  .vf-item { flex-direction: column; gap: 8px; }
+  .vf-toggles { align-self: flex-start; }
+  .matrix-table { font-size: 0.75rem; }
+  .matrix-table th { font-size: 0.65rem; padding: 6px 4px; }
+  .matrix-table td { padding: 6px 4px; }
+  .version-btn { padding: 10px 8px; font-size: 0.9rem; }
 }
 
 /* PRINT */
@@ -399,25 +341,20 @@ body {
   .header h1 { color: #111; }
   .badge { border-color: #333; color: #333; }
   .header-sub { color: #555; }
-  .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector, .version-label { display: none !important; }
   .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
   .q-num { border-color: #333; color: #333; background: #eee; }
   .tag { border-color: #999; color: #555; background: #f5f5f5; }
   .q-text { color: #111; }
   .q-text strong { color: #111; }
-  .texto-base { background: #f5f5f5; border-color: #999; color: #111; }
-  .texto-base th { background: #eee; color: #333; }
-  .texto-base td { color: #111; }
-  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
-  .alt-btn.correct { border-color: #090; background: #e8f5e9; }
-  .alt-btn.incorrect { border-color: #c00; background: #fbe9e7; }
-  .alt-letra { color: #333; }
+  .alt-btn, .check-item { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct, .check-item.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect, .check-item.incorrect { border-color: #c00; background: #fbe9e7; }
   .q-feedback { display: block !important; }
   .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
   .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
   .score-box { display: block !important; border-color: #333; background: #fff; }
   .score-value { color: #111; }
-  .score-label { color: #555; }
   .id-form { background: #f5f5f5; border-color: #ccc; }
   .id-form label { color: #555; }
   .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
@@ -446,22 +383,22 @@ body {
 <body>
 <div class="container">
 
-  <!-- RESTORATION BANNER -->
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
   <div class="restore-banner" id="restoreBanner">
-    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <span id="restoreMsg"></span>
     <div style="display:flex;gap:8px;flex-shrink:0;">
-      <button onclick="restoreData()">Restaurar</button>
-      <button class="btn-discard" onclick="discardData()">Descartar</button>
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
     </div>
   </div>
 
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+      <h1><span class="trilha-code">T01</span> &middot; Física, uma linguagem básica da ciência</h1>
       <span class="badge">Tarefa Complementar (TC)</span>
     </div>
-    <div class="header-sub">5 quest&otilde;es ENEM-style &middot; Bloom L4&ndash;L5 &middot; 30&ndash;40 min</div>
+    <div class="header-sub">5 questões &middot; 10 pontos &middot; 30&ndash;40 min &middot; consulta livre</div>
   </header>
 
   <!-- PIAZZI BAR -->
@@ -471,12 +408,26 @@ body {
     <span class="piazzi-tag">Escrever</span>
     <span class="piazzi-tag">Medir</span>
     <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=OLAK5uy_k2K52NQMTbkvnYWW1QUNcUpKtn_Tt3q00&amp;si=5Y9RIXnT0HX_sCd_" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Yamandu Costa e Facundo Rodriguez &mdash; Guitarras Pal Sur &middot; 2026 &middot; 14 m&uacute;sicas &middot; 44 min</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLcvM2zqcaCs8&amp;si=nHkbmczkmsyMFuq8" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Ludwig van Beethoven &mdash; Sonata ao Luar (Moonlight Sonata) &middot; 1801 &middot; piano solo &middot; ~15 min</span>
+  </div>
+
+  <!-- VERSION SELECTOR -->
+  <div class="version-label" id="versionLabel" style="display:none;">Versão única</div>
+  <div class="version-selector" id="versionSelector" style="display:none;">
+    <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
+    <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
+    <button class="version-btn" data-v="C" onclick="switchVersion('C')">Versão C</button>
   </div>
 
   <!-- PROGRESS BAR -->
-  <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg" id="prog-0"></div>
+    <div class="progress-seg" id="prog-1"></div>
+    <div class="progress-seg" id="prog-2"></div>
+    <div class="progress-seg" id="prog-3"></div>
+    <div class="progress-seg" id="prog-4"></div>
+  </div>
 
   <!-- STUDENT ID -->
   <div class="id-form" id="idForm">
@@ -500,7 +451,8 @@ body {
   <!-- SCORE BOX -->
   <div class="score-box" id="scoreBox">
     <div class="score-value" id="scoreValue">0/10</div>
-    <div class="score-label">Pontua&ccedil;&atilde;o Final</div>
+    <div class="score-label">Pontuação Final</div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
   </div>
 
   <!-- QUESTIONS -->
@@ -515,16 +467,16 @@ body {
 
   <div class="actions" id="actionsBar">
     <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
-    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
     <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
   </div>
 
 </div>
 
 <div class="encerramento">
-  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
-  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+  <div class="fecho-acao">Você foi além do mínimo — excelente! O <strong>Trabalho (TR)</strong> fecha a Pós-Aula desta trilha.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
 </div>
 
 <div class="footer-line">
@@ -557,307 +509,726 @@ body {
 <script src="../../coleta-config.js"></script>
 
 <script>
-const BANCO = [
-  {
-    id: 'T01-TC-Q1', bloom: 'L4', comp: 'C4', pts: 2, diff: 'médio',
-    textoBase: '<p>Sofia coletou 4 amostras minerais em uma saída de campo no Quadrilátero Ferrífero. No laboratório da Escola de Minas, mediu a massa e o volume de cada amostra usando balança analítica e proveta graduada. Os resultados estão na tabela:</p>' +
-      '<table><tr><th>Amostra</th><th>Massa (g)</th><th>Volume (cm³)</th><th>Densidade (g/cm³)</th></tr>' +
-      '<tr><td>I</td><td>130,0</td><td>50,0</td><td>2,60</td></tr>' +
-      '<tr><td>II</td><td>258,0</td><td>50,0</td><td>5,16</td></tr>' +
-      '<tr><td>III</td><td>150,0</td><td>50,0</td><td>3,00</td></tr>' +
-      '<tr><td>IV</td><td>394,0</td><td>50,0</td><td>7,88</td></tr></table>' +
-      '<p>Dados de referência: quartzo (ρ = 2,65 g/cm³), hematita (ρ = 5,26 g/cm³), calcita (ρ = 2,71 g/cm³), magnetita (ρ = 5,18 g/cm³), pirita (ρ = 5,01 g/cm³).</p>',
-    enunciado: 'Analisando os dados da tabela e comparando com os valores de referência, qual conclusão é correta?',
-    alternativas: [
-      {letra:'A', texto:'A amostra IV é provavelmente hematita, pois possui a maior massa entre todas.'},
-      {letra:'B', texto:'A amostra I é quartzo porque seu volume é igual ao das demais amostras.'},
-      {letra:'C', texto:'A amostra III é magnetita, pois 3,00 g/cm³ está próximo de 5,18 g/cm³.'},
-      {letra:'D', texto:'A amostra II é mais provavelmente magnetita ou hematita, pois sua densidade (5,16 g/cm³) está na faixa 5,01–5,26 g/cm³ desses minerais.'},
-      {letra:'E', texto:'A amostra I é calcita porque possui a menor densidade da tabela.'}
+/* ============================================================
+   BANCO DE QUESTÕES — VERSÃO ÚNICA × 5 QUESTÕES (A-E)
+   Tarefa Complementar (TC-v3 ENEM-style digital) — 5 MC × 2 pt = 10 pt
+   Fonte: T01-TC-v3.md · Física, uma linguagem básica da ciência
+   ============================================================ */
+const BANCO = {
+  A: [
+  { id:"T01-TC-Q1", bloom:"L4", pts:2, tipo:'MC', tipoLabel:"Análise de dados",
+    enunciado:"<em>Sofia coletou 4 amostras minerais no Quadrilátero Ferrífero e mediu massa e volume de cada uma no laboratório da Escola de Minas:</em><br><br>Amostra I:&nbsp;&nbsp;130,0 g&nbsp;·&nbsp;50,0 cm³&nbsp;·&nbsp;<strong>2,60 g/cm³</strong><br>Amostra II:&nbsp;&nbsp;258,0 g&nbsp;·&nbsp;50,0 cm³&nbsp;·&nbsp;<strong>5,16 g/cm³</strong><br>Amostra III:&nbsp;&nbsp;150,0 g&nbsp;·&nbsp;50,0 cm³&nbsp;·&nbsp;<strong>3,00 g/cm³</strong><br>Amostra IV:&nbsp;&nbsp;394,0 g&nbsp;·&nbsp;50,0 cm³&nbsp;·&nbsp;<strong>7,88 g/cm³</strong><br><br><em>Referência: quartzo 2,65 · hematita 5,26 · calcita 2,71 · magnetita 5,18 · pirita 5,01 (g/cm³).</em><br><br><strong>Comparando a tabela com os valores de referência, qual conclusão é correta?</strong>",
+    opcoes:[
+      {letra:"A", texto:"A amostra IV é provavelmente hematita, pois possui a maior massa entre todas."},
+      {letra:"B", texto:"A amostra I é quartzo porque seu volume é igual ao das demais amostras."},
+      {letra:"C", texto:"A amostra III é magnetita, pois 3,00 g/cm³ está próximo de 5,18 g/cm³."},
+      {letra:"D", texto:"A amostra II é mais provavelmente magnetita ou hematita, pois sua densidade (5,16 g/cm³) está na faixa 5,01–5,26 g/cm³ desses minerais."},
+      {letra:"E", texto:"A amostra I é calcita porque possui a menor densidade da tabela."}
     ],
-    correta: 'D',
-    feedbacks: {
-      A: {ok:false, texto:'Confundir massa com densidade: a maior massa não identifica o mineral quando todos os volumes são iguais (50,0 cm³). O critério correto é a razão m/V (densidade).'},
-      B: {ok:false, texto:'O volume igual (50,0 cm³) é apenas a condição experimental padronizada. A identificação depende da densidade (m/V), não do volume isolado.'},
-      C: {ok:false, texto:'3,00 g/cm³ está 72% abaixo de 5,18 g/cm³ — essa diferença é grande demais para considerar os valores “próximos”.'},
-      D: {ok:true, texto:'Correto! A densidade da amostra II (5,16 g/cm³) está entre pirita (5,01), magnetita (5,18) e hematita (5,26), sendo mais consistente com magnetita ou hematita.'},
-      E: {ok:false, texto:'A densidade 2,60 g/cm³ da amostra I está mais próxima de quartzo (2,65) do que de calcita (2,71). Leitura atenta da tabela de referência é essencial.'}
-    }
-  },
-  {
-    id: 'T01-TC-Q2', bloom: 'L4-L5', comp: 'C3', pts: 2, diff: 'médio',
-    textoBase: '<p>Na Praça Tiradentes, Sofia estimou o volume do pedestal de granito do monumento usando uma trena (medição direta das dimensões) e calculou <span class="formula">V = c × l × h</span>. No laboratório, para medir o volume de uma amostra irregular do mesmo granito, usou o método do transbordo: mergulhou a amostra em uma proveta com água e mediu o deslocamento do nível (medição indireta do volume).</p>' +
-      '<p>O Prof. Julio explicou: “Na mineração, muitas grandezas não podem ser medidas diretamente — a densidade de um minério <em>in situ</em>, a pressão no fundo de uma barragem, a força em um cabo de aço. Usamos modelos matemáticos que relacionam grandezas mensuráveis à grandeza desejada.”</p>',
-    enunciado: 'Qual alternativa avalia corretamente a diferença entre medição direta e indireta no contexto da mineração?',
-    alternativas: [
-      {letra:'A', texto:'A medição indireta depende de um modelo matemático que relaciona a grandeza desejada a outras grandezas que podem ser medidas diretamente; por isso, seu resultado carrega a incerteza de todas as medições envolvidas.'},
-      {letra:'B', texto:'A medição direta é sempre mais precisa que a indireta, pois não depende de cálculos intermediários.'},
-      {letra:'C', texto:'A medição indireta é uma estimativa sem base científica, útil apenas quando não há instrumentos disponíveis.'},
-      {letra:'D', texto:'No laboratório de mineração, todas as grandezas podem ser medidas diretamente com instrumentos adequados, tornando a medição indireta desnecessária.'},
-      {letra:'E', texto:'A medição indireta usa fórmulas para substituir a medição, eliminando a necessidade de instrumentos.'}
-    ],
-    correta: 'A',
-    feedbacks: {
-      A: {ok:true, texto:'Correto! A medição indireta usa modelo matemático que combina medições diretas. Cada medição direta carrega sua própria incerteza, e essas se propagam no resultado final.'},
-      B: {ok:false, texto:'A precisão não depende de ser direta ou indireta. Instrumentos diretos também têm incerteza — uma régua, por exemplo, tem resolução limitada.'},
-      C: {ok:false, texto:'A medição indireta é um método científico rigoroso, não uma estimativa sem base. Usa modelos matemáticos validados experimentalmente.'},
-      D: {ok:false, texto:'Na prática da mineração, muitas grandezas (densidade <em>in situ</em>, pressão subterrânea) não podem ser medidas diretamente. A medição indireta é essencial.'},
-      E: {ok:false, texto:'A medição indireta usa fórmulas, mas não elimina instrumentos — ela depende de medições diretas de outras grandezas para alimentar o modelo.'}
-    }
-  },
-  {
-    id: 'T01-TC-Q3', bloom: 'L4', comp: 'C5', pts: 2, diff: 'médio',
-    textoBase: '<p>Em uma planta de britagem no Quadrilátero Ferrífero, o técnico Pedro calibrou a granulometria de saída do britador cônico para produzir brita com diâmetro nominal de 25,0 mm. Após uma hora de operação, coletou 5 amostras e mediu os diâmetros reais: 24,2 mm; 25,8 mm; 24,5 mm; 26,1 mm; 24,9 mm. O valor médio medido foi 25,1 mm.</p>' +
-      '<p>A NR-22 exige que o erro relativo percentual da granulometria esteja abaixo de 5% para que o produto seja aceito no controle de qualidade.</p>' +
-      '<p>A fórmula do erro relativo percentual é: <span class="formula">E<sub>r</sub> = |V<sub>m</sub> − V<sub>t</sub>| / V<sub>t</sub> × 100%</span></p>',
-    enunciado: 'Considerando os dados acima, qual afirmação é correta sobre o controle de qualidade da britagem?',
-    alternativas: [
-      {letra:'A', texto:'O erro relativo é 25,1%, pois Eᵣ = 25,1 / 100 × 100%.'},
-      {letra:'B', texto:'O erro relativo é 0,1 mm, indicando que a britagem está dentro da norma.'},
-      {letra:'C', texto:'O erro relativo é 0,4%, valor inferior ao limite de 5% da NR-22, portanto a brita atende ao controle de qualidade.'},
-      {letra:'D', texto:'O erro relativo é 4%, pois Eᵣ = (25,1 − 25,0) / 25,0 × 100 = 4%.'},
-      {letra:'E', texto:'O erro relativo não pode ser calculado porque as 5 medições são diferentes entre si.'}
-    ],
-    correta: 'C',
-    feedbacks: {
-      A: {ok:false, texto:'Erro de cálculo: 25,1% resulta de dividir o valor medido (25,1) por 100, em vez de aplicar a fórmula Eᵣ = |Vₘ − Vₜ| / Vₜ × 100%.'},
-      B: {ok:false, texto:'0,1 mm é o erro absoluto (|25,1 − 25,0|), não o erro relativo. O erro relativo é uma grandeza adimensional expressa em porcentagem.'},
-      C: {ok:true, texto:'Correto! Eᵣ = |25,1 − 25,0| / 25,0 × 100% = 0,1/25,0 × 100% = 0,4%. Como 0,4% < 5%, a brita atende à NR-22.'},
-      D: {ok:false, texto:'O cálculo (0,1/25,0) está correto, mas a multiplicação deve ser por 100, não por 1000. O resultado correto é 0,4%, não 4%.'},
-      E: {ok:false, texto:'As medições individuais variam, mas o conceito de valor médio (25,1 mm) permite calcular o erro relativo a partir dessa média.'}
-    }
-  },
-  {
-    id: 'T01-TC-Q4', bloom: 'L4-L5', comp: 'C5', pts: 2, diff: 'difícil',
-    textoBase: '<p>Na mineração, correias transportadoras movem minério britado entre etapas do beneficiamento. A NR-22 exige proteção contra projeção de fragmentos. Um fragmento de minério de 0,5 kg se solta da correia a uma velocidade de 4,0 m/s. A energia cinética é dada por <span class="formula">E<sub>c</sub> = m × v² / 2</span>.</p>' +
-      '<p>Para comparação: um objeto com energia cinética acima de 1,0 J pode causar lesão ao atingir uma pessoa; acima de 10 J, a lesão é considerada grave pela engenharia de segurança.</p>',
-    enunciado: 'Analisando a situação descrita e integrando conceitos de Física e segurança do trabalho, qual afirmação é correta?',
-    alternativas: [
-      {letra:'A', texto:'A energia cinética do fragmento é 1,0 J, portanto está no limite mínimo de lesão e não requer proteção adicional.'},
-      {letra:'B', texto:'A energia cinética do fragmento é 4,0 J, valor intermediário entre o limiar de lesão (1,0 J) e o de lesão grave (10 J), justificando as proteções exigidas pela NR-22.'},
-      {letra:'C', texto:'Dobrar a velocidade da correia dobraria a energia cinética, exigindo proteção proporcional.'},
-      {letra:'D', texto:'A energia cinética depende apenas da massa, portanto fragmentos menores são sempre seguros independente da velocidade.'},
-      {letra:'E', texto:'A energia cinética do fragmento é 40 J, classificada como lesão grave.'}
-    ],
-    correta: 'B',
-    feedbacks: {
-      A: {ok:false, texto:'E₂ = m × v²/2 = 0,5 × (4,0)²/2 = 0,5 × 16/2 = 4,0 J, não 1,0 J. O erro comum é esquecer o quadrado da velocidade (calcular m × v / 2).'},
-      B: {ok:true, texto:'Correto! E₂ = 0,5 × (4,0)²/2 = 0,5 × 16/2 = 4,0 J. Como 1,0 J < 4,0 J < 10 J, o fragmento pode causar lesão (não grave), justificando as proteções da NR-22.'},
-      C: {ok:false, texto:'Dobrar a velocidade quadruplica a energia cinética (E₂ ∝ v²), não dobra. A relação não é linear — é quadrática.'},
-      D: {ok:false, texto:'A energia cinética depende tanto da massa quanto da velocidade (E₂ = m × v²/2). Fragmentos pequenos em alta velocidade podem ser muito perigosos.'},
-      E: {ok:false, texto:'E₂ = 0,5 × (4,0)²/2 = 4,0 J, não 40 J. Verifique o cálculo: 0,5 × 16 = 8, dividido por 2 = 4,0 J.'}
-    }
-  },
-  {
-    id: 'T01-TC-Q5', bloom: 'L5', comp: 'C4', pts: 2, diff: 'difícil',
-    textoBase: '<p>Galileu Galilei afirmou que “o livro da natureza está escrito na linguagem da matemática”. No século XVII, essa ideia revolucionou a ciência ao propor que fenômenos naturais poderiam ser descritos por relações quantitativas, não apenas por observações qualitativas.</p>' +
-      '<p>Na mineração moderna, essa visão se concretiza: a NR-22 exige que todo parâmetro operacional (pressão, vazão, concentração, granulometria) seja expresso numericamente com unidade e incerteza. Um relatório que diga apenas “a pressão está alta” não tem validade técnica.</p>',
-    enunciado: 'Considerando a afirmação de Galileu e o contexto da mineração, qual alternativa identifica corretamente a contribuição da quantificação para a segurança operacional?',
-    alternativas: [
-      {letra:'A', texto:'A quantificação é importante apenas para registros burocráticos, sem impacto direto na segurança dos trabalhadores.'},
-      {letra:'B', texto:'A linguagem matemática substituiu completamente a observação qualitativa na mineração moderna, tornando-a desnecessária.'},
-      {letra:'C', texto:'A expressão numérica de grandezas físicas é útil apenas na Física teórica, não tendo aplicação prática em operações de campo.'},
-      {letra:'D', texto:'A quantificação permite prever fenômenos naturais com certeza absoluta, eliminando riscos em operações de mineração.'},
-      {letra:'E', texto:'A expressão numérica de grandezas físicas com unidade e incerteza permite comparar medições com limites normativos (como os da NR-22), detectar desvios antes que se tornem riscos e fundamentar decisões operacionais com evidência.'}
-    ],
-    correta: 'E',
-    feedbacks: {
-      A: {ok:false, texto:'A quantificação vai muito além de registros burocráticos — permite detectar desvios operacionais e prevenir acidentes antes que aconteçam.'},
-      B: {ok:false, texto:'A observação qualitativa continua essencial na mineração (inspeção visual de fraturas, avaliação de ruídos anômalos). A matemática complementa, não substitui.'},
-      C: {ok:false, texto:'A expressão numérica é fundamental nas operações de campo — a NR-22 exige que todo parâmetro operacional seja expresso com unidade e incerteza.'},
-      D: {ok:false, texto:'A quantificação não oferece certeza absoluta — toda medição carrega incerteza. O objetivo é reduzir riscos com evidência, não eliminá-los.'},
-      E: {ok:true, texto:'Correto! A expressão numérica com unidade e incerteza permite: (1) comparar com limites normativos, (2) detectar desvios precoces, e (3) fundamentar decisões com evidência — exatamente o que a NR-22 exige.'}
-    }
-  }
-];
+    correta:"D",
+    feedbacks:{
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 5,16 g/cm³ cai entre pirita (5,01) e hematita (5,26), muito perto da magnetita (5,18).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Quem identifica o mineral é a DENSIDADE, não a massa — o volume é igual em todas as amostras.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A densidade é o primeiro teste de campo antes de qualquer análise química.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Massa sozinha não identifica mineral. A densidade da amostra IV é 7,88 g/cm³ — bem acima da hematita (5,26).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — massa confundida com densidade.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Compare sempre a coluna de densidade com a referência.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O volume é igual em TODAS as amostras — não distingue nenhuma. O que aproxima a I do quartzo é a densidade (2,60 vs 2,65).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E3 — interpretação literal da tabela.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Procure a coluna que varia entre as amostras.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,00 e 5,18 g/cm³ diferem em 73 % — não são valores próximos.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — noção de proximidade distorcida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Calcule o desvio percentual antes de dizer “próximo”.</div>"},
+      E:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A amostra I tem 2,60 g/cm³ — mais perto do quartzo (2,65) do que da calcita (2,71). Ter a menor densidade da tabela não a identifica.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E7 — leitura de tabela.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Compare com cada referência, não com as outras amostras.</div>"}
+    } },
 
-/* ---- STATE ---- */
+  { id:"T01-TC-Q2", bloom:"L4-L5", pts:2, tipo:'MC', tipoLabel:"Avaliação de modelos",
+    enunciado:"<em>Na Praça Tiradentes, Sofia estimou o volume do pedestal de granito com uma trena, medindo as dimensões e calculando V = c × l × h. No laboratório, para uma amostra irregular do mesmo granito, usou o método do transbordo: mergulhou a peça numa proveta e mediu o deslocamento da água.</em><br><br><em>O Prof. Julio explicou: “Na mineração, muitas grandezas não podem ser medidas diretamente — a densidade de um minério in situ, a pressão no fundo de uma barragem, a força num cabo de aço. Usamos modelos que relacionam grandezas mensuráveis à grandeza desejada.”</em><br><br><strong>Qual alternativa avalia corretamente a diferença entre medição direta e indireta?</strong>",
+    opcoes:[
+      {letra:"A", texto:"A medição indireta depende de um modelo matemático que relaciona a grandeza desejada a outras que podem ser medidas diretamente; por isso, seu resultado carrega a incerteza de todas as medições envolvidas."},
+      {letra:"B", texto:"A medição direta é sempre mais precisa que a indireta, pois não depende de cálculos intermediários."},
+      {letra:"C", texto:"A medição indireta é uma estimativa sem base científica, útil apenas quando não há instrumentos disponíveis."},
+      {letra:"D", texto:"No laboratório de mineração todas as grandezas podem ser medidas diretamente com instrumentos adequados, tornando a medição indireta desnecessária."},
+      {letra:"E", texto:"A medição indireta usa fórmulas para substituir a medição, eliminando a necessidade de instrumentos."}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Toda medição indireta soma as incertezas das grandezas que entram no modelo — e é isso que precisa constar no laudo.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Medir o volume por transbordo e calcular a densidade é exatamente esse encadeamento.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Pressão no fundo de barragem só existe como medição indireta — e sustenta decisões de segurança.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Nem sempre: uma trena mal apoiada num pedestal irregular pode errar mais que o transbordo numa proveta graduada.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E4 — causa e efeito invertidos.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A precisão depende do instrumento e do método, não da categoria.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Medição indireta tem base científica plena — é o modelo matemático que a fundamenta.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — modelo mental incorreto.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Densidade, pressão e força em cabo são todas medidas indiretamente.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O próprio texto lista grandezas que nenhum instrumento mede diretamente — densidade in situ, por exemplo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E10 — contextualização falsa.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a fala do Prof. Julio no texto-base.</div>"},
+      E:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A medição indireta não elimina instrumentos — ela DEPENDE deles para as grandezas intermediárias.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — definição parcial.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Sem trena e sem proveta não há volume nem densidade.</div>"}
+    } },
+
+  { id:"T01-TC-Q3", bloom:"L4", pts:2, tipo:'MC', tipoLabel:"Transferência",
+    enunciado:"<em>Numa planta de britagem do Quadrilátero Ferrífero, Pedro calibrou o britador cônico para brita de diâmetro nominal <strong>25,0 mm</strong>. Após uma hora, mediu cinco amostras: 24,2 · 25,8 · 24,5 · 26,1 · 24,9 mm — média de <strong>25,1 mm</strong>. A NR-22 exige erro relativo abaixo de <strong>5 %</strong> para aprovar o produto. Er = |V_m − V_t| / V_t × 100 %.</em><br><br><strong>Qual afirmação sobre o controle de qualidade é correta?</strong>",
+    opcoes:[
+      {letra:"A", texto:"O erro relativo é 25,1 %, pois Er = 25,1/100 × 100 %."},
+      {letra:"B", texto:"O erro relativo é 0,1 mm, indicando que a britagem está dentro da norma."},
+      {letra:"C", texto:"O erro relativo é 0,4 %, valor inferior ao limite de 5 % da NR-22 — portanto a brita atende ao controle de qualidade."},
+      {letra:"D", texto:"O erro relativo é 4 %, pois Er = (25,1 − 25,0)/25,0 × 100 = 4 %."},
+      {letra:"E", texto:"O erro relativo não pode ser calculado porque as cinco medições são diferentes entre si."}
+    ],
+    correta:"C",
+    feedbacks:{
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Er = |25,1 − 25,0| / 25,0 × 100 % = 0,1/25 × 100 % = 0,4 %.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A média das cinco medições é o valor medido; o nominal é a referência.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 0,4 % dá mais de dez vezes de folga em relação ao limite da NR-22.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 25,1 é a média medida em milímetros, não um percentual. O erro se calcula sobre a DIFERENÇA.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — valor medido usado como erro.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,1 mm é o erro ABSOLUTO. O relativo é adimensional, em porcentagem: 0,4 %.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — erro absoluto confundido com relativo.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A norma cobra percentual, por isso a divisão pelo nominal.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,1 ÷ 25,0 = 0,004 = 0,4 %, não 4 % — a conversão para porcentagem saiu com uma casa a mais.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro na conversão para percentual.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça 0,1/25 antes de multiplicar por 100.</div>"},
+      E:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Medições diferentes são o normal — por isso se usa a MÉDIA como valor medido.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E9 — memória sem transferência.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O enunciado já fornece a média: 25,1 mm.</div>"}
+    } },
+
+  { id:"T01-TC-Q4", bloom:"L4-L5", pts:2, tipo:'MC', tipoLabel:"Integração interdisciplinar",
+    enunciado:"<em>Correias transportadoras movem minério britado entre etapas do beneficiamento, e a NR-22 exige proteção contra projeção de fragmentos. Um fragmento de <strong>0,5 kg</strong> se solta da correia a <strong>4,0 m/s</strong>. A energia cinética é E_c = m × v² / 2.</em><br><br><em>Referência de segurança: acima de <strong>1,0 J</strong> um objeto pode causar lesão; acima de <strong>10 J</strong>, a lesão é considerada grave.</em><br><br><strong>Qual afirmação integra corretamente Física e segurança do trabalho?</strong>",
+    opcoes:[
+      {letra:"A", texto:"A energia cinética é 1,0 J, portanto está no limite mínimo de lesão e não requer proteção adicional."},
+      {letra:"B", texto:"A energia cinética é 4,0 J, valor intermediário entre o limiar de lesão (1,0 J) e o de lesão grave (10 J), justificando as proteções exigidas pela NR-22."},
+      {letra:"C", texto:"Dobrar a velocidade da correia dobraria a energia cinética, exigindo proteção proporcional."},
+      {letra:"D", texto:"A energia cinética depende apenas da massa, portanto fragmentos menores são sempre seguros, independentemente da velocidade."},
+      {letra:"E", texto:"A energia cinética é 40 J, classificada como lesão grave."}
+    ],
+    correta:"B",
+    feedbacks:{
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> E_c = 0,5 × 4,0² / 2 = 0,5 × 16 / 2 = 4,0 J — entre 1 J e 10 J.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Quatro vezes o limiar de lesão: é por isso que a proteção não é opcional.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Meio quilo a 4 m/s parece pouco — a equação mostra que não é.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> E_c = 4,0 J, quatro vezes o limiar. E mesmo no limiar a proteção seria exigida.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — resultado subestimado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça: eleve a velocidade ao quadrado ANTES de dividir por 2.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A velocidade entra ao QUADRADO: dobrá-la QUADRUPLICA a energia — de 4 J para 16 J, já na faixa grave.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E4 — relação quadrática tratada como linear.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> É a diferença entre v e v² que torna a velocidade tão perigosa.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A equação tem massa E velocidade — e a velocidade pesa mais, por estar ao quadrado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E12 — fator ignorado na transferência.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Um fragmento leve e rápido pode ser mais perigoso que um pesado e lento.</div>"},
+      E:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 40 J sairia sem dividir por 2 e com massa errada: o correto é 0,5 × 16 / 2 = 4,0 J.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — ordem de grandeza.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Não esqueça o fator 1/2 da energia cinética.</div>"}
+    } },
+
+  { id:"T01-TC-Q5", bloom:"L5", pts:2, tipo:'MC', tipoLabel:"Avaliação de argumento",
+    enunciado:"<em>Galileu afirmou que “o livro da natureza está escrito na linguagem da matemática” — ideia que revolucionou a ciência ao propor que fenômenos naturais podem ser descritos por relações quantitativas, e não apenas por observações qualitativas.</em><br><br><em>Na mineração moderna isso se concretiza: a NR-22 exige que todo parâmetro operacional (pressão, vazão, concentração, granulometria) seja expresso numericamente, com unidade e incerteza. Um relatório que diga apenas “a pressão está alta” não tem validade técnica.</em><br><br><strong>Qual alternativa identifica corretamente a contribuição da quantificação para a segurança operacional?</strong>",
+    opcoes:[
+      {letra:"A", texto:"A quantificação é importante apenas para registros burocráticos, sem impacto direto na segurança dos trabalhadores."},
+      {letra:"B", texto:"A linguagem matemática substituiu completamente a observação qualitativa na mineração moderna, tornando-a desnecessária."},
+      {letra:"C", texto:"A expressão numérica de grandezas é útil apenas na Física teórica, sem aplicação prática em operações de campo."},
+      {letra:"D", texto:"A quantificação permite prever fenômenos naturais com certeza absoluta, eliminando riscos nas operações de mineração."},
+      {letra:"E", texto:"A expressão numérica de grandezas físicas com unidade e incerteza permite comparar medições com limites normativos (como os da NR-22), detectar desvios antes que se tornem riscos e fundamentar decisões operacionais com evidência."}
+    ],
+    correta:"E",
+    feedbacks:{
+      E:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Sem número, unidade e incerteza não há como comparar com um limite — e sem comparação não há detecção de desvio.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> É o que separa “a pressão está alta” de “a pressão está 13,3 % acima do nominal”.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Quantificar é o primeiro ato técnico de qualquer decisão de segurança.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O impacto é direto: é o número que dispara — ou não — a parada de um equipamento.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — definição parcial.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o papel da NR-22 no texto-base.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> A observação qualitativa continua sendo o primeiro alerta em campo — ela orienta o que medir, não é substituída.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E10 — contextualização falsa.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Galileu propôs quantificar o observado, não abandonar a observação.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O texto-base mostra o oposto: é justamente em campo que a NR-22 cobra número, unidade e incerteza.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E4 — conclusão invertida.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia o segundo parágrafo do texto-base.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Quantificar reduz e dimensiona o risco — não o elimina. Toda medida traz incerteza, e é por isso que ela é registrada.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — certeza absoluta atribuída à ciência.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A própria norma exige que a incerteza acompanhe o valor.</div>"}
+    } }
+  ].map((q,i)=>({...q, num:i+1}))
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
 const PREFIX = 'ifmg_fc1_t01_tc_';
-const TOTAL_PTS = 10;
-const NUM_QUESTIONS = 5;
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   Default embutido pelo autor; a Equipe de Professores pode sobrescrever via
+   aba `config` da planilha (o coletor injetado chama aplicarConfigOA). ── */
+var OA_ID = { trilha: 'T01', oa: 'TC' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'A',      /* TC e de VERSAO UNICA: sempre A (seletor oculto) */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    const cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema) {
+      if (cache.versao_precarga) OA_CFG.versao_precarga = cache.versao_precarga;
+      if (cache.tentativas) OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+let tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
+let currentVersion = null;
 let respostas = {};
 let submitted = false;
 let saveTimer = null;
+let bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
+let precargaAtiva = false;
 
-/* ---- INIT ---- */
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  buildProgressBar();
-  buildQuestions();
+  setupInputListeners();
   checkLocalStorage();
-  setupDebouncedSave();
-  // Set today's date as default
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('inputData').value = today;
+  if (!currentVersion) switchVersion('A'); /* TC: versao unica */
 });
 
-/* ---- PROGRESS BAR ---- */
-function buildProgressBar() {
-  const bar = document.getElementById('progressBar');
-  for (let i = 0; i < NUM_QUESTIONS; i++) {
-    const seg = document.createElement('div');
-    seg.className = 'progress-seg';
-    seg.id = 'prog-' + i;
-    bar.appendChild(seg);
-  }
-}
-
-function updateProgress() {
-  BANCO.forEach((q, i) => {
-    const seg = document.getElementById('prog-' + i);
-    seg.className = 'progress-seg';
-    if (submitted) {
-      if (respostas[q.id] === q.correta) seg.classList.add('certo');
-      else if (respostas[q.id]) seg.classList.add('errado');
-    } else if (respostas[q.id]) {
-      seg.classList.add('resp');
-    }
-  });
-}
-
-/* ---- BUILD QUESTIONS ---- */
-function buildQuestions() {
-  const container = document.getElementById('questionsContainer');
-  BANCO.forEach((q, idx) => {
-    const card = document.createElement('div');
-    card.className = 'q-card';
-    card.id = 'card-' + q.id;
-
-    const bloomLabels = {
-      'L3': 'Bloom L3 — Aplicar',
-      'L4': 'Bloom L4 — Analisar',
-      'L4-L5': 'Bloom L4–L5',
-      'L5': 'Bloom L5 — Avaliar'
-    };
-    const bloomLabel = bloomLabels[q.bloom] || q.bloom;
-
-    card.innerHTML =
-      '<div class="q-header">' +
-        '<div class="q-num">' + (idx + 1) + '</div>' +
-        '<div class="q-tags">' +
-          '<span class="tag tag-bloom">' + bloomLabel + '</span>' +
-          '<span class="tag tag-pts">' + q.pts + ' pts</span>' +
-          '<span class="tag tag-diff">' + q.diff + '</span>' +
-        '</div>' +
-      '</div>' +
-      '<div class="texto-base">' + q.textoBase + '</div>' +
-      '<div class="q-text">' + q.enunciado + '</div>' +
-      '<div class="alt-list" id="alts-' + q.id + '">' +
-        q.alternativas.map(function(a) {
-          return '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
-            '<span class="alt-letra">' + a.letra + '.</span>' +
-            '<span>' + a.texto + '</span>' +
-          '</button>';
-        }).join('') +
-      '</div>' +
-      '<div class="q-feedback" id="fb-' + q.id + '"></div>';
-
-    container.appendChild(card);
-  });
-}
-
-/* ---- SELECT ALTERNATIVE ---- */
-function selectAlt(qid, letra) {
+/* ============================================================
+   VERSION SELECTOR
+   ============================================================ */
+function switchVersion(v) {
   if (submitted) return;
-  respostas[qid] = letra;
-  var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
-  btns.forEach(function(b) {
-    b.classList.toggle('selected', b.dataset.letra === letra);
+  if (currentVersion === v) return;
+
+  /* Save current version state before switching */
+  if (currentVersion) saveToLocalStorage();
+
+  currentVersion = v;
+
+  /* Update buttons */
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === v);
   });
+
+  /* Try to restore this version's state */
+  const saved = loadVersionState(v);
+  if (saved) {
+    respostas = saved.respostas || {};
+    if (saved.nome) document.getElementById('inputNome').value = saved.nome;
+    if (saved.turma) document.getElementById('inputTurma').value = saved.turma;
+    if (saved.data) document.getElementById('inputData').value = saved.data;
+    if (saved.submitted) {
+      buildQuestions();
+      submitQuiz(true);
+      return;
+    }
+  } else {
+    respostas = {};
+  }
+
+  buildQuestions();
   updateProgress();
   checkSubmitReady();
   debouncedSave();
 }
 
-/* ---- SUBMIT CHECK ---- */
-function checkSubmitReady() {
-  var nome = document.getElementById('inputNome').value.trim();
-  var turma = document.getElementById('inputTurma').value;
-  var allAnswered = BANCO.every(function(q) { return respostas[q.id]; });
-  document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
+/* ============================================================
+   BUILD QUESTIONS
+   ============================================================ */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+
+  qs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomMap = {'L1-L2':'Bloom L1-L2','L2-L3':'Bloom L2-L3','L3':'Bloom L3','L3-L4':'Bloom L3-L4','L4':'Bloom L4','L4-L5':'Bloom L4-L5','L5':'Bloom L5'};
+    const bloomLabel = bloomMap[q.bloom] || q.bloom;
+
+    let bodyHTML = '';
+
+    switch (q.tipo) {
+      case 'MC':
+        bodyHTML = buildMC(q);
+        break;
+      case 'MM':
+        bodyHTML = buildMM(q);
+        break;
+      case 'VF':
+        bodyHTML = buildVF(q);
+        break;
+      case 'MATRIZ':
+        bodyHTML = buildMATRIZ(q);
+        break;
+    }
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${q.num}</div>
+        <div class="q-tags">
+          <span class="tag tag-bloom">${bloomLabel}</span>
+          <span class="tag tag-pts">${q.pts} pt</span>
+          <span class="tag tag-tipo">${q.tipoLabel}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.enunciado}</div>
+      ${bodyHTML}
+      <div class="q-feedback" id="fb-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  /* Restore visual state for answers already in respostas */
+  restoreVisualState();
 }
 
-/* ---- SUBMIT ---- */
-function submitQuiz() {
-  if (submitted) return;
-  submitted = true;
+/* ── MC builder ── */
+function buildMC(q) {
+  return `<div class="alt-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <button class="alt-btn" data-qid="${q.id}" data-letra="${o.letra}" onclick="selectMC('${q.id}','${o.letra}')">
+        <span class="alt-letra">${o.letra}.</span>
+        <span>${o.texto}</span>
+      </button>
+    `).join('')}
+  </div>`;
+}
 
-  // Lock inputs
+/* ── MM builder ── */
+function buildMM(q) {
+  return `<div class="check-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <div class="check-item" data-qid="${q.id}" data-key="${o.key}" onclick="toggleMM('${q.id}','${o.key}')">
+        <div class="check-box" id="cb-${q.id}-${o.key}"></div>
+        <span>${o.texto}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── VF builder ── */
+function buildVF(q) {
+  return `<div class="vf-list" id="alts-${q.id}">
+    ${q.afirmacoes.map((af, i) => `
+      <div class="vf-item" id="vf-${q.id}-${i}">
+        <div class="vf-toggles">
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="V" onclick="selectVF('${q.id}',${i},'V')">V</button>
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="F" onclick="selectVF('${q.id}',${i},'F')">F</button>
+        </div>
+        <div class="vf-texto">${af.texto}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MATRIZ builder ── */
+function buildMATRIZ(q) {
+  return `<div class="matrix-wrap"><table class="matrix-table" id="alts-${q.id}">
+    <thead><tr>
+      <th>Processo / Âncora</th>
+      ${q.colunas.map(c => `<th>${c}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${q.linhas.map((l, ri) => `<tr id="mrow-${q.id}-${ri}">
+        <td>${l}</td>
+        ${q.colunas.map((_, ci) => `<td>
+          <input type="radio" name="mat-${q.id}-${ri}" value="${ci}"
+            onchange="selectMATRIZ('${q.id}',${ri},${ci})">
+        </td>`).join('')}
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ============================================================
+   INTERACTION HANDLERS
+   ============================================================ */
+function selectMC(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function toggleMM(qid, key) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [];
+  const idx = respostas[qid].indexOf(key);
+  if (idx >= 0) respostas[qid].splice(idx, 1);
+  else respostas[qid].push(key);
+
+  const item = document.querySelector(`[data-qid="${qid}"][data-key="${key}"]`);
+  item.classList.toggle('selected', idx < 0);
+  const cb = document.getElementById('cb-' + qid + '-' + key);
+  cb.textContent = idx < 0 ? '✓' : '';
+
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectVF(qid, idx, val) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][idx] = val;
+
+  document.querySelectorAll(`[data-qid="${qid}"][data-idx="${idx}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.val === val);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectMATRIZ(qid, row, col) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][row] = col;
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+/* ============================================================
+   RESTORE VISUAL STATE (after buildQuestions)
+   ============================================================ */
+function restoreVisualState() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach(q => {
+    const r = respostas[q.id];
+    if (r == null) return;
+
+    switch (q.tipo) {
+      case 'MC':
+        document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+          b.classList.toggle('selected', b.dataset.letra === r);
+        });
+        break;
+      case 'MM':
+        if (Array.isArray(r)) {
+          r.forEach(key => {
+            const item = document.querySelector(`[data-qid="${q.id}"][data-key="${key}"]`);
+            if (item) { item.classList.add('selected'); }
+            const cb = document.getElementById('cb-' + q.id + '-' + key);
+            if (cb) cb.textContent = '✓';
+          });
+        }
+        break;
+      case 'VF':
+        if (Array.isArray(r)) {
+          r.forEach((val, i) => {
+            if (val) {
+              document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+                b.classList.toggle('selected', b.dataset.val === val);
+              });
+            }
+          });
+        }
+        break;
+      case 'MATRIZ':
+        if (Array.isArray(r)) {
+          r.forEach((col, row) => {
+            if (col != null) {
+              const radio = document.querySelector(`input[name="mat-${q.id}-${row}"][value="${col}"]`);
+              if (radio) radio.checked = true;
+            }
+          });
+        }
+        break;
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+function updateProgress() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      const sc = questionScore(q);
+      if (sc >= q.pts) seg.classList.add('certo');
+      else if (sc > 0) seg.classList.add('parcial');
+      else if (isAnswered(q)) seg.classList.add('errado');
+    } else if (isAnswered(q)) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+function isAnswered(q) {
+  const r = respostas[q.id];
+  if (r == null) return false;
+  switch (q.tipo) {
+    case 'MC': return !!r;
+    case 'MM': return Array.isArray(r) && r.length > 0;
+    case 'VF': return Array.isArray(r) && r.every(v => v != null);
+    case 'MATRIZ': return Array.isArray(r) && r.every(v => v != null);
+  }
+  return false;
+}
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function questionScore(q) {
+  const r = respostas[q.id];
+  if (r == null) return 0;
+
+  switch (q.tipo) {
+    case 'MC':
+      return r === q.correta ? q.pts : 0;
+
+    case 'MM': {
+      if (!Array.isArray(r)) return 0;
+      const nCorretas = q.opcoes.filter(o => o.correta).length;
+      let acertos = 0, erros = 0;
+      q.opcoes.forEach(o => {
+        const sel = r.includes(o.key);
+        if (sel && o.correta) acertos++;
+        else if (sel && !o.correta) erros++;
+      });
+      return Math.max(0, Math.min(q.pts, (acertos * q.pts / nCorretas) - (erros * 0.5)));
+    }
+
+    case 'VF': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.afirmacoes.forEach((af, i) => {
+        if (r[i] === af.correta) acertos++;
+      });
+      return acertos * q.pts / q.afirmacoes.length;
+    }
+
+    case 'MATRIZ': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.gabarito.forEach((g, i) => {
+        if (r[i] === g) acertos++;
+      });
+      return acertos * q.pts / q.gabarito.length;
+    }
+  }
+  return 0;
+}
+
+function totalScore() {
+  if (!currentVersion) return 0;
+  let total = 0;
+  BANCO[currentVersion].forEach(q => { total += questionScore(q); });
+  return Math.round(total * 10) / 10;
+}
+
+/* ============================================================
+   SUBMIT CHECK
+   ============================================================ */
+function checkSubmitReady() {
+  const nome = document.getElementById('inputNome').value.trim();
+  const turma = document.getElementById('inputTurma').value;
+  if (!currentVersion || !nome || !turma) {
+    document.getElementById('btnSubmit').disabled = true;
+    return;
+  }
+  const allAnswered = BANCO[currentVersion].every(q => isAnswered(q));
+  document.getElementById('btnSubmit').disabled = !allAnswered;
+}
+
+/* ── Exportar JSON: visivel apenas como plano B ──
+   Com o coletor ativo (site), o envio e automatico; o botao so aparece
+   se o envio falhar. Sem coletor (offline/professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  const btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  const temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  const st = document.getElementById('coletaStatus');
+  const falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function submitQuiz(isRestore) {
+  if (submitted && !isRestore) return;
+  submitted = true;
+  esconderBanner();
+
+  /* Lock inputs */
   document.getElementById('inputNome').disabled = true;
   document.getElementById('inputTurma').disabled = true;
   document.getElementById('inputData').disabled = true;
+  document.querySelectorAll('.version-btn').forEach(b => b.classList.add('locked'));
 
-  var score = 0;
+  const qs = BANCO[currentVersion];
+  let score = totalScore();
 
-  BANCO.forEach(function(q) {
-    var chosen = respostas[q.id];
-    var isCorrect = chosen === q.correta;
-    if (isCorrect) score += q.pts;
-
-    // Mark alternatives
-    var btns = document.querySelectorAll('[data-qid="' + q.id + '"]');
-    btns.forEach(function(b) {
-      b.classList.add('locked');
-      b.classList.remove('selected');
-      if (b.dataset.letra === q.correta) b.classList.add('correct');
-      if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
-      if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
-    });
-
-    // Show feedback for the chosen alternative
-    var fb = document.getElementById('fb-' + q.id);
-    var fbData = q.feedbacks[chosen];
-    fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
-    fb.innerHTML = fbData.texto;
+  qs.forEach(q => {
+    const sc = questionScore(q);
+    switch (q.tipo) {
+      case 'MC': showFeedbackMC(q); break;
+      case 'MM': showFeedbackMM(q, sc); break;
+      case 'VF': showFeedbackVF(q, sc); break;
+      case 'MATRIZ': showFeedbackMATRIZ(q, sc); break;
+    }
   });
 
-  // Show score
-  var scoreBox = document.getElementById('scoreBox');
+  /* Score box */
+  const scoreBox = document.getElementById('scoreBox');
   scoreBox.classList.add('show');
-  document.getElementById('scoreValue').textContent = score + '/' + TOTAL_PTS;
+  document.getElementById('scoreValue').textContent = score + '/10';
 
-  // Update progress
+  /* Breakdown */
+  const bd = document.getElementById('scoreBreakdown');
+  bd.innerHTML = qs.map(q => {
+    const sc = questionScore(q);
+    const pct = Math.round(sc / q.pts * 100);
+    return `<span>Q${q.num}: ${sc.toFixed(1)}/${q.pts}</span>`;
+  }).join('');
+
   updateProgress();
 
-  // Update buttons
+  /* Placar junto ao envio — abaixo do status de coleta na copia publicada */
+  const actionsBarEl = document.getElementById('actionsBar');
+  actionsBarEl.parentNode.insertBefore(scoreBox, actionsBarEl);
+
   document.getElementById('btnSubmit').style.display = 'none';
-  document.getElementById('btnExport').classList.add('show');
+  /* CFG-OA: apos o envio nao ha Recomecar/Descartar — nada e restauravel */
+  document.getElementById('btnReset').style.display = 'none';
+  atualizarExportVisivel();
+  const stColeta = document.getElementById('coletaStatus');
+  if (stColeta && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(stColeta, { attributes: true, attributeFilter: ['class'] });
+  }
 
-  // Save state
   saveToLocalStorage();
+  avaliarSegundaTentativa();
 
-  toast(score >= 7 ? 'success' : 'info', 'Pontuação: ' + score + '/' + TOTAL_PTS);
+  if (!isRestore) toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`);
   enviarColeta();
 }
 
-/* ---- EXPORT JSON ---- */
+/* ── MC feedback ── */
+function showFeedbackMC(q) {
+  const chosen = respostas[q.id];
+  const isCorrect = chosen === q.correta;
+
+  document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+    b.classList.add('locked');
+    b.classList.remove('selected');
+    if (b.dataset.letra === q.correta) b.classList.add('correct');
+    if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+    if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const fbData = q.feedbacks[chosen] || q.feedbacks[q.correta];
+  fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+  fb.innerHTML = fbData.html;
+}
+
+/* ── MM feedback ── */
+function showFeedbackMM(q, sc) {
+  const selected = respostas[q.id] || [];
+  let hasError = false;
+  let errorTexts = [];
+
+  q.opcoes.forEach(o => {
+    const item = document.querySelector(`[data-qid="${q.id}"][data-key="${o.key}"]`);
+    const cb = document.getElementById('cb-' + q.id + '-' + o.key);
+    item.classList.add('locked');
+    item.classList.remove('selected');
+
+    const sel = selected.includes(o.key);
+    if (sel && o.correta) {
+      item.classList.add('correct');
+      cb.textContent = '✓';
+    } else if (sel && !o.correta) {
+      item.classList.add('incorrect');
+      cb.textContent = '✗';
+      hasError = true;
+      if (q.feedbackErros && q.feedbackErros[o.key]) {
+        errorTexts.push(q.feedbackErros[o.key]);
+      }
+    } else if (!sel && o.correta) {
+      item.classList.add('missed');
+      cb.textContent = '—';
+      hasError = true;
+    } else {
+      cb.textContent = '';
+    }
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  if (perfect) {
+    fb.className = 'q-feedback show ok';
+    fb.innerHTML = q.feedbackOk;
+  } else {
+    fb.className = 'q-feedback show ' + (sc > 0 ? 'parcial' : 'nok');
+    let html = '<div class="fb-title">' + (sc > 0 ? '⚠ Parcialmente correto' : '❌ Atenção!') + '</div>';
+    if (errorTexts.length) {
+      html += errorTexts.map(t => '<div class="fb-level">' + t + '</div>').join('');
+    }
+    html += `<div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+    fb.innerHTML = html;
+  }
+}
+
+/* ── VF feedback ── */
+function showFeedbackVF(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.afirmacoes.forEach((af, i) => {
+    const item = document.getElementById('vf-' + q.id + '-' + i);
+    const correct = answers[i] === af.correta;
+    item.classList.add(correct ? 'correct' : 'incorrect');
+
+    /* Color the buttons */
+    document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.val === af.correta) b.classList.add('correct');
+      if (b.dataset.val === answers[i] && !correct) b.classList.add('incorrect');
+    });
+
+    /* Add justification */
+    const justDiv = document.createElement('div');
+    justDiv.className = 'vf-resultado';
+    justDiv.style.color = correct ? 'var(--verde)' : 'var(--erro)';
+    justDiv.innerHTML = (correct ? '✓ ' : '✗ ') + af.just;
+    item.appendChild(justDiv);
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ── MATRIZ feedback ── */
+function showFeedbackMATRIZ(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.linhas.forEach((_, ri) => {
+    const row = document.getElementById('mrow-' + q.id + '-' + ri);
+    const correct = answers[ri] === q.gabarito[ri];
+    row.classList.add(correct ? 'row-correct' : 'row-incorrect');
+
+    /* Disable radios and mark correct cell */
+    document.querySelectorAll(`input[name="mat-${q.id}-${ri}"]`).forEach(r => {
+      r.disabled = true;
+    });
+
+    /* Highlight the correct cell */
+    const correctCell = row.children[q.gabarito[ri] + 1];
+    if (correctCell) correctCell.classList.add('cell-correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ============================================================
+   EXPORT JSON
+   ============================================================ */
 function montarPacote() {
   var now = new Date();
+  const qs = BANCO[currentVersion];
   return {
-    schema: 'ifmg-fc1-tarefa-complementar-v3',
+    schema: 'ifmg-fc1-tarefa-complementar-v1',
     trilha: 'T01',
     tipo: 'TC',
+    versao: currentVersion,
+    tentativa: tentativaAtual,
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
       turma: document.getElementById('inputTurma').value,
       data: document.getElementById('inputData').value || null
     },
-    questoes: BANCO.map(function(q) {
+    questoes: qs.map(q => {
+      const sc = questionScore(q);
       return {
         id: q.id,
         bloom: q.bloom,
-        comp: q.comp,
-        pts: q.pts,
-        diff: q.diff,
+        tipo: q.tipo,
+        pts_max: q.pts,
+        pts_obtidos: Math.round(sc * 100) / 100,
         resposta: respostas[q.id] || null,
-        correta: q.correta,
-        acertou: respostas[q.id] === q.correta
+        gabarito: q.tipo === 'MC' ? q.correta : (q.tipo === 'MM' ? q.opcoes.filter(o=>o.correta).map(o=>o.key) : (q.tipo === 'VF' ? q.afirmacoes.map(a=>a.correta) : q.gabarito)),
+        acertou: sc >= q.pts
       };
     }),
-    pontuacao: BANCO.reduce(function(acc, q) {
-      return acc + (respostas[q.id] === q.correta ? q.pts : 0);
-    }, 0),
-    total: TOTAL_PTS
+    pontuacao: totalScore(),
+    total: 10
   };
 }
 
@@ -866,27 +1237,39 @@ function exportJSON() {
   var ts = now.toISOString().replace(/[:.]/g, '-');
   var data = montarPacote();
 
-  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
   a.href = url;
-  a.download = 'T01-TC-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0, 30) + '-' + ts + '.json';
+  const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
+  a.download = `T01-TC-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('success', 'JSON exportado com sucesso');
+  toast('success', 'Comprovante exportado com sucesso');
 }
 
-/* ---- RESET ---- */
+/* ============================================================
+   RESET
+   ============================================================ */
 function resetQuiz() {
-  if (!confirm('Tem certeza que deseja recomeçar? Todas as respostas serão perdidas.')) return;
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
   location.reload();
 }
 
-/* ---- LOCAL STORAGE ---- */
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================ */
+function storageKey() {
+  return PREFIX + 'v' + currentVersion;
+}
+
 function saveToLocalStorage() {
+  if (!currentVersion) return;
   try {
-    var state = {
+    const state = {
+      versao: currentVersion,
       nome: document.getElementById('inputNome').value,
       turma: document.getElementById('inputTurma').value,
       data: document.getElementById('inputData').value,
@@ -894,97 +1277,189 @@ function saveToLocalStorage() {
       submitted: submitted,
       savedAt: new Date().toISOString()
     };
-    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+    localStorage.setItem(storageKey(), JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', currentVersion);
   } catch(e) { /* quota exceeded or private mode */ }
 }
 
+function loadVersionState(v) {
+  try {
+    const raw = localStorage.getItem(PREFIX + 'v' + v);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
 function clearLocalStorage() {
-  localStorage.removeItem(PREFIX + 'state');
+  ['A','B','C'].forEach(v => localStorage.removeItem(PREFIX + 'v' + v));
+  localStorage.removeItem(PREFIX + 'lastVersion');
+}
+
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, PRE-CARGA A/B/C
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function versaoSalva() {
+  const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+  if (lastV && loadVersionState(lastV)) return lastV;
+  for (const v of ['A','B','C']) { if (loadVersionState(v)) return v; }
+  return null;
 }
 
 function checkLocalStorage() {
   try {
-    var raw = localStorage.getItem(PREFIX + 'state');
-    if (raw) {
-      document.getElementById('restoreBanner').classList.add('show');
+    const v = versaoSalva();
+    if (!v) return; /* sem estado salvo: pre-carga fica a cargo de aplicarPrecargaOA */
+    const state = loadVersionState(v);
+    if (state.submitted) {
+      /* Envio ja realizado: restaura a visao corrigida (switchVersion chama
+         submitQuiz(true)); avaliarSegundaTentativa decide se ha Restaurar */
+      switchVersion(v);
+    } else {
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      switchVersion(v);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas — Versão ' + v);
     }
   } catch(e) {}
 }
 
-function restoreData() {
-  try {
-    var raw = localStorage.getItem(PREFIX + 'state');
-    if (!raw) return;
-    var state = JSON.parse(raw);
-
-    document.getElementById('inputNome').value = state.nome || '';
-    document.getElementById('inputTurma').value = state.turma || '';
-    document.getElementById('inputData').value = state.data || '';
-    respostas = state.respostas || {};
-
-    // Restore visual selections
-    Object.keys(respostas).forEach(function(qid) {
-      var letra = respostas[qid];
-      var btns = document.querySelectorAll('[data-qid="' + qid + '"]');
-      btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === letra); });
-    });
-
-    if (state.submitted) {
-      submitQuiz();
-    } else {
-      updateProgress();
-      checkSubmitReady();
-    }
-
-    toast('info', 'Dados restaurados');
-  } catch(e) {
-    toast('error', 'Erro ao restaurar dados');
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  const msg = document.getElementById('restoreMsg');
+  const btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
   }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
   document.getElementById('restoreBanner').classList.remove('show');
+}
+
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
 }
 
 function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
-  document.getElementById('restoreBanner').classList.remove('show');
-  toast('info', 'Dados anteriores descartados');
+  location.reload();
 }
 
-/* ---- DEBOUNCED SAVE ---- */
-function setupDebouncedSave() {
-  ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
-    document.getElementById(id).addEventListener('input', function() {
-      checkSubmitReady();
-      debouncedSave();
-    });
-    document.getElementById(id).addEventListener('change', function() {
-      checkSubmitReady();
-      debouncedSave();
-    });
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    const v = currentVersion || versaoSalva();
+    const state = loadVersionState(v) || {};
+    state.submitted = false;
+    if (!comRespostas) state.respostas = {};
+    localStorage.setItem(PREFIX + 'v' + v, JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', v);
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.versao_precarga && ['auto','A','B','C','livre'].indexOf(cfg.versao_precarga) !== -1) {
+    OA_CFG.versao_precarga = cfg.versao_precarga;
+  }
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  if (precargaAtiva) travarSeletorVersao();
+  avaliarSegundaTentativa();
+}
+
+/* Pre-carga da versao A/B/C (chamada pelo coletor apos identificar o RA).
+   Estado salvo do estudante SEMPRE prevalece — nunca descartar trabalho. */
+function aplicarPrecargaOA(aluno) {
+  const modo = OA_CFG.versao_precarga;
+  if (modo === 'livre') return;
+  let alvo = null;
+  if (modo === 'A' || modo === 'B' || modo === 'C') alvo = modo;
+  else if (modo === 'auto' && aluno && aluno.ra) alvo = ['A','B','C'][parseInt(aluno.ra, 10) % 3];
+  if (alvo && !BANCO[alvo]) alvo = 'A'; /* TC: so existe a versao A */
+  if (!alvo && !currentVersion) return; /* auto sem RA e sem estado salvo: escolha livre */
+  precargaAtiva = true;
+  if (!currentVersion && alvo) {
+    switchVersion(alvo);
+    toast('info', 'Versão ' + alvo + ' carregada automaticamente para você');
+  }
+  travarSeletorVersao();
+}
+
+function travarSeletorVersao() {
+  if (!precargaAtiva || !currentVersion) return;
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    if (btn.dataset.v !== currentVersion) btn.classList.add('locked');
+  });
+  const lbl = document.getElementById('versionLabel');
+  if (lbl) lbl.textContent = 'Versão definida automaticamente';
+}
+
+/* ============================================================
+   INPUT LISTENERS & DEBOUNCED SAVE
+   ============================================================ */
+function setupInputListeners() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', () => { checkSubmitReady(); debouncedSave(); });
   });
 }
 
 function debouncedSave() {
   if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
+  saveTimer = setTimeout(() => saveToLocalStorage(), 1500);
 }
 
-/* ---- TOAST ---- */
+/* ============================================================
+   TOAST
+   ============================================================ */
 function toast(type, msg) {
-  var container = document.getElementById('toastContainer');
-  var el = document.createElement('div');
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
   el.className = 'toast toast-' + type;
   el.textContent = msg;
   container.appendChild(el);
-  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+  setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
 }
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T01-TC-v3-estudante.html
+   Arquivo fonte: T01-TC-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T01-TC-v3-estudante.html';
+var ARQUIVO_FONTE = 'T01-TC-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
