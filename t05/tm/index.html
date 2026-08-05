@@ -518,6 +518,8 @@ body {
    (5 R + 4 F + 3 U) · R/F = 1 pt · U = 2 pt · total 10 pt
    Fonte: T05-TM-v1-banco.md · ancorado em T05-TT-v8.md
    ============================================================ */
+/* Alternativa correta reposicionada por embaralhar.js — 3 itens por letra (A-D).
+   Distratores mantem a ordem relativa; feedbacks reetiquetados junto. */
 const ITENS = {
 
   R1: { id:"T05-TM-R1", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -540,31 +542,31 @@ const ITENS = {
     enunciado:"A espessura de uma folha de ouro batido — como as das igrejas de Ouro Preto — é <strong>0,000 050 m</strong>. <strong>Qual alternativa expressa esse número na forma canônica?</strong>",
     opcoes:[
       {letra:"A", texto:"50 × 10⁻⁶ m"},
-      {letra:"B", texto:"0,5 × 10⁻⁴ m"},
-      {letra:"C", texto:"5,0 × 10⁻⁵ m"},
+      {letra:"B", texto:"5,0 × 10⁻⁵ m"},
+      {letra:"C", texto:"0,5 × 10⁻⁴ m"},
       {letra:"D", texto:"5,0 × 10⁵ m"}
     ],
-    correta:"C",
+    correta:"B",
     feedbacks:{
-      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A vírgula desloca 5 casas para a direita: 5,0 × 10⁻⁵ m, com coeficiente 5,0 ∈ [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Número menor que 1 sempre tem expoente negativo (Tópico 2, Equação 2).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 5,0 × 10⁻⁵ m = 50 µm — a espessura que o mestre dourador do século XVIII conseguia bater à mão.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> A vírgula desloca 5 casas para a direita: 5,0 × 10⁻⁵ m, com coeficiente 5,0 ∈ [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Número menor que 1 sempre tem expoente negativo (Tópico 2, Equação 2).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 5,0 × 10⁻⁵ m = 50 µm — a espessura que o mestre dourador do século XVIII conseguia bater à mão.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 50 × 10⁻⁶ é numericamente equivalente, mas não é canônico: o coeficiente 50 é maior que 10. Ajuste para 5,0 × 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 2 do Texto Temático (TT), Tópico 2.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,5 é menor que 1 — também fora do intervalo [1, 10). Ajuste para 5,0 × 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O coeficiente precisa ter exatamente um algarismo diferente de zero antes da vírgula.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,5 é menor que 1 — também fora do intervalo [1, 10). Ajuste para 5,0 × 10⁻⁵.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O coeficiente precisa ter exatamente um algarismo diferente de zero antes da vírgula.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 5,0 × 10⁵ m são 500 km. O número é menor que 1, logo o expoente é negativo.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente invertido.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Zeros à esquerda ⇒ expoente negativo.</div>"}
     } },
 
   R3: { id:"T05-TM-R3", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
     enunciado:"O Brasil produz por ano <strong>4,11 × 10⁸ t</strong> de minério de ferro e <strong>8,8 × 10¹ t</strong> de ouro. <strong>Em ordem de grandeza, quantas vezes se produz mais ferro do que ouro?</strong>",
     opcoes:[
-      {letra:"A", texto:"cerca de 10⁷ vezes — a diferença entre os expoentes é 8 − 1 = 7."},
-      {letra:"B", texto:"cerca de 10⁹ vezes — somam-se os expoentes das duas produções."},
-      {letra:"C", texto:"cerca de 10⁸ vezes — usa-se o expoente da maior das duas."},
+      {letra:"A", texto:"cerca de 10⁹ vezes — somam-se os expoentes das duas produções."},
+      {letra:"B", texto:"cerca de 10⁸ vezes — usa-se o expoente da maior das duas."},
+      {letra:"C", texto:"cerca de 10⁷ vezes — a diferença entre os expoentes é 8 − 1 = 7."},
       {letra:"D", texto:"7 vezes — a diferença entre os expoentes é o próprio resultado."}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Equação 4: razão = 10^(n₁ − n₂) = 10^(8−1) = 10⁷. A razão exata (≈ 4,67 × 10⁶) está nessa mesma casa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Comparar escalas é dividir — e dividir potências de 10 é subtrair expoentes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Dez milhões de vezes mais ferro que ouro: a razão explica por que o ferro é medido em trens e o ouro, em cofres.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes equivale a MULTIPLICAR as duas produções; comparar exige subtrair.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente do maior sozinho ignora o tamanho do menor — a razão depende dos dois.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique razão = 10^(n₁ − n₂).</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Equação 4: razão = 10^(n₁ − n₂) = 10^(8−1) = 10⁷. A razão exata (≈ 4,67 × 10⁶) está nessa mesma casa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Comparar escalas é dividir — e dividir potências de 10 é subtrair expoentes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Dez milhões de vezes mais ferro que ouro: a razão explica por que o ferro é medido em trens e o ouro, em cofres.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes equivale a MULTIPLICAR as duas produções; comparar exige subtrair.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente do maior sozinho ignora o tamanho do menor — a razão depende dos dois.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — confusão entre grandezas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Aplique razão = 10^(n₁ − n₂).</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 7 é o EXPOENTE do resultado, não o resultado: a razão é 10⁷, ou seja, dez milhões.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — expoente confundido com o valor.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 4 do Texto Temático (TT), Tópico 3.</div>"}
     } },
 
@@ -572,16 +574,16 @@ const ITENS = {
     enunciado:"Pedro calcula a massa de ferro contida na produção anual de minério, cujo teor médio é <strong>6,5 × 10⁻¹</strong>. <strong>O produto (4,11 × 10⁸ t) × (6,5 × 10⁻¹) é:</strong>",
     opcoes:[
       {letra:"A", texto:"2,67 × 10⁷ t de Fe"},
-      {letra:"B", texto:"2,67 × 10⁸ t de Fe"},
-      {letra:"C", texto:"26,7 × 10⁷ t de Fe"},
-      {letra:"D", texto:"4,76 × 10⁸ t de Fe"}
+      {letra:"B", texto:"26,7 × 10⁷ t de Fe"},
+      {letra:"C", texto:"4,76 × 10⁸ t de Fe"},
+      {letra:"D", texto:"2,67 × 10⁸ t de Fe"}
     ],
-    correta:"B",
+    correta:"D",
     feedbacks:{
-      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (4,11 × 6,5) × 10^(8−1) = 26,7 × 10⁷ = 2,67 × 10⁸ t — coeficientes multiplicam, expoentes somam, depois ajusta-se a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O ajuste final é a etapa que mais se esquece (Tópico 4, Equação 5).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 267 milhões de toneladas de ferro metálico por ano.</div>"},
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (4,11 × 6,5) × 10^(8−1) = 26,7 × 10⁷ = 2,67 × 10⁸ t — coeficientes multiplicam, expoentes somam, depois ajusta-se a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> O ajuste final é a etapa que mais se esquece (Tópico 4, Equação 5).</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 267 milhões de toneladas de ferro metálico por ano.</div>"},
       A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O coeficiente está certo, mas ao passar de 26,7 × 10⁷ para 2,67 o expoente sobe: 2,67 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro no ajuste do expoente.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Ao dividir o coeficiente por 10, some 1 ao expoente.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Numericamente correto, mas não canônico: 26,7 é maior que 10. Ajuste para 2,67 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,11 ÷ 6,5 ≈ 0,63 e 4,11 × 6,5 = 26,7 — a operação pedida é multiplicação.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — divisão no lugar da multiplicação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"}
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Numericamente correto, mas não canônico: 26,7 é maior que 10. Ajuste para 2,67 × 10⁸.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,11 ÷ 6,5 ≈ 0,63 e 4,11 × 6,5 = 26,7 — a operação pedida é multiplicação.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — divisão no lugar da multiplicação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 5 do Texto Temático (TT), Tópico 4.</div>"}
     } },
 
   R5: { id:"T05-TM-R5", bloom:"L1-L2", pts:1, tipo:'MC', tipoLabel:"Revisão Conceitual",
@@ -603,15 +605,15 @@ const ITENS = {
   F1: { id:"T05-TM-F1", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Converta para a forma canônica: (I) produção brasileira de bauxita, 32 000 000 t/ano; (II) teor de ouro numa mina típica, 0,000 010 t de Au por tonelada; (III) raio médio da Terra, 6 370 000 m.</em><br><br><strong>Os três valores são, respectivamente:</strong>",
     opcoes:[
-      {letra:"A", texto:"3,2 × 10⁷ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
-      {letra:"B", texto:"3,2 × 10⁸ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
+      {letra:"A", texto:"3,2 × 10⁸ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
+      {letra:"B", texto:"3,2 × 10⁷ t/ano · 1,0 × 10⁻⁵ t/t · 6,37 × 10⁶ m"},
       {letra:"C", texto:"3,2 × 10⁷ t/ano · 1,0 × 10⁻⁶ t/t · 6,37 × 10⁷ m"},
       {letra:"D", texto:"32 × 10⁶ t/ano · 10 × 10⁻⁶ t/t · 63,7 × 10⁵ m"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 7 casas à esquerda em (I), 5 à direita em (II) e 6 à esquerda em (III) — os três coeficientes ficam em [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Conte os deslocamentos da vírgula: esse número É o expoente.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma regra vale de um teor de ouro ao raio da Terra — 12 ordens de grandeza na mesma linha.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 32 000 000 tem 7 casas de deslocamento, não 8: 3,2 × 10⁷.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Recontagem: 3,2 → 32 → 320 … até 32 000 000.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 7 casas à esquerda em (I), 5 à direita em (II) e 6 à esquerda em (III) — os três coeficientes ficam em [1, 10).</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Conte os deslocamentos da vírgula: esse número É o expoente.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A mesma regra vale de um teor de ouro ao raio da Terra — 12 ordens de grandeza na mesma linha.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 32 000 000 tem 7 casas de deslocamento, não 8: 3,2 × 10⁷.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Recontagem: 3,2 → 32 → 320 … até 32 000 000.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,000 010 → 5 casas → 1,0 × 10⁻⁵; e 6 370 000 → 6 casas → 6,37 × 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Marque a vírgula e conte casa por casa.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os três valores estão numericamente certos, mas nenhum coeficiente está no intervalo [1, 10).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 2 e 3 do Texto Temático (TT), Tópico 2.</div>"}
     } },
@@ -619,33 +621,33 @@ const ITENS = {
   F2: { id:"T05-TM-F2", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Complete a tabela de equivalências:</em><br><br>411 000 000&nbsp;&nbsp;↔&nbsp;&nbsp;?<br>?&nbsp;&nbsp;↔&nbsp;&nbsp;1,36 × 10⁵<br>0,000 000 001 6&nbsp;&nbsp;↔&nbsp;&nbsp;?<br><br><strong>A sequência correta é:</strong>",
     opcoes:[
-      {letra:"A", texto:"4,11 × 10⁸ · 136 000 · 1,6 × 10⁻⁹"},
-      {letra:"B", texto:"4,11 × 10⁸ · 13 600 · 1,6 × 10⁻⁸"},
-      {letra:"C", texto:"4,11 × 10⁹ · 1 360 000 · 1,6 × 10⁻⁹"},
+      {letra:"A", texto:"4,11 × 10⁸ · 13 600 · 1,6 × 10⁻⁸"},
+      {letra:"B", texto:"4,11 × 10⁹ · 1 360 000 · 1,6 × 10⁻⁹"},
+      {letra:"C", texto:"4,11 × 10⁸ · 136 000 · 1,6 × 10⁻⁹"},
       {letra:"D", texto:"41,1 × 10⁷ · 136 000 · 16 × 10⁻¹⁰"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 411 000 000 = 4,11 × 10⁸; 1,36 × 10⁵ = 136 000; 0,000 000 001 6 = 1,6 × 10⁻⁹.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A conversão vai nos dois sentidos com a mesma contagem de casas.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Ir e voltar entre as duas notações é o teste mais rápido de que você entendeu a Equação 3.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,36 × 10⁵ = 136 000 (5 casas à direita), não 13 600; e 0,000 000 001 6 tem 9 casas, não 8.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Conte os zeros um a um antes de responder.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 411 000 000 tem 8 casas de deslocamento (4,11 × 10⁸) e 1,36 × 10⁵ é 136 000, não 1 360 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Verifique cada linha isoladamente.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> 411 000 000 = 4,11 × 10⁸; 1,36 × 10⁵ = 136 000; 0,000 000 001 6 = 1,6 × 10⁻⁹.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> A conversão vai nos dois sentidos com a mesma contagem de casas.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Ir e voltar entre as duas notações é o teste mais rápido de que você entendeu a Equação 3.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,36 × 10⁵ = 136 000 (5 casas à direita), não 13 600; e 0,000 000 001 6 tem 9 casas, não 8.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Conte os zeros um a um antes de responder.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 411 000 000 tem 8 casas de deslocamento (4,11 × 10⁸) e 1,36 × 10⁵ é 136 000, não 1 360 000.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — contagem de casas.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Verifique cada linha isoladamente.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Os valores equivalem, mas 41,1 e 16 estão fora do intervalo [1, 10).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 3 do Texto Temático (TT), Tópico 2.</div>"}
     } },
 
   F3: { id:"T05-TM-F3", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
     enunciado:"<em>Resolva as três operações:</em><br><br>(a) (3,0 × 10²) × (2,0 × 10³)<br>(b) (8,8 × 10¹) ÷ (8,8 × 10⁶)<br>(c) (4,0 × 10⁷) + (1,2 × 10⁷)<br><br><strong>Os resultados, na forma canônica, são:</strong>",
     opcoes:[
-      {letra:"A", texto:"6,0 × 10⁵ · 1,0 × 10⁻⁵ · 5,2 × 10⁷"},
-      {letra:"B", texto:"6,0 × 10⁶ · 1,0 × 10⁵ · 5,2 × 10¹⁴"},
-      {letra:"C", texto:"6,0 × 10⁵ · 1,0 × 10⁵ · 5,2 × 10⁷"},
-      {letra:"D", texto:"5,0 × 10⁵ · 1,0 × 10⁻⁵ · 4,8 × 10⁷"}
+      {letra:"A", texto:"6,0 × 10⁶ · 1,0 × 10⁵ · 5,2 × 10¹⁴"},
+      {letra:"B", texto:"6,0 × 10⁵ · 1,0 × 10⁵ · 5,2 × 10⁷"},
+      {letra:"C", texto:"5,0 × 10⁵ · 1,0 × 10⁻⁵ · 4,8 × 10⁷"},
+      {letra:"D", texto:"6,0 × 10⁵ · 1,0 × 10⁻⁵ · 5,2 × 10⁷"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Multiplicação soma expoentes (2+3=5); divisão subtrai (1−6=−5); adição com expoentes iguais conserva o expoente.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Três operações, três regras distintas — é o coração do Tópico 4.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” encadeia essas três regras num único problema real.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Na divisão o expoente é 1 − 6 = −5 (não +5), e na adição o expoente se conserva (10⁷, não 10¹⁴).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regras trocadas entre as operações.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5, 6 e 7 do Texto Temático (TT), Tópico 4.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Só a divisão saiu errada: 10¹ ÷ 10⁶ = 10^(1−6) = 10⁻⁵. Dividir por um número maior dá resultado menor que 1.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente na divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,0 × 2,0 = 6,0 (não 5,0) e 4,0 + 1,2 = 5,2 (não 4,8) — os expoentes estão certos, os coeficientes não.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético nos coeficientes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça as contas dos coeficientes separadamente.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Multiplicação soma expoentes (2+3=5); divisão subtrai (1−6=−5); adição com expoentes iguais conserva o expoente.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Três operações, três regras distintas — é o coração do Tópico 4.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> A questão “Pense e Use” encadeia essas três regras num único problema real.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Na divisão o expoente é 1 − 6 = −5 (não +5), e na adição o expoente se conserva (10⁷, não 10¹⁴).</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regras trocadas entre as operações.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5, 6 e 7 do Texto Temático (TT), Tópico 4.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Só a divisão saiu errada: 10¹ ÷ 10⁶ = 10^(1−6) = 10⁻⁵. Dividir por um número maior dá resultado menor que 1.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — sinal do expoente na divisão.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,0 × 2,0 = 6,0 (não 5,0) e 4,0 + 1,2 = 5,2 (não 4,8) — os expoentes estão certos, os coeficientes não.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — erro aritmético nos coeficientes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Refaça as contas dos coeficientes separadamente.</div>"}
     } },
 
   F4: { id:"T05-TM-F4", bloom:"L3", pts:1, tipo:'MC', tipoLabel:"Pense e Faça",
@@ -667,15 +669,15 @@ const ITENS = {
   U1: { id:"T05-TM-U1", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O Brasil produziu <strong>1,36 × 10⁵ t</strong> de nióbio em 2023 (Quadro 2 do Texto Temático). O gerente de produção precisa da média mensal para planejar os embarques.</em><br><br><strong>Pela Equação 6 (divisão em notação científica), a produção média mensal é:</strong>",
     opcoes:[
-      {letra:"A", texto:"1,13 × 10⁴ t/mês"},
-      {letra:"B", texto:"1,13 × 10⁵ t/mês"},
+      {letra:"A", texto:"1,13 × 10⁵ t/mês"},
+      {letra:"B", texto:"1,13 × 10⁴ t/mês"},
       {letra:"C", texto:"1,63 × 10⁶ t/mês"},
       {letra:"D", texto:"11,3 × 10³ t/mês"}
     ],
-    correta:"A",
+    correta:"B",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (1,36 ÷ 1,2) × 10^(5−1) = 1,13 × 10⁴ t/mês.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Escrever 12 como 1,2 × 10¹ deixa a divisão de expoentes explícita.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 11 300 t por mês — o Brasil responde por mais de 90 % do nióbio do mundo.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente cai na divisão: 10^(5−1) = 10⁴. Dividir por 12 não pode manter a mesma casa decimal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — expoente não atualizado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (1,36 ÷ 1,2) × 10^(5−1) = 1,13 × 10⁴ t/mês.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Escrever 12 como 1,2 × 10¹ deixa a divisão de expoentes explícita.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Cerca de 11 300 t por mês — o Brasil responde por mais de 90 % do nióbio do mundo.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O expoente cai na divisão: 10^(5−1) = 10⁴. Dividir por 12 não pode manter a mesma casa decimal.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E8 — expoente não atualizado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 6 do Texto Temático (TT), Tópico 4.</div>"},
       C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 1,36 × 1,2 = 1,63 — você multiplicou. A produção mensal é uma DIVISÃO por 12.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — inversão da operação.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> A média mensal é sempre menor que o total anual.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas 11,3 é maior que 10 — a forma canônica é 1,13 × 10⁴.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Ajuste o coeficiente para o intervalo [1, 10).</div>"}
     } },
@@ -683,33 +685,33 @@ const ITENS = {
   U2: { id:"T05-TM-U2", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>A equipe de topografia da Mina do Paschoal mede uma frente de lavra retangular: comprimento <strong>3,0 × 10² m</strong> e largura <strong>4,0 × 10¹ m</strong>. O relatório técnico exige a área em notação científica.</em><br><br><strong>Pela Equação 5 (multiplicação em notação científica), a área é:</strong>",
     opcoes:[
-      {letra:"A", texto:"1,2 × 10⁴ m²"},
-      {letra:"B", texto:"12,0 × 10³ m²"},
-      {letra:"C", texto:"1,2 × 10³ m²"},
+      {letra:"A", texto:"12,0 × 10³ m²"},
+      {letra:"B", texto:"1,2 × 10³ m²"},
+      {letra:"C", texto:"1,2 × 10⁴ m²"},
       {letra:"D", texto:"7,0 × 10² m²"}
     ],
-    correta:"A",
+    correta:"C",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (3,0 × 4,0) × 10^(2+1) = 12,0 × 10³ = 1,2 × 10⁴ m² — com o ajuste final para a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> 12 000 m² é pouco mais que um campo de futebol.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Área em notação científica entra direto no cálculo de volume e de massa lavrada.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas falta o ajuste: 12,0 é maior que 10, logo 1,2 × 10⁴ m².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O ajuste é a última etapa da Equação 5.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ao passar de 12,0 × 10³ para 1,2, o expoente SOBE para 10⁴.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — ajuste do expoente na direção errada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Dividiu o coeficiente por 10? Some 1 ao expoente.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> (3,0 × 4,0) × 10^(2+1) = 12,0 × 10³ = 1,2 × 10⁴ m² — com o ajuste final para a forma canônica.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> 12 000 m² é pouco mais que um campo de futebol.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> Área em notação científica entra direto no cálculo de volume e de massa lavrada.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O valor está certo, mas falta o ajuste: 12,0 é maior que 10, logo 1,2 × 10⁴ m².</div><div class=\"fb-level\"><strong>② ERRO:</strong> E11 — forma canônica incompleta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> O ajuste é a última etapa da Equação 5.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Ao passar de 12,0 × 10³ para 1,2, o expoente SOBE para 10⁴.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — ajuste do expoente na direção errada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Dividiu o coeficiente por 10? Some 1 ao expoente.</div>"},
       D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3,0 + 4,0 = 7,0 — área é produto, não soma.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — operação trocada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Área de retângulo = comprimento × largura.</div>"}
     } },
 
   U3: { id:"T05-TM-U3", bloom:"L3", pts:2, tipo:'MC', tipoLabel:"Pense e Use",
     enunciado:"<em>O relatório ambiental da Mina do Chico Rei registra dois depósitos de rejeito: o norte com <strong>2,4 × 10⁶ m³</strong> e o sul com <strong>8,0 × 10⁵ m³</strong>. O técnico precisa do volume total para o plano de fechamento.</em><br><br><strong>Pela Equação 7 (adição em notação científica), o volume total é:</strong>",
     opcoes:[
-      {letra:"A", texto:"3,2 × 10⁶ m³"},
-      {letra:"B", texto:"1,04 × 10⁷ m³"},
-      {letra:"C", texto:"3,2 × 10¹¹ m³"},
-      {letra:"D", texto:"2,4 × 10⁶ m³"}
+      {letra:"A", texto:"1,04 × 10⁷ m³"},
+      {letra:"B", texto:"3,2 × 10¹¹ m³"},
+      {letra:"C", texto:"2,4 × 10⁶ m³"},
+      {letra:"D", texto:"3,2 × 10⁶ m³"}
     ],
-    correta:"A",
+    correta:"D",
     feedbacks:{
-      A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Iguala-se o expoente — 8,0 × 10⁵ = 0,80 × 10⁶ — e soma-se: (2,4 + 0,80) × 10⁶ = 3,2 × 10⁶ m³.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Na adição, igualar expoentes vem ANTES de somar coeficientes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 3,2 milhões de metros cúbicos é o número que dimensiona o plano de fechamento da mina.</div>"},
-      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar 2,4 + 8,0 direto ignora que os expoentes são diferentes — 8,0 × 10⁵ vale 0,80 × 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — soma sem igualar expoentes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 4.</div>"},
-      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes é regra da multiplicação; na adição o expoente comum é conservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra da multiplicação aplicada à soma.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5 e 7 do Texto Temático (TT), Tópico 4.</div>"},
-      D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O depósito sul não desaparece por ser menor: ele acrescenta 0,80 × 10⁶ m³ ao total.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — parcela descartada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Some as duas parcelas depois de igualar os expoentes.</div>"}
+      D:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> Iguala-se o expoente — 8,0 × 10⁵ = 0,80 × 10⁶ — e soma-se: (2,4 + 0,80) × 10⁶ = 3,2 × 10⁶ m³.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> Na adição, igualar expoentes vem ANTES de somar coeficientes.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> 3,2 milhões de metros cúbicos é o número que dimensiona o plano de fechamento da mina.</div>"},
+      A:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar 2,4 + 8,0 direto ignora que os expoentes são diferentes — 8,0 × 10⁵ vale 0,80 × 10⁶.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — soma sem igualar expoentes.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia a Equação 7 do Texto Temático (TT), Tópico 4.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> Somar expoentes é regra da multiplicação; na adição o expoente comum é conservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — regra da multiplicação aplicada à soma.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Releia as Equações 5 e 7 do Texto Temático (TT), Tópico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> O depósito sul não desaparece por ser menor: ele acrescenta 0,80 × 10⁶ m³ ao total.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — parcela descartada.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Some as duas parcelas depois de igualar os expoentes.</div>"}
     } }
 };
 
@@ -1568,11 +1570,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T05-TM-v1-estudante.html
+   Arquivo fonte: T05-TM-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T05-TM-v1-estudante.html';
+var ARQUIVO_FONTE = 'T05-TM-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
