@@ -1616,8 +1616,17 @@ function enviarColeta(isRetry) {
 
 <!-- NAV-TRILHA (injetada na publicacao — nao existe no OA canonico) -->
 <div style="text-align:center; padding:18px 12px 28px; font-family:'Courier New',monospace; font-size:.85rem;">
-  <a href="../../#t04" style="color:#C8A84B; text-decoration:none; border:1px solid #C8A84B; padding:9px 16px; display:inline-block; margin:4px;">&#9776; Ver todos os OAs da trilha</a>
-  <a href="../../" style="color:#999; text-decoration:none; border:1px solid #666; padding:9px 16px; display:inline-block; margin:4px;">In&iacute;cio do site</a>
+  <a id="navTrilhaOAs" href="../../#t04" style="color:#C8A84B; text-decoration:none; border:1px solid #C8A84B; padding:9px 16px; display:inline-block; margin:4px;">&#9776; Ver todos os OAs da trilha</a>
+  <a id="navTrilhaInicio" href="../../" style="color:#999; text-decoration:none; border:1px solid #666; padding:9px 16px; display:inline-block; margin:4px;">In&iacute;cio do site</a>
 </div>
+<script>
+/* Navegacao local (file://): href de pasta nao abre o index.html sozinho.
+   So quando a copia e aberta do disco, os dois links ganham o index.html
+   explicito. No site publicado nada muda. */
+if (location.protocol === 'file:') {
+  document.getElementById('navTrilhaOAs').setAttribute('href', '../../index.html#t04');
+  document.getElementById('navTrilhaInicio').setAttribute('href', '../../index.html');
+}
+</script>
 </body>
 </html>

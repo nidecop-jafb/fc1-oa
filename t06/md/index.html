@@ -40,9 +40,18 @@
 </header>
 <div class="wrap">
   <nav class="nav-trilha">
-    <a class="voltar" href="../../">&larr; todas as trilhas</a>
-    <a class="voltar" href="../../#t06">&#9776; Ver todos os OAs da trilha</a>
+    <a class="voltar" id="navTodas" href="../../">&larr; todas as trilhas</a>
+    <a class="voltar" id="navTrilha" href="../../#t06">&#9776; Ver todos os OAs da trilha</a>
   </nav>
+  <script>
+  /* Navegacao local (file://): href de pasta nao abre o index.html sozinho.
+     So quando a pagina e aberta do disco os links ganham o index.html
+     explicito. No site publicado nada muda. */
+  if (location.protocol === 'file:') {
+    document.getElementById('navTodas').setAttribute('href', '../../index.html');
+    document.getElementById('navTrilha').setAttribute('href', '../../index.html#t06');
+  }
+  </script>
   <div class="sub">Ou&ccedil;a antes da aula. D&aacute; para escutar aqui mesmo, sem baixar; a vers&atilde;o curta cobre o essencial e a padr&atilde;o aprofunda cada t&oacute;pico.</div>
 
     <div class="faixa">

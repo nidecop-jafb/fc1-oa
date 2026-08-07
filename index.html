@@ -180,5 +180,22 @@
     IFMG campus Ouro Preto - Coordenadoria da Área de Física (CODAFIS) - Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) · Primeira edição · 2026
   </div>
 </div>
+<script>
+/* Navegacao local (file://): o navegador nao abre o index.html sozinho em
+   href de pasta ("t01/pp/") — o clique cai numa pasta vazia. Aqui, SO quando
+   a pagina e aberta do disco, os links internos terminados em / ganham o
+   index.html explicito. No site publicado nada muda. */
+if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var links = document.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var h = links[i].getAttribute('href');
+      if (/^(https?:|mailto:|#)/.test(h)) continue;
+      var m = h.match(/^(.*\/)(#.*)?$/);
+      if (m) links[i].setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
+    }
+  });
+}
+</script>
 </body>
 </html>
