@@ -8,10 +8,17 @@
   :root { --ouro: #C8A84B; --verde: #4CAF7D; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0d0d0d; color: #e8e8e8; font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
+  .header { background: #161616; border-top: 3px solid var(--ouro); padding: 14px 20px; }
+  .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header .marca { width: 52px; height: 52px; flex-shrink: 0; }
+  .header h1 { font-family: 'Courier New', monospace; font-size: 1.35rem; color: #e8e8e8; letter-spacing: -0.01em; flex: 1 1 240px; line-height: 1.3; }
+  .header h1 .trilha-code { color: var(--ouro); }
+  .badge { display: inline-block; background: var(--ouro); color: #101010; padding: 4px 12px; font-family: 'Courier New', monospace; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+  .header-sub { max-width: 720px; margin: 6px auto 0; font-size: 0.88rem; color: #999; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 28px 20px 48px; }
+  .nav-trilha { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 28px; }
   a.voltar { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #888; text-decoration: none; }
   a.voltar:hover { color: var(--ouro); }
-  h1 { font-family: 'Courier New', monospace; font-size: 1.4rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--ouro); padding-bottom: 12px; margin: 16px 0 8px; }
   .sub { font-size: 0.95rem; color: #aaa; margin-bottom: 36px; }
   .faixa { border: 1px solid #444; padding: 18px; margin-bottom: 16px; }
   .rot { font-family: 'Courier New', monospace; font-size: 0.95rem; color: #fff; margin-bottom: 10px; }
@@ -24,10 +31,19 @@
 </style>
 </head>
 <body>
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T01</span> &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h1>
+    <span class="badge">Resumo em &Aacute;udio (MD)</span>
+  </div>
+  <div class="header-sub">Vers&atilde;o curta + vers&atilde;o padr&atilde;o &middot; ou&ccedil;a aqui ou baixe &middot; Pr&eacute;-Aula</div>
+</header>
 <div class="wrap">
-  <a class="voltar" href="../../">&larr; todas as trilhas</a>
-  <h1>T01 &middot; Resumo em &Aacute;udio (MD)</h1>
-  <div class="sub">F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia &mdash; ou&ccedil;a antes da aula. D&aacute; para escutar aqui mesmo, sem baixar; a vers&atilde;o curta cobre o essencial e a padr&atilde;o aprofunda cada t&oacute;pico.</div>
+  <nav class="nav-trilha">
+    <a class="voltar" href="../../">&larr; todas as trilhas</a>
+    <a class="voltar" href="../../#t01">&#9776; Ver todos os OAs da trilha</a>
+  </nav>
+  <div class="sub">Ou&ccedil;a antes da aula. D&aacute; para escutar aqui mesmo, sem baixar; a vers&atilde;o curta cobre o essencial e a padr&atilde;o aprofunda cada t&oacute;pico.</div>
 
     <div class="faixa">
       <div class="rot">Vers&atilde;o curta<span class="tag">Deep Dive &middot; PT-BR &middot; ~6 min</span></div>
