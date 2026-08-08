@@ -639,7 +639,12 @@ blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 600px) {
   .header h1 { font-size: 1.4rem; }
-  .conteudo { padding: 0 14px; }
+  .conteudo { padding: 0 14px 0 46px; }
+  .header { padding-left: 46px; padding-right: 46px; }
+  /* Gutter para as abas laterais: sem ele, as abas fixas da borda esquerda
+     cobrem o texto durante a rolagem em tela estreita. */
+  .toc-toggle, .musica-toggle, .ineditismo-toggle, .creditos-toggle, .figuras-toggle { font-size: 0.6rem; padding: 6px 6px; }
+  .toc-sidebar, .musica-sidebar, .ineditismo-sidebar, .creditos-sidebar, .figuras-sidebar { width: 82vw; }
   .toc-sidebar { width: 260px; }
   .toolbar { padding: 4px 8px; }
   .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
