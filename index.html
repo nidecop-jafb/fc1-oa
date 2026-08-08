@@ -34,6 +34,7 @@
   a.oa.drive .tag, a.oa.extra .tag { color: var(--ouro); }
   .footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid #333; font-size: 0.78rem; color: #888; font-family: 'Courier New', monospace; }
 
+/* ABAS:CSS-INICIO */
 /* ==== ABAS LATERAIS (padrao dos TT digitais) ==== */
 .aba-toggle { position: fixed; left: 0; z-index: 998; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #999; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; }
 .aba-toggle:hover { color: #C8A84B; }
@@ -55,9 +56,12 @@
   .wrap { padding-left: 46px; }
   .aba-toggle { font-size: .6rem; padding: 6px 6px; }
 }
+/* ABAS:CSS-FIM */
+
 </style>
 </head>
 <body>
+<!-- ABAS:INICIO -->
 <!-- ABAS LATERAIS -->
 <button class="aba-toggle" id="abaSiteT">Site</button>
 <aside class="aba-painel" id="abaSite">
@@ -93,6 +97,8 @@
   <p>Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC)</p>
   <p class="aba-nota">IFMG campus Ouro Preto · Primeira edição · 2026</p>
 </aside>
+<!-- ABAS:FIM -->
+
 
 <div class="wrap">
   <h1>Trilhas de Aprendizagem - Física Conceitual 1 aplicada à Mineração</h1>
@@ -233,6 +239,25 @@
   </div>
 </div>
 
+
+<script>
+/* Navegacao local (file://): o navegador nao abre o index.html sozinho em
+   href de pasta ("t01/pp/") — o clique cai numa pasta vazia. Aqui, SO quando
+   a pagina e aberta do disco, os links internos terminados em / ganham o
+   index.html explicito. No site publicado nada muda. */
+if (location.protocol === 'file:') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var links = document.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var h = links[i].getAttribute('href');
+      if (/^(https?:|mailto:|#)/.test(h)) continue;
+      var m = h.match(/^(.*\/)(#.*)?$/);
+      if (m) links[i].setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
+    }
+  });
+}
+</script>
+<!-- ABAS-JS:INICIO -->
 <script>
 /* Abas laterais: uma aberta por vez; clique fora fecha. */
 (function () {
@@ -258,22 +283,6 @@
   });
 })();
 </script>
-<script>
-/* Navegacao local (file://): o navegador nao abre o index.html sozinho em
-   href de pasta ("t01/pp/") — o clique cai numa pasta vazia. Aqui, SO quando
-   a pagina e aberta do disco, os links internos terminados em / ganham o
-   index.html explicito. No site publicado nada muda. */
-if (location.protocol === 'file:') {
-  document.addEventListener('DOMContentLoaded', function () {
-    var links = document.querySelectorAll('a[href]');
-    for (var i = 0; i < links.length; i++) {
-      var h = links[i].getAttribute('href');
-      if (/^(https?:|mailto:|#)/.test(h)) continue;
-      var m = h.match(/^(.*\/)(#.*)?$/);
-      if (m) links[i].setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
-    }
-  });
-}
-</script>
+<!-- ABAS-JS:FIM -->
 </body>
 </html>
