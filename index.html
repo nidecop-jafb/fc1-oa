@@ -33,9 +33,67 @@
   a.oa.drive, a.oa.extra { border-style: dashed; }
   a.oa.drive .tag, a.oa.extra .tag { color: var(--ouro); }
   .footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid #333; font-size: 0.78rem; color: #888; font-family: 'Courier New', monospace; }
+
+/* ==== ABAS LATERAIS (padrao dos TT digitais) ==== */
+.aba-toggle { position: fixed; left: 0; z-index: 998; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #999; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; }
+.aba-toggle:hover { color: #C8A84B; }
+#abaSiteT { top: 56px; }
+#abaMusicaT { top: 116px; }
+#abaIneditismoT { top: 202px; }
+#abaCreditosT { top: 322px; }
+.aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 380px; max-width: 88vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-painel.open { transform: translateX(0); }
+.aba-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 14px; }
+.aba-painel p { margin-bottom: 11px; }
+.aba-painel strong { color: #C8A84B; font-weight: normal; }
+.aba-painel em { color: #ddd; }
+.aba-painel a.aba-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-painel a.aba-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+.aba-painel .aba-nota { font-size: .8rem; color: #888; }
+@media (max-width: 800px) {
+  /* gutter: as abas fixas nao cobrem o conteudo em tela estreita */
+  .wrap { padding-left: 46px; }
+  .aba-toggle { font-size: .6rem; padding: 6px 6px; }
+}
 </style>
 </head>
 <body>
+<!-- ABAS LATERAIS -->
+<button class="aba-toggle" id="abaSiteT">Site</button>
+<aside class="aba-painel" id="abaSite">
+  <h3>Site</h3>
+  <p>Endereço: <strong>nidecop-jafb.github.io/fc1-oa</strong> — abre direto, sem senha e sem aplicativo. Nos OAs, a identificação é pelo <strong>RA</strong> (7 dígitos) com confirmação.</p>
+  <a class="aba-btn" href="_qr/">QR do site e cartaz A3 · imprimir</a>
+  <a class="aba-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+
+<button class="aba-toggle" id="abaMusicaT">Música</button>
+<aside class="aba-painel" id="abaMusica">
+  <h3>Música</h3>
+  <p>Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>: <strong>ler, escrever e medir</strong> ouvindo música instrumental — ela ajuda a concentração sem competir com a leitura.</p>
+  <p>Cada trilha tem a sua peça: ela aparece na barra do topo dos OAs da trilha e na aba Música do Texto Temático.</p>
+</aside>
+
+<button class="aba-toggle" id="abaIneditismoT">Ineditismo</button>
+<aside class="aba-painel" id="abaIneditismo">
+  <h3>Ineditismo</h3>
+  <p>Trilhas de Aprendizagem nasceu do diálogo entre docentes das Áreas de Física e de Mineração do IFMG campus Ouro Preto, com um objetivo: construir uma física aplicada ao curso Técnico em Mineração. Na Física Conceitual, o conceito e o modelo mental vêm antes de qualquer fórmula.</p>
+  <p>Cada trilha tem três paradas. A <strong>Pré-Aula</strong>, feita em casa, prepara e desafia o cérebro para o que será discutido em sala. A <strong>Aula</strong> é o encontro presencial, em que o professor conduz a construção do conhecimento. A <strong>Pós-Aula</strong>, feita no mesmo dia, consolida o que foi aprendido.</p>
+  <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
+  <p>Até onde a pesquisa dos autores alcançou, trilha de aprendizagem como metodologia aplicada ao ensino de física no curso técnico de mineração integrado ao ensino médio é algo que não existe no Brasil. Por exemplo, os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Boas-vindas — e sucesso na sua caminhada pelas Trilhas de Aprendizagem de Física Conceitual.</p>
+</aside>
+
+<button class="aba-toggle" id="abaCreditosT">Créditos</button>
+<aside class="aba-painel" id="abaCreditos">
+  <h3>Créditos</h3>
+  <p><strong>Autor</strong> — Julio Azevedo</p>
+  <p><strong>Coautoria</strong> — Felipe Beato</p>
+  <p>Coordenadoria da Área de Física (CODAFIS)</p>
+  <p>Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC)</p>
+  <p class="aba-nota">IFMG campus Ouro Preto · Primeira edição · 2026</p>
+</aside>
+
 <div class="wrap">
   <h1>Trilhas de Aprendizagem - Física Conceitual 1 aplicada à Mineração</h1>
   <div class="sub">
@@ -57,11 +115,8 @@
     </figure>
     <section>
       <h2 class="intro-t">Trilhas de Aprendizagem</h2>
-      <p>Trilhas de Aprendizagem são percursos de estudo estruturados para orientar, apoiar e avaliar o aprendizado dos estudantes em sua caminhada pelo mundo da física.</p>
-      <p>Nasceram do diálogo entre docentes das Áreas de Física e de Mineração do IFMG campus Ouro Preto, com um objetivo: construir uma física aplicada ao curso Técnico em Mineração.</p>
-      <p>Cada trilha tem três paradas. A <strong>Pré-Aula</strong>, feita em casa, prepara e desafia o cérebro para o que será discutido em sala. A <strong>Aula</strong> é o encontro presencial, em que o professor conduz a construção do conhecimento. A <strong>Pós-Aula</strong>, feita no mesmo dia, consolida o que foi aprendido.</p>
-      <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
-      <p>Boas-vindas — e sucesso na sua caminhada pelo mundo da física.</p>
+      <p>Percursos de estudo para orientar, apoiar e avaliar a sua caminhada pelo mundo da física — o conceito e o modelo mental antes de qualquer fórmula.</p>
+      <p>Escolha a trilha da semana abaixo. Quem somos, a música de estudo e o material de acesso estão nas <strong>abas da lateral esquerda</strong>.</p>
     </section>
   </div>
 
@@ -171,15 +226,38 @@
   </ul>
   <!-- TRILHAS:FIM -->
 
-  <h2>Material de acesso</h2>
-  <ul>
-    <li><a class="oa extra" href="_qr/">QR do site e cartaz de boas-vindas (A3)<span class="tag">imprimir &middot; mural, sala, slide</span></a></li>
-  </ul>
+  
 
   <div class="footer">
     IFMG campus Ouro Preto - Coordenadoria da Área de Física (CODAFIS) - Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) · Primeira edição · 2026
   </div>
 </div>
+
+<script>
+/* Abas laterais: uma aberta por vez; clique fora fecha. */
+(function () {
+  var pares = [['abaSiteT', 'abaSite'], ['abaMusicaT', 'abaMusica'],
+               ['abaIneditismoT', 'abaIneditismo'], ['abaCreditosT', 'abaCreditos']];
+  var abas = pares.map(function (p) {
+    return [document.getElementById(p[0]), document.getElementById(p[1])];
+  });
+  abas.forEach(function (par) {
+    par[0].addEventListener('click', function () {
+      abas.forEach(function (outro) {
+        if (outro[1] === par[1]) { outro[1].classList.toggle('open'); }
+        else { outro[1].classList.remove('open'); }
+      });
+    });
+  });
+  document.addEventListener('click', function (e) {
+    abas.forEach(function (par) {
+      if (!par[1].contains(e.target) && e.target !== par[0]) {
+        par[1].classList.remove('open');
+      }
+    });
+  });
+})();
+</script>
 <script>
 /* Navegacao local (file://): o navegador nao abre o index.html sozinho em
    href de pasta ("t01/pp/") — o clique cai numa pasta vazia. Aqui, SO quando
