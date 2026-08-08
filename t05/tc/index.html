@@ -408,8 +408,8 @@ body {
     <span class="piazzi-tag">Escrever</span>
     <span class="piazzi-tag">Medir</span>
     <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-    <a class="piazzi-yt" href="https://music.youtube.com/search?q=Debussy+Clair+de+Lune+Suite+Bergamasque" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Claude Debussy &mdash; Suite Bergamasque (Clair de Lune) &middot; 1890 &middot; piano solo &middot; ~17 min</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
   </div>
 
   <!-- VERSION SELECTOR -->
@@ -512,7 +512,7 @@ body {
 /* ============================================================
    BANCO DE QUESTÕES — VERSÃO ÚNICA × 5 QUESTÕES (A-E)
    Tarefa Complementar (TC-v3 ENEM-style digital) — 5 MC × 2 pt = 10 pt
-   Fonte: T05-TC-v2.md · ancorado em T05-TT-v8.md
+   Fonte: T05-TC-v3.md · ancorado em T05-TT-v8.md
    ============================================================ */
 const BANCO = {
   A: [
@@ -1455,11 +1455,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T05-TC-v2-estudante.html
+   Arquivo fonte: T05-TC-v3-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T05-TC-v2-estudante.html';
+var ARQUIVO_FONTE = 'T05-TC-v3-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;

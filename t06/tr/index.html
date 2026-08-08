@@ -8,7 +8,7 @@
   IMPORTACAO EM MOODLE:
   1. Adicionar atividade > Recurso > Arquivo
   2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T06-TR-v2-estudante.html" width="100%" height="3600"></iframe>
+  OU iframe: <iframe src="T06-TR-v3-estudante.html" width="100%" height="3600"></iframe>
 
   Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
   localStorage: prefixo ifmg_fc1_t01_tr_
@@ -708,8 +708,8 @@ main {
   <span class="piazzi-tag">Escrever</span>
   <span class="piazzi-tag">Medir</span>
   <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-  <a class="piazzi-yt" href="https://music.youtube.com/search?q=Schubert+Impromptus+D899+piano" target="_blank" rel="noopener">YouTube Music</a>
-  <span class="piazzi-text">Franz Schubert &mdash; Impromptus, D. 899 &middot; 1827 &middot; piano solo &middot; ~30 min</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLXyZd3QdGENs" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o de 7 cordas</span>
 </div>
 
 <div class="student-id">
@@ -1455,7 +1455,7 @@ function exportJSON() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'T06-TR-v2-versao' + v + '-' + (meta.nome || 'estudante').replace(/\s+/g, '_') + '.json';
+  a.download = 'T06-TR-v3-versao' + v + '-' + (meta.nome || 'estudante').replace(/\s+/g, '_') + '.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
