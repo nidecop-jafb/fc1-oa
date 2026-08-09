@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T07 · Referencial, Posição e Tempo — Estudante</title>
+<!--
+  IMPORTACAO EM MOODLE:
+  1. Adicionar atividade > Recurso > Arquivo
+  2. Upload deste .html > "Abrir em nova janela" > salvar.
+  OU iframe: <iframe src="T07-CD-v5-estudante.html" width="100%" height="2400"></iframe>
+
+  Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
+  localStorage: prefixo ifmg_fc1_t07_cd_
+-->
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --roxo: oklch(0.65 0.15 300);
+  --roxo-claro: oklch(0.25 0.05 300);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --r: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: oklch(0.14 0.02 260);
+  border-top: 3px solid var(--ouro);
+  padding: 14px 20px;
+}
+.header-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.header h1 {
+  font-size: 1.4rem; font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.header h1 .trilha-code { color: var(--azul); }
+.header .badge {
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r);
+  font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 960px; margin: 4px auto 0;
+  font-size: .88rem; color: var(--cinza);
+}
+
+/* ── PIAZZI BAR ── */
+.piazzi-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; flex-wrap: wrap;
+  background: oklch(0.14 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 10px 16px; margin-bottom: 16px;
+  font-size: .78rem;
+}
+.piazzi-bar .piazzi-ref { color: var(--cinza); }
+.piazzi-bar .piazzi-tag {
+  display: inline-block;
+  border: 1px solid var(--ouro); color: var(--ouro);
+  padding: 2px 10px; font-size: .72rem;
+  font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.piazzi-bar .piazzi-text { color: var(--texto); font-style: italic; font-size: .74rem; }
+.piazzi-bar .piazzi-yt {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--erro); color: var(--branco);
+  padding: 4px 12px; font-size: .72rem;
+  font-weight: 700; text-decoration: none; cursor: pointer;
+}
+.piazzi-bar .piazzi-yt::before { content: '\25B6'; font-size: .6rem; }
+
+/* ── MAIN ── */
+main {
+  max-width: 960px; margin: 0 auto;
+  padding: 20px 16px;
+}
+
+/* ── TOOLBAR: FILTROS + PROGRESSO ── */
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  margin-bottom: 20px;
+}
+.filters {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  align-items: center;
+}
+.filters .filter-label {
+  font-size: .68rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 600; margin-right: 4px;
+}
+.btn-filter {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 5px 14px;
+  font-size: .72rem; font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: all .2s;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.btn-filter:hover { border-color: var(--ouro); }
+.btn-filter.active-all { background: var(--cinza-borda); border-color: var(--branco); color: var(--branco); }
+.btn-filter.active-conceito { background: oklch(0.28 0.08 45); border-color: var(--azul); color: var(--azul); }
+.btn-filter.active-exemplo { background: oklch(0.28 0.06 95); border-color: var(--ouro); color: var(--ouro); }
+.btn-filter.active-pergunta { background: oklch(0.28 0.06 150); border-color: var(--verde); color: var(--verde); }
+.btn-filter.active-conexao { background: oklch(0.24 0.06 25); border-color: var(--erro); color: var(--erro); }
+.btn-filter.active-aplicacao { background: oklch(0.26 0.06 300); border-color: var(--roxo); color: var(--roxo); }
+
+.progress-area {
+  display: flex; align-items: center; gap: 10px;
+}
+.progress-counter {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--ouro);
+  font-weight: 700;
+}
+.progress-bar-track {
+  width: 120px; height: 5px;
+  background: oklch(0.20 0.02 260);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--ouro);
+  transition: width .3s;
+}
+
+/* ── ACTION BAR ── */
+.action-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.btn-action {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 7px 16px;
+  font-size: .72rem; font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: all .2s;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.btn-action:hover { border-color: var(--ouro); color: var(--ouro); }
+.btn-action.shuffle { border-color: var(--verde); color: var(--verde); }
+.btn-action.shuffle:hover { background: var(--verde-claro); }
+.btn-action.reset { border-color: var(--erro); color: var(--erro); }
+.btn-action.reset:hover { background: var(--erro-claro); }
+
+/* ── GRID DE CARTOES ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ── CARTAO FLIP ── */
+.card-slot {
+  perspective: 900px;
+  min-height: 220px;
+}
+.card-slot.hidden { display: none; }
+
+.card {
+  width: 100%; height: 100%;
+  min-height: 220px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.card.flipped { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 14px;
+  overflow: hidden;
+}
+
+.card-front {
+  background: var(--superficie);
+  border-left: 3px solid var(--cinza-borda);
+}
+.card-back {
+  transform: rotateY(180deg);
+  background: oklch(0.20 0.02 260);
+  border-left: 3px solid var(--cinza-borda);
+}
+
+/* category border colors */
+.cat-conceito .card-front,
+.cat-conceito .card-back { border-left-color: var(--azul); }
+.cat-exemplo .card-front,
+.cat-exemplo .card-back { border-left-color: var(--ouro); }
+.cat-pergunta .card-front,
+.cat-pergunta .card-back { border-left-color: var(--verde); }
+.cat-conexao .card-front,
+.cat-conexao .card-back { border-left-color: var(--erro); }
+.cat-aplicacao .card-front,
+.cat-aplicacao .card-back { border-left-color: var(--roxo); }
+
+/* ── CARD HEADER ── */
+.card-cat-tag {
+  font-size: .6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+.cat-conceito .card-cat-tag { background: var(--azul-bg); color: var(--azul); }
+.cat-exemplo .card-cat-tag { background: var(--ouro-claro); color: var(--ouro); }
+.cat-pergunta .card-cat-tag { background: var(--verde-claro); color: var(--verde); }
+.cat-conexao .card-cat-tag { background: var(--erro-claro); color: var(--erro); }
+.cat-aplicacao .card-cat-tag { background: var(--roxo-claro); color: var(--roxo); }
+
+/* ── CARD BODY ── */
+.card-question {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  font-size: .88rem;
+  font-weight: 700;
+  line-height: 1.45;
+  padding: 4px 0;
+}
+.card-answer {
+  flex: 1;
+  font-size: .78rem;
+  line-height: 1.55;
+  color: oklch(0.85 0 0);
+  overflow-y: auto;
+}
+.card-answer .eq-line {
+  font-family: var(--mono);
+  color: var(--ouro);
+  font-weight: 700;
+  font-size: .82rem;
+  margin: 4px 0;
+}
+
+/* ── CARD FOOTER ── */
+.card-id {
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--cinza);
+  text-align: right;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.card-flip-hint {
+  font-size: .58rem;
+  color: var(--cinza);
+  text-align: center;
+  margin-top: 6px;
+  letter-spacing: .3px;
+}
+.card.flipped .card-flip-hint-front { display: none; }
+
+/* ── FLIPPED INDICATOR ── */
+.card-slot.reviewed .card-front::after {
+  content: '';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 8px; height: 8px;
+  background: var(--verde);
+}
+
+/* ── ENCERRAMENTO ── */
+.encerramento {
+  max-width: 960px; margin: 30px auto 10px;
+  padding: 20px;
+  border-top: 2px solid var(--ouro);
+  text-align: center;
+}
+.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-acao {
+  color: var(--ouro); font-size: .95rem;
+  text-transform: uppercase; font-weight: 700;
+  margin-top: 10px; line-height: 1.5;
+}
+.encerramento .fecho-nidec {
+  color: var(--cinza); font-size: .9rem;
+  margin-top: 14px; line-height: 1.55;
+}
+
+/* ── FOOTER ── */
+.footer-line {
+  text-align: center;
+  font-size: .85rem;
+  color: var(--cinza);
+  padding: 16px 12px;
+  margin-top: 12px;
+  letter-spacing: .5px;
+  line-height: 1.5;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .header-inner { flex-direction: column; text-align: center; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .filters { justify-content: center; }
+  .progress-area { justify-content: center; }
+  .action-bar { justify-content: center; }
+  .card-slot { min-height: 200px; }
+  .card { min-height: 200px; }
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: #fff; color: #111; }
+  .card-front { background: #f5f5f5; border-left-color: #888; }
+  .card-back { background: #eee; }
+  .btn-action, .btn-filter { display: none; }
+  .header { border-top-color: #333; background: #f5f5f5; }
+  .card { transform: none !important; }
+  .card-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T07</span> &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</h1>
+    <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
+  </div>
+  <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
+</header>
+
+<main>
+
+<!-- PIAZZI BAR -->
+<div class="piazzi-bar">
+  <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+  <span class="piazzi-tag">Ler</span>
+  <span class="piazzi-tag">Escrever</span>
+  <span class="piazzi-tag">Medir</span>
+  <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLLck6FRNMdAs" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Orquestra Ouro Preto &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra</span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="filters">
+    <span class="filter-label">Filtrar:</span>
+    <button class="btn-filter active-all" data-cat="all" onclick="filterCards('all', this)">Todos (25)</button>
+    <button class="btn-filter" data-cat="conceito" onclick="filterCards('conceito', this)">Conceito (5)</button>
+    <button class="btn-filter" data-cat="exemplo" onclick="filterCards('exemplo', this)">Equa&ccedil;&atilde;o (5)</button>
+    <button class="btn-filter" data-cat="pergunta" onclick="filterCards('pergunta', this)">Vocabul&aacute;rio (5)</button>
+    <button class="btn-filter" data-cat="conexao" onclick="filterCards('conexao', this)">Conex&atilde;o (5)</button>
+    <button class="btn-filter" data-cat="aplicacao" onclick="filterCards('aplicacao', this)">Aplica&ccedil;&atilde;o (5)</button>
+  </div>
+  <div class="progress-area">
+    <span class="progress-counter" id="progress-counter">0/25 revisados</span>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <button class="btn-action shuffle" onclick="shuffleCards()">Embaralhar</button>
+  <button class="btn-action reset" onclick="resetProgress()">Reiniciar progresso</button>
+</div>
+
+<!-- CARDS GRID -->
+<div class="cards-grid" id="cards-grid"></div>
+
+</main>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T07 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+
+<script>
+// ── STORAGE ──
+const PREFIX = 'ifmg_fc1_t07_cd_';
+function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
+function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
+
+// ── DATA: 25 CARDS ──
+const CARDS = [
+  // CONCEITO (1-5)
+  {
+    id: 'CD-01', cat: 'conceito', label: 'Conceito',
+    front: 'O que é um referencial — e por que repouso e movimento são relativos?',
+    back: 'Referencial é o corpo ou ponto que o observador adota como fixo para descrever o movimento dos demais. Dizer "em repouso" ou "em movimento" só tem significado em relação a um referencial — é o Princípio da Relatividade de Galileu: não existe movimento absoluto.'
+  },
+  {
+    id: 'CD-02', cat: 'conceito', label: 'Conceito',
+    front: 'O que é a posição de um corpo numa trajetória orientada?',
+    back: 'É onde o corpo se encontra em relação a uma origem escolhida — um <b>número com sinal</b>: positivo no sentido adotado, negativo no oposto.\n<span class="eq-line">Posição não é distância — é localização com direção.</span>'
+  },
+  {
+    id: 'CD-03', cat: 'conceito', label: 'Conceito',
+    front: 'Qual é a diferença entre instante e intervalo de tempo?',
+    back: 'Instante (t) é um ponto exato na linha do tempo, sem duração — como uma badalada de sino. Intervalo (Δt) é a duração entre dois instantes. A analogia com o espaço: o instante localiza como a posição; o intervalo mede como o deslocamento.'
+  },
+  {
+    id: 'CD-04', cat: 'conceito', label: 'Conceito',
+    front: 'O que é trajetória — e de que ela depende?',
+    back: 'É a curva descrita pelo corpo durante o movimento, vista de um referencial específico. Pode ser retilínea (galeria) ou curvilínea (rampa helicoidal) — e a MESMA trajetória muda de forma conforme quem observa.'
+  },
+  {
+    id: 'CD-05', cat: 'conceito', label: 'Conceito',
+    front: 'O que são período e frequência — e como o tempo vira recurso na mineração?',
+    back: 'Período (T) é o tempo de uma oscilação completa; frequência (f) é o número de oscilações por segundo. São grandezas inversas. Na mina, o tempo de ciclo do caminhão (~20 min) define a produtividade — o tempo deixa de ser só grandeza e vira recurso.'
+  },
+
+  // EQUAÇÃO (6-10)
+  {
+    id: 'CD-06', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação do deslocamento?',
+    back: '<span class="eq-line">Δx = x_f − x_i</span>\nΔx: deslocamento (m) · x_f: posição final (m) · x_i: posição inicial (m).\nO sinal indica o sentido: de +10 m a +40 m → Δx = +30 m (para dentro); de +40 m a +10 m → Δx = −30 m (para fora).'
+  },
+  {
+    id: 'CD-07', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação do intervalo de tempo?',
+    back: '<span class="eq-line">Δt = t_f − t_i</span>\nΔt: intervalo de tempo (s) · t_f: instante final (s) · t_i: instante inicial (s).\nCom t_f > t_i, Δt é sempre positivo — o tempo só corre numa direção.'
+  },
+  {
+    id: 'CD-08', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a relação entre comprimento da trajetória e deslocamento?',
+    back: '<span class="eq-line">ℓ ≥ |Δx|</span>\nℓ: distância percorrida (m) · |Δx|: módulo do deslocamento (m).\nA igualdade só vale em trajetória retilínea SEM inversão de sentido. Ida e volta: Δx = 0, mas ℓ acumula todo o caminho.'
+  },
+  {
+    id: 'CD-09', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação que liga período e frequência?',
+    back: '<span class="eq-line">T = 1/f</span>\nT: período (s) · f: frequência (Hz = 1/s).\nSão inversas: se o pêndulo completa uma oscilação a cada 1,4 s, f = 1/1,4 ≈ 0,71 Hz.'
+  },
+  {
+    id: 'CD-10', cat: 'exemplo', label: 'Equação',
+    front: 'Quais são os prefixos de tempo do SI usados na mineração?',
+    back: '<span class="eq-line">1 ms = 10⁻³ s · 1 μs = 10⁻⁶ s · 1 ns = 10⁻⁹ s</span>\nRetardo entre detonações: ~25 ms · resposta de sensor de vibração: μs · precisão do relógio atômico do GPS: ns.'
+  },
+
+  // VOCABULÁRIO (11-15)
+  {
+    id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
+    front: 'REFERENCIAL',
+    back: 'Corpo ou ponto adotado como fixo pelo observador para descrever o movimento dos demais. Sofia usou o chafariz; Pedro, a ponte; Lucas, a si mesmo — três referenciais, três descrições corretas. (Tópico 1)'
+  },
+  {
+    id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
+    front: 'ORIGEM',
+    back: 'Ponto escolhido como x = 0 da trajetória orientada — na mina, a boca da galeria. Para dentro é o sentido positivo; para fora, o negativo. (Tópico 2)'
+  },
+  {
+    id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
+    front: 'EVENTOS SIMULTÂNEOS',
+    back: 'Dois eventos que acontecem no mesmo instante: Δt = 0 — o análogo temporal de um corpo que volta ao ponto de partida (Δx = 0). (Tópico 3)'
+  },
+  {
+    id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
+    front: 'TRAJETÓRIA CURVILÍNEA',
+    back: 'Caminho com curvas — como a rampa helicoidal que desce pelos níveis da cava. Nela, a distância percorrida é sempre MAIOR que a distância em linha reta. (Tópico 4)'
+  },
+  {
+    id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
+    front: 'TEMPO DE CICLO',
+    back: 'Duração do ciclo completo de um caminhão fora de estrada: carga → transporte → descarga → retorno (~20 min = 3 ciclos por hora). É a métrica que define a produtividade da frota. (Tópico 5)'
+  },
+
+  // CONEXÃO (16-20)
+  {
+    id: 'CD-16', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Topografia: qual é a conexão?',
+    back: 'A topografia subterrânea usa coordenadas unidimensionais: origem na boca da galeria, sentido positivo para dentro, posições em metros. Um erro de 5 m na posição da drenagem pode inundar a galeria — a NR-22 exige precisão mínima de 1 m.'
+  },
+  {
+    id: 'CD-17', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ História: qual é a conexão?',
+    back: 'No séc. XVIII, as estacas de madeira da Mina do Chico Rei já eram coordenadas: "quinta estaca depois da boca". O minerador que ia ao veio (+200 m) e voltava tinha deslocamento ZERO — mas caminhava 400 m no escuro.'
+  },
+  {
+    id: 'CD-18', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Matemática: qual é a conexão?',
+    back: 'Operações com números COM SINAL (posição e deslocamento) e a desigualdade ℓ ≥ |Δx|. Numa correia curvilínea de 1 200 m entre pontos separados por 850 m em linha reta, usar |Δx| subestimaria a correia em 350 m.'
+  },
+  {
+    id: 'CD-19', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
+    back: 'A NR-22 é feita de instantes e intervalos: 30 s obrigatórios entre alarme e detonação, 15 min de descanso a cada 90 min de vibração — e a exigência de identificar o estado REAL de movimento das máquinas antes de intervir.'
+  },
+  {
+    id: 'CD-20', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Geografia: qual é a conexão?',
+    back: 'O GPS localiza comparando instantes de chegada de sinais de 4 satélites (d = c × Δt), com relógios atômicos precisos a nanossegundos. Sem a correção relativística de 38 μs/dia, o erro acumularia 11 km por dia.'
+  },
+
+  // APLICAÇÃO (21-25)
+  {
+    id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Um operador caminha ao lado da correia carregada, na mesma velocidade. Qual o estado do minério para ele e para o supervisor parado na torre?',
+    back: 'Para o operador: <b>repouso</b> (a distância entre ele e o minério não muda). Para o supervisor: <b>movimento</b> (a posição do minério muda a cada instante). Mesmo minério, dois referenciais — nenhuma contradição.'
+  },
+  {
+    id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Um minerador caminha da estaca x_i = +10 m até x_f = +40 m. Calcule o deslocamento.',
+    back: '<span class="eq-line">Δx = x_f − x_i = 40 − 10 = +30 m</span>\nSinal positivo: para dentro da mina. No retorno (40 → 10): Δx = −30 m — mesmo tamanho, sentido oposto.'
+  },
+  {
+    id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Pedro bate palmas em t₁ = 4,7 s e Lucas em t₂ = 9,2 s. Calcule o intervalo entre as palmas.',
+    back: '<span class="eq-line">Δt = t_f − t_i = 9,2 − 4,7 = 4,5 s</span>\nCada palma é um instante (ponto no tempo); os 4,5 s são o intervalo (duração) entre elas.'
+  },
+  {
+    id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Um caminhão desce uma rampa helicoidal de ℓ = 480 m entre níveis separados por 60 m na vertical. Compare ℓ e |Δx|.',
+    back: '<span class="eq-line">480 ≥ 60 → ℓ = 8 × |Δx|</span>\nO caminho é 8 vezes maior que o desnível — a desigualdade ℓ ≥ |Δx| desenhada na própria montanha.'
+  },
+  {
+    id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
+    front: 'O pêndulo do Prof. Felipe completa uma oscilação a cada 1,4 s. Calcule a frequência.',
+    back: '<span class="eq-line">f = 1/T = 1/1,4 ≈ 0,71 Hz</span>\nAproximadamente 0,71 oscilação por segundo. Cuidado com a inversão: T = 1,4 s NÃO significa f = 1,4 Hz.'
+  }
+];
+
+// ── STATE ──
+let currentOrder = [...Array(CARDS.length).keys()];
+let reviewed = load('reviewed', {});
+let activeFilter = 'all';
+
+// ── RENDER ──
+function renderGrid() {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+
+  currentOrder.forEach(function(idx) {
+    const card = CARDS[idx];
+    const isHidden = activeFilter !== 'all' && card.cat !== activeFilter;
+    const isReviewed = !!reviewed[card.id];
+
+    const slot = document.createElement('div');
+    slot.className = 'card-slot cat-' + card.cat + (isHidden ? ' hidden' : '') + (isReviewed ? ' reviewed' : '');
+    slot.dataset.idx = idx;
+    slot.dataset.cat = card.cat;
+
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card' + (isReviewed ? ' flipped' : '');
+    cardEl.onclick = function() { toggleCard(slot, card); };
+
+    // Front
+    var frontHTML = '<div class="card-face card-front">';
+    frontHTML += '<span class="card-cat-tag">' + card.label + '</span>';
+    frontHTML += '<div class="card-question">' + card.front + '</div>';
+    frontHTML += '<div class="card-id">' + card.id + '</div>';
+    frontHTML += '<div class="card-flip-hint card-flip-hint-front">clique para virar</div>';
+    frontHTML += '</div>';
+
+    // Back
+    var backText = card.back.replace(/\n/g, '<br>');
+    var backHTML = '<div class="card-face card-back">';
+    backHTML += '<span class="card-cat-tag">' + card.label + '</span>';
+    backHTML += '<div class="card-answer">' + backText + '</div>';
+    backHTML += '<div class="card-id">' + card.id + '</div>';
+    backHTML += '<div class="card-flip-hint">clique para desvirar</div>';
+    backHTML += '</div>';
+
+    cardEl.innerHTML = frontHTML + backHTML;
+    slot.appendChild(cardEl);
+    grid.appendChild(slot);
+  });
+
+  updateProgress();
+}
+
+function toggleCard(slot, card) {
+  var cardEl = slot.querySelector('.card');
+  var isFlipped = cardEl.classList.contains('flipped');
+
+  if (isFlipped) {
+    // Unflip
+    cardEl.classList.remove('flipped');
+    slot.classList.remove('reviewed');
+    delete reviewed[card.id];
+  } else {
+    // Flip
+    cardEl.classList.add('flipped');
+    slot.classList.add('reviewed');
+    reviewed[card.id] = true;
+  }
+
+  save('reviewed', reviewed);
+  updateProgress();
+}
+
+function updateProgress() {
+  var total = 0;
+  var reviewedCount = 0;
+
+  // Count only visible cards
+  var visibleCards = activeFilter === 'all' ? CARDS : CARDS.filter(function(c) { return c.cat === activeFilter; });
+  total = visibleCards.length;
+  reviewedCount = visibleCards.filter(function(c) { return !!reviewed[c.id]; }).length;
+
+  document.getElementById('progress-counter').textContent = reviewedCount + '/' + total + ' revisados';
+  var pct = total > 0 ? (reviewedCount / total * 100) : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ── FILTER ──
+function filterCards(cat, btn) {
+  activeFilter = cat;
+
+  // Update active button
+  document.querySelectorAll('.btn-filter').forEach(function(b) {
+    b.className = 'btn-filter';
+  });
+
+  if (cat === 'all') {
+    btn.classList.add('active-all');
+  } else {
+    btn.classList.add('active-' + cat);
+  }
+
+  // Show/hide cards
+  document.querySelectorAll('.card-slot').forEach(function(slot) {
+    if (cat === 'all' || slot.dataset.cat === cat) {
+      slot.classList.remove('hidden');
+    } else {
+      slot.classList.add('hidden');
+    }
+  });
+
+  updateProgress();
+}
+
+// ── SHUFFLE ──
+function shuffleCards() {
+  for (var i = currentOrder.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = currentOrder[i];
+    currentOrder[i] = currentOrder[j];
+    currentOrder[j] = tmp;
+  }
+  save('order', currentOrder);
+  renderGrid();
+
+  // Reapply filter
+  if (activeFilter !== 'all') {
+    var activeBtn = document.querySelector('.btn-filter[data-cat="' + activeFilter + '"]');
+    if (activeBtn) filterCards(activeFilter, activeBtn);
+  }
+}
+
+// ── RESET ──
+function resetProgress() {
+  reviewed = {};
+  save('reviewed', reviewed);
+  renderGrid();
+
+  // Reapply filter
+  if (activeFilter !== 'all') {
+    var activeBtn = document.querySelector('.btn-filter[data-cat="' + activeFilter + '"]');
+    if (activeBtn) filterCards(activeFilter, activeBtn);
+  }
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'r' || e.key === 'R') {
+    shuffleCards();
+  }
+});
+
+// ── RESTORE STATE ──
+var savedOrder = load('order', null);
+if (savedOrder && savedOrder.length === CARDS.length) {
+  currentOrder = savedOrder;
+}
+
+// ── INIT ──
+renderGrid();
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+@media (max-width: 600px) {
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t07">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

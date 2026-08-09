@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T08 · Velocidade Média e Instantânea — Estudante</title>
+<!--
+  IMPORTACAO EM MOODLE:
+  1. Adicionar atividade > Recurso > Arquivo
+  2. Upload deste .html > "Abrir em nova janela" > salvar.
+  OU iframe: <iframe src="T08-CD-v2-estudante.html" width="100%" height="2400"></iframe>
+
+  Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
+  localStorage: prefixo ifmg_fc1_t08_cd_
+-->
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --roxo: oklch(0.65 0.15 300);
+  --roxo-claro: oklch(0.25 0.05 300);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --r: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: oklch(0.14 0.02 260);
+  border-top: 3px solid var(--ouro);
+  padding: 14px 20px;
+}
+.header-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.header h1 {
+  font-size: 1.4rem; font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.header h1 .trilha-code { color: var(--azul); }
+.header .badge {
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r);
+  font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 960px; margin: 4px auto 0;
+  font-size: .88rem; color: var(--cinza);
+}
+
+/* ── PIAZZI BAR ── */
+.piazzi-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; flex-wrap: wrap;
+  background: oklch(0.14 0.02 260);
+  border: 1px solid var(--cinza-borda);
+  padding: 10px 16px; margin-bottom: 16px;
+  font-size: .78rem;
+}
+.piazzi-bar .piazzi-ref { color: var(--cinza); }
+.piazzi-bar .piazzi-tag {
+  display: inline-block;
+  border: 1px solid var(--ouro); color: var(--ouro);
+  padding: 2px 10px; font-size: .72rem;
+  font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.piazzi-bar .piazzi-text { color: var(--texto); font-style: italic; font-size: .74rem; }
+.piazzi-bar .piazzi-yt {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--erro); color: var(--branco);
+  padding: 4px 12px; font-size: .72rem;
+  font-weight: 700; text-decoration: none; cursor: pointer;
+}
+.piazzi-bar .piazzi-yt::before { content: '\25B6'; font-size: .6rem; }
+
+/* ── MAIN ── */
+main {
+  max-width: 960px; margin: 0 auto;
+  padding: 20px 16px;
+}
+
+/* ── TOOLBAR: FILTROS + PROGRESSO ── */
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  margin-bottom: 20px;
+}
+.filters {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  align-items: center;
+}
+.filters .filter-label {
+  font-size: .68rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 600; margin-right: 4px;
+}
+.btn-filter {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 5px 14px;
+  font-size: .72rem; font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: all .2s;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.btn-filter:hover { border-color: var(--ouro); }
+.btn-filter.active-all { background: var(--cinza-borda); border-color: var(--branco); color: var(--branco); }
+.btn-filter.active-conceito { background: oklch(0.28 0.08 45); border-color: var(--azul); color: var(--azul); }
+.btn-filter.active-exemplo { background: oklch(0.28 0.06 95); border-color: var(--ouro); color: var(--ouro); }
+.btn-filter.active-pergunta { background: oklch(0.28 0.06 150); border-color: var(--verde); color: var(--verde); }
+.btn-filter.active-conexao { background: oklch(0.24 0.06 25); border-color: var(--erro); color: var(--erro); }
+.btn-filter.active-aplicacao { background: oklch(0.26 0.06 300); border-color: var(--roxo); color: var(--roxo); }
+
+.progress-area {
+  display: flex; align-items: center; gap: 10px;
+}
+.progress-counter {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--ouro);
+  font-weight: 700;
+}
+.progress-bar-track {
+  width: 120px; height: 5px;
+  background: oklch(0.20 0.02 260);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--ouro);
+  transition: width .3s;
+}
+
+/* ── ACTION BAR ── */
+.action-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.btn-action {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 7px 16px;
+  font-size: .72rem; font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: all .2s;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.btn-action:hover { border-color: var(--ouro); color: var(--ouro); }
+.btn-action.shuffle { border-color: var(--verde); color: var(--verde); }
+.btn-action.shuffle:hover { background: var(--verde-claro); }
+.btn-action.reset { border-color: var(--erro); color: var(--erro); }
+.btn-action.reset:hover { background: var(--erro-claro); }
+
+/* ── GRID DE CARTOES ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ── CARTAO FLIP ── */
+.card-slot {
+  perspective: 900px;
+  min-height: 220px;
+}
+.card-slot.hidden { display: none; }
+
+.card {
+  width: 100%; height: 100%;
+  min-height: 220px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.card.flipped { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 14px;
+  overflow: hidden;
+}
+
+.card-front {
+  background: var(--superficie);
+  border-left: 3px solid var(--cinza-borda);
+}
+.card-back {
+  transform: rotateY(180deg);
+  background: oklch(0.20 0.02 260);
+  border-left: 3px solid var(--cinza-borda);
+}
+
+/* category border colors */
+.cat-conceito .card-front,
+.cat-conceito .card-back { border-left-color: var(--azul); }
+.cat-exemplo .card-front,
+.cat-exemplo .card-back { border-left-color: var(--ouro); }
+.cat-pergunta .card-front,
+.cat-pergunta .card-back { border-left-color: var(--verde); }
+.cat-conexao .card-front,
+.cat-conexao .card-back { border-left-color: var(--erro); }
+.cat-aplicacao .card-front,
+.cat-aplicacao .card-back { border-left-color: var(--roxo); }
+
+/* ── CARD HEADER ── */
+.card-cat-tag {
+  font-size: .6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+.cat-conceito .card-cat-tag { background: var(--azul-bg); color: var(--azul); }
+.cat-exemplo .card-cat-tag { background: var(--ouro-claro); color: var(--ouro); }
+.cat-pergunta .card-cat-tag { background: var(--verde-claro); color: var(--verde); }
+.cat-conexao .card-cat-tag { background: var(--erro-claro); color: var(--erro); }
+.cat-aplicacao .card-cat-tag { background: var(--roxo-claro); color: var(--roxo); }
+
+/* ── CARD BODY ── */
+.card-question {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  font-size: .88rem;
+  font-weight: 700;
+  line-height: 1.45;
+  padding: 4px 0;
+}
+.card-answer {
+  flex: 1;
+  font-size: .78rem;
+  line-height: 1.55;
+  color: oklch(0.85 0 0);
+  overflow-y: auto;
+}
+.card-answer .eq-line {
+  font-family: var(--mono);
+  color: var(--ouro);
+  font-weight: 700;
+  font-size: .82rem;
+  margin: 4px 0;
+}
+
+/* ── CARD FOOTER ── */
+.card-id {
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--cinza);
+  text-align: right;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.card-flip-hint {
+  font-size: .58rem;
+  color: var(--cinza);
+  text-align: center;
+  margin-top: 6px;
+  letter-spacing: .3px;
+}
+.card.flipped .card-flip-hint-front { display: none; }
+
+/* ── FLIPPED INDICATOR ── */
+.card-slot.reviewed .card-front::after {
+  content: '';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 8px; height: 8px;
+  background: var(--verde);
+}
+
+/* ── ENCERRAMENTO ── */
+.encerramento {
+  max-width: 960px; margin: 30px auto 10px;
+  padding: 20px;
+  border-top: 2px solid var(--ouro);
+  text-align: center;
+}
+.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-acao {
+  color: var(--ouro); font-size: .95rem;
+  text-transform: uppercase; font-weight: 700;
+  margin-top: 10px; line-height: 1.5;
+}
+.encerramento .fecho-nidec {
+  color: var(--cinza); font-size: .9rem;
+  margin-top: 14px; line-height: 1.55;
+}
+
+/* ── FOOTER ── */
+.footer-line {
+  text-align: center;
+  font-size: .85rem;
+  color: var(--cinza);
+  padding: 16px 12px;
+  margin-top: 12px;
+  letter-spacing: .5px;
+  line-height: 1.5;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .header-inner { flex-direction: column; text-align: center; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .filters { justify-content: center; }
+  .progress-area { justify-content: center; }
+  .action-bar { justify-content: center; }
+  .card-slot { min-height: 200px; }
+  .card { min-height: 200px; }
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: #fff; color: #111; }
+  .card-front { background: #f5f5f5; border-left-color: #888; }
+  .card-back { background: #eee; }
+  .btn-action, .btn-filter { display: none; }
+  .header { border-top-color: #333; background: #f5f5f5; }
+  .card { transform: none !important; }
+  .card-back { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T08</span> &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h1>
+    <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
+  </div>
+  <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
+</header>
+
+<main>
+
+<!-- PIAZZI BAR -->
+<div class="piazzi-bar">
+  <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+  <span class="piazzi-tag">Ler</span>
+  <span class="piazzi-tag">Escrever</span>
+  <span class="piazzi-tag">Medir</span>
+  <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLH9GvshumD2s" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Filarm&ocirc;nica de Minas Gerais &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra sinf&ocirc;nica</span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="filters">
+    <span class="filter-label">Filtrar:</span>
+    <button class="btn-filter active-all" data-cat="all" onclick="filterCards('all', this)">Todos (25)</button>
+    <button class="btn-filter" data-cat="conceito" onclick="filterCards('conceito', this)">Conceito (5)</button>
+    <button class="btn-filter" data-cat="exemplo" onclick="filterCards('exemplo', this)">Equa&ccedil;&atilde;o (5)</button>
+    <button class="btn-filter" data-cat="pergunta" onclick="filterCards('pergunta', this)">Vocabul&aacute;rio (5)</button>
+    <button class="btn-filter" data-cat="conexao" onclick="filterCards('conexao', this)">Conex&atilde;o (5)</button>
+    <button class="btn-filter" data-cat="aplicacao" onclick="filterCards('aplicacao', this)">Aplica&ccedil;&atilde;o (5)</button>
+  </div>
+  <div class="progress-area">
+    <span class="progress-counter" id="progress-counter">0/25 revisados</span>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <button class="btn-action shuffle" onclick="shuffleCards()">Embaralhar</button>
+  <button class="btn-action reset" onclick="resetProgress()">Reiniciar progresso</button>
+</div>
+
+<!-- CARDS GRID -->
+<div class="cards-grid" id="cards-grid"></div>
+
+</main>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T08 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+
+<script>
+// ── STORAGE ──
+const PREFIX = 'ifmg_fc1_t08_cd_';
+function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
+function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
+
+// ── DATA: 25 CARDS ──
+const CARDS = [
+  // CONCEITO (1-5)
+  {
+    id: 'CD-01', cat: 'conceito', label: 'Conceito',
+    front: 'O que é velocidade média — e o que ela realmente descreve?',
+    back: 'É o deslocamento dividido pelo intervalo de tempo gasto nele. Resume um percurso inteiro num único número: não informa o que aconteceu em cada momento, só o efeito global — incluindo o tempo em que o corpo esteve parado.'
+  },
+  {
+    id: 'CD-02', cat: 'conceito', label: 'Conceito',
+    front: 'Por que a média das velocidades de cada trecho não dá a velocidade média da viagem?',
+    back: 'Porque a velocidade média é o deslocamento TOTAL sobre o tempo TOTAL — uma média <b>ponderada pelos tempos</b>. Cada trecho pesa a sua duração. As duas contas só coincidem quando todos os trechos duram exatamente o mesmo tempo.'
+  },
+  {
+    id: 'CD-03', cat: 'conceito', label: 'Conceito',
+    front: 'O que é velocidade instantânea?',
+    back: 'É o limite da velocidade média quando o intervalo de tempo tende a zero — a velocidade calculada num intervalo tão pequeno que reduzi-lo mais não muda o resultado.\n<span class="eq-line">A velocidade de agora, não a velocidade de antes.</span>'
+  },
+  {
+    id: 'CD-04', cat: 'conceito', label: 'Conceito',
+    front: 'O que distingue movimento progressivo de retrógrado?',
+    back: 'O sinal da velocidade, depois de adotado um sentido positivo: progressivo se v &gt; 0, retrógrado se v &lt; 0, repouso se v = 0. O sinal informa o SENTIDO, não a rapidez — menos oitenta e mais oitenta têm o mesmo módulo.'
+  },
+  {
+    id: 'CD-05', cat: 'conceito', label: 'Conceito',
+    front: 'Como a velocidade deixa de ser grandeza e vira recurso na mineração?',
+    back: 'Na usina, a vazão da correia é proporcional à sua velocidade — metros por segundo viram toneladas por hora. Como densidade e área da carga são fixadas pelo projeto, a velocidade é a única variável de ajuste rápido da produção.'
+  },
+
+  // EQUAÇÃO (6-10)
+  {
+    id: 'CD-06', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação da velocidade média?',
+    back: '<span class="eq-line">v_m = Δs / Δt</span>\nv_m: velocidade média (m/s) · Δs: deslocamento (m) · Δt: intervalo de tempo (s).\nComo Δt é sempre positivo, o sinal de v_m é o mesmo sinal de Δs.'
+  },
+  {
+    id: 'CD-07', cat: 'exemplo', label: 'Equação',
+    front: 'Como se converte km/h em m/s — e vice-versa?',
+    back: '<span class="eq-line">1 km/h = 1000 m / 3600 s = 1/3,6 m/s</span>\nkm/h → m/s: dividir por 3,6 · m/s → km/h: multiplicar por 3,6.\nExemplo: 53,5 km/h ÷ 3,6 ≈ 14,9 m/s.'
+  },
+  {
+    id: 'CD-08', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação da velocidade média num percurso composto?',
+    back: '<span class="eq-line">v_m = (Δs₁ + Δs₂ + ... + Δsₙ) / (Δt₁ + Δt₂ + ... + Δtₙ)</span>\nSomam-se todos os deslocamentos e todos os intervalos — nunca as velocidades. As paradas entram com Δs = 0 e Δt &gt; 0.'
+  },
+  {
+    id: 'CD-09', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação da velocidade instantânea?',
+    back: '<span class="eq-line">v = lim (Δs / Δt), quando Δt → 0</span>\nv: velocidade instantânea (m/s) · Δt → 0: intervalo tendendo a zero.\nÉ o valor para o qual a velocidade média converge quando o intervalo encolhe.'
+  },
+  {
+    id: 'CD-10', cat: 'exemplo', label: 'Equação',
+    front: 'Qual é a equação da vazão mássica de uma correia transportadora?',
+    back: '<span class="eq-line">Q_m = ρ · A · v</span>\nQ_m: vazão mássica (kg/s) · ρ: densidade aparente (kg/m³) · A: área da seção de carga (m²) · v: velocidade da correia (m/s).\nQ_m é diretamente proporcional a v.'
+  },
+
+  // VOCABULÁRIO (11-15)
+  {
+    id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
+    front: 'DESLOCAMENTO (Δs)',
+    back: 'Mudança de posição sobre a trajetória orientada: Δs = s − s₀. A partir desta trilha a posição é escrita com a letra ésse (notação do livro didático), e não mais com xis — muda a letra, não muda o conceito. (Tópico 1)'
+  },
+  {
+    id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
+    front: 'MÉDIA PONDERADA PELOS TEMPOS',
+    back: 'Forma correta de combinar velocidades de trechos diferentes: cada trecho entra com peso igual à sua duração. Na viagem da trilha, dá 64,2 km/h — contra 60,5 km/h da média aritmética, que é erro. (Tópico 2)'
+  },
+  {
+    id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
+    front: 'RADAR DE SOLO',
+    back: 'Instrumento que mede velocidade dividindo a separação entre dois sensores pelo tempo entre os acionamentos. A 22,2 m/s, dois sensores a 2,0 m são acionados com 0,090 s de diferença — curto o bastante para valer como instantânea. (Tópico 3)'
+  },
+  {
+    id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
+    front: 'REPOUSO INSTANTÂNEO',
+    back: 'Instante isolado em que v = 0 sem que o corpo fique parado: o caminhão que sobe a rampa, engata a ré e desce passa pelo zero num único instante. Todo movimento que inverte o sentido precisa encostar no zero. (Tópico 4)'
+  },
+  {
+    id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
+    front: 'TEMPO DE CICLO',
+    back: 'Duração de uma volta completa do caminhão fora de estrada: carregar, subir, descarregar e descer (~20 min = 3 ciclos por hora). É um percurso composto, com duas etapas de velocidade zero. (Tópico 5)'
+  },
+
+  // CONEXÃO (16-20)
+  {
+    id: 'CD-16', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Geografia: qual é a conexão?',
+    back: 'O relevo de Minas está escrito no velocímetro: na BR-356, cada curva de serra, cada subida e cada trecho de pista simples é tempo a mais no cronômetro — e, portanto, velocidade média a menos no mesmo deslocamento.'
+  },
+  {
+    id: 'CD-17', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Matemática: qual é a conexão?',
+    back: 'A velocidade média é uma média ponderada, não aritmética. Como Δsᵢ = vᵢ · Δtᵢ, vale v_m = Σ(vᵢ·Δtᵢ)/ΣΔtᵢ. Somar velocidades e dividir pelo número de trechos só acerta se todos durarem o mesmo tempo.'
+  },
+  {
+    id: 'CD-18', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Engenharia de Minas: qual é a conexão?',
+    back: 'A vazão da correia é proporcional à velocidade: elevar a produção de 2.000 para 2.400 t/h (mais 20%) exige exatamente 20% a mais de velocidade — de 3,5 para 4,21 m/s, ainda dentro da faixa industrial de 1,5 a 5,0 m/s.'
+  },
+  {
+    id: 'CD-19', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
+    back: 'O limite de velocidade em rampa de cava incide sobre a velocidade INSTANTÂNEA, não sobre a média do percurso. Uma média dentro do limite nunca absolve um pico acima dele: é no instante do pico que a frenagem do caminhão carregado é ultrapassada.'
+  },
+  {
+    id: 'CD-20', cat: 'conexao', label: 'Conexão',
+    front: 'Física ↔ História: qual é a conexão?',
+    back: 'Os mesmos 107 km entre Vila Rica e Curral del Rei exigiam cerca de 4 dias de uma tropa de muares a 4 km/h, em jornadas de 8 h. Hoje o ônibus leva 2 h — e o ganho não veio só do motor: veio da estrada que permitiu suprimir as paradas.'
+  },
+
+  // APLICAÇÃO (21-25)
+  {
+    id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
+    front: 'O ônibus percorre 107 km em 2,0 h. Calcule a velocidade média em km/h e em m/s.',
+    back: '<span class="eq-line">v_m = Δs/Δt = 107 / 2,0 = 53,5 km/h</span>\nEm unidade do SI: 53,5 ÷ 3,6 ≈ <b>14,9 m/s</b>.\nEsse número descreve a viagem inteira — inclui os 20 min parados.'
+  },
+  {
+    id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Trechos de 19 km/25 min, 28 km/30 min e 60 km/45 min. Calcule a velocidade média só do movimento e compare com a média aritmética.',
+    back: '<span class="eq-line">v_m = 107 km / 1,67 h = 64,2 km/h</span>\nMédia aritmética: (45,6 + 56,0 + 80,0)/3 = 60,5 km/h — <b>errada</b>, por dar o mesmo peso a trechos de durações diferentes. Erro de 3,7 km/h.'
+  },
+  {
+    id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Dois sensores de radar separados por 2,0 m. O ônibus a 22,2 m/s aciona os dois. Calcule o intervalo entre os acionamentos.',
+    back: '<span class="eq-line">Δt = d/v = 2,0 / 22,2 = 0,090 s</span>\nNove centésimos de segundo: nesse intervalo a velocidade não teve tempo de mudar — por isso a medida vale como instantânea.'
+  },
+  {
+    id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Um caminhão percorre 1,2 km de rampa em 2 min 20 s, com limite de 25 km/h. Houve infração?',
+    back: '<span class="eq-line">v_m = 1200 m / 140 s = 8,57 m/s = 30,9 km/h</span>\n<b>Sim</b>: 30,9 &gt; 25 km/h. E mesmo que a média coubesse no limite, um pico instantâneo de 34 km/h já seria infração — a norma incide sobre a instantânea.'
+  },
+  {
+    id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
+    front: 'Correia com ρ = 2.200 kg/m³ e A = 0,072 m². Qual velocidade entrega 2.400 t/h?',
+    back: '<span class="eq-line">v = Q_m/(ρ·A) = 666,7 / 158,4 = 4,21 m/s</span>\n2.400 t/h = 666,7 kg/s. Confere pela proporcionalidade: 3,5 × 1,2 = 4,2 m/s. Está na faixa industrial, mas no terço superior — atenção à segregação de finos.'
+  }
+];
+
+// ── STATE ──
+let currentOrder = [...Array(CARDS.length).keys()];
+let reviewed = load('reviewed', {});
+let activeFilter = 'all';
+
+// ── RENDER ──
+function renderGrid() {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+
+  currentOrder.forEach(function(idx) {
+    const card = CARDS[idx];
+    const isHidden = activeFilter !== 'all' && card.cat !== activeFilter;
+    const isReviewed = !!reviewed[card.id];
+
+    const slot = document.createElement('div');
+    slot.className = 'card-slot cat-' + card.cat + (isHidden ? ' hidden' : '') + (isReviewed ? ' reviewed' : '');
+    slot.dataset.idx = idx;
+    slot.dataset.cat = card.cat;
+
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card' + (isReviewed ? ' flipped' : '');
+    cardEl.onclick = function() { toggleCard(slot, card); };
+
+    // Front
+    var frontHTML = '<div class="card-face card-front">';
+    frontHTML += '<span class="card-cat-tag">' + card.label + '</span>';
+    frontHTML += '<div class="card-question">' + card.front + '</div>';
+    frontHTML += '<div class="card-id">' + card.id + '</div>';
+    frontHTML += '<div class="card-flip-hint card-flip-hint-front">clique para virar</div>';
+    frontHTML += '</div>';
+
+    // Back
+    var backText = card.back.replace(/\n/g, '<br>');
+    var backHTML = '<div class="card-face card-back">';
+    backHTML += '<span class="card-cat-tag">' + card.label + '</span>';
+    backHTML += '<div class="card-answer">' + backText + '</div>';
+    backHTML += '<div class="card-id">' + card.id + '</div>';
+    backHTML += '<div class="card-flip-hint">clique para desvirar</div>';
+    backHTML += '</div>';
+
+    cardEl.innerHTML = frontHTML + backHTML;
+    slot.appendChild(cardEl);
+    grid.appendChild(slot);
+  });
+
+  updateProgress();
+}
+
+function toggleCard(slot, card) {
+  var cardEl = slot.querySelector('.card');
+  var isFlipped = cardEl.classList.contains('flipped');
+
+  if (isFlipped) {
+    // Unflip
+    cardEl.classList.remove('flipped');
+    slot.classList.remove('reviewed');
+    delete reviewed[card.id];
+  } else {
+    // Flip
+    cardEl.classList.add('flipped');
+    slot.classList.add('reviewed');
+    reviewed[card.id] = true;
+  }
+
+  save('reviewed', reviewed);
+  updateProgress();
+}
+
+function updateProgress() {
+  var total = 0;
+  var reviewedCount = 0;
+
+  // Count only visible cards
+  var visibleCards = activeFilter === 'all' ? CARDS : CARDS.filter(function(c) { return c.cat === activeFilter; });
+  total = visibleCards.length;
+  reviewedCount = visibleCards.filter(function(c) { return !!reviewed[c.id]; }).length;
+
+  document.getElementById('progress-counter').textContent = reviewedCount + '/' + total + ' revisados';
+  var pct = total > 0 ? (reviewedCount / total * 100) : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ── FILTER ──
+function filterCards(cat, btn) {
+  activeFilter = cat;
+
+  // Update active button
+  document.querySelectorAll('.btn-filter').forEach(function(b) {
+    b.className = 'btn-filter';
+  });
+
+  if (cat === 'all') {
+    btn.classList.add('active-all');
+  } else {
+    btn.classList.add('active-' + cat);
+  }
+
+  // Show/hide cards
+  document.querySelectorAll('.card-slot').forEach(function(slot) {
+    if (cat === 'all' || slot.dataset.cat === cat) {
+      slot.classList.remove('hidden');
+    } else {
+      slot.classList.add('hidden');
+    }
+  });
+
+  updateProgress();
+}
+
+// ── SHUFFLE ──
+function shuffleCards() {
+  for (var i = currentOrder.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = currentOrder[i];
+    currentOrder[i] = currentOrder[j];
+    currentOrder[j] = tmp;
+  }
+  save('order', currentOrder);
+  renderGrid();
+
+  // Reapply filter
+  if (activeFilter !== 'all') {
+    var activeBtn = document.querySelector('.btn-filter[data-cat="' + activeFilter + '"]');
+    if (activeBtn) filterCards(activeFilter, activeBtn);
+  }
+}
+
+// ── RESET ──
+function resetProgress() {
+  reviewed = {};
+  save('reviewed', reviewed);
+  renderGrid();
+
+  // Reapply filter
+  if (activeFilter !== 'all') {
+    var activeBtn = document.querySelector('.btn-filter[data-cat="' + activeFilter + '"]');
+    if (activeBtn) filterCards(activeFilter, activeBtn);
+  }
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'r' || e.key === 'R') {
+    shuffleCards();
+  }
+});
+
+// ── RESTORE STATE ──
+var savedOrder = load('order', null);
+if (savedOrder && savedOrder.length === CARDS.length) {
+  currentOrder = savedOrder;
+}
+
+// ── INIT ──
+renderGrid();
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+@media (max-width: 600px) {
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t08">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

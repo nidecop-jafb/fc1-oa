@@ -114,8 +114,8 @@ if (location.protocol === 'file:') {
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="../../#t07">Ver todos os OAs da trilha</a>
-  <a class="aba-site-btn" href="../../">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t07">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>
 <script>
@@ -130,15 +130,6 @@ if (location.protocol === 'file:') {
   document.addEventListener('click', function (e) {
     if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
   });
-  /* file://: href de pasta nao abre o index.html sozinho */
-  if (location.protocol === 'file:') {
-    p.querySelectorAll('a[href]').forEach(function (a) {
-      var h = a.getAttribute('href');
-      if (/^https?:/.test(h)) return;
-      var m = h.match(/^(.*\/)(#.*)?$/);
-      if (m) a.setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
-    });
-  }
 })();
 </script>
 </body>
