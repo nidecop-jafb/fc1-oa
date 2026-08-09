@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T09 · Aceleração Média e Instantânea — Texto Temático v3</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .header { padding-left: 46px; padding-right: 46px; }
+  /* Gutter para as abas laterais: sem ele, as abas fixas da borda esquerda
+     cobrem o texto durante a rolagem em tela estreita. */
+  .conteudo { padding: 0 14px 0 46px; }
+  .toc-toggle, .musica-toggle, .ineditismo-toggle, .creditos-toggle, .figuras-toggle { font-size: 0.6rem; padding: 6px 6px; }
+  .toc-sidebar, .musica-sidebar, .ineditismo-sidebar, .creditos-sidebar, .figuras-sidebar { width: 82vw; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+
+.capa-marca { margin-bottom: 18px; }
+.capa-marca .marca { width: 92px; height: 92px; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; O Parque Natural Municipal das Andorinhas visto do alto: a serra em planos sucessivos e a sede pequena no vale, sob a primeira luz da manhã</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; As andorinhas do parque em pleno voo: o símbolo de quem aprendeu que mudar de rapidez e mudar de rumo são a mesma grandeza</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; A chegada: o trio cruza a portaria 1 do Parque das Andorinhas, entre os eucaliptos altos, enquanto o Prof. Felipe aponta o caminho que leva à cachoeira</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; As corredeiras do Rio das Velhas no caminho da cachoeira: a água desce em degraus de pedra e descansa no poço esmeralda</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; Três instantes da mesma van na Avenida das Andorinhas: arrancando numa pista, em ritmo constante na outra e freando na curva</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; O velocímetro sobre o cronômetro: da razão entre a variação da velocidade e a variação do tempo nasce a aceleração média</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; O acelerômetro do celular durante a descida: o pico que o corpo sentiu e a média não mostra</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Os três trechos de um salto: acelerando, em velocidade limite e sob o paraquedas aberto</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Painel triplo da mina: o freio retardador na rampa, a gaiola no poço e a centrífuga do laboratório</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio no mirante de pedra, ao entardecer, com o vale do Rio das Velhas se abrindo morro atrás de morro</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas ao redor de uma única razão, a variação da velocidade sobre o tempo &mdash; e a andorinha do parque cruzando o fundo do quadro</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido, sob o voo em mergulho da andorinha</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Boccioni e a Física: uma figura que avança e deixa para trás o corpo que ela era um instante antes</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental</div>
+  <div class="musica-detail">viol&atilde;o solo</div>
+  <a class="musica-link" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T09 &mdash;
+Aceleração Média e Instantânea / Julio
+Cesar Silva Azevedo; colaboração Felipe
+Beato. &mdash; 1. ed. &mdash; Ouro Preto, MG:
+Instituto Federal de Minas Gerais &mdash;
+Campus Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T09)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Cinemática &mdash; Aceleração média
+   e aceleração instantânea.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epígrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Tópico 1 &mdash; Movimentos de veículos</a>
+  <a href="#topico-2" class="toc-topico">Tópico 2 &mdash; Aceleração escalar média</a>
+  <a href="#topico-3" class="toc-topico">Tópico 3 &mdash; Aceleração instantânea</a>
+  <a href="#topico-4" class="toc-topico">Tópico 4 &mdash; Queda livre e velocidade limite</a>
+  <a href="#topico-5" class="toc-topico">Tópico 5 &mdash; Aceleração na mineração</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Problemas Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciência e Arte</a>
+  <a href="#referencias" class="toc-extra">Referências</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-marca"><svg class="marca" viewBox="0 0 120 120" role="img" aria-label="Símbolo das Trilhas de Aprendizagem">
+    <g fill="none" stroke="#C8A84B" stroke-width="3">
+      <ellipse cx="60" cy="58" rx="46" ry="18"/>
+      <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(60 60 58)"/>
+      <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(120 60 58)"/>
+    </g>
+    <g fill="#C8A84B">
+      <circle cx="53" cy="53" r="7"/>
+      <circle cx="67" cy="53" r="7"/>
+      <circle cx="60" cy="64" r="9"/>
+      <circle cx="60" cy="110" r="4"/>
+    </g>
+  </svg></div>
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T09-IT-00-v3.jpg" alt="O Parque Natural Municipal das Andorinhas visto do alto, com a serra em planos sucessivos sob a primeira luz da manhã">
+  <div class="capa-label">Trilha de Aprendizagem 09</div>
+  <div class="capa-titulo">Aceleração Média e Instantânea</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T09</span> &middot; Aceleração Média e Instantânea</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~40 min de leitura</div>
+</header>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;Todos os movimentos naturais da alma são regidos por leis análogas às da gravidade material. Só a graça constitui exceção.&rdquo;</blockquote>
+  <div class="autor">&mdash; Simone Weil (1909&ndash;1943)</div>
+
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T09-IT-01-v3.png" alt="Símbolo da trilha T09 — as andorinhas do parque em pleno voo" loading="lazy" style="border:none">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; As andorinhas do parque em pleno voo: o símbolo de quem aprendeu que mudar de rapidez e mudar de rumo são a mesma grandeza.</figcaption>
+  </figure>
+
+  <div class="nota"><strong>Simone Weil</strong> (Paris, 1909 &mdash; Ashford, Inglaterra, 1943). Filósofa e professora francesa, formada pela École Normale Supérieure, operária voluntária em fábricas da Renault e estudiosa das ciências exatas &mdash; era irmã do matemático André Weil e escreveu longamente sobre o significado filosófico da mecânica. A frase acima abre <em>A Gravidade e a Graça</em>, coletânea póstuma de seus cadernos publicada em 1947, em que ela toma a queda dos corpos como imagem central do pensamento. Nesta trilha, a citação vale ao pé da letra: a gravidade material tem, sim, uma lei &mdash; e essa lei tem nome, número e unidade.</div>
+</div>
+
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>A van do campus deixou a Praça Tiradentes às sete da manhã de um sábado de julho e pegou a subida pela Rua 15 de Agosto, atravessando os bairros Morro da Queimada e Morro Santana em direção ao Morro São João. Sofia ia no banco da frente com o caderno de campo no colo; Pedro, no meio, mexia no celular; Lucas, atrás, olhava a cidade encolher pela janela traseira. O Prof.&nbsp;Felipe dirigia devagar, porque o caminho &mdash; que no trecho final vira a Avenida das Andorinhas &mdash; sobe em curvas fechadas, e a cada arranque depois de uma parada os três eram empurrados de leve contra o encosto &mdash; e, a cada freada antes de uma curva, jogados para a frente.</p>
+
+  <!-- Figura 2 — IT-02 (chegada) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T09-IT-02-v3.jpg" alt="O trio cruza a portaria 1 do Parque das Andorinhas, entre eucaliptos altos, com o Prof. Felipe apontando o caminho" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; A chegada: o trio cruza a portaria 1 do Parque das Andorinhas, entre os eucaliptos altos, enquanto o Prof.&nbsp;Felipe aponta o caminho que leva à cachoeira.</figcaption>
+  </figure>
+
+  <p>&mdash; Vocês estão sentindo alguma coisa? &mdash; perguntou o professor, sem tirar os olhos da estrada.</p>
+
+  <p>&mdash; O banco me empurrando &mdash; respondeu Pedro. &mdash; E depois o cinto me segurando.</p>
+
+  <p>&mdash; Guardem essa frase. Ela vai voltar hoje.</p>
+
+  <p>O Parque Natural Municipal das Andorinhas fica a poucos quilômetros do centro histórico, no alto do Morro São João &mdash; a van entrou pela portaria 1, uma guarita simples de telhado cerâmico no fim da estrada de terra, entre eucaliptos altos. Criado em 1968 e com 557 hectares, o parque protege as nascentes mais altas do <strong>Rio das Velhas</strong>, o maior afluente do Rio São Francisco. Da portaria até a cachoeira são cerca de dez minutos de caminhada fácil entre campo rupestre e mata.</p>
+
+  <p>Os três desceram da van, passaram pela portaria e ouviram a água muito antes de vê-la. Quando chegaram ao poço, o Prof.&nbsp;Felipe não disse nada. Sentou-se numa pedra e deixou que olhassem.</p>
+
+  <p>A queda tem cerca de dez metros. E foi Lucas quem reparou primeiro.</p>
+
+  <p>&mdash; Olhem a água lá em cima, na beirada. Ela sai devagar, quase escorrendo. &mdash; Ele apontou para baixo. &mdash; E chega aqui embaixo estourando na pedra. É a mesma água.</p>
+
+  <p>Sofia acompanhou o fio d'água com o dedo e viu o que ele viu: perto da borda, o filete era grosso e lento; no meio da queda, esticava-se; perto do poço, chegava fino e veloz.</p>
+
+  <p>&mdash; Então ela não tem <em>uma</em> velocidade &mdash; disse Sofia, escrevendo depressa. &mdash; Ela tem uma velocidade em cada altura. E cada uma é maior que a anterior.</p>
+
+  <p>Pedro estava olhando para outro lugar. Duas andorinhas-de-coleira &mdash; as mesmas que dão nome ao parque e se abrigam na formação rochosa &mdash; cruzaram o poço em mergulho, frearam no ar quase junto à lâmina d'água e subiram de novo, num arco fechado.</p>
+
+  <p>&mdash; Aquilo ali também &mdash; disse ele. &mdash; Ela vinha rápido, virou e continuou rápido. Não mudou o <em>quanto</em>. Mudou o <em>para onde</em>.</p>
+
+  <p>O Prof.&nbsp;Felipe finalmente se levantou.</p>
+
+  <p>&mdash; Reparem no que vocês acabaram de descrever. Na van, a velocidade mudava e vocês sentiram no corpo. Na cachoeira, a velocidade muda ponto a ponto, e vocês viram com os olhos. No voo da andorinha, o número da velocidade nem mudou &mdash; mudou a direção &mdash; e ainda assim alguma coisa mudou. Na trilha passada, vocês aprenderam a medir o quão rápido a posição muda.</p>
+
+  <p>Ele fez uma pausa, do jeito que fazia quando queria que a pergunta ficasse.</p>
+
+  <p>&mdash; Agora eu pergunto: <strong>se velocidade é a taxa com que a posição muda, o que é a taxa com que a própria velocidade muda &mdash; e por que quem freia trezentas e sessenta toneladas numa rampa de cava precisa saber essa resposta antes de descer?</strong></p>
+
+  <p>Sofia sublinhou a pergunta duas vezes. Ela ainda não sabia, mas tinha acabado de chegar à porta de entrada da grandeza que descreve toda mudança de movimento.</p>
+
+  <div class="separador"></div>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">Explore este lugar</div>
+
+    <!-- Figura 3 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-03-v3.jpg" alt="As corredeiras do Rio das Velhas descendo em degraus de pedra até o poço esmeralda" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; As corredeiras do Rio das Velhas no caminho da cachoeira: a água desce em degraus de pedra e descansa no poço esmeralda.</figcaption>
+    </figure>
+
+    <p>Você pode acessar o Parque de duas formas, a partir da sede do município de Ouro Preto: a primeira pela Rua 15 de Agosto, passando pelos bairros Morro da Queimada, Morro Santana e Morro São João, onde se acessa a portaria/entrada 1. A segunda forma de acesso é pela Rua Henri Gorceix, ladeira João de Paiva, passando pelo bairro São Sebastião, de onde se acessa a portaria/entrada 2.</p>
+
+    <p>Procure no mapa o traçado das duas subidas: nenhuma delas sobe em linha reta. Cada curva foi desenhada para transformar uma rampa íngreme demais em várias rampas suportáveis &mdash; a mesma solução que os tropeiros do século XVIII encontraram, no chão, para descer carga sem que ela ganhasse velocidade demais.</p>
+
+    <p>Repare também na posição do parque em relação à cidade: ele está <em>acima</em> dela. É dessa altitude que nasce o Rio das Velhas, e é essa mesma altitude que faz a água chegar ao poço com a velocidade que Lucas viu. Toda a Física desta trilha está contida nesses dez metros de queda.</p>
+
+    <p>Vale a pena ir até lá. Fique um minuto ao lado do poço e acompanhe com os olhos um único fio de água, da borda até a pedra. Você vai ver, sem nenhum instrumento, aquilo que esta trilha vai medir com números.</p>
+
+    <p style="margin-top:14px;"><a href="https://parquedasandorinhas.ouropreto.mg.gov.br/#inicio/" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--superficie);border:1px solid var(--verde);color:var(--verde);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;margin-right:10px;">Atrativos e Programas do Parque</a><a href="https://www.google.com.br/maps/place/Parque+Das+Andorinhas/@-20.3607723,-43.4877806,19.75z/data=!4m8!1m2!2m1!1sparque+natural+municipal+das+andorinhas+ouro+preto!3m4!1s0x0:0xecb423f9673f9cd9!8m2!3d-20.3607019!4d-43.4877089?hl=en" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Ver no Google Maps</a></p>
+  </div>
+
+</div><!-- fim ato-i -->
+
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ─── TÓPICO 1 ─── -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Movimentos de veículos no dia a dia</div>
+
+    <p>Antes de qualquer fórmula, é preciso aprender a ler o movimento de um veículo como quem lê uma frase. Um caminhão que arranca, um ônibus que freia e um carro que segue estável numa reta contam três histórias físicas diferentes &mdash; e o corpo de quem está dentro deles percebe as três antes de qualquer instrumento. A imagem a seguir mostra exatamente essa cena tripla na Avenida das Andorinhas.</p>
+
+    <!-- Figura 4 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-04-v3.jpg" alt="Três instantes da mesma van na Avenida das Andorinhas: arrancando, em ritmo constante e freando na curva" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; Três instantes da mesma van na Avenida das Andorinhas: arrancando numa pista, em ritmo constante na outra e freando na curva.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Nas ladeiras de Vila Rica, o transporte de carga era, antes de tudo, um problema de controle de velocidade. Os carros de boi que desciam do Morro São João para o centro não tinham freio: usavam calços de madeira encostados nas rodas e a força dos animais puxando <em>contra</em> o movimento. Quem descia rápido demais perdia a carga na primeira curva, porque o peso empilhado seguia em frente enquanto o carro virava. Os carreiros não conheciam a palavra inércia, mas organizavam a vida em torno dela.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>A velocidade de um corpo indica para onde ele vai &mdash; e, se nada agir sobre ele, é para lá que ele continuará indo, em linha reta. Essa tendência de manter o movimento chama-se <strong>inércia</strong>. Por isso, numa curva, a carga solta &ldquo;sai pela tangente&rdquo;: ela não é jogada para fora, ela simplesmente continua reto enquanto o veículo muda de direção. Todo movimento retilíneo de um veículo cabe em três casos: a velocidade aumenta, a velocidade diminui ou a velocidade se mantém.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Numa mina a céu aberto, essa leitura é norma escrita. As rampas de acesso à cava são projetadas com inclinação entre 8% e 10% e com curvas de raio amplo, porque um caminhão fora de estrada carregado com 360 toneladas leva dezenas de metros para mudar de velocidade. O plano de tráfego da mina, exigido pela NR-22, define distância mínima entre veículos justamente para acomodar o tempo que a velocidade leva para mudar &mdash; nunca a velocidade em si.</p>
+    </div>
+
+    <p><strong>A velocidade aponta o caminho.</strong> Prof.&nbsp;Felipe pediu que os três acompanhassem a van descendo, mais tarde, a mesma avenida.</p>
+
+    <p>&mdash; Na reta, para onde aponta a velocidade do veículo?</p>
+
+    <p>&mdash; Para a frente &mdash; respondeu Pedro.</p>
+
+    <p>&mdash; E na curva?</p>
+
+    <p>Lucas pensou antes de responder.</p>
+
+    <p>&mdash; Para onde ele <em>iria</em> se a estrada acabasse ali. Para fora da curva.</p>
+
+    <p>&mdash; Exatamente. A velocidade sempre aponta na direção em que o corpo está indo <em>naquele instante</em>, e não na direção em que a estrada vai. Se a mochila do Pedro estiver solta no banco, é para lá que ela vai.</p>
+
+    <p>Essa é a razão física de a carga escorregar na caçamba quando o caminhão vira: a caçamba muda de direção, a carga tenta continuar reta. Não existe nenhuma força &ldquo;jogando&rdquo; o material para fora &mdash; existe a ausência de algo que o obrigue a virar junto.</p>
+
+    <p><strong>Três movimentos, uma pergunta.</strong> Voltando ao movimento em linha reta, os três casos possíveis se organizam num quadro simples.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; Os três movimentos retilíneos de um veículo</div>
+      <table>
+        <thead>
+          <tr><th>Situação</th><th>O que acontece com a velocidade</th><th>Nome do movimento</th><th>O corpo sente</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Van parada que arranca</td><td>Aumenta (de 0 para 36 km/h)</td><td>Retilíneo <strong>acelerado</strong></td><td>Empurrado contra o encosto</td></tr>
+          <tr><td>Van em movimento que freia</td><td>Diminui (de 36 km/h para 0)</td><td>Retilíneo <strong>retardado</strong> (freado)</td><td>Jogado para a frente</td></tr>
+          <tr><td>Van em ritmo estável na reta</td><td>Não muda</td><td>Retilíneo <strong>uniforme</strong></td><td>Nada &mdash; como se estivesse parado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A terceira linha costuma surpreender. Num trecho reto e liso, a 80 km/h, é possível equilibrar uma garrafa de água no painel: o corpo não sente velocidade alguma. O que o corpo sente <strong>não é a velocidade &mdash; é a mudança dela</strong>. Esse é o ponto de partida de toda esta trilha.</p>
+
+    <p>Para descrever essa mudança, a Física precisa antes nomeá-la.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Variação de velocidade</div>
+      <div class="equacao-formula">&Delta;<em>v</em> = <em>v</em> &minus; <em>v</em><sub>0</sub></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&Delta;<em>v</em></td><td>Variação de velocidade</td><td>m/s (metro por segundo)</td></tr>
+          <tr><td><em>v</em></td><td>Velocidade final (no instante <em>t</em>)</td><td>m/s</td></tr>
+          <tr><td><em>v</em><sub>0</sub></td><td>Velocidade inicial (no instante <em>t</em><sub>0</sub>)</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> A van sai do repouso (<em>v</em><sub>0</sub> = 0) e atinge 36 km/h = 10 m/s. &Delta;<em>v</em> = 10 &minus; 0 = <strong>+10 m/s</strong>. Na freada seguinte, de 10 m/s até parar: &Delta;<em>v</em> = 0 &minus; 10 = <strong>&minus;10 m/s</strong>.</div>
+    </div>
+
+    <p>O sinal de &Delta;<em>v</em> já diz tudo o que o corpo sentiu: positivo quando a velocidade cresce no sentido adotado, negativo quando ela diminui. Falta apenas dividir essa mudança pelo tempo que ela levou.</p>
+  </div>
+
+  <!-- ─── TÓPICO 2 ─── -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Aceleração: a taxa de variação da velocidade em relação ao tempo</div>
+
+    <p>Duas vans podem sair do repouso e chegar aos mesmos 36 km/h &mdash; uma em 8 segundos, outra em 40. A mudança de velocidade é idêntica; a experiência dentro do veículo, completamente diferente. A grandeza que separa esses dois casos é o assunto deste tópico. A imagem a seguir monta essa grandeza como uma fração: o velocímetro (em km/h) sobre o cronômetro (em segundos) &mdash; é da razão entre a variação de um e a variação do outro que nasce a aceleração média.</p>
+
+    <!-- Figura 5 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-05-v3.jpg" alt="O velocímetro sobre o cronômetro, formando a fração que define a aceleração média" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; O velocímetro sobre o cronômetro: da razão entre a variação da velocidade e a variação do tempo nasce a aceleração média.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Galileu Galilei foi o primeiro a tratar a mudança de velocidade como uma grandeza mensurável. Sem relógios precisos, usou planos inclinados para &ldquo;diluir&rdquo; a queda no tempo e mediu intervalos com um relógio de água. Descobriu que, na queda, o que permanece constante não é a velocidade, mas a taxa com que ela cresce &mdash; resultado publicado em 1638, nos <em>Discursos e Demonstrações Matemáticas sobre Duas Novas Ciências</em>. Foi a primeira vez que alguém mediu a &ldquo;mudança da mudança&rdquo;.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Aceleração escalar média é a razão entre a variação de velocidade de um corpo e o intervalo de tempo em que ela ocorreu. Sua unidade no Sistema Internacional é o metro por segundo, por segundo &mdash; m/s². Lê-se assim: quantos metros por segundo de velocidade o corpo ganha (ou perde) a cada segundo. Como &Delta;<em>t</em> é sempre positivo, o sinal da aceleração é sempre o sinal de &Delta;<em>v</em>.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Toda especificação de equipamento de transporte na mineração traz aceleração, não velocidade. O freio retardador hidráulico de um caminhão fora de estrada é especificado pela desaceleração que garante em rampa carregada; a gaiola de um poço de mina é especificada pela aceleração de arranque que os trabalhadores suportam sem desconforto. A velocidade máxima diz o que o equipamento alcança; a aceleração diz o que ele consegue mudar.</p>
+    </div>
+
+    <p><strong>Do conceito à fórmula.</strong> Prof.&nbsp;Felipe escreveu no quadro os números da própria van.</p>
+
+    <p>&mdash; Saímos do repouso e chegamos a 36 km/h em 8 segundos. Quanto de velocidade ganhamos por segundo?</p>
+
+    <p>Pedro dividiu de cabeça: 10 metros por segundo em 8 segundos dá 1,25 metro por segundo a cada segundo.</p>
+
+    <p>&mdash; Esse número tem nome &mdash; disse o professor.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Aceleração escalar média</div>
+      <div class="equacao-formula"><em>a</em><sub>m</sub> = &Delta;<em>v</em> / &Delta;<em>t</em> = (<em>v</em> &minus; <em>v</em><sub>0</sub>) / (<em>t</em> &minus; <em>t</em><sub>0</sub>)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>a</em><sub>m</sub></td><td>Aceleração escalar média</td><td>m/s² (metro por segundo ao quadrado)</td></tr>
+          <tr><td>&Delta;<em>v</em></td><td>Variação de velocidade</td><td>m/s</td></tr>
+          <tr><td>&Delta;<em>t</em></td><td>Intervalo de tempo</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Van saindo do repouso, <em>v</em><sub>0</sub> = 0 e <em>v</em> = 36 km/h = 10 m/s, em &Delta;<em>t</em> = 8,0 s. <em>a</em><sub>m</sub> = 10 / 8,0 = <strong>+1,25 m/s²</strong>. Na freada, de 10 m/s a 0 em &Delta;<em>t</em> = 4,0 s: <em>a</em><sub>m</sub> = (0 &minus; 10)/4,0 = <strong>&minus;2,5 m/s²</strong>.</div>
+    </div>
+
+    <p>A leitura em voz alta ajuda a fixar o significado: <em>mais um vírgula vinte e cinco metro por segundo, a cada segundo</em>. Ao fim do primeiro segundo, a van andava a 1,25 m/s; ao fim do segundo, a 2,5 m/s; ao fim do oitavo, a 10 m/s. A aceleração não é uma velocidade grande: é uma <strong>regra de crescimento</strong> da velocidade.</p>
+
+    <p>Note também a simetria com a trilha anterior. Ali, velocidade média era &Delta;<em>s</em>/&Delta;<em>t</em> &mdash; a taxa de variação da posição. Aqui, aceleração média é &Delta;<em>v</em>/&Delta;<em>t</em> &mdash; a taxa de variação da velocidade. É a mesma operação aplicada um degrau acima.</p>
+
+    <p><strong>O sinal da velocidade e o sinal da aceleração.</strong> Adotado um referencial, a velocidade carrega sinal: <strong><em>v</em> positiva</strong> significa que o móvel se afasta da origem no sentido adotado como positivo (o móvel &ldquo;vai&rdquo;); <strong><em>v</em> negativa</strong> significa que ele caminha no sentido oposto, aproximando-se da origem (o móvel &ldquo;vem&rdquo;). A aceleração carrega sinal pela mesma razão &mdash; mas o que ela significa depende de com quem está.</p>
+
+    <p>Aqui está o ponto em que quase todo estudante escorrega, e por isso ele merece um aviso explícito:</p>
+
+    <div class="destaque"><strong>O sinal da aceleração, sozinho, não significa nada.</strong> Ele só ganha sentido quando se conhece, ao mesmo tempo, o sinal da velocidade. Aceleração negativa <strong>não</strong> quer dizer &ldquo;freando&rdquo;.</div>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Movimento acelerado e movimento retardado</div>
+      <div class="equacao-formula"><em>v</em> &middot; <em>a</em> &gt; 0 &rarr; acelerado &nbsp;|&nbsp; <em>v</em> &middot; <em>a</em> &lt; 0 &rarr; retardado &nbsp;|&nbsp; <em>a</em> = 0 &rarr; uniforme</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Condição</th><th>Significado físico</th></tr></thead>
+        <tbody>
+          <tr><td><em>v</em> e <em>a</em> com o <strong>mesmo</strong> sinal</td><td>O módulo da velocidade <strong>aumenta</strong> &mdash; movimento acelerado</td></tr>
+          <tr><td><em>v</em> e <em>a</em> com sinais <strong>opostos</strong></td><td>O módulo da velocidade <strong>diminui</strong> &mdash; movimento retardado</td></tr>
+          <tr><td><em>a</em> = 0</td><td>O módulo da velocidade <strong>não muda</strong> &mdash; movimento uniforme</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Um caminhão descendo a rampa no sentido negativo do eixo, com <em>v</em> = &minus;8,0 m/s e <em>a</em> = &minus;0,5 m/s², está <strong>ganhando</strong> velocidade (<em>v</em>&middot;<em>a</em> &gt; 0), apesar de a aceleração ser negativa.</div>
+    </div>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; Os quatro casos possíveis (e o quinto)</div>
+      <table>
+        <thead>
+          <tr><th><em>v</em></th><th><em>a</em></th><th>Produto <em>v</em>&middot;<em>a</em></th><th>Movimento</th><th>Exemplo no parque</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>+</td><td>+</td><td>&gt; 0</td><td>Acelerado (indo, mais rápido)</td><td>Van arrancando morro acima</td></tr>
+          <tr><td>+</td><td>&minus;</td><td>&lt; 0</td><td>Retardado (indo, mais devagar)</td><td>Van freando antes da curva</td></tr>
+          <tr><td>&minus;</td><td>&minus;</td><td>&gt; 0</td><td>Acelerado (vindo, mais rápido)</td><td>Van descendo de volta, ganhando velocidade</td></tr>
+          <tr><td>&minus;</td><td>+</td><td>&lt; 0</td><td>Retardado (vindo, mais devagar)</td><td>Van descendo e freando na entrada da cidade</td></tr>
+          <tr><td>&plusmn;</td><td>0</td><td>= 0</td><td>Uniforme</td><td>Trecho reto e estável da avenida</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Sofia leu o quadro duas vezes e apontou para a terceira linha.</p>
+
+    <p>&mdash; Essa é a que engana. Tudo negativo, e mesmo assim está acelerando.</p>
+
+    <p>&mdash; Porque &ldquo;negativo&rdquo; só informa o sentido &mdash; respondeu o professor. &mdash; Quem informa se o movimento aumenta ou diminui é a <strong>comparação</strong> entre os dois sinais, nunca um deles sozinho.</p>
+  </div>
+
+  <!-- ─── TÓPICO 3 ─── -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Aceleração instantânea e a sensação corporal</div>
+
+    <p>A aceleração média de uma freada de 4 segundos é um número só: ele resume os quatro segundos inteiros. Mas o corpo do passageiro não sente médias &mdash; sente o que está acontecendo agora, e o pior momento de uma freada não é igual ao seu valor médio. A imagem a seguir mostra o gráfico do acelerômetro do celular de Pedro durante a descida, com o pico exato do instante em que o professor pisou no freio.</p>
+
+    <!-- Figura 6 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-06-v3.jpg" alt="Gráfico do acelerômetro do celular durante a descida, com o pico da freada em destaque" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; O acelerômetro do celular durante a descida: o pico que o corpo sentiu e a média não mostra.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>A ideia de uma taxa &ldquo;no instante&rdquo; foi o problema central do século XVII e só se resolveu com o cálculo diferencial, desenvolvido de forma independente por Isaac Newton e Gottfried Leibniz. Newton chamava essas taxas de <em>fluxões</em> &mdash; literalmente, o quanto uma grandeza flui a cada momento. A aceleração instantânea foi a segunda fluxão da posição: a taxa da taxa. Foi essa ferramenta que permitiu passar da descrição de trajetórias à previsão delas.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Aceleração instantânea é o limite da aceleração média quando o intervalo de tempo tende a zero. Na prática, é a aceleração calculada sobre um intervalo tão curto que reduzi-lo mais não muda o resultado. É essa &mdash; e não a média &mdash; a grandeza que o corpo humano percebe, porque o que o corpo sente é a força necessária para mudar sua própria velocidade naquele momento.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Acelerômetros embarcados são item obrigatório na telemetria de frotas de mineração. Eles registram picos instantâneos de desaceleração que denunciam frenagem brusca, e é sobre esses picos &mdash; não sobre a média do ciclo &mdash; que atua a análise de risco. O mesmo sensor de três eixos que existe no celular do estudante existe, em versão industrial, no painel de um caminhão de 360 toneladas.</p>
+    </div>
+
+    <p><strong>Encolhendo o intervalo.</strong> Prof.&nbsp;Felipe repetiu com a aceleração o exercício que a turma já conhecia da velocidade. Durante a freada de 4 segundos, ele pediu que calculassem a aceleração média em intervalos cada vez menores, todos centrados no instante mais forte da freada.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; A aceleração média conforme &Delta;<em>t</em> encolhe</div>
+      <table>
+        <thead>
+          <tr><th>&Delta;<em>t</em></th><th>&Delta;<em>v</em> correspondente</th><th><em>a</em><sub>m</sub> calculada</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4,0 s</td><td>&minus;10,0 m/s</td><td>&minus;2,50 m/s²</td></tr>
+          <tr><td>2,0 s</td><td>&minus;7,2 m/s</td><td>&minus;3,60 m/s²</td></tr>
+          <tr><td>1,0 s</td><td>&minus;4,0 m/s</td><td>&minus;4,00 m/s²</td></tr>
+          <tr><td>0,5 s</td><td>&minus;2,08 m/s</td><td>&minus;4,16 m/s²</td></tr>
+          <tr><td>0,1 s</td><td>&minus;0,42 m/s</td><td>&minus;4,20 m/s²</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Reparem &mdash; disse o professor. &mdash; Os valores <strong>convergem</strong>. A partir de certo ponto, encolher mais o intervalo já não muda a resposta. Esse valor-limite é a aceleração instantânea.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Aceleração instantânea</div>
+      <div class="equacao-formula"><em>a</em> = lim (&Delta;<em>v</em> / &Delta;<em>t</em>), quando &Delta;<em>t</em> &rarr; 0</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>a</em></td><td>Aceleração instantânea</td><td>m/s²</td></tr>
+          <tr><td>&Delta;<em>v</em></td><td>Variação de velocidade no intervalo</td><td>m/s</td></tr>
+          <tr><td>&Delta;<em>t</em> &rarr; 0</td><td>Intervalo de tempo tendendo a zero</td><td>s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> No instante mais forte da freada, <em>a</em> = <strong>&minus;4,2 m/s²</strong> &mdash; quase o dobro da média de &minus;2,5 m/s² dos quatro segundos. O corpo sentiu 4,2; a média registrou 2,5.</div>
+    </div>
+
+    <p>Esse é o motivo de a média enganar. Ela distribui a freada inteira por igual, incluindo o começo suave e o fim quase parado. O passageiro, porém, não é jogado para a frente &ldquo;em média&rdquo;: ele é jogado no instante do pico.</p>
+
+    <p><strong>O que o corpo sente.</strong> Pedro abriu o aplicativo de sensores do celular e mostrou a tela. O acelerômetro registra, a cada centésimo de segundo, a aceleração nos três eixos &mdash; e é por isso que o aparelho sabe quando foi virado, quando caiu e quantos passos você deu.</p>
+
+    <p>&mdash; Ele mede a aceleração instantânea &mdash; confirmou o Prof.&nbsp;Felipe. &mdash; Com o celular parado sobre a mesa, ele marca 9,8 m/s² para cima. Guardem esse número: ele volta no próximo tópico.</p>
+
+    <p>Para dar escala à sensação, o professor montou um quadro comparativo usando como referência o valor de <strong><em>g</em> = 9,8 m/s²</strong>.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 4 &mdash; Acelerações e o que o corpo percebe</div>
+      <table>
+        <thead>
+          <tr><th>Situação</th><th>Aceleração aproximada</th><th>Em unidades de <em>g</em></th><th>Sensação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Elevador partindo</td><td>1,0 m/s²</td><td>0,1 <em>g</em></td><td>Leve peso a mais nos pés</td></tr>
+          <tr><td>Van arrancando na subida</td><td>1,25 m/s²</td><td>0,13 <em>g</em></td><td>Encosto empurrando as costas</td></tr>
+          <tr><td>Freada firme de carro urbano</td><td>4,2 m/s²</td><td>0,43 <em>g</em></td><td>Cinto marcando o ombro</td></tr>
+          <tr><td>Frenagem de emergência</td><td>8,0 m/s²</td><td>0,8 <em>g</em></td><td>Corpo projetado, objetos soltos voam</td></tr>
+          <tr><td>Abertura do paraquedas</td><td>17 m/s²</td><td>1,7 <em>g</em></td><td>Puxão forte nos ombros e pernas</td></tr>
+          <tr><td>Montanha-russa (alça)</td><td>29 m/s²</td><td>3,0 <em>g</em></td><td>Peso triplicado, visão escurece nas bordas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>&mdash; Agora entendem por que a NR-22 limita velocidade em rampa? &mdash; perguntou o professor. &mdash; Não é a velocidade que machuca. É a aceleração necessária para tirá-la de você em pouco tempo.</p>
+
+    <p>Lucas anotou a frase inteira.</p>
+  </div>
+
+  <!-- ─── TÓPICO 4 ─── -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; A velocidade e a aceleração no salto de um paraquedista</div>
+
+    <p>A cachoeira que Lucas observou é uma queda de dez metros. Um salto de paraquedas é uma queda de quatro mil. Entre uma e outra está o fenômeno que transforma a queda numa das histórias mais bonitas da Física: a velocidade não cresce para sempre. A imagem a seguir mostra os três trechos do salto, do primeiro segundo à aterrissagem.</p>
+
+    <!-- Figura 7 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-07-v3.jpg" alt="Os três trechos de um salto de paraquedas: acelerando, em velocidade limite e sob o paraquedas aberto" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Os três trechos de um salto: acelerando, em velocidade limite e sob o paraquedas aberto.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Até o século XVI, ensinava-se que corpos pesados caem mais depressa que leves &mdash; tese aristotélica que atravessou dois mil anos. Galileu argumentou o contrário e mostrou que, retirado o efeito do ar, todos os corpos caem com a mesma aceleração, independentemente da massa. A verificação mais espetacular veio em 1971, quando o astronauta David Scott soltou um martelo e uma pena na superfície da Lua, sem atmosfera, e os dois tocaram o solo juntos, diante das câmeras da Apollo 15.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Perto da superfície da Terra, todo corpo em queda sofre a mesma aceleração da gravidade, <strong><em>g</em> &asymp; 9,8 m/s²</strong>, dirigida para baixo. A queda livre é o caso ideal em que apenas a gravidade age. Na atmosfera real, porém, o ar oferece resistência, e essa resistência cresce com a velocidade: chega um momento em que ela equilibra o peso, a aceleração se anula e a velocidade para de crescer &mdash; é a <strong>velocidade limite</strong>, ou terminal.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>A queda livre é, na mineração, um cenário de risco e não de curiosidade. A NR-22 exige sistemas de retenção em poços e proteção contra queda de materiais em bancadas, precisamente porque a velocidade de um objeto em queda cresce cerca de 10 m/s a cada segundo: uma pedra que escapa de uma bancada de 20 metros chega ao piso a cerca de 70 km/h. É também por isso que os cabos de gaiola trabalham com coeficiente de segurança elevado: uma queda livre no poço não perdoa.</p>
+    </div>
+
+    <p><strong>O primeiro trecho: a velocidade cresce.</strong> Ao saltar do avião, o paraquedista parte praticamente do repouso vertical. No primeiro segundo, ganha cerca de 10 m/s; no segundo, outros 10; e assim por diante &mdash; enquanto a resistência do ar ainda for pequena.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Queda livre a partir do repouso</div>
+      <div class="equacao-formula"><em>v</em> = <em>g</em> &middot; <em>t</em> &nbsp;&nbsp;e&nbsp;&nbsp; &Delta;<em>s</em> = ½ &middot; <em>g</em> &middot; <em>t</em>²</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>v</em></td><td>Velocidade no instante <em>t</em></td><td>m/s</td></tr>
+          <tr><td><em>g</em></td><td>Aceleração da gravidade</td><td>m/s² (&asymp; 9,8 na superfície da Terra)</td></tr>
+          <tr><td><em>t</em></td><td>Tempo de queda</td><td>s</td></tr>
+          <tr><td>&Delta;<em>s</em></td><td>Distância percorrida na queda</td><td>m</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação (a cachoeira de Lucas):</strong> Queda de &Delta;<em>s</em> = 10 m. <em>t</em> = &radic;(2 &middot; 10 / 9,8) = <strong>1,4 s</strong> &middot; <em>v</em> = 9,8 &times; 1,4 = <strong>14 m/s &asymp; 50 km/h</strong>. A água sai da borda quase em repouso e atinge o poço a cinquenta por hora, em pouco mais de um segundo.</div>
+    </div>
+
+    <p>Sofia olhou o resultado e entendeu o que tinha visto: o fio d'água afina na descida <strong>porque acelera</strong>. A mesma quantidade de água, passando mais depressa, ocupa menos seção.</p>
+
+    <p><strong>O segundo trecho: a velocidade limite.</strong> Se a gravidade agisse sozinha, um paraquedista em queda de 4.000 metros chegaria ao solo a mais de 1.000 km/h. Não é o que acontece &mdash; e a razão é o ar.</p>
+
+    <p>A resistência do ar aponta contra o movimento e cresce com a velocidade. À medida que o paraquedista acelera, a resistência aumenta, e a aceleração <strong>resultante</strong> diminui. Quando a resistência iguala o peso, a aceleração se anula.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 6 &mdash; Condição de velocidade limite</div>
+      <div class="equacao-formula"><em>a</em> = 0 &nbsp;&hArr;&nbsp; Resistência do ar = Peso &nbsp;&rArr;&nbsp; <em>v</em> = <em>v</em><sub>limite</sub> (constante)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>a</em></td><td>Aceleração instantânea do corpo</td><td>m/s²</td></tr>
+          <tr><td><em>v</em><sub>limite</sub></td><td>Velocidade limite (terminal)</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Em posição de barriga para baixo, um paraquedista atinge <em>v</em><sub>limite</sub> &asymp; 55 m/s (&asymp; 200 km/h) após cerca de 12 s de queda e uns 450 m percorridos. A partir daí, cai em <strong>movimento uniforme</strong>: velocidade alta, aceleração zero.</div>
+    </div>
+
+    <p>Esse é o exemplo mais didático de toda a trilha, porque separa definitivamente as duas ideias. Aos 200 km/h, o paraquedista tem velocidade enorme e aceleração <strong>nula</strong> &mdash; e, exatamente por isso, não sente nada além do vento. Velocidade grande não é sinônimo de aceleração grande.</p>
+
+    <p><strong>O terceiro trecho: a abertura do paraquedas.</strong> O paraquedas multiplica de uma só vez a área exposta ao ar. A resistência salta muito acima do peso, e a velocidade despenca em poucos segundos.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 5 &mdash; Os três trechos do salto</div>
+      <table>
+        <thead>
+          <tr><th>Trecho</th><th>O que acontece</th><th><em>v</em></th><th><em>a</em></th><th>Classificação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1 &mdash; Queda inicial (0 a 12 s)</td><td>Velocidade cresce; resistência ainda pequena</td><td>0 &rarr; 55 m/s</td><td>&asymp; +9,8 &rarr; 0 m/s²</td><td>Acelerado</td></tr>
+          <tr><td>2 &mdash; Velocidade limite (12 s até a abertura)</td><td>Resistência iguala o peso</td><td>55 m/s constante</td><td>0</td><td>Uniforme</td></tr>
+          <tr><td>3 &mdash; Abertura do paraquedas (&asymp; 3 s)</td><td>Resistência supera muito o peso</td><td>55 &rarr; 5 m/s</td><td>&asymp; &minus;17 m/s²</td><td>Retardado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O cálculo do trecho 3 usa a Equação 2, aplicada agora a uma desaceleração: <em>a</em><sub>m</sub> = (5 &minus; 55) / 3,0 = <strong>&minus;16,7 m/s²</strong> &mdash; cerca de <strong>1,7 <em>g</em></strong>, o puxão que aparece no Quadro 4.</p>
+
+    <p>&mdash; Repare no sinal &mdash; completou o Prof.&nbsp;Felipe. &mdash; Adotando a descida como sentido positivo, a velocidade é positiva e a aceleração, negativa. Sinais opostos: movimento retardado. É a terceira coluna do Quadro 2, agora a mil metros do chão.</p>
+  </div>
+
+  <!-- ─── TÓPICO 5 ─── -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; Aceleração em operações de mineração</div>
+
+    <p>Fora da sala de aula, aceleração deixa de ser uma grandeza a calcular e passa a ser um limite a respeitar. Freio de emergência, arranque de gaiola e rotação de centrífuga são três equipamentos completamente diferentes que respondem à mesma pergunta: quanto de velocidade se pode mudar, e em quanto tempo. A imagem a seguir mostra os três lado a lado.</p>
+
+    <!-- Figura 8 — IT-08 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-08-v3.jpg" alt="Painel triplo da mina: freio retardador na rampa, gaiola no poço e centrífuga do laboratório" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Painel triplo da mina: o freio retardador na rampa, a gaiola no poço e a centrífuga do laboratório.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Na Mina da Passagem, em Mariana, a gaiola do poço descia mais de cem metros movida por cabo de aço e máquina a vapor. A aceleração de arranque e a desaceleração de parada eram sentidas no corpo dos trabalhadores e ajustadas &ldquo;no ouvido&rdquo; pelo operador do guincho. Não havia medida: havia experiência. O rompimento de cabo &mdash; queda livre no poço &mdash; foi a principal causa de morte em minas de poço no Brasil até a regulamentação da NR-22, em 1978.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Toda mudança de velocidade exige tempo e espaço, e os dois se relacionam com a aceleração de forma previsível. Conhecida a desaceleração máxima que um sistema de freio garante, é possível calcular exatamente a distância mínima em que um veículo consegue parar. Além disso, aceleração não é privilégio do movimento retilíneo: um corpo que gira com módulo de velocidade constante está acelerado, porque a direção da velocidade muda o tempo todo.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O caminhão fora de estrada CAT 797F transporta cerca de 360 toneladas em rampas de 8% a 10%. Na descida, quem controla a velocidade não é o freio de serviço, e sim o <strong>retardador hidráulico</strong>, capaz de manter uma desaceleração da ordem de 1,2 m/s² sem superaquecer. O plano de tráfego da mina converte esse número em distância mínima entre veículos &mdash; e é essa conversão que separa um turno normal de um acidente grave.</p>
+    </div>
+
+    <p><strong>Freios: da desaceleração à distância.</strong> Prof.&nbsp;Felipe trouxe o caso real da rampa.</p>
+
+    <p>&mdash; Um caminhão carregado desce a 40 km/h. O retardador garante 1,2 m/s². Quantos metros ele precisa para parar?</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 7 &mdash; Distância de frenagem</div>
+      <div class="equacao-formula">&Delta;<em>s</em> = <em>v</em>² / (2 &middot; |<em>a</em>|)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>&Delta;<em>s</em></td><td>Distância percorrida até parar</td><td>m</td></tr>
+          <tr><td><em>v</em></td><td>Velocidade no início da frenagem</td><td>m/s</td></tr>
+          <tr><td>|<em>a</em>|</td><td>Módulo da desaceleração</td><td>m/s²</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> <em>v</em> = 40 km/h = 11,1 m/s e |<em>a</em>| = 1,2 m/s². &Delta;<em>s</em> = (11,1)² / (2 &times; 1,2) = 123 / 2,4 = <strong>51 m</strong>. Tempo: &Delta;<em>t</em> = &Delta;<em>v</em> / <em>a</em> = 11,1 / 1,2 = <strong>9,3 s</strong>.</div>
+    </div>
+
+    <p>Pedro fez a conta seguinte sozinho e ficou pálido.</p>
+
+    <p>&mdash; Se ele descer a 60 em vez de 40, a velocidade sobe 50%&hellip; mas a distância vai para 116 metros. Mais que o dobro.</p>
+
+    <p>&mdash; Porque a velocidade entra <strong>ao quadrado</strong> &mdash; confirmou o professor. &mdash; É por isso que os limites em rampa são tão baixos e tão inegociáveis. Quem aumenta a velocidade em metade, mais que dobra o espaço necessário para parar.</p>
+
+    <p><strong>Gaiolas: a aceleração que o corpo aceita.</strong> No poço, o problema é oposto. Não se trata de parar rápido, e sim de partir e chegar com suavidade suficiente para que ninguém se machuque dentro da gaiola.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 6 &mdash; Acelerações típicas em operações de mineração</div>
+      <table>
+        <thead>
+          <tr><th>Equipamento / operação</th><th>Grandeza controlada</th><th>Valor típico</th><th>Por que esse limite</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Caminhão fora de estrada (subida carregado)</td><td>Aceleração</td><td>&asymp; +0,15 m/s²</td><td>Potência disponível com 360 t em rampa de 10%</td></tr>
+          <tr><td>Retardador hidráulico (descida)</td><td>Desaceleração</td><td>&asymp; &minus;1,2 m/s²</td><td>Limite térmico do sistema em descida contínua</td></tr>
+          <tr><td>Frenagem de emergência em rampa</td><td>Desaceleração</td><td>&asymp; &minus;3,0 m/s²</td><td>Risco de perda de aderência e de deslocamento da carga</td></tr>
+          <tr><td>Gaiola de poço &mdash; arranque</td><td>Aceleração</td><td>&asymp; +0,5 m/s²</td><td>Conforto e segurança dos trabalhadores transportados</td></tr>
+          <tr><td>Gaiola de poço &mdash; parada normal</td><td>Desaceleração</td><td>&asymp; &minus;0,6 m/s²</td><td>Evitar oscilação do cabo e do estrado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Uma gaiola que parte com +0,5 m/s² leva 6 segundos para atingir sua velocidade de regime de 3,0 m/s &mdash; e percorre 9 metros só nesse arranque. Numa descida de 120 metros, isso significa que arranque e parada, somados, consomem quase 20 metros do percurso. O tempo de ciclo do poço depende tanto da aceleração quanto da velocidade final.</p>
+
+    <p><strong>Centrífugas: acelerar sem mudar de rapidez.</strong> No laboratório de beneficiamento, a centrífuga separa partículas de minério por densidade. O tubo gira em círculo com rapidez praticamente constante &mdash; e, ainda assim, está permanentemente acelerado, porque a <strong>direção</strong> da velocidade muda a cada instante. É a andorinha de Pedro, na versão industrial.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 8 &mdash; Aceleração centrípeta</div>
+      <div class="equacao-formula"><em>a</em><sub>c</sub> = <em>v</em>² / <em>r</em></div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td><em>a</em><sub>c</sub></td><td>Aceleração centrípeta (aponta para o centro)</td><td>m/s²</td></tr>
+          <tr><td><em>v</em></td><td>Módulo da velocidade do corpo em rotação</td><td>m/s</td></tr>
+          <tr><td><em>r</em></td><td>Raio da trajetória circular</td><td>m (metro)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> Amostra a <em>r</em> = 0,10 m do eixo, girando a 3.000 rpm, tem <em>v</em> &asymp; 31,4 m/s. <em>a</em><sub>c</sub> = (31,4)² / 0,10 = <strong>9,9 &times; 10³ m/s² &asymp; 1.000 <em>g</em></strong>. A separação que a gravidade faria em horas ocorre em minutos.</div>
+    </div>
+
+    <p>Lucas fechou o caderno com uma observação que o Prof.&nbsp;Felipe pediu para repetir alto:</p>
+
+    <p>&mdash; Então &ldquo;acelerar&rdquo; não é só ir mais rápido. É qualquer mudança na velocidade &mdash; no tamanho dela ou na direção dela.</p>
+  </div>
+
+</div><!-- fim ato-ii -->
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>Às cinco e meia da tarde, antes de embarcar de volta, o Prof.&nbsp;Felipe concedeu uma última parada: o mirante de pedra na borda do platô, onde uma laje de quartzito avança sobre o vale como a proa de um navio. Dali os três olharam em silêncio a serra se abrir, morro atrás de morro, até o horizonte &mdash; e a luz que de manhã vinha rasante sobre o campo rupestre agora batia alaranjada nos telhados de Ouro Preto, lá embaixo. Depois a van desceu de volta ao centro. Sofia ia com o caderno fechado sobre os joelhos; Pedro tinha o celular no colo, com o gráfico do acelerômetro ainda aberto; Lucas olhava o parque ficar para trás pela janela traseira, do mesmo jeito que, de manhã, tinha olhado a cidade.</p>
+
+  <!-- Figura 9 — IT-09 (retorno) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T09-IT-09-v3.jpg" alt="O trio no mirante de pedra ao entardecer, com o vale do Rio das Velhas se abrindo morro atrás de morro" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio no mirante de pedra, ao entardecer, com o vale do Rio das Velhas se abrindo morro atrás de morro.</figcaption>
+  </figure>
+
+  <p>&mdash; Uma última pergunta &mdash; disse o Prof.&nbsp;Felipe, engatando a descida. &mdash; Nós subimos e descemos o mesmo morro hoje. A velocidade média do dia de vocês foi zero, como na trilha passada. E a aceleração média?</p>
+
+  <p>Pedro pensou. Sofia respondeu antes.</p>
+
+  <p>&mdash; Também zero. A gente saiu parado e voltou parado. &Delta;<em>v</em> igual a zero.</p>
+
+  <p>&mdash; E, mesmo assim &mdash; completou Lucas &mdash;, a gente sentiu o dia inteiro.</p>
+
+  <p>O professor sorriu.</p>
+
+  <p>&mdash; É esse o resumo da trilha. A média apaga tudo o que aconteceu no meio. O que empurrou vocês contra o banco, o que jogou vocês para a frente, o que faz a água chegar ao poço a cinquenta por hora e o que faz um paraquedas doer nos ombros &mdash; nada disso está na média. Está no instante.</p>
+
+  <p><span class="termo">Aceleração média</span>: a variação de velocidade dividida pelo intervalo de tempo, um número que resume uma mudança inteira. <span class="termo">Aceleração instantânea</span>: o mesmo cálculo levado ao limite, um número que descreve um único momento. E entre os dois, a regra que evita o erro mais comum de toda a cinemática: o sinal da aceleração só significa alguma coisa quando lido junto com o sinal da velocidade.</p>
+
+  <p>Na próxima trilha, o caso mais simples de todos ganha nome próprio: o movimento em que a aceleração é exatamente zero e a velocidade não muda nunca &mdash; o <strong>Movimento Uniforme</strong>. Depois dele vem aquele em que a aceleração é constante e diferente de zero, e a queda do paraquedista de hoje aparecerá inteira, com equação e gráfico. O que hoje foi sensação, amanhã será previsão.</p>
+</div>
+
+<!-- ═══════════════════ PROBLEMAS INTERDISCIPLINARES ═══════════════════ -->
+<div class="ato" id="conexoes">
+  <div class="ato-titulo">Problemas Interdisciplinares</div>
+
+  <p><em>Cinco problemas que conectam a Física com outras áreas do conhecimento técnico e científico. Cada problema exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- Figura 10 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T09-IT-10-v3.jpg" alt="Mapa radial das cinco disciplinas conectadas pela razão entre a variação de velocidade e o tempo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas ao redor de uma única razão, a variação da velocidade sobre o tempo &mdash; e a andorinha do parque cruzando o fundo do quadro.</figcaption>
+  </figure>
+
+  <!-- C5 Protocol Table -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; Metodologia para Problemas Interdisciplinares</div>
+    <p style="margin-bottom:12px;font-family:var(--serif);font-size:1rem;color:oklch(0.80 0 0);">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 11 — IT-11 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T09-IT-11-v3.jpg" alt="As oito etapas do método científico de resolução de problemas, sob o voo em mergulho da andorinha" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido, sob o voo em mergulho da andorinha.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>O que está sendo pedido?</td><td>Releia o enunciado. Escreva com suas próprias palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td>Quais são os dados?</td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td>Quais são as hipóteses?</td><td>Declare o que você vai assumir (trajetória retilínea, aceleração constante etc.).</td></tr>
+        <tr><td>4</td><td>Qual é o desenho do problema?</td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td>Quais são as equações?</td><td>Identifique a equação do TT. Isole algebricamente a variável pedida.</td></tr>
+        <tr><td>6</td><td>Cálculo com unidades</td><td>Substitua os valores. Acompanhe as unidades passo a passo até o resultado.</td></tr>
+        <tr><td>7</td><td>Análise de resultados</td><td>O resultado faz sentido? Compare com valores típicos da mineração.</td></tr>
+        <tr><td>8</td><td>Responda o que foi pedido</td><td>Escreva a resposta completa, com unidade e interpretação no contexto.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- Atividade 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Biologia</div>
+    <p>Um paraquedista salta e atinge a velocidade limite de 55 m/s após 12 s de queda. Ao abrir o paraquedas, sua velocidade cai para 5,0 m/s em 3,0 s. Determine (a) a aceleração média do primeiro trecho, (b) a aceleração no trecho de velocidade limite e (c) a aceleração média na abertura, expressa também em unidades de <em>g</em>. Explique por que o corpo humano suporta bem o trecho (b), em que a velocidade é máxima, e sofre no trecho (c).</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Três acelerações médias do mesmo salto e a explicação fisiológica de por que a velocidade alta não incomoda e a mudança rápida de velocidade incomoda.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Trecho 1: <em>v</em><sub>0</sub> = 0 &middot; <em>v</em> = 55 m/s &middot; &Delta;<em>t</em> = 12 s. Trecho 2: <em>v</em> = 55 m/s constante. Trecho 3: <em>v</em><sub>0</sub> = 55 m/s &middot; <em>v</em> = 5,0 m/s &middot; &Delta;<em>t</em> = 3,0 s. <em>g</em> = 9,8 m/s².</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Movimento vertical, com a descida adotada como sentido positivo; a velocidade limite é atingida exatamente aos 12 s; a abertura do paraquedas produz desaceleração aproximadamente constante.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[avião 0 m/s] &mdash;&mdash;12 s acelerando&mdash;&mdash;&gt; [55 m/s] &mdash;&mdash;uniforme&mdash;&mdash;&gt; [abertura: 3 s] &mdash;&mdash;&gt; [5 m/s]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2: <em>a</em><sub>m</sub> = &Delta;<em>v</em>/&Delta;<em>t</em>. Equação 6 para o trecho de velocidade limite (<em>a</em> = 0).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">(a) <em>a</em><sub>m</sub> = (55 &minus; 0)/12 = <strong>+4,6 m/s²</strong> (&asymp; 0,47 <em>g</em>). (b) &Delta;<em>v</em> = 0 &rArr; <em>a</em> = <strong>0</strong> &mdash; a resistência do ar iguala o peso. (c) <em>a</em><sub>m</sub> = (5,0 &minus; 55)/3,0 = <strong>&minus;16,7 m/s²</strong> = 16,7/9,8 = <strong>&minus;1,7 <em>g</em></strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">O valor (a) é menor que <em>g</em> porque a resistência do ar já atua durante os 12 s, reduzindo a aceleração resultante de 9,8 para uma média de 4,6 m/s². O valor (c) é o único que ultrapassa <em>g</em> em módulo, e é justamente o único que machuca.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">(a) +4,6 m/s²; (b) zero; (c) &minus;16,7 m/s², ou 1,7 <em>g</em>. O corpo suporta bem o trecho (b) porque, em movimento uniforme, nenhuma força resultante age sobre ele &mdash; a 200 km/h ele sente apenas o vento. O trecho (c) é sofrido porque a velocidade muda muito em pouquíssimo tempo, e é a mudança &mdash; não a velocidade &mdash; que o organismo percebe como força nos ombros, nas pernas e nos órgãos internos.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Matemática</div>
+    <p>Um estudante afirmou: &ldquo;aceleração negativa significa que o veículo está freando&rdquo;. Avalie a afirmação usando o caso de um caminhão que desce a rampa de cava no sentido negativo do eixo adotado, passando de &minus;8,0 m/s para &minus;11,0 m/s em 6,0 s. Calcule a aceleração média, classifique o movimento e proponha um critério matemático geral que substitua a regra do estudante.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Julgar a validade de uma regra intuitiva, calcular a aceleração do caso proposto, classificar o movimento e formular um critério correto.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text"><em>v</em><sub>0</sub> = &minus;8,0 m/s &middot; <em>v</em> = &minus;11,0 m/s &middot; &Delta;<em>t</em> = 6,0 s. Afirmação a avaliar: &ldquo;<em>a</em> &lt; 0 &rArr; freando&rdquo;.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Movimento retilíneo sobre eixo orientado, com o sentido positivo apontando rampa acima; aceleração aproximadamente constante no intervalo.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">(+) &larr;&mdash;&mdash;&mdash;&mdash; topo da rampa &middot; caminhão: <em>v</em> = &minus;8,0 m/s &rarr; <em>v</em> = &minus;11,0 m/s (descendo, mais rápido)</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2 para calcular <em>a</em><sub>m</sub>; Equação 3 (produto <em>v</em>&middot;<em>a</em>) para classificar.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">&Delta;<em>v</em> = (&minus;11,0) &minus; (&minus;8,0) = <strong>&minus;3,0 m/s</strong>. <em>a</em><sub>m</sub> = &minus;3,0 / 6,0 = <strong>&minus;0,50 m/s²</strong>. Produto: <em>v</em> &middot; <em>a</em> = (&minus;11,0) &times; (&minus;0,50) = <strong>+5,5 &gt; 0</strong> &rArr; movimento <strong>acelerado</strong>. Módulos: |<em>v</em><sub>0</sub>| = 8,0 m/s &rarr; |<em>v</em>| = 11,0 m/s &mdash; de fato, aumentou.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">A afirmação do estudante falha exatamente neste caso: a aceleração é negativa e, ainda assim, o caminhão está ganhando velocidade. O erro está em confundir sinal com efeito: o sinal informa o sentido, não o aumento ou a diminuição.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A afirmação é falsa. A aceleração média vale &minus;0,50 m/s² e o movimento é <strong>acelerado</strong>, não retardado. O critério correto é o do produto: se <em>v</em>&middot;<em>a</em> &gt; 0, o módulo da velocidade aumenta (acelerado); se <em>v</em>&middot;<em>a</em> &lt; 0, o módulo diminui (retardado); se <em>a</em> = 0, o movimento é uniforme. Esse critério não depende do referencial escolhido, enquanto a regra do estudante depende &mdash; e por isso ela falha.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Engenharia de Minas</div>
+    <p>O retardador hidráulico de um caminhão fora de estrada garante desaceleração de 1,2 m/s² com carga plena. O plano de tráfego pretende elevar a velocidade de descida de 40 km/h para 50 km/h. Determine a distância de frenagem em cada caso e avalie o impacto sobre a distância mínima entre veículos, hoje fixada em 70 m.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Duas distâncias de frenagem e a avaliação técnica de manter ou não a distância mínima de 70 m entre veículos.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">|<em>a</em>| = 1,2 m/s² &middot; <em>v</em><sub>1</sub> = 40 km/h = 11,1 m/s &middot; <em>v</em><sub>2</sub> = 50 km/h = 13,9 m/s. Distância mínima atual entre veículos: 70 m.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Desaceleração constante e igual ao valor nominal do retardador; pista com aderência normal; não se considera o tempo de reação do operador (que somaria distância).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[caminhão A] &larr;&mdash; 70 m &mdash;&rarr; [caminhão B] &mdash; ambos descendo a rampa</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 7: &Delta;<em>s</em> = <em>v</em>²/(2&middot;|<em>a</em>|). Equação 2 rearranjada para o tempo: &Delta;<em>t</em> = &Delta;<em>v</em>/|<em>a</em>|.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">A 40 km/h: &Delta;<em>s</em><sub>1</sub> = (11,1)²/(2&times;1,2) = 123/2,4 = <strong>51 m</strong> &middot; &Delta;<em>t</em><sub>1</sub> = 11,1/1,2 = 9,3 s. A 50 km/h: &Delta;<em>s</em><sub>2</sub> = (13,9)²/(2&times;1,2) = 193/2,4 = <strong>80 m</strong> &middot; &Delta;<em>t</em><sub>2</sub> = 13,9/1,2 = 11,6 s. Aumento de velocidade: +25% &middot; Aumento de distância: 80/51 = <strong>+57%</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">A 40 km/h, os 51 m de frenagem cabem com folga nos 70 m regulamentares. A 50 km/h, os 80 m <strong>já excedem</strong> a distância mínima &mdash; o caminhão de trás atingiria o da frente antes de parar, mesmo sem contar o tempo de reação do operador. A raiz do problema é a dependência quadrática: a velocidade entra ao quadrado, a aceleração apenas em primeira potência.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">As distâncias são 51 m a 40 km/h e 80 m a 50 km/h. A mudança proposta é <strong>inviável</strong> com a distância atual: elevar a velocidade para 50 km/h exigiria aumentar a distância mínima entre veículos para pelo menos 100 m (80 m de frenagem mais a margem de reação), reduzindo o número de caminhões simultâneos na rampa &mdash; o que anularia o ganho de produtividade pretendido.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Segurança do Trabalho</div>
+    <p>Uma gaiola de poço transporta trabalhadores por 120 m de profundidade. Parte do repouso com aceleração de 0,50 m/s² até atingir 3,0 m/s, mantém essa velocidade e freia com 0,60 m/s² até parar. Determine o tempo total da descida e avalie se a redução do trecho uniforme seria uma forma segura de encurtar o ciclo.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">O tempo total da descida, decomposto em três trechos, e um parecer de segurança sobre acelerar o ciclo.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Profundidade total: &Delta;<em>s</em> = 120 m. Arranque: <em>a</em><sub>1</sub> = +0,50 m/s², de 0 a 3,0 m/s. Regime: <em>v</em> = 3,0 m/s. Parada: <em>a</em><sub>3</sub> = &minus;0,60 m/s², de 3,0 m/s a 0.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Acelerações constantes em cada trecho; poço vertical; o cabo não sofre alongamento apreciável.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[superfície] &mdash;arranque 9 m&mdash; &mdash;&mdash;&mdash; regime &mdash;&mdash;&mdash; &mdash;parada 7,5 m&mdash; [120 m]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2 para os tempos de arranque e parada (&Delta;<em>t</em> = &Delta;<em>v</em>/<em>a</em>); Equação 7 rearranjada para as distâncias (&Delta;<em>s</em> = <em>v</em>²/2<em>a</em>); velocidade média do trecho uniforme (Equação 1 da T08: &Delta;<em>t</em> = &Delta;<em>s</em>/<em>v</em>).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Arranque: &Delta;<em>t</em><sub>1</sub> = 3,0/0,50 = <strong>6,0 s</strong> &middot; &Delta;<em>s</em><sub>1</sub> = (3,0)²/(2&times;0,50) = <strong>9,0 m</strong>. Parada: &Delta;<em>t</em><sub>3</sub> = 3,0/0,60 = <strong>5,0 s</strong> &middot; &Delta;<em>s</em><sub>3</sub> = (3,0)²/(2&times;0,60) = <strong>7,5 m</strong>. Trecho uniforme: &Delta;<em>s</em><sub>2</sub> = 120 &minus; 9,0 &minus; 7,5 = 103,5 m &middot; &Delta;<em>t</em><sub>2</sub> = 103,5/3,0 = <strong>34,5 s</strong>. Tempo total: 6,0 + 34,5 + 5,0 = <strong>45,5 s</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">O trecho uniforme responde por 76% do tempo, mas é justamente o trecho em que a aceleração é nula e ninguém sente nada. Encurtá-lo significa aumentar a velocidade de regime &mdash; o que, pela Equação 7, aumenta também as distâncias de arranque e de parada, ou obriga a elevar as acelerações acima dos valores de conforto do Quadro 6.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A descida completa leva 45,5 s. Reduzir o trecho uniforme <strong>não é seguro</strong> como estratégia isolada: qualquer ganho de tempo relevante exige elevar a velocidade de regime e, com ela, as acelerações de arranque e frenagem, que já estão calibradas pelo limite de conforto e segurança dos trabalhadores. O ganho de ciclo deve vir da logística de embarque, não da física do cabo.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e História</div>
+    <p>Na Mina da Passagem, no século XIX, a gaiola descia por cabo acionado por máquina a vapor. Documentos da época registram descidas de 100 m em cerca de 40 s. Estime a velocidade média da descida e compare com a gaiola moderna do problema anterior. Em seguida, avalie o cenário de ruptura de cabo: quanto tempo levaria a queda livre desses mesmos 100 m e com que velocidade a gaiola atingiria o fundo?</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">A velocidade média histórica, sua comparação com a gaiola atual e os números da queda livre em caso de ruptura do cabo.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Gaiola histórica: &Delta;<em>s</em> = 100 m &middot; &Delta;<em>t</em> = 40 s. Gaiola moderna: <em>v</em> de regime = 3,0 m/s. Queda livre: <em>g</em> = 9,8 m/s² &middot; altura de 100 m.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Descida controlada aproximadamente uniforme; na ruptura, despreza-se a resistência do ar e o atrito nas guias &mdash; hipótese de queda livre pura, que fornece o cenário-limite.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[superfície] |cabo| &mdash;&mdash;100 m&mdash;&mdash; [fundo do poço] &middot; controlada: 40 s &middot; ruptura: <em>t</em> = ?</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 1 da T08 (<em>v</em><sub>m</sub> = &Delta;<em>s</em>/&Delta;<em>t</em>) para a descida controlada; Equação 5 (&Delta;<em>s</em> = ½&middot;<em>g</em>&middot;<em>t</em>² e <em>v</em> = <em>g</em>&middot;<em>t</em>) para a queda livre.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Histórica: <em>v</em><sub>m</sub> = 100/40 = <strong>2,5 m/s</strong> (9,0 km/h). Moderna: 3,0 m/s &mdash; apenas 20% mais rápida. Queda livre: <em>t</em> = &radic;(2 &times; 100 / 9,8) = <strong>4,5 s</strong> &middot; <em>v</em> = 9,8 &times; 4,5 = <strong>44 m/s &asymp; 159 km/h</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Cento e cinquenta anos de tecnologia mudaram muito pouco a velocidade de descida &mdash; porque o limite nunca foi o motor, e sim o corpo humano transportado. Já o contraste com a ruptura é brutal: a queda livre percorre em 4,5 s o que a descida controlada leva 40 s para vencer, chegando ao fundo a quase 160 km/h. Nenhum sistema de amortecimento de fundo absorve essa energia.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A gaiola histórica descia a 2,5 m/s, contra 3,0 m/s da moderna &mdash; evolução de apenas 20% em um século e meio. Em caso de ruptura de cabo, os mesmos 100 m seriam vencidos em 4,5 s, com chegada a 44 m/s (&asymp; 159 km/h). É exatamente esse número que justifica os freios de segurança acionados por sobrevelocidade e os coeficientes de segurança elevados dos cabos, exigidos hoje pela NR-22 &mdash; a norma nasceu, historicamente, da contagem desses acidentes.</div></div>
+    </details>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIÊNCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+  <div class="ciencia-arte-obra"><strong>Escultura:</strong> <em>Formas Únicas da Continuidade no Espaço</em> &mdash; Umberto Boccioni (1913)</div>
+
+  <p>Em 1913, num ateliê de Milão, Umberto Boccioni modelou em gesso uma figura humana em passada larga. A obra tem cerca de um metro e vinte de altura e não representa um corpo: representa o <strong>rastro</strong> de um corpo. As pernas se abrem em superfícies que parecem esculpidas pelo próprio ar; os músculos das coxas se prolongam para trás como chamas; o tronco avança e, ao mesmo tempo, deixa para trás lâminas do que ele era um instante antes. Não há cabeça reconhecível, não há braços. Há velocidade transformando a matéria.</p>
+
+  <p>O que Boccioni tentava esculpir era precisamente o assunto desta trilha. Uma escultura clássica mostra um estado: o corpo <em>parado</em> nesta pose. A dele mostra uma transição &mdash; a figura já não está onde estava e ainda não está onde vai chegar. É a diferença entre fotografar a posição e fotografar a mudança, entre o Tópico 2 e o Tópico 3: a média, que resume o percurso, e o instante, que mostra o que está acontecendo agora.</p>
+
+  <p>Há ainda um detalhe que fecha o ciclo. Boccioni morreu em 1916, aos 33 anos, ao cair de um cavalo durante um exercício militar &mdash; vítima, ironicamente, da mesma aceleração que passou a vida tentando esculpir. A obra em bronze foi fundida postumamente e hoje estampa a moeda italiana de 20 centavos de euro: um objeto sobre a mudança do movimento circulando, todos os dias, nos bolsos de milhões de pessoas.</p>
+
+  <!-- Figura 12 — IT-12 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T09-IT-12-v3.jpg" alt="No espírito de Boccioni: uma figura que avança e deixa para trás o corpo que ela era um instante antes" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 12</span> &mdash; Boccioni e a Física: uma figura que avança e deixa para trás o corpo que ela era um instante antes.</figcaption>
+  </figure>
+
+  <blockquote>&ldquo;É o artista que é verdadeiro, e é a fotografia que mente; pois, na realidade, o tempo não para.&rdquo;</blockquote>
+  <div class="ca-autor">&mdash; Auguste Rodin (1840&ndash;1917)</div>
+
+  <div class="footnote"><strong>Umberto Boccioni</strong> (Reggio Calábria, Itália, 1882 &mdash; Verona, 1916). Pintor e escultor italiano, principal teórico do Futurismo nas artes plásticas e autor do <em>Manifesto Técnico da Escultura Futurista</em> (1912). Defendia que a arte deveria abandonar a representação de corpos em repouso e assumir como tema o dinamismo &mdash; o movimento, a velocidade e a interpenetração entre o corpo e o espaço que ele atravessa. <em>Forme uniche della continuità nello spazio</em> (1913) é sua obra mais conhecida e é considerada a escultura mais importante do movimento futurista. Morreu aos 33 anos, em consequência de uma queda de cavalo durante treinamento militar.</div>
+
+  <div class="footnote"><strong>Auguste Rodin</strong> (Paris, 1840 &mdash; Meudon, 1917). Escultor francês, autor de <em>O Pensador</em> e <em>Os Burgueses de Calais</em>, considerado o fundador da escultura moderna. A frase acima foi registrada por Paul Gsell em <em>A Arte: conversas reunidas por Paul Gsell</em> (1911), num diálogo em que Rodin comenta as cronofotografias de cavalos a galope: para ele, a fotografia instantânea congela uma pose que o olho nunca vê, enquanto a escultura, ao fundir num só gesto o antes e o depois, é mais fiel à experiência real do movimento. O argumento é o oposto exato do que a Física faz &mdash; e é justamente por isso que os dois se iluminam.</div>
+</div>
+
+<!-- ═══════════════════ REFERÊNCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo">Referências &mdash; Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MÁXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio</em>, v. único. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Referências &mdash; Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Declaração de autoria</div>
+  <p>Estas Trilhas de Aprendizagem são concebidas, dirigidas e revisadas por uma equipe humana &mdash; autor, coautor, colaboradores, monitores e a equipe do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) e equipe da Coordenadoria da Área de Física (CODAFIS).</p>
+  <p>A inteligência artificial entra no processo como ferramenta, nunca como autora: é usada sob curadoria humana, com princípios claros, diretrizes pedagógicas explícitas e honestidade intelectual.</p>
+  <p>Assim, declaramos abertamente o uso de IA como assistente de redação e diagramação de todos os Objetos de Aprendizagem (Claude Opus 5 e Claude Cowork, Anthropic, 2026; Gemini Notebook, Google, 2026), do mesmo modo que se declara o uso de qualquer ferramenta de autoria.</p>
+</div>
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG campus Ouro Preto - Coordenadoria da Área de Física (CODAFIS) - Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) &middot; FC1 &middot; T09 &middot; Primeira edição &middot; 2026</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T09-TT-v3';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+@media (max-width: 600px) {
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="../../#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="../../">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+  /* file://: href de pasta nao abre o index.html sozinho */
+  if (location.protocol === 'file:') {
+    p.querySelectorAll('a[href]').forEach(function (a) {
+      var h = a.getAttribute('href');
+      if (/^https?:/.test(h)) return;
+      var m = h.match(/^(.*\/)(#.*)?$/);
+      if (m) a.setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
+    });
+  }
+})();
+</script>
+</body>
+</html>
