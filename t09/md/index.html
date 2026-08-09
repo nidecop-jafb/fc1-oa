@@ -55,6 +55,11 @@
       <audio controls preload="none" src="T09-MD-v3-curto.m4a"></audio>
       <a class="baixar" href="T09-MD-v3-curto.m4a" download>baixar esta faixa (1.7 MB)</a>
     </div>
+    <div class="faixa">
+      <div class="rot">Vers&atilde;o padr&atilde;o<span class="tag">Deep Dive &middot; PT-BR &middot; ~16 min</span></div>
+      <audio controls preload="none" src="T09-MD-v3-padrao.m4a"></audio>
+      <a class="baixar" href="T09-MD-v3-padrao.m4a" download>baixar esta faixa (4.9 MB)</a>
+    </div>
 
   <div class="fecho">
     <div class="fecho-acao">Continue a trilha</div>
@@ -108,8 +113,8 @@ if (location.protocol === 'file:') {
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="../../#t09">Ver todos os OAs da trilha</a>
-  <a class="aba-site-btn" href="../../">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>
 <script>
@@ -124,15 +129,6 @@ if (location.protocol === 'file:') {
   document.addEventListener('click', function (e) {
     if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
   });
-  /* file://: href de pasta nao abre o index.html sozinho */
-  if (location.protocol === 'file:') {
-    p.querySelectorAll('a[href]').forEach(function (a) {
-      var h = a.getAttribute('href');
-      if (/^https?:/.test(h)) return;
-      var m = h.match(/^(.*\/)(#.*)?$/);
-      if (m) a.setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
-    });
-  }
 })();
 </script>
 </body>
