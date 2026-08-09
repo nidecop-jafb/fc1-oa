@@ -769,21 +769,6 @@ function enviarColeta(isRetry) {
 }
 
 </script>
-
-<!-- NAV-TRILHA (injetada na publicacao — nao existe no OA canonico) -->
-<div style="text-align:center; padding:18px 12px 28px; font-family:'Courier New',monospace; font-size:.85rem;">
-  <a id="navTrilhaOAs" href="../../#t04" style="color:#C8A84B; text-decoration:none; border:1px solid #C8A84B; padding:9px 16px; display:inline-block; margin:4px;">&#9776; Ver todos os OAs da trilha</a>
-  <a id="navTrilhaInicio" href="../../" style="color:#999; text-decoration:none; border:1px solid #666; padding:9px 16px; display:inline-block; margin:4px;">In&iacute;cio do site</a>
-</div>
-<script>
-/* Navegacao local (file://): href de pasta nao abre o index.html sozinho.
-   So quando a copia e aberta do disco, os dois links ganham o index.html
-   explicito. No site publicado nada muda. */
-if (location.protocol === 'file:') {
-  document.getElementById('navTrilhaOAs').setAttribute('href', '../../index.html#t04');
-  document.getElementById('navTrilhaInicio').setAttribute('href', '../../index.html');
-}
-</script>
 <!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
 <style>
 .aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
