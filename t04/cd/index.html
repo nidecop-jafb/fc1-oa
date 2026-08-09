@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T09 · Aceleração Média e Instantânea — Estudante</title>
+<title>T04 · O SI e a Metrologia no Brasil — Estudante</title>
 <!--
   IMPORTACAO EM MOODLE:
   1. Adicionar atividade > Recurso > Arquivo
   2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T09-CD-v3-estudante.html" width="100%" height="2400"></iframe>
+  OU iframe: <iframe src="T04-CD-v4-estudante.html" width="100%" height="2400"></iframe>
 
   Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
-  localStorage: prefixo ifmg_fc1_t09_cd_
+  localStorage: prefixo ifmg_fc1_t04_cd_
 -->
 <style>
 :root {
@@ -316,26 +316,25 @@ main {
   border-top: 2px solid var(--ouro);
   text-align: center;
 }
-.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-frase { font-family: var(--serif); font-size: .88rem; }
 .encerramento .fecho-acao {
-  color: var(--ouro); font-size: .95rem;
+  color: var(--ouro); font-size: .82rem;
   text-transform: uppercase; font-weight: 700;
-  margin-top: 10px; line-height: 1.5;
+  margin-top: 8px;
 }
 .encerramento .fecho-nidec {
-  color: var(--cinza); font-size: .9rem;
-  margin-top: 14px; line-height: 1.55;
+  color: var(--cinza); font-size: .82rem;
+  margin-top: 12px; line-height: 1.4;
 }
 
 /* ── FOOTER ── */
 .footer-line {
   text-align: center;
-  font-size: .85rem;
+  font-size: .7rem;
   color: var(--cinza);
-  padding: 16px 12px;
+  padding: 16px 0;
   margin-top: 12px;
   letter-spacing: .5px;
-  line-height: 1.5;
 }
 
 /* ── RESPONSIVE ── */
@@ -369,7 +368,7 @@ main {
 
 <header class="header">
   <div class="header-inner">
-    <h1><span class="trilha-code">T09</span> &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h1>
+    <h1><span class="trilha-code">T04</span> &middot; O SI e a Metrologia no Brasil</h1>
     <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
   </div>
   <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
@@ -384,8 +383,8 @@ main {
   <span class="piazzi-tag">Escrever</span>
   <span class="piazzi-tag">Medir</span>
   <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLH9GvshumD2s" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Filarm&ocirc;nica de Minas Gerais &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra sinf&ocirc;nica</span>
 </div>
 
 <!-- TOOLBAR -->
@@ -420,15 +419,15 @@ main {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
 </div>
 
-<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T09 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T04 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
 
 <script>
 // ── STORAGE ──
-const PREFIX = 'ifmg_fc1_t09_cd_';
+const PREFIX = 'ifmg_fc1_t04_cd_';
 function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
 function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
 
@@ -437,136 +436,136 @@ const CARDS = [
   // CONCEITO (1-5)
   {
     id: 'CD-01', cat: 'conceito', label: 'Conceito',
-    front: 'O que o corpo sente dentro de um veículo — e o que ele não sente?',
-    back: 'O corpo sente a <b>mudança</b> da velocidade, não a velocidade. Num trecho reto a 80 km/h dá para equilibrar uma garrafa no painel; no arranque e na freada, o encosto e o cinto entregam a diferença.'
+    front: 'O que é o Sistema Internacional de Unidades (SI)?',
+    back: 'Sistema universal de medidas baseado em 7 grandezas fundamentais, adotado em 1960 pela CGPM, garantindo linguagem científica comum entre países.'
   },
   {
     id: 'CD-02', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração escalar média?',
-    back: 'É a variação de velocidade dividida pelo intervalo de tempo em que ela ocorreu.\n<span class="eq-line">Não é uma velocidade grande — é uma regra de crescimento da velocidade.</span>'
+    front: 'O que são grandezas fundamentais do SI?',
+    back: 'Sete grandezas independentes entre si (comprimento, massa, tempo, corrente, temperatura, quantidade de substância e intensidade luminosa) que geram todas as demais.'
   },
   {
     id: 'CD-03', cat: 'conceito', label: 'Conceito',
-    front: 'Por que aceleração negativa não quer dizer "freando"?',
-    back: 'Porque o sinal informa o <b>sentido</b>, não se a velocidade cresce ou diminui. Quem classifica é o produto v·a: mesmo sinal acelera, sinais opostos retardam. Um caminhão descendo com v e a negativos está ganhando velocidade.'
+    front: 'O que é coerência no SI?',
+    back: 'Propriedade que permite usar equações como F = m·a sem fatores de conversão, pois as unidades são definidas para se encaixar diretamente umas nas outras.'
   },
   {
     id: 'CD-04', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração instantânea — e por que a média engana?',
-    back: 'É o limite da aceleração média quando o intervalo tende a zero: o valor no instante. A média distribui a freada inteira por igual; o passageiro não é jogado para a frente "em média", e sim no instante do pico.'
+    front: 'O que são prefixos SI?',
+    back: 'Símbolos que representam potências de 10 e se antepõem a qualquer unidade, permitindo expressar grandezas muito grandes ou muito pequenas de forma compacta.'
   },
   {
     id: 'CD-05', cat: 'conceito', label: 'Conceito',
-    front: 'Por que um paraquedista a 200 km/h não sente nada além do vento?',
-    back: 'Porque atingiu a <b>velocidade limite</b>: a resistência do ar iguala o peso e a aceleração vai a zero. Velocidade alta com aceleração nula é movimento uniforme — dá para estar muito rápido e não estar acelerando.'
+    front: 'O que é rastreabilidade metrológica?',
+    back: 'Cadeia ininterrupta de calibrações que liga qualquer instrumento de medição aos padrões primários internacionais do BIPM, garantindo confiabilidade legal e técnica.'
   },
 
   // EQUAÇÃO (6-10)
   {
     id: 'CD-06', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da variação de velocidade?',
-    back: '<span class="eq-line">Δv = v − v₀</span>\nΔv: variação de velocidade (m/s) · v: velocidade final (m/s) · v₀: velocidade inicial (m/s).\nO sinal conta a história: +10 m/s no arranque da van, −10 m/s na freada.'
+    front: 'Força resultante — qual é a equação no SI?',
+    back: '<span class="eq-line">F = m · a</span>\nF [N = kg·m·s⁻²] | m [kg] | a [m/s²]\nEx.: bomba de 80 kg a 2 m/s² → F = 160 N'
   },
   {
     id: 'CD-07', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da aceleração escalar média?',
-    back: '<span class="eq-line">a_m = Δv / Δt</span>\na_m: aceleração média (m/s²) · Δv: variação de velocidade (m/s) · Δt: intervalo de tempo (s).\nLê-se "metro por segundo, a cada segundo".'
+    front: 'Conversão entre prefixos SI — qual é a equação?',
+    back: '<span class="eq-line">x [prefixada] = x × 10ⁿ [base]</span>\nEx.: 150 mm = 150 × 10⁻³ m = 0,150 m\nn = expoente do prefixo (kilo→+3, mili→−3, micro→−6)'
   },
   {
     id: 'CD-08', cat: 'exemplo', label: 'Equação',
-    front: 'Como se classifica o movimento pelos sinais de v e a?',
-    back: '<span class="eq-line">v·a &gt; 0 → acelerado | v·a &lt; 0 → retardado | a = 0 → uniforme</span>\nO critério é o produto, nunca um dos sinais isolado. Vale em qualquer referencial adotado.'
+    front: 'Conversão de psi para Pascal — qual é a equação?',
+    back: '<span class="eq-line">1 psi = 6 894,76 Pa</span>\nEx.: 15 psi × 6 894,76 = 103 421 Pa ≈ 1,034 × 10⁵ Pa\n(≈ pressão atmosférica padrão: 101 325 Pa)'
   },
   {
     id: 'CD-09', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da queda livre a partir do repouso?',
-    back: '<span class="eq-line">v = g·t   e   Δs = ½·g·t²</span>\nv: velocidade no instante t (m/s) · g ≈ 9,8 m/s² · t: tempo de queda (s) · Δs: distância percorrida (m).\nA massa não entra na conta.'
+    front: 'Conversão de temperatura °F → °C → K — qual é a equação?',
+    back: '<span class="eq-line">T(°C) = [T(°F) − 32] × 5/9</span>\n<span class="eq-line">T(K) = T(°C) + 273,15</span>\nEx.: 63 °F → 17,2 °C → 290,35 K'
   },
   {
     id: 'CD-10', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da distância de frenagem e da aceleração centrípeta?',
-    back: '<span class="eq-line">Δs = v² / (2·|a|)   e   a_c = v² / r</span>\nΔs: distância até parar (m) · |a|: módulo da desaceleração (m/s²) · a_c: aceleração centrípeta (m/s²) · r: raio da trajetória (m).\nNas duas, a velocidade entra ao quadrado.'
+    front: 'Pressão hidrostática — qual é a equação no SI?',
+    back: '<span class="eq-line">P = ρ · g · h</span>\nP [Pa] | ρ [kg/m³] | g [m/s²] | h [m]\nEx.: lago a 120 m → P = 1 000 × 9,8 × 120 = 1 176 000 Pa = 1 176 kPa'
   },
 
   // VOCABULÁRIO (11-15)
   {
     id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Inércia',
-    back: 'Tendência de um corpo a manter o movimento que já tem, em linha reta, enquanto nada agir sobre ele.\n<span class="eq-line">Tópico 1 — a carga não é jogada para fora da curva; ela continua reto.</span>'
+    front: 'INMETRO',
+    back: 'Instituto Nacional de Metrologia, Qualidade e Tecnologia. Criado em 1973, guarda os padrões primários nacionais rastreáveis ao BIPM e certifica instrumentos usados no Brasil.'
   },
   {
     id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Movimento retardado',
-    back: 'Movimento em que o módulo da velocidade diminui, porque velocidade e aceleração têm sinais opostos.\n<span class="eq-line">Tópico 2 — não confundir com "aceleração negativa".</span>'
+    front: 'PASCAL (Pa)',
+    back: 'Unidade SI de pressão.\n<span class="eq-line">1 Pa = 1 N/m² = 1 kg·m⁻¹·s⁻²</span>\nDerivada com nome especial em homenagem a Blaise Pascal. Equivale aproximadamente a 0,000145 psi.'
   },
   {
     id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Acelerômetro',
-    back: 'Sensor que mede a aceleração instantânea nos três eixos, a cada centésimo de segundo.\n<span class="eq-line">Tópico 3 — existe no celular do estudante e, em versão industrial, no painel de um caminhão de 360 t.</span>'
+    front: 'KELVIN (K)',
+    back: 'Unidade SI de temperatura termodinâmica. Zero absoluto = 0 K = −273,15 °C. Definida pela constante de Boltzmann k = 1,380 649 × 10⁻²³ J·K⁻¹.'
   },
   {
     id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Velocidade limite',
-    back: 'Velocidade constante atingida quando a resistência do ar iguala o peso e a aceleração se anula.\n<span class="eq-line">Tópico 4 — cerca de 55 m/s (200 km/h) para um paraquedista de barriga para baixo.</span>'
+    front: 'CGPM',
+    back: 'Conferência Geral de Pesos e Medidas. Órgão internacional que governa o SI desde 1875. Adotou o SI em 1960 e revisou as definições em 2019 com base em constantes físicas.'
   },
   {
     id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Retardador hidráulico',
-    back: 'Sistema que controla a descida de um caminhão fora de estrada mantendo desaceleração da ordem de 1,2 m/s² sem superaquecer.\n<span class="eq-line">Tópico 5 — quem segura a rampa não é o freio de serviço.</span>'
+    front: 'NR-22',
+    back: 'Norma Regulamentadora de Segurança e Saúde Ocupacional na Mineração. Exige que todos os instrumentos em operações subterrâneas sejam calibrados e identificados em unidades SI.'
   },
 
   // CONEXÃO (16-20)
   {
     id: 'CD-16', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Geografia: qual é a conexão?',
-    back: 'Nenhum dos dois acessos ao Parque das Andorinhas sobe em linha reta: cada curva transforma uma rampa íngreme demais em várias suportáveis — a mesma solução que os tropeiros do século XVIII encontraram para descer carga sem ganhar velocidade demais.'
+    front: 'Física ↔ Química',
+    back: 'Concentração de ouro em minério: 3,5 ppm = 3,5 mg/kg (SI: 3,5 × 10⁻⁶ kg/kg). O mol conecta a quantidade de substância (Física SI) à estequiometria (Química), usando a mesma grandeza fundamental.'
   },
   {
     id: 'CD-17', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Matemática: qual é a conexão?',
-    back: 'A aceleração é a taxa de variação de uma taxa de variação. E a distância de frenagem cresce com o <b>quadrado</b> da velocidade: é essa relação quadrática que faz o dobro da velocidade exigir o quádruplo do espaço.'
+    front: 'Física ↔ Matemática',
+    back: 'Galeria da Mina da Passagem: 315 m horizontal, 120 m vertical.\n<span class="eq-line">L = √(315² + 120²) = √113 625 ≈ 337,1 m</span>\n≈ 0,337 km'
   },
   {
     id: 'CD-18', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Biologia: qual é a conexão?',
-    back: 'O corpo humano não tem sensor de velocidade, só de aceleração: o ouvido interno percebe mudança de movimento. É por isso que se sente o arranque e a freada, mas não a viagem em ritmo constante.'
+    front: 'Física ↔ Língua Portuguesa',
+    back: 'Regras de grafia SI são gramática técnica: símbolos invariáveis (kg, não kgs), maiúscula apenas para homenagens (Pa, N, J), separação número-símbolo obrigatória (120 m, não 120m).'
   },
   {
     id: 'CD-19', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Engenharia de Minas: qual é a conexão?',
-    back: 'A distância de frenagem define o espaçamento mínimo entre caminhões numa rampa de cava, e a aceleração centrípeta define o desempenho de uma centrífuga de laboratório — a mesma grandeza em dois equipamentos opostos.'
+    front: 'Física ↔ História',
+    back: 'Casa dos Contos de OP: ouro pesado em marcos (229,5 g) e oitavas (3,59 g) no séc. XVIII. O SI substituiu esse caos por rastreabilidade decimal, eliminando fraudes nas Casas de Fundição coloniais.'
   },
   {
     id: 'CD-20', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
-    back: 'A Norma Regulamentadora vinte e dois trata do transporte em minas, e todo limite de velocidade em rampa é, no fundo, um limite de aceleração: é a frenagem possível que decide a velocidade permitida.'
+    front: 'Física ↔ Arte (Drummond)',
+    back: '"A máquina do mundo se entreabriu" — Drummond, Claro Enigma (1951). O SI é esse instrumento de abertura: permite que qualquer pessoa leia a mesma realidade física na mesma linguagem universal.'
   },
 
   // APLICAÇÃO (21-25)
   {
     id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A van sai do repouso e chega a 36 km/h em 8,0 s. Calcule a aceleração média.',
-    back: '36 km/h ÷ 3,6 = 10 m/s.\n<span class="eq-line">a_m = Δv/Δt = 10 / 8,0 = +1,25 m/s²</span>\nA cada segundo, a van ganha 1,25 m/s: ao fim do 8.º segundo está a 10 m/s.'
+    front: 'Uma bomba subterrânea tem massa de 80 kg e é acelerada a 2 m/s². Qual é a força resultante em newtons?',
+    back: 'DADOS: m = 80 kg | a = 2 m/s²\n<span class="eq-line">F = m · a = 80 × 2 = 160 N</span>\nRESPOSTA: F = 160 N (Newton = kg·m·s⁻²)'
   },
   {
     id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Um caminhão desce a rampa com v = −8,0 m/s e a = −0,5 m/s². Classifique o movimento.',
-    back: 'v·a = (−8,0) × (−0,5) = <b>+4,0 &gt; 0</b> → movimento <b>acelerado</b>.\n<span class="eq-line">Tudo negativo, e ainda assim ganhando velocidade.</span>\nO sinal só informa o sentido: descendo, mais rápido a cada segundo.'
+    front: 'O minério após britagem tem granulometria de 150 mm. Converta para metros e quilômetros.',
+    back: '<span class="eq-line">150 mm × 10⁻³ = 0,150 m</span>\n<span class="eq-line">0,150 m × 10⁻³ = 1,50 × 10⁻⁴ km</span>\nPrefixos: mili (10⁻³), quilo (10³)\nNota: granulometria não se expressa em km — use m ou mm.'
   },
   {
     id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A cachoeira tem 10 m de queda. Calcule o tempo e a velocidade de chegada da água.',
-    back: 't = √(2·Δs/g) = √(2·10/9,8) = <b>1,4 s</b>\n<span class="eq-line">v = g·t = 9,8 × 1,4 ≈ 14 m/s ≈ 50 km/h</span>\nO fio de água afina na descida porque acelera: a mesma vazão, mais depressa, ocupa menos seção.'
+    front: 'O manômetro em psi marca 15 psi. Qual é o valor em Pascal e em kPa?',
+    back: '<span class="eq-line">1 psi = 6 894,76 Pa</span>\nPa: 15 × 6 894,76 = 103 421 Pa\nkPa: 103 421 ÷ 1 000 = 103,4 kPa\nComparação: pressão atmosférica ≈ 101 325 Pa ≈ 101,3 kPa'
   },
   {
     id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Caminhão a 40 km/h, retardador com 1,2 m/s². Calcule a distância até parar.',
-    back: '40 km/h ÷ 3,6 = 11,1 m/s.\n<span class="eq-line">Δs = v²/(2·|a|) = 123 / 2,4 = 51 m</span>\nTempo: Δt = 11,1/1,2 = 9,3 s. A 50 km/h seriam 80 m — acima dos 70 m regulamentares.'
+    front: 'O termômetro da galeria marca 63 °F. Qual é a temperatura em °C e em K?',
+    back: '<span class="eq-line">T(°C) = (63 − 32) × 5/9 = 17,2 °C</span>\n<span class="eq-line">T(K) = 17,2 + 273,15 = 290,35 K</span>\nContexto: temperatura típica do lago subterrâneo da Mina da Passagem.'
   },
   {
     id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Amostra a 0,10 m do eixo, a 3.000 rpm (v ≈ 31,4 m/s). Calcule a aceleração centrípeta.',
-    back: '<span class="eq-line">a_c = v²/r = (31,4)² / 0,10 ≈ 9,9 × 10³ m/s²</span>\nCerca de <b>1.000 g</b>: a separação que a gravidade faria em horas ocorre em minutos. O módulo da velocidade não muda — muda a direção.'
+    front: 'O lago subterrâneo está a 120 m de profundidade. Calcule a pressão hidrostática em Pa e kPa (ρ_água = 1 000 kg/m³, g = 9,8 m/s²).',
+    back: '<span class="eq-line">P = ρ · g · h</span>\n<span class="eq-line">P = 1 000 × 9,8 × 120 = 1 176 000 Pa</span>\nConversão: 1 176 kPa | ≈ 11,76 bar ≈ 170 psi'
   }
 ];
 
@@ -757,7 +756,7 @@ renderGrid();
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t04">Ver todos os OAs da trilha</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>

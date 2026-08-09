@@ -1628,7 +1628,13 @@ function enviarColeta(isRetry) {
 .toc-toggle { top: 330px !important; }
 .creditos-toggle { top: 418px !important; }
 .figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
 @media (max-width: 600px) {
+  body { padding-left: 30px; }
   .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
   .aba-site-painel { width: 86vw; }
 }
@@ -1637,8 +1643,8 @@ function enviarColeta(isRetry) {
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="../../#t02">Ver todos os OAs da trilha</a>
-  <a class="aba-site-btn" href="../../">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t02">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>
 <script>
@@ -1653,15 +1659,6 @@ function enviarColeta(isRetry) {
   document.addEventListener('click', function (e) {
     if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
   });
-  /* file://: href de pasta nao abre o index.html sozinho */
-  if (location.protocol === 'file:') {
-    p.querySelectorAll('a[href]').forEach(function (a) {
-      var h = a.getAttribute('href');
-      if (/^https?:/.test(h)) return;
-      var m = h.match(/^(.*\/)(#.*)?$/);
-      if (m) a.setAttribute('href', m[1] + 'index.html' + (m[2] || ''));
-    });
-  }
 })();
 </script>
 </body>

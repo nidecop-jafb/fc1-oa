@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T09 · Aceleração Média e Instantânea — Estudante</title>
+<title>T02 · Sistema de Numeração de Base 12 — Estudante</title>
 <!--
   IMPORTACAO EM MOODLE:
   1. Adicionar atividade > Recurso > Arquivo
   2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T09-CD-v3-estudante.html" width="100%" height="2400"></iframe>
+  OU iframe: <iframe src="T02-CD-v4-estudante.html" width="100%" height="2400"></iframe>
 
   Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
-  localStorage: prefixo ifmg_fc1_t09_cd_
+  localStorage: prefixo ifmg_fc1_t02_cd_
 -->
 <style>
 :root {
@@ -316,26 +316,25 @@ main {
   border-top: 2px solid var(--ouro);
   text-align: center;
 }
-.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-frase { font-family: var(--serif); font-size: .88rem; }
 .encerramento .fecho-acao {
-  color: var(--ouro); font-size: .95rem;
+  color: var(--ouro); font-size: .82rem;
   text-transform: uppercase; font-weight: 700;
-  margin-top: 10px; line-height: 1.5;
+  margin-top: 8px;
 }
 .encerramento .fecho-nidec {
-  color: var(--cinza); font-size: .9rem;
-  margin-top: 14px; line-height: 1.55;
+  color: var(--cinza); font-size: .82rem;
+  margin-top: 12px; line-height: 1.4;
 }
 
 /* ── FOOTER ── */
 .footer-line {
   text-align: center;
-  font-size: .85rem;
+  font-size: .7rem;
   color: var(--cinza);
-  padding: 16px 12px;
+  padding: 16px 0;
   margin-top: 12px;
   letter-spacing: .5px;
-  line-height: 1.5;
 }
 
 /* ── RESPONSIVE ── */
@@ -369,7 +368,7 @@ main {
 
 <header class="header">
   <div class="header-inner">
-    <h1><span class="trilha-code">T09</span> &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h1>
+    <h1><span class="trilha-code">T02</span> &middot; Sistema de Numera&ccedil;&atilde;o de Base 12</h1>
     <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
   </div>
   <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
@@ -384,8 +383,8 @@ main {
   <span class="piazzi-tag">Escrever</span>
   <span class="piazzi-tag">Medir</span>
   <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLXyZd3QdGENs" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Yamandu Costa &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o de 7 cordas</span>
 </div>
 
 <!-- TOOLBAR -->
@@ -420,15 +419,15 @@ main {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
 </div>
 
-<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T09 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T02 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
 
 <script>
 // ── STORAGE ──
-const PREFIX = 'ifmg_fc1_t09_cd_';
+const PREFIX = 'ifmg_fc1_t02_cd_';
 function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
 function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
 
@@ -437,136 +436,136 @@ const CARDS = [
   // CONCEITO (1-5)
   {
     id: 'CD-01', cat: 'conceito', label: 'Conceito',
-    front: 'O que o corpo sente dentro de um veículo — e o que ele não sente?',
-    back: 'O corpo sente a <b>mudança</b> da velocidade, não a velocidade. Num trecho reto a 80 km/h dá para equilibrar uma garrafa no painel; no arranque e na freada, o encosto e o cinto entregam a diferença.'
+    front: 'O que diferencia um sistema de numeração posicional de um sistema aditivo?',
+    back: 'No sistema posicional, o valor de cada símbolo depende da posição; no aditivo, os valores se somam independentemente.\nSistema posicional: valor depende da posição (ex.: hindu-arábico, babilônico). Sistema aditivo: valor fixo (ex.: romano).'
   },
   {
     id: 'CD-02', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração escalar média?',
-    back: 'É a variação de velocidade dividida pelo intervalo de tempo em que ela ocorreu.\n<span class="eq-line">Não é uma velocidade grande — é uma regra de crescimento da velocidade.</span>'
+    front: 'Quantas grandezas fundamentais o SI define e qual é a unidade de comprimento?',
+    back: 'O SI define 7 grandezas fundamentais; a unidade de comprimento é o metro (m).\nO SI tem exatamente 7 grandezas fundamentais. Metro é a unidade base de comprimento.'
   },
   {
     id: 'CD-03', cat: 'conceito', label: 'Conceito',
-    front: 'Por que aceleração negativa não quer dizer "freando"?',
-    back: 'Porque o sinal informa o <b>sentido</b>, não se a velocidade cresce ou diminui. Quem classifica é o produto v·a: mesmo sinal acelera, sinais opostos retardam. Um caminhão descendo com v e a negativos está ganhando velocidade.'
+    front: 'Qual é a definição moderna do metro, adotada desde 1983?',
+    back: 'Distância percorrida pela luz no vácuo em 1/299 792 458 de segundo.\nDesde 1983, o metro é definido pela velocidade da luz no vácuo (constante universal).'
   },
   {
     id: 'CD-04', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração instantânea — e por que a média engana?',
-    back: 'É o limite da aceleração média quando o intervalo tende a zero: o valor no instante. A média distribui a freada inteira por igual; o passageiro não é jogado para a frente "em média", e sim no instante do pico.'
+    front: 'Qual foi a causa da perda do Mars Climate Orbiter em 1999?',
+    back: 'Uma equipe usou newton-segundos (SI) e outra interpretou os dados em libra-força-segundos (imperial) sem conversão.\nO problema foi a falta de conversão entre SI (newton-segundos) e sistema imperial (libra-força-segundos).'
   },
   {
     id: 'CD-05', cat: 'conceito', label: 'Conceito',
-    front: 'Por que um paraquedista a 200 km/h não sente nada além do vento?',
-    back: 'Porque atingiu a <b>velocidade limite</b>: a resistência do ar iguala o peso e a aceleração vai a zero. Velocidade alta com aceleração nula é movimento uniforme — dá para estar muito rápido e não estar acelerando.'
+    front: 'Por que o método do fator de conversão em cadeia torna os erros de conversão visíveis?',
+    back: 'Porque unidades indesejadas devem se cancelar algebricamente; se restar uma unidade inesperada, o resultado tem dimensão errada.\nNo método em cadeia, as unidades se cancelam como fatores algébricos. Sobra de unidade = erro identificado.'
   },
 
   // EQUAÇÃO (6-10)
   {
     id: 'CD-06', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da variação de velocidade?',
-    back: '<span class="eq-line">Δv = v − v₀</span>\nΔv: variação de velocidade (m/s) · v: velocidade final (m/s) · v₀: velocidade inicial (m/s).\nO sinal conta a história: +10 m/s no arranque da van, −10 m/s na freada.'
+    front: 'Usando a Equação 1, qual é o valor decimal do ângulo 20°22′46″?',
+    back: '<span class="eq-line">20 + 22/60 + 46/3600 = 20,38°</span>\n<span class="eq-line">α = D + M/60 + S/3600</span>\nMinutos divididos por 60, segundos por 3600.'
   },
   {
     id: 'CD-07', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da aceleração escalar média?',
-    back: '<span class="eq-line">a_m = Δv / Δt</span>\na_m: aceleração média (m/s²) · Δv: variação de velocidade (m/s) · Δt: intervalo de tempo (s).\nLê-se "metro por segundo, a cada segundo".'
+    front: 'Qual das opções expressa corretamente 0,000 007 5 m em notação científica?',
+    back: '<span class="eq-line">7,5 × 10⁻⁶ m</span>\nNa notação científica, o coeficiente deve ser 1 ≤ a < 10. Portanto 7,5 × 10⁻⁶, não 75 × 10⁻⁷.'
   },
   {
     id: 'CD-08', cat: 'exemplo', label: 'Equação',
-    front: 'Como se classifica o movimento pelos sinais de v e a?',
-    back: '<span class="eq-line">v·a &gt; 0 → acelerado | v·a &lt; 0 → retardado | a = 0 → uniforme</span>\nO critério é o produto, nunca um dos sinais isolado. Vale em qualquer referencial adotado.'
+    front: 'Se o quarto do meridiano medido em 1795 foi Q = 10 007 km, qual o metro resultante e qual o erro?',
+    back: '<span class="eq-line">1 m = 10 007 000 / 10 000 000 = 1,0007 m</span>\nErro = 0,07%.\n<span class="eq-line">1 m = Q(m) / 10 000 000</span>\nErro < 0,1%.'
   },
   {
     id: 'CD-09', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da queda livre a partir do repouso?',
-    back: '<span class="eq-line">v = g·t   e   Δs = ½·g·t²</span>\nv: velocidade no instante t (m/s) · g ≈ 9,8 m/s² · t: tempo de queda (s) · Δs: distância percorrida (m).\nA massa não entra na conta.'
+    front: 'Uma correia transportadora tem comprimento de 320 pés. Qual é em metros? (1 ft = 0,3048 m)',
+    back: '<span class="eq-line">320 × 0,3048 = 97,5 m</span>\n<span class="eq-line">Q₂ = Q₁ × FC = 320 ft × (0,3048 m/ft) = 97,5 m</span>'
   },
   {
     id: 'CD-10', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da distância de frenagem e da aceleração centrípeta?',
-    back: '<span class="eq-line">Δs = v² / (2·|a|)   e   a_c = v² / r</span>\nΔs: distância até parar (m) · |a|: módulo da desaceleração (m/s²) · a_c: aceleração centrípeta (m/s²) · r: raio da trajetória (m).\nNas duas, a velocidade entra ao quadrado.'
+    front: 'Uma correia tem v = 2,0 m/s, A = 0,10 m² e ρ = 2500 kg/m³. Qual é C em kg/s?',
+    back: '<span class="eq-line">C = 2,0 × 0,10 × 2500 = 500 kg/s</span>\n<span class="eq-line">C = v × A × ρ</span>'
   },
 
   // VOCABULÁRIO (11-15)
   {
     id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Inércia',
-    back: 'Tendência de um corpo a manter o movimento que já tem, em linha reta, enquanto nada agir sobre ele.\n<span class="eq-line">Tópico 1 — a carga não é jogada para fora da curva; ela continua reto.</span>'
+    front: 'Qual é o significado do termo "sistema posicional"?',
+    back: 'Sistema em que o valor de cada dígito depende da posição que ocupa no número.\nPosicional = valor depende da posição. Ex.: "3" em "300" vale 100× mais que em "3".'
   },
   {
     id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Movimento retardado',
-    back: 'Movimento em que o módulo da velocidade diminui, porque velocidade e aceleração têm sinais opostos.\n<span class="eq-line">Tópico 2 — não confundir com "aceleração negativa".</span>'
+    front: 'Por que os babilônios escolheram a base 60 para seu sistema numérico?',
+    back: '60 é o menor número divisível por 2, 3, 4, 5 e 6 simultaneamente, facilitando divisões manuais.\n60 é o MMC de 2, 3, 4, 5 e 6 — divisões práticas sem calculadora.'
   },
   {
     id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Acelerômetro',
-    back: 'Sensor que mede a aceleração instantânea nos três eixos, a cada centésimo de segundo.\n<span class="eq-line">Tópico 3 — existe no celular do estudante e, em versão industrial, no painel de um caminhão de 360 t.</span>'
+    front: 'Qual prefixo do SI representa o fator 10⁻⁶?',
+    back: 'Micro (símbolo μ).\nMicro = 10⁻⁶ (μ). Mili = 10⁻³ (m). Nano = 10⁻⁹ (n).'
   },
   {
     id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Velocidade limite',
-    back: 'Velocidade constante atingida quando a resistência do ar iguala o peso e a aceleração se anula.\n<span class="eq-line">Tópico 4 — cerca de 55 m/s (200 km/h) para um paraquedista de barriga para baixo.</span>'
+    front: 'O que é rastreabilidade metrológica na mineração?',
+    back: 'Cadeia documentada de calibrações que liga o instrumento de medição até os padrões internacionais do SI, com certificação pelo INMETRO.\nRastreabilidade = cadeia de calibrações documentada até os padrões do SI (ABNT NBR ISO/IEC 17025).'
   },
   {
     id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Retardador hidráulico',
-    back: 'Sistema que controla a descida de um caminhão fora de estrada mantendo desaceleração da ordem de 1,2 m/s² sem superaquecer.\n<span class="eq-line">Tópico 5 — quem segura a rampa não é o freio de serviço.</span>'
+    front: 'Para que serve a análise dimensional em Física?',
+    back: 'Para verificar a coerência de uma equação física substituindo grandezas por suas dimensões fundamentais (L, M, T) — sem calcular números.\nAnálise dimensional verifica coerência pelas dimensões (L, M, T), não pelo valor numérico.'
   },
 
   // CONEXÃO (16-20)
   {
     id: 'CD-16', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Geografia: qual é a conexão?',
-    back: 'Nenhum dos dois acessos ao Parque das Andorinhas sobe em linha reta: cada curva transforma uma rampa íngreme demais em várias suportáveis — a mesma solução que os tropeiros do século XVIII encontraram para descer carga sem ganhar velocidade demais.'
+    front: 'Como a Matemática apoia a Física na conversão de unidades?',
+    back: 'Pela análise dimensional (verifica coerência das dimensões) e pelo fator de conversão em cadeia (cancelamento algébrico de unidades).\nAnálise dimensional + fator de conversão em cadeia são as ferramentas matemáticas centrais para consistência de unidades.'
   },
   {
     id: 'CD-17', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Matemática: qual é a conexão?',
-    back: 'A aceleração é a taxa de variação de uma taxa de variação. E a distância de frenagem cresce com o <b>quadrado</b> da velocidade: é essa relação quadrática que faz o dobro da velocidade exigir o quádruplo do espaço.'
+    front: 'Qual é a conexão entre as igrejas barrocas de Ouro Preto e os sistemas de numeração?',
+    back: 'Os padrões geométricos dos azulejos funcionam como algoritmos de base numérica, demonstrando precisão sem o vocabulário formal dos sistemas posicionais.\nPadrões barrocos = algoritmos geométricos implícitos — precisão sem formalismo posicional.'
   },
   {
     id: 'CD-18', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Biologia: qual é a conexão?',
-    back: 'O corpo humano não tem sensor de velocidade, só de aceleração: o ouvido interno percebe mudança de movimento. É por isso que se sente o arranque e a freada, mas não a viagem em ritmo constante.'
+    front: 'Como os prefixos do SI conectam Física e Química no estudo do ouro?',
+    back: 'Permitem expressar o diâmetro de um átomo de ouro (nm) e a produção de uma mina (t) com o mesmo vocabulário de potências de 10.\nFísica e Química usam os mesmos prefixos do SI para expressar grandezas desde a escala atômica até a industrial.'
   },
   {
     id: 'CD-19', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Engenharia de Minas: qual é a conexão?',
-    back: 'A distância de frenagem define o espaçamento mínimo entre caminhões numa rampa de cava, e a aceleração centrípeta define o desempenho de uma centrífuga de laboratório — a mesma grandeza em dois equipamentos opostos.'
+    front: 'Como o compasso musical se conecta ao estudo de sistemas de numeração?',
+    back: 'Ambos — compasso e base sexagesimal — são acordos coletivos sobre como dividir o tempo em partes iguais.\nCompasso 4/4 e base 60: ambos são convenções coletivas para dividir o tempo — linguagem e física compartilham essa lógica.'
   },
   {
     id: 'CD-20', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
-    back: 'A Norma Regulamentadora vinte e dois trata do transporte em minas, e todo limite de velocidade em rampa é, no fundo, um limite de aceleração: é a frenagem possível que decide a velocidade permitida.'
+    front: 'Por que a conversão de ângulos sexagesimais para decimais é necessária na geologia do Quadrilátero Ferrífero?',
+    back: 'Porque mapas geológicos digitais exigem graus decimais, mas os instrumentos de campo registram azimutes em graus, minutos e segundos.\nInstrumentos de campo → graus°′″; mapas digitais → graus decimais. A Equação 1 faz essa conversão.'
   },
 
   // APLICAÇÃO (21-25)
   {
     id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A van sai do repouso e chega a 36 km/h em 8,0 s. Calcule a aceleração média.',
-    back: '36 km/h ÷ 3,6 = 10 m/s.\n<span class="eq-line">a_m = Δv/Δt = 10 / 8,0 = +1,25 m/s²</span>\nA cada segundo, a van ganha 1,25 m/s: ao fim do 8.º segundo está a 10 m/s.'
+    front: 'Uma galeria de mina tem azimute 47°32′15″. Qual é o valor em graus decimais?',
+    back: '<span class="eq-line">47,54°</span>\n<span class="eq-line">α = 47 + 32/60 + 15/3600 = 47,54°</span>'
   },
   {
     id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Um caminhão desce a rampa com v = −8,0 m/s e a = −0,5 m/s². Classifique o movimento.',
-    back: 'v·a = (−8,0) × (−0,5) = <b>+4,0 &gt; 0</b> → movimento <b>acelerado</b>.\n<span class="eq-line">Tudo negativo, e ainda assim ganhando velocidade.</span>\nO sinal só informa o sentido: descendo, mais rápido a cada segundo.'
+    front: 'Expresse 48 000 000 000 t em notação científica.',
+    back: '<span class="eq-line">4,8 × 10¹⁰ t</span>\nO coeficiente deve ser 1 ≤ a < 10, portanto 4,8, não 48.'
   },
   {
     id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A cachoeira tem 10 m de queda. Calcule o tempo e a velocidade de chegada da água.',
-    back: 't = √(2·Δs/g) = √(2·10/9,8) = <b>1,4 s</b>\n<span class="eq-line">v = g·t = 9,8 × 1,4 ≈ 14 m/s ≈ 50 km/h</span>\nO fio de água afina na descida porque acelera: a mesma vazão, mais depressa, ocupa menos seção.'
+    front: 'Se Q = 10 007 km, qual o erro percentual do metro de 1795 em relação a 1 m exato?',
+    back: '<span class="eq-line">Erro = 0,07%</span>\n<span class="eq-line">1 m = 10 007 000 / 10 000 000 = 1,0007 m</span>\nErro = (1,0007 – 1)/1 × 100% = 0,07%.'
   },
   {
     id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Caminhão a 40 km/h, retardador com 1,2 m/s². Calcule a distância até parar.',
-    back: '40 km/h ÷ 3,6 = 11,1 m/s.\n<span class="eq-line">Δs = v²/(2·|a|) = 123 / 2,4 = 51 m</span>\nTempo: Δt = 11,1/1,2 = 9,3 s. A 50 km/h seriam 80 m — acima dos 70 m regulamentares.'
+    front: 'Um estoque tem 5 000 short tons. Quantas toneladas métricas correspondem? (1 short ton = 0,9072 t)',
+    back: '<span class="eq-line">4 536 t métricas</span>\nDiferença de 464 t (≈ 9,3%).\n<span class="eq-line">5 000 × 0,9072 = 4 536 t</span>\nDiferença de 464 t representa 9,3% do estoque.'
   },
   {
     id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Amostra a 0,10 m do eixo, a 3.000 rpm (v ≈ 31,4 m/s). Calcule a aceleração centrípeta.',
-    back: '<span class="eq-line">a_c = v²/r = (31,4)² / 0,10 ≈ 9,9 × 10³ m/s²</span>\nCerca de <b>1.000 g</b>: a separação que a gravidade faria em horas ocorre em minutos. O módulo da velocidade não muda — muda a direção.'
+    front: 'Correia com v = 1,5 m/s, A = 0,08 m², ρ = 2700 kg/m³. Qual é a capacidade em t/h?',
+    back: '<span class="eq-line">1 166 t/h</span>\n<span class="eq-line">C = 1,5 × 0,08 × 2700 = 324 kg/s</span>\nEm t/h: 324 × 3600 / 1000 = 1 166 t/h.'
   }
 ];
 
@@ -757,7 +756,7 @@ renderGrid();
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t02">Ver todos os OAs da trilha</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T09 · Aceleração Média e Instantânea — Estudante</title>
+<title>T05 · Notação Científica — Estudante</title>
 <!--
   IMPORTACAO EM MOODLE:
   1. Adicionar atividade > Recurso > Arquivo
   2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T09-CD-v3-estudante.html" width="100%" height="2400"></iframe>
+  OU iframe: <iframe src="T05-CD-v3-estudante.html" width="100%" height="2400"></iframe>
 
   Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
-  localStorage: prefixo ifmg_fc1_t09_cd_
+  localStorage: prefixo ifmg_fc1_t05_cd_
 -->
 <style>
 :root {
@@ -316,26 +316,25 @@ main {
   border-top: 2px solid var(--ouro);
   text-align: center;
 }
-.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-frase { font-family: var(--serif); font-size: .88rem; }
 .encerramento .fecho-acao {
-  color: var(--ouro); font-size: .95rem;
+  color: var(--ouro); font-size: .82rem;
   text-transform: uppercase; font-weight: 700;
-  margin-top: 10px; line-height: 1.5;
+  margin-top: 8px;
 }
 .encerramento .fecho-nidec {
-  color: var(--cinza); font-size: .9rem;
-  margin-top: 14px; line-height: 1.55;
+  color: var(--cinza); font-size: .82rem;
+  margin-top: 12px; line-height: 1.4;
 }
 
 /* ── FOOTER ── */
 .footer-line {
   text-align: center;
-  font-size: .85rem;
+  font-size: .7rem;
   color: var(--cinza);
-  padding: 16px 12px;
+  padding: 16px 0;
   margin-top: 12px;
   letter-spacing: .5px;
-  line-height: 1.5;
 }
 
 /* ── RESPONSIVE ── */
@@ -369,7 +368,7 @@ main {
 
 <header class="header">
   <div class="header-inner">
-    <h1><span class="trilha-code">T09</span> &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h1>
+    <h1><span class="trilha-code">T05</span> &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
     <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
   </div>
   <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
@@ -420,15 +419,15 @@ main {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
 </div>
 
-<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T09 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T05 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
 
 <script>
 // ── STORAGE ──
-const PREFIX = 'ifmg_fc1_t09_cd_';
+const PREFIX = 'ifmg_fc1_t05_cd_';
 function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
 function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
 
@@ -437,136 +436,136 @@ const CARDS = [
   // CONCEITO (1-5)
   {
     id: 'CD-01', cat: 'conceito', label: 'Conceito',
-    front: 'O que o corpo sente dentro de um veículo — e o que ele não sente?',
-    back: 'O corpo sente a <b>mudança</b> da velocidade, não a velocidade. Num trecho reto a 80 km/h dá para equilibrar uma garrafa no painel; no arranque e na freada, o encosto e o cinto entregam a diferença.'
+    front: 'O que é uma potência de 10?',
+    back: 'Expressão 10ⁿ onde n é o expoente: indica quantas vezes 10 é multiplicado (n>0) ou dividido (n<0). 10⁰=1. Abrange toda a física: do raio do próton (10⁻¹⁵ m) ao diâmetro do universo (10²⁶ m).\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-02', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração escalar média?',
-    back: 'É a variação de velocidade dividida pelo intervalo de tempo em que ela ocorreu.\n<span class="eq-line">Não é uma velocidade grande — é uma regra de crescimento da velocidade.</span>'
+    front: 'O que é a notação científica?',
+    back: 'Forma de escrever qualquer número na forma a × 10ⁿ, onde 1 ≤ |a| < 10 (coeficiente) e n é inteiro (expoente ou ordem de grandeza). Representação única, compacta e comparável.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-03', cat: 'conceito', label: 'Conceito',
-    front: 'Por que aceleração negativa não quer dizer "freando"?',
-    back: 'Porque o sinal informa o <b>sentido</b>, não se a velocidade cresce ou diminui. Quem classifica é o produto v·a: mesmo sinal acelera, sinais opostos retardam. Um caminhão descendo com v e a negativos está ganhando velocidade.'
+    front: 'O que é a ordem de grandeza de um número?',
+    back: 'O expoente n na notação científica a × 10ⁿ. Comparar ordens de grandeza revela quantas vezes (em múltiplos de 10) uma grandeza é maior que outra. Ex.: produção de ferro (10⁸ t) vs. ouro (10¹ t) → diferença de 10⁷.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-04', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração instantânea — e por que a média engana?',
-    back: 'É o limite da aceleração média quando o intervalo tende a zero: o valor no instante. A média distribui a freada inteira por igual; o passageiro não é jogado para a frente "em média", e sim no instante do pico.'
+    front: 'Qual é a regra para multiplicar em notação científica?',
+    back: 'Multiplicar os coeficientes e somar os expoentes:\n<span class="eq-line">(a × 10ᵐ) × (b × 10ⁿ) = (a × b) × 10^(m+n)</span>\nSe o coeficiente resultado for ≥ 10, ajustar: ex. 26,7 × 10⁷ = 2,67 × 10⁸.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-05', cat: 'conceito', label: 'Conceito',
-    front: 'Por que um paraquedista a 200 km/h não sente nada além do vento?',
-    back: 'Porque atingiu a <b>velocidade limite</b>: a resistência do ar iguala o peso e a aceleração vai a zero. Velocidade alta com aceleração nula é movimento uniforme — dá para estar muito rápido e não estar acelerando.'
+    front: 'Como a notação científica é usada na mineração?',
+    back: 'Em geoquímica (ppm = 10⁻⁶, ppb = 10⁻⁹), hidráulica de mina (pressão em Pa, vazão em m³/s), explosivos (energia em J, atraso em ms) e granulometria (μm, nm). A NR-22 exige registro com unidade correta.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
 
   // EQUAÇÃO (6-10)
   {
     id: 'CD-06', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da variação de velocidade?',
-    back: '<span class="eq-line">Δv = v − v₀</span>\nΔv: variação de velocidade (m/s) · v: velocidade final (m/s) · v₀: velocidade inicial (m/s).\nO sinal conta a história: +10 m/s no arranque da van, −10 m/s na freada.'
+    front: 'Qual é a forma geral das potências de 10?',
+    back: '<span class="eq-line">10ⁿ = 10 × 10 × ... × 10  (n fatores)</span>\n<span class="eq-line">10⁰ = 1  |  10⁻ⁿ = 1/10ⁿ</span>\nEx.: 10³ = 1 000  |  10⁻³ = 0,001  |  10⁶ = 1 000 000\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-07', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da aceleração escalar média?',
-    back: '<span class="eq-line">a_m = Δv / Δt</span>\na_m: aceleração média (m/s²) · Δv: variação de velocidade (m/s) · Δt: intervalo de tempo (s).\nLê-se "metro por segundo, a cada segundo".'
+    front: 'Qual é a forma canônica da notação científica?',
+    back: '<span class="eq-line">N = a × 10ⁿ</span>\na: coeficiente (1 ≤ |a| < 10)\nn: expoente inteiro\nEx.: 800 000 000 g → mover vírgula 8 casas ← → 8,0 × 10⁸ g\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-08', cat: 'exemplo', label: 'Equação',
-    front: 'Como se classifica o movimento pelos sinais de v e a?',
-    back: '<span class="eq-line">v·a &gt; 0 → acelerado | v·a &lt; 0 → retardado | a = 0 → uniforme</span>\nO critério é o produto, nunca um dos sinais isolado. Vale em qualquer referencial adotado.'
+    front: 'Como calcular a razão entre duas grandezas em notação científica?',
+    back: '<span class="eq-line">razão = 10^(n₁ − n₂)</span>\nn₁: expoente do maior; n₂: expoente do menor\nEx.: Fe (10⁸ t) vs. Au (10¹ t) → razão = 10^(8−1) = 10⁷ → 10 milhões de vezes mais ferro\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-09', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da queda livre a partir do repouso?',
-    back: '<span class="eq-line">v = g·t   e   Δs = ½·g·t²</span>\nv: velocidade no instante t (m/s) · g ≈ 9,8 m/s² · t: tempo de queda (s) · Δs: distância percorrida (m).\nA massa não entra na conta.'
+    front: 'Qual é a equação para dividir em notação científica?',
+    back: '<span class="eq-line">(a × 10ᵐ) ÷ (b × 10ⁿ) = (a ÷ b) × 10^(m−n)</span>\nEx.: teor de ouro = (8,8×10¹) ÷ (8,8×10⁶) = 1,0 × 10⁻⁵ kg/kg = 10 g/t\n(Para extrair 1 kg de ouro, trituram-se 100 t de rocha)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-10', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da distância de frenagem e da aceleração centrípeta?',
-    back: '<span class="eq-line">Δs = v² / (2·|a|)   e   a_c = v² / r</span>\nΔs: distância até parar (m) · |a|: módulo da desaceleração (m/s²) · a_c: aceleração centrípeta (m/s²) · r: raio da trajetória (m).\nNas duas, a velocidade entra ao quadrado.'
+    front: 'Como somar números em notação científica?',
+    back: '<span class="eq-line">a × 10ⁿ + b × 10ⁿ = (a + b) × 10ⁿ</span>\nCondição: expoentes iguais. Se diferentes, converter o menor.\nEx.: rejeitos de Mariana (4,0×10⁷) + Brumadinho (1,2×10⁷) = 5,2 × 10⁷ m³\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
 
   // VOCABULÁRIO (11-15)
   {
     id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Inércia',
-    back: 'Tendência de um corpo a manter o movimento que já tem, em linha reta, enquanto nada agir sobre ele.\n<span class="eq-line">Tópico 1 — a carga não é jogada para fora da curva; ela continua reto.</span>'
+    front: 'Expoente',
+    back: 'Número inteiro n na expressão 10ⁿ que indica a potência de 10. Define a ordem de grandeza do número. Cada incremento de 1 no expoente multiplica o número por 10 — um ‘andar’ na escada logarítmica. (Tópico 1)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Movimento retardado',
-    back: 'Movimento em que o módulo da velocidade diminui, porque velocidade e aceleração têm sinais opostos.\n<span class="eq-line">Tópico 2 — não confundir com "aceleração negativa".</span>'
+    front: 'Coeficiente (mantissa)',
+    back: 'Número a na forma a × 10ⁿ satisfazendo 1 ≤ |a| < 10. Representa a precisão significativa: 4,11 × 10⁸ tem mais algarismos significativos que 4 × 10⁸. (Tópico 2)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Acelerômetro',
-    back: 'Sensor que mede a aceleração instantânea nos três eixos, a cada centésimo de segundo.\n<span class="eq-line">Tópico 3 — existe no celular do estudante e, em versão industrial, no painel de um caminhão de 360 t.</span>'
+    front: 'Ordem de grandeza',
+    back: 'Expoente inteiro n ao qual um número se aproxima na potência de 10 mais próxima. Comparar ordens é comparar ‘andares’: produção de ferro (OG=8) vs. ouro (OG=1) → 7 andares de diferença. (Tópico 3)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Velocidade limite',
-    back: 'Velocidade constante atingida quando a resistência do ar iguala o peso e a aceleração se anula.\n<span class="eq-line">Tópico 4 — cerca de 55 m/s (200 km/h) para um paraquedista de barriga para baixo.</span>'
+    front: 'Notação científica normalizada',
+    back: 'Forma canônica a × 10ⁿ com 1 ≤ |a| < 10, única para cada número. Exigida pela ABNT NBR ISO 31-0 em documentos técnicos da ANM. Garante clareza e comparabilidade internacional. (Tópico 4)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Retardador hidráulico',
-    back: 'Sistema que controla a descida de um caminhão fora de estrada mantendo desaceleração da ordem de 1,2 m/s² sem superaquecer.\n<span class="eq-line">Tópico 5 — quem segura a rampa não é o freio de serviço.</span>'
+    front: 'ppm (partes por milhão)',
+    back: 'Concentração de 10⁻⁶ (um milionésimo). Usada em geoquímica para teores de metais-traço em rochas e solos. Ex.: 15 g/t de ouro = 15 ppm = 1,5 × 10⁻⁵ kg/kg. (Tópico 5)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
 
   // CONEXÃO (16-20)
   {
     id: 'CD-16', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Geografia: qual é a conexão?',
-    back: 'Nenhum dos dois acessos ao Parque das Andorinhas sobe em linha reta: cada curva transforma uma rampa íngreme demais em várias suportáveis — a mesma solução que os tropeiros do século XVIII encontraram para descer carga sem ganhar velocidade demais.'
+    front: 'Física ↔ Matemática: Qual é a conexão entre notação científica e logaritmos?',
+    back: '<span class="eq-line">log₁₀(a × 10ⁿ) ≈ n + log₁₀(a)</span>\nNapier inventou os logaritmos em 1614 para simplificar cálculos com números muito grandes. A diferença entre os expoentes de dois números é exatamente a diferença entre seus logaritmos de base 10.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-17', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Matemática: qual é a conexão?',
-    back: 'A aceleração é a taxa de variação de uma taxa de variação. E a distância de frenagem cresce com o <b>quadrado</b> da velocidade: é essa relação quadrática que faz o dobro da velocidade exigir o quádruplo do espaço.'
+    front: 'Física ↔ Química: Como notação científica aparece em concentrações químicas?',
+    back: 'Concentrações em mol/L são expressas em notação científica em laudos de flotação. Se a solução de cianeto dissolve 2,0 × 10⁻⁴ mol/L de ouro (MM=197 g/mol), a concentração é:\n<span class="eq-line">2,0 × 10⁻⁴ × 197 ≈ 3,94 × 10⁻² g/L</span>\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-18', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Biologia: qual é a conexão?',
-    back: 'O corpo humano não tem sensor de velocidade, só de aceleração: o ouvido interno percebe mudança de movimento. É por isso que se sente o arranque e a freada, mas não a viagem em ritmo constante.'
+    front: 'Física ↔ História: Como a notação científica se relaciona com o ouro colonial?',
+    back: 'Entre 1693 e 1800, a Capitania de Minas exportou 8,0 × 10⁸ g de ouro = 800 toneladas. O Erário Régio registrava em ‘arráteis’ e ‘quintais’, exigindo conversões trabalhosas. Notação científica teria simplificado o controle fiscal.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-19', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Engenharia de Minas: qual é a conexão?',
-    back: 'A distância de frenagem define o espaçamento mínimo entre caminhões numa rampa de cava, e a aceleração centrípeta define o desempenho de uma centrífuga de laboratório — a mesma grandeza em dois equipamentos opostos.'
+    front: 'Física ↔ Arte/Arquitetura: Como Ataíde usou escala na Igreja São Francisco de Assis?',
+    back: 'Ataíde criou ilusão de profundidade de 1,2 × 10¹ m num teto de 3,6 × 10⁰ m de diâmetro real. Razão = 12/3,6 ≈ 3,3 — maior que a proporção áurea (≈ 1,618). Um jogo de escala visual sem instrumentos de medição.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-20', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
-    back: 'A Norma Regulamentadora vinte e dois trata do transporte em minas, e todo limite de velocidade em rampa é, no fundo, um limite de aceleração: é a frenagem possível que decide a velocidade permitida.'
+    front: 'Física ↔ Língua Portuguesa: Como a ABNT normatiza o uso de notação científica?',
+    back: 'A ABNT NBR ISO 31-0 exige que grandezas em documentos técnicos usem algarismos significativos compatíveis com a precisão do instrumento. Notação científica é a forma canônica. Relatórios da ANM seguem essa norma.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
 
   // APLICAÇÃO (21-25)
   {
     id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A van sai do repouso e chega a 36 km/h em 8,0 s. Calcule a aceleração média.',
-    back: '36 km/h ÷ 3,6 = 10 m/s.\n<span class="eq-line">a_m = Δv/Δt = 10 / 8,0 = +1,25 m/s²</span>\nA cada segundo, a van ganha 1,25 m/s: ao fim do 8.º segundo está a 10 m/s.'
+    front: 'A produção anual de minério de ferro do Brasil é 411 000 000 t. Escreva em notação científica.',
+    back: 'Mover vírgula 8 casas à esquerda:\n<span class="eq-line">411 000 000 → 4,11 × 10⁸ t</span>\nCoeficiente: 4,11 (entre 1 e 10 ✓)\nExpoente: 8 (8 casas à esquerda ✓)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Um caminhão desce a rampa com v = −8,0 m/s e a = −0,5 m/s². Classifique o movimento.',
-    back: 'v·a = (−8,0) × (−0,5) = <b>+4,0 &gt; 0</b> → movimento <b>acelerado</b>.\n<span class="eq-line">Tudo negativo, e ainda assim ganhando velocidade.</span>\nO sinal só informa o sentido: descendo, mais rápido a cada segundo.'
+    front: 'O raio médio da Terra é 6 370 km. Expresse em metros, em notação científica.',
+    back: '6 370 km = 6 370 × 10³ m = 6,370 × 10⁶ m\nOu diretamente:\n<span class="eq-line">6 370 000 m → 6,37 × 10⁶ m</span>\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A cachoeira tem 10 m de queda. Calcule o tempo e a velocidade de chegada da água.',
-    back: 't = √(2·Δs/g) = √(2·10/9,8) = <b>1,4 s</b>\n<span class="eq-line">v = g·t = 9,8 × 1,4 ≈ 14 m/s ≈ 50 km/h</span>\nO fio de água afina na descida porque acelera: a mesma vazão, mais depressa, ocupa menos seção.'
+    front: 'Produção anual: ferro 4,11 × 10⁸ t, ouro 8,8 × 10¹ t. Quantas vezes produz-se mais ferro do que ouro?',
+    back: '<span class="eq-line">razão = 10^(8−1) = 10⁷</span>\n≈ 10 milhões de vezes mais ferro do que ouro por ano.\nPerspectiva: para cada grama de ouro, produz-se 10 000 kg de ferro.\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Caminhão a 40 km/h, retardador com 1,2 m/s². Calcule a distância até parar.',
-    back: '40 km/h ÷ 3,6 = 11,1 m/s.\n<span class="eq-line">Δs = v²/(2·|a|) = 123 / 2,4 = 51 m</span>\nTempo: Δt = 11,1/1,2 = 9,3 s. A 50 km/h seriam 80 m — acima dos 70 m regulamentares.'
+    front: 'Massa de Fe contida na produção anual (teor médio 65%): (4,11 × 10⁸ t) × (6,5 × 10⁻¹). Calcule.',
+    back: '<span class="eq-line">(4,11 × 6,5) × 10^(8+(−1)) = 26,715 × 10⁷</span>\n<span class="eq-line">= 2,67 × 10⁸ t de Fe</span>\nAjuste: 26,7 × 10⁷ → 2,67 × 10⁸ (coeficiente deve ser < 10)\nConsulte o Texto Temático T05 para revisar este conceito.'
   },
   {
     id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Amostra a 0,10 m do eixo, a 3.000 rpm (v ≈ 31,4 m/s). Calcule a aceleração centrípeta.',
-    back: '<span class="eq-line">a_c = v²/r = (31,4)² / 0,10 ≈ 9,9 × 10³ m/s²</span>\nCerca de <b>1.000 g</b>: a separação que a gravidade faria em horas ocorre em minutos. O módulo da velocidade não muda — muda a direção.'
+    front: 'Galeria: 8 trabalhadores, motor de 1,2 × 10² kW. Vazão mínima: 3,0 × 10⁻³ m³/s por trabalhador e 1,5 × 10⁻³ m³/s por kW. Calcule a vazão total.',
+    back: 'Trabalhadores: 8 × 3,0 × 10⁻³ = 2,4 × 10⁻² m³/s\nMotor: 1,2 × 10² × 1,5 × 10⁻³ = 1,8 × 10⁻¹ m³/s\n<span class="eq-line">Total: 0,24×10⁻¹ + 1,8×10⁻¹ = 2,04 × 10⁻¹ ≈ 0,20 m³/s</span>\nConsulte o Texto Temático T05 para revisar este conceito.'
   }
 ];
 
@@ -757,7 +756,7 @@ renderGrid();
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t05">Ver todos os OAs da trilha</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>

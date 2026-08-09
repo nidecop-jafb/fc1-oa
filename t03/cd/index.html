@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T09 · Aceleração Média e Instantânea — Estudante</title>
+<title>T03 · Sistema de Numeração de Base 10 — Estudante</title>
 <!--
   IMPORTACAO EM MOODLE:
   1. Adicionar atividade > Recurso > Arquivo
   2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T09-CD-v3-estudante.html" width="100%" height="2400"></iframe>
+  OU iframe: <iframe src="T03-CD-v3-estudante.html" width="100%" height="2400"></iframe>
 
   Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
-  localStorage: prefixo ifmg_fc1_t09_cd_
+  localStorage: prefixo ifmg_fc1_t03_cd_
 -->
 <style>
 :root {
@@ -316,26 +316,25 @@ main {
   border-top: 2px solid var(--ouro);
   text-align: center;
 }
-.encerramento .fecho-frase { font-family: var(--serif); font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-frase { font-family: var(--serif); font-size: .88rem; }
 .encerramento .fecho-acao {
-  color: var(--ouro); font-size: .95rem;
+  color: var(--ouro); font-size: .82rem;
   text-transform: uppercase; font-weight: 700;
-  margin-top: 10px; line-height: 1.5;
+  margin-top: 8px;
 }
 .encerramento .fecho-nidec {
-  color: var(--cinza); font-size: .9rem;
-  margin-top: 14px; line-height: 1.55;
+  color: var(--cinza); font-size: .82rem;
+  margin-top: 12px; line-height: 1.4;
 }
 
 /* ── FOOTER ── */
 .footer-line {
   text-align: center;
-  font-size: .85rem;
+  font-size: .7rem;
   color: var(--cinza);
-  padding: 16px 12px;
+  padding: 16px 0;
   margin-top: 12px;
   letter-spacing: .5px;
-  line-height: 1.5;
 }
 
 /* ── RESPONSIVE ── */
@@ -369,7 +368,7 @@ main {
 
 <header class="header">
   <div class="header-inner">
-    <h1><span class="trilha-code">T09</span> &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h1>
+    <h1><span class="trilha-code">T03</span> &middot; Sistema de Numera&ccedil;&atilde;o de Base 10</h1>
     <span class="badge">Cart&otilde;es Did&aacute;ticos (CD)</span>
   </div>
   <div class="header-sub">25 cart&otilde;es &middot; 5 categorias</div>
@@ -384,8 +383,8 @@ main {
   <span class="piazzi-tag">Escrever</span>
   <span class="piazzi-tag">Medir</span>
   <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
+  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLLck6FRNMdAs" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Orquestra Ouro Preto &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra</span>
 </div>
 
 <!-- TOOLBAR -->
@@ -420,15 +419,15 @@ main {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">Continue a Pr&eacute;-Aula: responda o <strong>Ponto de Partida (PP)</strong> e o <strong>Testinho (TN)</strong>.</div>
+  <div class="fecho-acao">N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
 </div>
 
-<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T09 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
+<div class="footer-line">IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T03 &middot; J. Azevedo &amp; F. Beato &middot; 2026</div>
 
 <script>
 // ── STORAGE ──
-const PREFIX = 'ifmg_fc1_t09_cd_';
+const PREFIX = 'ifmg_fc1_t03_cd_';
 function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
 function load(k, d) { try { const v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
 
@@ -437,136 +436,136 @@ const CARDS = [
   // CONCEITO (1-5)
   {
     id: 'CD-01', cat: 'conceito', label: 'Conceito',
-    front: 'O que o corpo sente dentro de um veículo — e o que ele não sente?',
-    back: 'O corpo sente a <b>mudança</b> da velocidade, não a velocidade. Num trecho reto a 80 km/h dá para equilibrar uma garrafa no painel; no arranque e na freada, o encosto e o cinto entregam a diferença.'
+    front: 'O que é o sistema de numeração de base 10?',
+    back: 'Sistema posicional com 10 algarismos (0–9) em que o valor de cada dígito depende de sua posição, representando uma potência de dez. Posicional significa que a mesma cifra vale 1, 10 ou 100 conforme a casa em que está.'
   },
   {
     id: 'CD-02', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração escalar média?',
-    back: 'É a variação de velocidade dividida pelo intervalo de tempo em que ela ocorreu.\n<span class="eq-line">Não é uma velocidade grande — é uma regra de crescimento da velocidade.</span>'
+    front: 'O que são os prefixos decimais do Sistema Internacional de Unidades?',
+    back: 'Multiplicadores padronizados que escalam uma unidade-base por potências de dez — positivas para múltiplos (quilo, mega) e negativas para submúltiplos (mili, micro). Os 24 prefixos do SI abrangem de yocto (10⁻²⁴) a yotta (10²⁴), todos potências exatas de dez.'
   },
   {
     id: 'CD-03', cat: 'conceito', label: 'Conceito',
-    front: 'Por que aceleração negativa não quer dizer "freando"?',
-    back: 'Porque o sinal informa o <b>sentido</b>, não se a velocidade cresce ou diminui. Quem classifica é o produto v·a: mesmo sinal acelera, sinais opostos retardam. Um caminhão descendo com v e a negativos está ganhando velocidade.'
+    front: 'O que é o fator de escala entre duas dimensões?',
+    back: 'Razão adimensional entre a dimensão maior e a menor, expressa frequentemente como potência de dez, que indica quantas vezes uma dimensão cabe na outra. Adimensional significa que as unidades do numerador e denominador se cancelam, restando apenas um número puro.'
   },
   {
     id: 'CD-04', cat: 'conceito', label: 'Conceito',
-    front: 'O que é aceleração instantânea — e por que a média engana?',
-    back: 'É o limite da aceleração média quando o intervalo tende a zero: o valor no instante. A média distribui a freada inteira por igual; o passageiro não é jogado para a frente "em média", e sim no instante do pico.'
+    front: 'O que é o método de conversão em cadeia (análise dimensional)?',
+    back: 'Técnica que encadeia fatores de conversão numericamente iguais a 1, cancelando as unidades indesejadas e mantendo apenas a unidade final desejada. Cada fator tem a unidade a eliminar no denominador e a unidade desejada no numerador — elas se cancelam como fatores comuns de uma fração.'
   },
   {
     id: 'CD-05', cat: 'conceito', label: 'Conceito',
-    front: 'Por que um paraquedista a 200 km/h não sente nada além do vento?',
-    back: 'Porque atingiu a <b>velocidade limite</b>: a resistência do ar iguala o peso e a aceleração vai a zero. Velocidade alta com aceleração nula é movimento uniforme — dá para estar muito rápido e não estar acelerando.'
+    front: 'O que é o zoom geológico em mineração?',
+    back: 'Capacidade de transitar mentalmente entre a escala do grão mineral (micrometros) e a de uma bacia sedimentar (centenas de km), abrangendo até 9 ordens de grandeza, usando sempre prefixos SI. Do grão de quartzo (200 μm) ao Quadrilátero Ferrífero (200 km) há um fator de zoom de 10⁹ — um bilhão.'
   },
 
   // EQUAÇÃO (6-10)
   {
     id: 'CD-06', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da variação de velocidade?',
-    back: '<span class="eq-line">Δv = v − v₀</span>\nΔv: variação de velocidade (m/s) · v: velocidade final (m/s) · v₀: velocidade inicial (m/s).\nO sinal conta a história: +10 m/s no arranque da van, −10 m/s na freada.'
+    front: 'Qual é a equação da representação posicional de um número em base 10?',
+    back: '<span class="eq-line">N = aₙ × 10ⁿ + aₙ₋₁ × 10ⁿ⁻¹ + ... + a₁ × 10¹ + a₀ × 10⁰</span>\nSoma das posições ponderadas por potências de dez. Cada algarismo aᵢ (entre 0 e 9) é multiplicado pela potência de dez correspondente à sua posição i.'
   },
   {
     id: 'CD-07', cat: 'exemplo', label: 'Equação',
-    front: 'Qual é a equação da aceleração escalar média?',
-    back: '<span class="eq-line">a_m = Δv / Δt</span>\na_m: aceleração média (m/s²) · Δv: variação de velocidade (m/s) · Δt: intervalo de tempo (s).\nLê-se "metro por segundo, a cada segundo".'
+    front: 'Qual é a equação de conversão entre prefixo e unidade-base?',
+    back: '<span class="eq-line">V_base = V_prefixo × 10ⁿ</span>\n(n é o expoente do prefixo — negativo para submúltiplos)\nPara mili: n = −3. Para micro: n = −6. Para quilo: n = +3. Sempre multiplicar pelo fator, nunca dividir.'
   },
   {
     id: 'CD-08', cat: 'exemplo', label: 'Equação',
-    front: 'Como se classifica o movimento pelos sinais de v e a?',
-    back: '<span class="eq-line">v·a &gt; 0 → acelerado | v·a &lt; 0 → retardado | a = 0 → uniforme</span>\nO critério é o produto, nunca um dos sinais isolado. Vale em qualquer referencial adotado.'
+    front: 'Qual é a equação do fator de escala entre duas dimensões?',
+    back: '<span class="eq-line">F = D_maior / D_menor</span>\nDivisão da dimensão maior pela menor, ambas na mesma unidade; resultado adimensional. As unidades se cancelam na divisão, tornando F adimensional.\n<span class="eq-line">Galeria (4 m) / filão (0,005 m) = 800</span>'
   },
   {
     id: 'CD-09', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da queda livre a partir do repouso?',
-    back: '<span class="eq-line">v = g·t   e   Δs = ½·g·t²</span>\nv: velocidade no instante t (m/s) · g ≈ 9,8 m/s² · t: tempo de queda (s) · Δs: distância percorrida (m).\nA massa não entra na conta.'
+    front: 'Qual é a estrutura da equação de conversão em cadeia?',
+    back: '<span class="eq-line">V_final = V_inicial × (u₂/u₁) × (u₃/u₂) × ...</span>\nCadeia de frações de conversão unitárias que cancelam unidades intermediárias. Cada fração é numericamente = 1. As unidades se cancelam, restando só a unidade final.'
   },
   {
     id: 'CD-10', cat: 'exemplo', label: 'Equação',
-    front: 'Quais são as equações da distância de frenagem e da aceleração centrípeta?',
-    back: '<span class="eq-line">Δs = v² / (2·|a|)   e   a_c = v² / r</span>\nΔs: distância até parar (m) · |a|: módulo da desaceleração (m/s²) · a_c: aceleração centrípeta (m/s²) · r: raio da trajetória (m).\nNas duas, a velocidade entra ao quadrado.'
+    front: 'Qual é a equação do fator de zoom geológico?',
+    back: '<span class="eq-line">Z = L_superior / L_inferior</span>\nRazão entre as dimensões dos dois níveis de observação, ambos em metros; resultado adimensional.\n<span class="eq-line">Do grão (200 × 10⁻⁶ m) ao QF (200 × 10³ m): Z = 10⁹</span>'
   },
 
   // VOCABULÁRIO (11-15)
   {
     id: 'CD-11', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Inércia',
-    back: 'Tendência de um corpo a manter o movimento que já tem, em linha reta, enquanto nada agir sobre ele.\n<span class="eq-line">Tópico 1 — a carga não é jogada para fora da curva; ela continua reto.</span>'
+    front: 'O que é um sistema posicional de numeração?',
+    back: 'Sistema em que o valor de cada algarismo depende da posição que ocupa no número — cada casa representa uma potência da base escolhida.\nNo decimal, a casa da direita vale 10⁰, a seguinte 10¹, etc. Sem posicionalidade, 4, 40 e 400 seriam indistinguíveis.'
   },
   {
     id: 'CD-12', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Movimento retardado',
-    back: 'Movimento em que o módulo da velocidade diminui, porque velocidade e aceleração têm sinais opostos.\n<span class="eq-line">Tópico 2 — não confundir com "aceleração negativa".</span>'
+    front: 'O que é um prefixo do Sistema Internacional de Unidades?',
+    back: 'Símbolo padronizado colocado antes de uma unidade-base para indicar fator de multiplicação por potência de dez — k para 10³, M para 10⁶, m para 10⁻³, μ para 10⁻⁶.\nOs prefixos eliminam a necessidade de escrever potências de dez por extenso em documentos técnicos.'
   },
   {
     id: 'CD-13', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Acelerômetro',
-    back: 'Sensor que mede a aceleração instantânea nos três eixos, a cada centésimo de segundo.\n<span class="eq-line">Tópico 3 — existe no celular do estudante e, em versão industrial, no painel de um caminhão de 360 t.</span>'
+    front: 'O que é análise dimensional?',
+    back: 'Método de conversão de unidades que multiplica valores por frações de conversão unitárias, cancelando as unidades indesejadas e mantendo a unidade final.\nÉ o método que torna invisível o erro do Mars Climate Orbiter — se as unidades estivessem escritas, o cancelamento incorreto seria detectado.'
   },
   {
     id: 'CD-14', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Velocidade limite',
-    back: 'Velocidade constante atingida quando a resistência do ar iguala o peso e a aceleração se anula.\n<span class="eq-line">Tópico 4 — cerca de 55 m/s (200 km/h) para um paraquedista de barriga para baixo.</span>'
+    front: 'O que é ordem de grandeza de um valor numérico?',
+    back: 'Potência de dez mais próxima do valor, usada para comparar e classificar grandezas que diferem por fatores muito grandes.\nUm grão de quartzo (~10⁻⁴ m) e o Quadrilátero Ferrífero (~10⁵ m) diferem em 9 ordens de grandeza — fator de um bilhão.'
   },
   {
     id: 'CD-15', cat: 'pergunta', label: 'Vocabulário',
-    front: 'Retardador hidráulico',
-    back: 'Sistema que controla a descida de um caminhão fora de estrada mantendo desaceleração da ordem de 1,2 m/s² sem superaquecer.\n<span class="eq-line">Tópico 5 — quem segura a rampa não é o freio de serviço.</span>'
+    front: 'O que é o zoom geológico na mineração?',
+    back: 'Habilidade de transitar mentalmente entre escalas de observação — do grão mineral (μm) ao mapa regional (km) — usando prefixos SI e potências de dez em cada nível.\nEssa habilidade é o núcleo da geoestatística: extrapolar da amostra (cm) à jazida (km) com rigor matemático.'
   },
 
   // CONEXÃO (16-20)
   {
     id: 'CD-16', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Geografia: qual é a conexão?',
-    back: 'Nenhum dos dois acessos ao Parque das Andorinhas sobe em linha reta: cada curva transforma uma rampa íngreme demais em várias suportáveis — a mesma solução que os tropeiros do século XVIII encontraram para descer carga sem ganhar velocidade demais.'
+    front: 'Qual é a conexão entre Física e Matemática nesta trilha?',
+    back: 'A decomposição em potências de 10 é a base da notação científica e dos logaritmos; toda conversão de prefixo SI é uma operação com expoentes inteiros.\n<span class="eq-line">log(10⁹) = 9</span>\nO número de ordens de grandeza do zoom geológico é o logaritmo base 10 do fator de zoom.'
   },
   {
     id: 'CD-17', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Matemática: qual é a conexão?',
-    back: 'A aceleração é a taxa de variação de uma taxa de variação. E a distância de frenagem cresce com o <b>quadrado</b> da velocidade: é essa relação quadrática que faz o dobro da velocidade exigir o quádruplo do espaço.'
+    front: 'Qual é a conexão entre Física e Geologia nesta trilha?',
+    back: 'O zoom geológico — do grão de quartzo (μm) ao Quadrilátero Ferrífero (km) — usa prefixos SI e potências de dez; a geoestatística formaliza esse zoom para estimar reservas.\nSem a linguagem decimal de prefixos, não há como comunicar a escala de uma jazida ao laboratório que analisa suas amostras.'
   },
   {
     id: 'CD-18', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Biologia: qual é a conexão?',
-    back: 'O corpo humano não tem sensor de velocidade, só de aceleração: o ouvido interno percebe mudança de movimento. É por isso que se sente o arranque e a freada, mas não a viagem em ritmo constante.'
+    front: 'Qual é a conexão entre Física e Química nesta trilha?',
+    back: 'A granulometria de minério é expressa em micrometros (μm); análises de peneiramento convertem entre prefixos SI e padrões ABNT/ASTM, exigindo domínio de conversão em cadeia.\nA peneira ABNT nº 200 tem abertura de 74 μm = 0,074 mm = 74 × 10⁻⁶ m.'
   },
   {
     id: 'CD-19', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Engenharia de Minas: qual é a conexão?',
-    back: 'A distância de frenagem define o espaçamento mínimo entre caminhões numa rampa de cava, e a aceleração centrípeta define o desempenho de uma centrífuga de laboratório — a mesma grandeza em dois equipamentos opostos.'
+    front: 'Qual é a conexão entre Física e Língua Portuguesa nesta trilha?',
+    back: 'Escrever unidades corretamente num laudo técnico é competência de comunicação: um laudo sem unidade explícita é tecnicamente inútil e potencialmente perigoso.\nO Mars Climate Orbiter foi destruído porque ninguém escreveu as unidades explicitamente — uma falha de comunicação técnica, não apenas de cálculo.'
   },
   {
     id: 'CD-20', cat: 'conexao', label: 'Conexão',
-    front: 'Física ↔ Segurança do Trabalho: qual é a conexão?',
-    back: 'A Norma Regulamentadora vinte e dois trata do transporte em minas, e todo limite de velocidade em rampa é, no fundo, um limite de aceleração: é a frenagem possível que decide a velocidade permitida.'
+    front: 'Qual é a conexão entre Física e Segurança do Trabalho nesta trilha?',
+    back: 'A NR-22 exige que todos os documentos técnicos de mineração especifiquem a unidade de cada grandeza; o domínio de prefixos SI e conversão em cadeia garante esse requisito.\nConfundir mm com cm em especificações de suporte de galeria pode comprometer a estabilidade estrutural — um risco real coberto pela NR-22.'
   },
 
   // APLICAÇÃO (21-25)
   {
     id: 'CD-21', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A van sai do repouso e chega a 36 km/h em 8,0 s. Calcule a aceleração média.',
-    back: '36 km/h ÷ 3,6 = 10 m/s.\n<span class="eq-line">a_m = Δv/Δt = 10 / 8,0 = +1,25 m/s²</span>\nA cada segundo, a van ganha 1,25 m/s: ao fim do 8.º segundo está a 10 m/s.'
+    front: 'O número 2.345 representa blocos de pedra-sabão estimados para uma galeria de 50 m. Decomponha 2.345 em potências de 10.',
+    back: '<span class="eq-line">2 × 10³ + 3 × 10² + 4 × 10¹ + 5 × 10⁰</span>\n<span class="eq-line">= 2.000 + 300 + 40 + 5 = 2.345</span>\nCada algarismo ocupa uma posição e multiplica a potência de dez correspondente a ela.'
   },
   {
     id: 'CD-22', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Um caminhão desce a rampa com v = −8,0 m/s e a = −0,5 m/s². Classifique o movimento.',
-    back: 'v·a = (−8,0) × (−0,5) = <b>+4,0 &gt; 0</b> → movimento <b>acelerado</b>.\n<span class="eq-line">Tudo negativo, e ainda assim ganhando velocidade.</span>\nO sinal só informa o sentido: descendo, mais rápido a cada segundo.'
+    front: 'Uma junta de argamassa tem 2,5 mm de espessura. Expresse esse valor em metros e em quilômetros.',
+    back: 'Em metros:\n<span class="eq-line">2,5 × 10⁻³ = 0,0025 m</span>\nEm quilômetros:\n<span class="eq-line">0,0025 × 10⁻³ = 2,5 × 10⁻⁶ km</span>\nMili = 10⁻³; quilo = 10³.'
   },
   {
     id: 'CD-23', cat: 'aplicacao', label: 'Aplicação',
-    front: 'A cachoeira tem 10 m de queda. Calcule o tempo e a velocidade de chegada da água.',
-    back: 't = √(2·Δs/g) = √(2·10/9,8) = <b>1,4 s</b>\n<span class="eq-line">v = g·t = 9,8 × 1,4 ≈ 14 m/s ≈ 50 km/h</span>\nO fio de água afina na descida porque acelera: a mesma vazão, mais depressa, ocupa menos seção.'
+    front: 'Uma galeria moderna tem 4 m de largura. O filão aurífero que a motivou tem 5 mm de espessura. Calcule o fator de escala F.',
+    back: '<span class="eq-line">F = 4 m / 0,005 m = 800 (adimensional)</span>\nAs unidades se cancelam (m/m), produzindo um número puro. A galeria é 800 vezes mais larga que o filão de ouro.'
   },
   {
     id: 'CD-24', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Caminhão a 40 km/h, retardador com 1,2 m/s². Calcule a distância até parar.',
-    back: '40 km/h ÷ 3,6 = 11,1 m/s.\n<span class="eq-line">Δs = v²/(2·|a|) = 123 / 2,4 = 51 m</span>\nTempo: Δt = 11,1/1,2 = 9,3 s. A 50 km/h seriam 80 m — acima dos 70 m regulamentares.'
+    front: 'Uma bomba de drenagem opera a 4 m³/min. Converta a vazão para L/s usando o método de conversão em cadeia.',
+    back: '<span class="eq-line">4 m³/min × (1.000 L / 1 m³) × (1 min / 60 s)</span>\n<span class="eq-line">= 4.000 / 60 ≈ 66,7 L/s</span>\nm³ cancela com m³; min cancela com min. Resta L/s.'
   },
   {
     id: 'CD-25', cat: 'aplicacao', label: 'Aplicação',
-    front: 'Amostra a 0,10 m do eixo, a 3.000 rpm (v ≈ 31,4 m/s). Calcule a aceleração centrípeta.',
-    back: '<span class="eq-line">a_c = v²/r = (31,4)² / 0,10 ≈ 9,9 × 10³ m/s²</span>\nCerca de <b>1.000 g</b>: a separação que a gravidade faria em horas ocorre em minutos. O módulo da velocidade não muda — muda a direção.'
+    front: 'Um grão de quartzo mede 200 μm. O Quadrilátero Ferrífero tem 200 km de extensão. Calcule o fator de zoom Z.',
+    back: '<span class="eq-line">Z = (200 × 10³ m) / (200 × 10⁻⁶ m) = 10⁹</span>\nUm bilhão — 9 ordens de grandeza. As unidades (m/m) se cancelam e a linguagem é a mesma nos dois extremos.'
   }
 ];
 
@@ -757,7 +756,7 @@ renderGrid();
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t03">Ver todos os OAs da trilha</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>
