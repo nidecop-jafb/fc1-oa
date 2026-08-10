@@ -1761,7 +1761,13 @@ document.addEventListener('click', function(e) {
 .toc-toggle { top: 330px !important; }
 .creditos-toggle { top: 418px !important; }
 .figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
 @media (max-width: 600px) {
+  body { padding-left: 30px; }
   .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
   .aba-site-painel { width: 86vw; }
 }
