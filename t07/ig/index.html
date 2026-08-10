@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T07 · Referencial, Posi&ccedil;&atilde;o e Tempo — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub { max-width: 960px; margin: 4px auto 0; font-size: 0.88rem; color: var(--cinza); }
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* APRESENTACAO */
+.intro-box { display:flex; gap:16px; align-items:flex-start; background:var(--superficie); border:1px solid var(--cinza-borda); border-left:3px solid var(--ouro); padding:16px 18px; margin-bottom:24px; }
+.intro-vagoneta { flex-shrink:0; width:52px; height:52px; }
+.intro-texto { font-size:.9rem; line-height:1.65; }
+.intro-texto strong { color: var(--ouro); }
+
+/* SECOES */
+.secao-titulo { font-family: var(--mono); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--azul-claro); border-bottom: 1px solid var(--cinza-borda); padding-bottom: 6px; margin: 32px 0 6px; }
+.secao-instrucao { font-size: .84rem; color: var(--cinza); margin-bottom: 14px; }
+.secao-instrucao strong { color: var(--ouro); }
+
+/* PAINEL 5 TOPICOS */
+.painel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+@media (max-width: 900px) { .painel { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .painel { grid-template-columns: 1fr; } }
+.tp-card { background: var(--superficie); border: 1px solid var(--cinza-borda); display: flex; flex-direction: column; transition: border-color .15s, outline .15s; }
+.tp-card.alvo { cursor: pointer; }
+.tp-card.alvo:hover { border-color: var(--azul); }
+.tp-card.alvo-ativo { outline: 2px dashed var(--ouro); outline-offset: 2px; }
+.tp-head { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--cinza-borda); }
+.tp-head svg { flex-shrink: 0; }
+.tp-num { font-family: var(--mono); font-size: .66rem; color: var(--cinza); letter-spacing: .08em; }
+.tp-titulo { font-size: .78rem; font-weight: 700; line-height: 1.3; padding: 8px 10px 0; min-height: 3.2em; }
+.tp-conceito { font-size: .76rem; color: var(--cinza); line-height: 1.5; padding: 6px 10px 10px; flex: 1; }
+.tp-eq-slot { margin: 0 10px 8px; border: 1px dashed var(--cinza-borda); min-height: 44px; display: flex; align-items: center; justify-content: center; padding: 6px 8px; font-family: var(--mono); font-size: .74rem; text-align: center; color: var(--cinza); transition: all .15s; }
+.tp-eq-slot.preenchido { border-style: solid; color: var(--texto); background: var(--input-bg); }
+.tp-eq-slot.certo { border-color: var(--verde); color: var(--verde); background: var(--verde-claro); }
+.tp-eq-slot.errado { border-color: var(--erro); color: var(--erro); background: var(--erro-claro); }
+.tp-palavra { margin: 0 10px 12px; }
+.tp-palavra span { display: inline-block; font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; border: 1px solid var(--ouro); color: var(--ouro); padding: 2px 8px; }
+.tp-c1 .tp-head { background: var(--azul-bg); } .tp-c1 .tp-head svg { stroke: var(--azul-claro); }
+.tp-c2 .tp-head { background: var(--azul-bg); } .tp-c2 .tp-head svg { stroke: var(--azul-claro); }
+.tp-c3 .tp-head { background: var(--ouro-claro); } .tp-c3 .tp-head svg { stroke: var(--ouro); }
+.tp-c4 .tp-head { background: var(--verde-claro); } .tp-c4 .tp-head svg { stroke: var(--verde); }
+.tp-c5 .tp-head { background: var(--erro-claro); } .tp-c5 .tp-head svg { stroke: var(--erro); }
+
+/* FICHAS DE EQUACAO */
+.fichas { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; min-height: 44px; }
+.ficha { font-family: var(--mono); font-size: .78rem; background: var(--input-bg); border: 1px solid var(--ouro); color: var(--ouro); padding: 9px 13px; cursor: pointer; transition: all .15s; user-select: none; }
+.ficha:hover { background: var(--ouro-claro); }
+.ficha.ativa { background: var(--ouro); color: oklch(0.10 0.02 260); }
+.ficha.usada { display: none; }
+.fichas-vazio { font-size: .78rem; color: var(--cinza); font-style: italic; align-self: center; }
+
+/* GRAFICO VIVO */
+.vivo-box { background: var(--superficie); border: 1px solid var(--cinza-borda); padding: 16px; }
+.vivo-svg-wrap { overflow-x: auto; }
+.vivo-svg-wrap svg { width: 100%; height: auto; display: block; }
+.vivo-controles { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.vivo-controles label { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--cinza); }
+.vivo-controles input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--azul); }
+.vivo-leitura { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+@media (max-width: 560px) { .vivo-leitura { grid-template-columns: 1fr; } }
+.vivo-val { background: var(--input-bg); border: 1px solid var(--cinza-borda); padding: 10px 12px; }
+.vivo-val .rotulo { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; color: var(--cinza); display: block; }
+.vivo-val .numero { font-family: var(--mono); font-size: 1.15rem; font-weight: 700; color: var(--azul-claro); }
+.vivo-val.destaque .numero { color: var(--ouro); }
+.vivo-msg { margin-top: 10px; font-size: .82rem; padding: 10px 12px; border-left: 3px solid var(--cinza-borda); color: var(--cinza); transition: all .2s; }
+.vivo-msg.tangente { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+
+/* VF */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item { display: flex; gap: 12px; align-items: flex-start; background: var(--input-bg); border: 1px solid var(--cinza-borda); padding: 12px 14px; transition: border-color .2s; }
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn { width: 36px; height: 36px; border: 2px solid var(--cinza-borda); background: transparent; color: var(--cinza); font-family: var(--mono); font-weight: 700; font-size: .8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.vf-btn:hover { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: .88rem; line-height: 1.5; flex: 1; }
+.vf-just { display: none; font-size: .78rem; margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--cinza-borda); color: var(--cinza); }
+.vf-item.correct .vf-just, .vf-item.incorrect .vf-just { display: block; }
+
+/* ACOES + PLACAR */
+.acoes { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+.btn { font-family: var(--mono); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 11px 20px; cursor: pointer; border: none; transition: opacity .2s; }
+.btn:hover { opacity: .85; }
+.btn-conferir { background: var(--ouro); color: oklch(0.10 0.02 260); }
+.btn-limpar { background: transparent; border: 1px solid var(--cinza-borda); color: var(--cinza); }
+.btn-print { background: transparent; border: 1px solid var(--cinza-borda); color: var(--cinza); }
+.placar { font-family: var(--mono); font-size: .85rem; font-weight: 700; color: var(--ouro); margin-left: auto; }
+.placar-nota { font-size: .72rem; color: var(--cinza); font-weight: 400; display: block; }
+
+/* ENCERRAMENTO / FOOTER */
+.encerramento { border-top: 2px solid var(--ouro); margin-top: 48px; padding-top: 20px; text-align: center; }
+.fecho-frase { font-family: var(--serif); font-size: .88rem; }
+.fecho-acao { color: var(--ouro); font-size: .82rem; text-transform: uppercase; font-weight: 700; margin-top: 8px; }
+.fecho-nidec { color: var(--cinza); font-size: .82rem; margin-top: 14px; line-height: 1.55; }
+.footer-line { text-align: center; font-size: .85rem; color: var(--cinza); padding: 16px 12px; line-height: 1.5; }
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .piazzi-bar, .acoes, .vivo-controles, .btn, .fichas, .secao-instrucao { display: none !important; }
+  .header, .intro-box, .tp-card, .vivo-box, .vf-item { background: #fff; border-color: #999; color: #111; }
+  .tp-conceito, .vf-texto, .intro-texto { color: #222; }
+  .tp-eq-slot { color: #111; border-color: #666; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T07</span> &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</h1>
+    <span class="badge">Infogr&aacute;fico (IG)</span>
+  </div>
+  <div class="header-sub">Painel visual da aula &middot; 5 t&oacute;picos &middot; 2 desafios + 1 galeria viva &middot; sem nota</div>
+</header>
+
+<div class="container">
+
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLH9GvshumD2s" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Filarm&ocirc;nica de Minas Gerais &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra sinf&ocirc;nica</span>
+  </div>
+
+  <div class="intro-box">
+    <svg class="intro-vagoneta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="color:var(--ouro)">
+      <path d="M10 26 L54 26 L48 44 L16 44 Z"/>
+      <circle cx="22" cy="52" r="5"/><circle cx="42" cy="52" r="5"/>
+      <path d="M16 26 L20 16 M32 26 L32 14 M48 26 L44 16"/>
+    </svg>
+    <div class="intro-texto">
+      Este &eacute; o <strong>mapa visual da aula</strong>: os cinco t&oacute;picos da trilha num painel s&oacute;.
+      Ele n&atilde;o vale nota &mdash; use quantas vezes quiser. Complete o painel associando cada
+      <strong>equa&ccedil;&atilde;o</strong> ao seu t&oacute;pico, mexa no <strong>gr&aacute;fico vivo</strong> para ver a
+      velocidade m&eacute;dia virar instant&acirc;nea e feche com o <strong>verdadeiro ou falso</strong>.
+    </div>
+  </div>
+
+  <!-- ============ PAINEL ============ -->
+  <div class="secao-titulo">O painel da trilha</div>
+  <div class="secao-instrucao">Toque numa <strong>ficha</strong> abaixo e depois no t&oacute;pico onde ela mora. O painel se completa com voc&ecirc;.</div>
+
+  <div class="fichas" id="fichas"></div>
+
+  <div class="painel" id="painel">
+    <div class="tp-card tp-c1" data-topico="1">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="10"/><path d="M3 12h18M7 6v6m5-6v6m5-6v6"/><circle cx="8" cy="18" r="1.8"/><circle cx="16" cy="18" r="1.8"/></svg>
+        <span class="tp-num">T&Oacute;PICO 1</span>
+      </div>
+      <div class="tp-titulo">A relatividade do repouso</div>
+      <div class="tp-conceito">Repouso e movimento n&atilde;o s&atilde;o propriedades do corpo: dependem do referencial. No banco do &ocirc;nibus, voc&ecirc; para e se move ao mesmo tempo.</div>
+      <div class="tp-eq-slot" data-slot="1">toque para colocar a ficha</div>
+      <div class="tp-palavra"><span>referencial</span></div>
+    </div>
+
+    <div class="tp-card tp-c2" data-topico="2">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 20v-8a8 8 0 0116 0v8M4 20h16M12 20v-5"/></svg>
+        <span class="tp-num">T&Oacute;PICO 2</span>
+      </div>
+      <div class="tp-titulo">Coordenadas em t&uacute;neis e galerias</div>
+      <div class="tp-conceito">Escolhida a origem e o sentido positivo, cada ponto da galeria vira um n&uacute;mero: a posi&ccedil;&atilde;o x. O deslocamento &eacute; a diferen&ccedil;a entre duas posi&ccedil;&otilde;es.</div>
+      <div class="tp-eq-slot" data-slot="2">toque para colocar a ficha</div>
+      <div class="tp-palavra"><span>posi&ccedil;&atilde;o</span></div>
+    </div>
+
+    <div class="tp-card tp-c3" data-topico="3">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span class="tp-num">T&Oacute;PICO 3</span>
+      </div>
+      <div class="tp-titulo">Instante e intervalo</div>
+      <div class="tp-conceito">Instante &eacute; leitura no rel&oacute;gio (7h00); intervalo &eacute; diferen&ccedil;a entre dois instantes (90 min de frente de trabalho). N&atilde;o se confundem.</div>
+      <div class="tp-eq-slot" data-slot="3">toque para colocar a ficha</div>
+      <div class="tp-palavra"><span>instante &times; intervalo</span></div>
+    </div>
+
+    <div class="tp-card tp-c4" data-topico="4">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 18c5 0 3-10 8-10 4 0 3 7 8 7"/><circle cx="4" cy="18" r="1.8"/><circle cx="20" cy="15" r="1.8"/></svg>
+        <span class="tp-num">T&Oacute;PICO 4</span>
+      </div>
+      <div class="tp-titulo">Trajet&oacute;ria</div>
+      <div class="tp-conceito">A trajet&oacute;ria &eacute; o desenho do caminho; o deslocamento, a seta da partida &agrave; chegada. O caminho nunca &eacute; mais curto que a seta.</div>
+      <div class="tp-eq-slot" data-slot="4">toque para colocar a ficha</div>
+      <div class="tp-palavra"><span>trajet&oacute;ria</span></div>
+    </div>
+
+    <div class="tp-card tp-c5" data-topico="5">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M2 12h4l2-6 4 12 3-8 2 2h5"/></svg>
+        <span class="tp-num">T&Oacute;PICO 5</span>
+      </div>
+      <div class="tp-titulo">O tempo t&eacute;cnico na minera&ccedil;&atilde;o</div>
+      <div class="tp-conceito">Sensores vibram em per&iacute;odos de milissegundos e o GPS conta nanossegundos: per&iacute;odo e frequ&ecirc;ncia s&atilde;o um o inverso do outro.</div>
+      <div class="tp-eq-slot" data-slot="5">toque para colocar a ficha</div>
+      <div class="tp-palavra"><span>per&iacute;odo e frequ&ecirc;ncia</span></div>
+    </div>
+  </div>
+
+  <!-- ============ GRAFICO VIVO ============ -->
+  <div class="secao-titulo">A galeria viva &mdash; mova o referencial, n&atilde;o a vagoneta</div>
+  <div class="secao-instrucao">A vagoneta est&aacute; PARADA num ponto f&iacute;sico da galeria de 350 m. Arraste a <strong>origem do referencial</strong> (o marco zero) e veja a posi&ccedil;&atilde;o x da vagoneta mudar de valor e de sinal &mdash; sem que ela se mova um cent&iacute;metro.</div>
+
+  <div class="vivo-box">
+    <div class="vivo-svg-wrap">
+      <svg id="vivoSvg" viewBox="0 0 640 210" role="img" aria-label="Galeria com origem m&oacute;vel e vagoneta fixa">
+        <rect x="0" y="0" width="640" height="210" fill="oklch(0.14 0.02 260)"/>
+        <path d="M40 60 Q40 30 80 30 L560 30 Q600 30 600 60 L600 130 L40 130 Z" fill="none" stroke="oklch(0.38 0.02 260)" stroke-width="2"/>
+        <line x1="40" y1="130" x2="600" y2="130" stroke="oklch(0.55 0.02 260)" stroke-width="3"/>
+        <text x="46" y="152" font-family="monospace" font-size="11" fill="oklch(0.55 0.02 260)">Boca (0 m)</text>
+        <text x="594" y="152" text-anchor="end" font-family="monospace" font-size="11" fill="oklch(0.55 0.02 260)">Fundo (350 m)</text>
+        <g id="vivoVagoneta">
+          <rect x="-22" y="-26" width="44" height="18" fill="oklch(0.28 0.05 45)" stroke="oklch(0.72 0.19 45)" stroke-width="2"/>
+          <circle cx="-12" cy="-4" r="5" fill="none" stroke="oklch(0.72 0.19 45)" stroke-width="2"/>
+          <circle cx="12" cy="-4" r="5" fill="none" stroke="oklch(0.72 0.19 45)" stroke-width="2"/>
+        </g>
+        <g id="vivoOrigem">
+          <line x1="0" y1="-40" x2="0" y2="14" stroke="oklch(0.85 0.18 95)" stroke-width="2.5"/>
+          <text x="0" y="30" text-anchor="middle" font-family="monospace" font-size="13" fill="oklch(0.85 0.18 95)">x = 0</text>
+        </g>
+        <text id="vivoLeituraX" x="320" y="192" text-anchor="middle" font-family="monospace" font-size="17" fill="oklch(0.72 0.19 45)"></text>
+      </svg>
+    </div>
+    <div class="vivo-controles">
+      <label for="vivoSlider">Origem do referencial</label>
+      <input type="range" id="vivoSlider" min="0" max="350" value="0" step="10" aria-label="Posi&ccedil;&atilde;o da origem na galeria">
+      <span class="vivo-val" style="padding:6px 10px"><span class="rotulo">origem em</span><span class="numero" id="vivoOrigemM">0 m da boca</span></span>
+    </div>
+    <div class="vivo-leitura">
+      <div class="vivo-val"><span class="rotulo">A vagoneta est&aacute; (fixa) a</span><span class="numero">260 m da boca</span></div>
+      <div class="vivo-val destaque"><span class="rotulo">Posi&ccedil;&atilde;o x da vagoneta</span><span class="numero" id="vivoXVal">+260 m</span></div>
+    </div>
+    <div class="vivo-msg" id="vivoMsg">A vagoneta n&atilde;o se moveu &mdash; quem mudou foi o referencial. A posi&ccedil;&atilde;o &eacute; uma rela&ccedil;&atilde;o, n&atilde;o uma propriedade.</div>
+  </div>
+
+  <!-- ============ VF ============ -->
+  <div class="secao-titulo">Verdadeiro ou falso &mdash; um por t&oacute;pico</div>
+  <div class="secao-instrucao">Marque <strong>V</strong> ou <strong>F</strong> e clique em Conferir. Errou? Leia a justificativa, toque de novo e refa&ccedil;a.</div>
+
+  <div class="vf-list" id="vfList"></div>
+
+  <div class="acoes">
+    <button class="btn btn-conferir" id="btnConferir">Conferir</button>
+    <button class="btn btn-limpar" id="btnLimpar">Recome&ccedil;ar</button>
+    <button class="btn btn-print" onclick="window.print()">Imprimir painel</button>
+    <div class="placar" id="placar">&mdash;<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span></div>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Aula encerrada! N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T07 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<script>
+'use strict';
+var STORAGE_KEY = 'ifmg_fc1_t07_ig_v4';
+
+/* ---------- dados ---------- */
+var EQUACOES = [
+  { id: 'e4', html: '&#8467; &ge; |&Delta;x|', topico: 4 },
+  { id: 'e1', html: 'repouso e movimento dependem do referencial', topico: 1 },
+  { id: 'e3', html: '&Delta;t = t_f &minus; t_i', topico: 3 },
+  { id: 'e5', html: 'T = 1/f &middot; 1 ms = 10&#8315;&sup3; s', topico: 5 },
+  { id: 'e2', html: '&Delta;x = x_f &minus; x_i', topico: 2 },
+];
+var VF = [
+  { t: 1, texto: 'Sentado no &ocirc;nibus em viagem, voc&ecirc; est&aacute; em repouso em rela&ccedil;&atilde;o ao banco e em movimento em rela&ccedil;&atilde;o &agrave; estrada.', resp: true,
+    just: 'VERDADEIRA. As duas afirma&ccedil;&otilde;es valem juntas &mdash; cada uma no seu referencial. Movimento n&atilde;o &eacute; propriedade do corpo, &eacute; rela&ccedil;&atilde;o entre corpos (T&oacute;pico 1).' },
+  { t: 2, texto: 'A posi&ccedil;&atilde;o x = &minus;80 m significa que o corpo est&aacute; 80 m atr&aacute;s do ponto de onde partiu.', resp: false,
+    just: 'FALSA. O sinal se refere &agrave; ORIGEM do referencial, n&atilde;o ao ponto de partida. Um corpo pode partir de x = &minus;200 m e chegar a x = &minus;80 m: andou 120 m para frente (T&oacute;pico 2).' },
+  { t: 3, texto: 'Instante e intervalo de tempo s&atilde;o sin&ocirc;nimos: 7h00 &eacute; um intervalo de tempo.', resp: false,
+    just: 'FALSA. 7h00 &eacute; um INSTANTE &mdash; uma leitura no rel&oacute;gio. Intervalo &eacute; diferen&ccedil;a entre dois instantes: &Delta;t = t_f &minus; t_i, como os 90 min da frente de trabalho (T&oacute;pico 3).' },
+  { t: 4, texto: 'Numa galeria em curva, o comprimento da trajet&oacute;ria &eacute; maior que o m&oacute;dulo do deslocamento: &#8467; &ge; |&Delta;x|, com igualdade s&oacute; na reta sem invers&atilde;o.', resp: true,
+    just: 'VERDADEIRA. A curva de 1 200 m entre A e B vence os mesmos |&Delta;x| que a reta de 850 m &mdash; o caminho nunca &eacute; mais curto que a seta (T&oacute;pico 4).' },
+  { t: 5, texto: 'Um sensor que vibra com per&iacute;odo T = 0,001 s tem frequ&ecirc;ncia de 100 Hz.', resp: false,
+    just: 'FALSA. f = 1/T = 1/0,001 = 1 000 Hz. Uma casa decimal no per&iacute;odo &eacute; um fator 10 na frequ&ecirc;ncia &mdash; e o alarme de vibra&ccedil;&atilde;o dispara no limiar errado (T&oacute;pico 5).' },
+];
+
+/* ---------- estado ---------- */
+var estado = { slots: {}, vf: {} };
+try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (s.slots) estado = s; } catch (e) {}
+function salvar() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(estado)); } catch (e) {} }
+
+/* ---------- fichas de equacao ---------- */
+var fichaAtiva = null;
+function eqPorId(id) { for (var i = 0; i < EQUACOES.length; i++) if (EQUACOES[i].id === id) return EQUACOES[i]; return null; }
+
+function renderFichas() {
+  var box = document.getElementById('fichas');
+  box.innerHTML = '';
+  var restantes = 0;
+  EQUACOES.forEach(function (eq) {
+    var usada = false;
+    for (var k in estado.slots) if (estado.slots[k] === eq.id) usada = true;
+    if (usada) return;
+    restantes++;
+    var b = document.createElement('button');
+    b.className = 'ficha' + (fichaAtiva === eq.id ? ' ativa' : '');
+    b.innerHTML = eq.html;
+    b.onclick = function () {
+      fichaAtiva = (fichaAtiva === eq.id) ? null : eq.id;
+      renderFichas(); marcarAlvos();
+    };
+    box.appendChild(b);
+  });
+  if (!restantes) {
+    var fim = document.createElement('span');
+    fim.className = 'fichas-vazio';
+    fim.textContent = 'Todas as fichas estão no painel — clique em Conferir.';
+    box.appendChild(fim);
+  }
+}
+function marcarAlvos() {
+  document.querySelectorAll('.tp-card').forEach(function (c) {
+    c.classList.toggle('alvo', !!fichaAtiva);
+    c.classList.remove('alvo-ativo');
+  });
+}
+function renderSlots() {
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = slot.getAttribute('data-slot');
+    var eqId = estado.slots[n];
+    slot.classList.remove('preenchido', 'certo', 'errado');
+    if (eqId) {
+      slot.innerHTML = eqPorId(eqId).html;
+      slot.classList.add('preenchido');
+    } else {
+      slot.textContent = 'toque para colocar a ficha';
+    }
+  });
+}
+document.querySelectorAll('.tp-card').forEach(function (card) {
+  card.addEventListener('click', function () {
+    var n = card.getAttribute('data-topico');
+    if (fichaAtiva) {
+      estado.slots[n] = fichaAtiva;
+      fichaAtiva = null;
+      salvar(); renderFichas(); renderSlots(); marcarAlvos();
+    } else if (estado.slots[n]) {
+      delete estado.slots[n];           /* devolve a ficha */
+      salvar(); renderFichas(); renderSlots();
+    }
+  });
+});
+
+/* ---------- VF ---------- */
+function renderVF() {
+  var list = document.getElementById('vfList');
+  list.innerHTML = '';
+  VF.forEach(function (q, i) {
+    var item = document.createElement('div');
+    item.className = 'vf-item';
+    item.setAttribute('data-vf', i);
+    var sel = estado.vf[i];
+    item.innerHTML =
+      '<div class="vf-toggles">' +
+        '<button class="vf-btn' + (sel === true ? ' selected' : '') + '" data-val="V" aria-label="Verdadeiro">V</button>' +
+        '<button class="vf-btn' + (sel === false ? ' selected' : '') + '" data-val="F" aria-label="Falso">F</button>' +
+      '</div>' +
+      '<div class="vf-texto">' + q.texto + '<div class="vf-just">' + q.just + '</div></div>';
+    item.querySelectorAll('.vf-btn').forEach(function (b) {
+      b.onclick = function () {
+        estado.vf[i] = (b.getAttribute('data-val') === 'V');
+        item.classList.remove('correct', 'incorrect');
+        salvar(); renderVF();
+      };
+    });
+    list.appendChild(item);
+  });
+}
+
+/* ---------- conferir ---------- */
+document.getElementById('btnConferir').onclick = function () {
+  var acertos = 0, total = EQUACOES.length + VF.length;
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = parseInt(slot.getAttribute('data-slot'), 10);
+    var eqId = estado.slots[n];
+    slot.classList.remove('certo', 'errado');
+    if (!eqId) return;
+    var ok = eqPorId(eqId).topico === n;
+    slot.classList.add(ok ? 'certo' : 'errado');
+    if (ok) acertos++; else { delete estado.slots[n]; }   /* errada volta para as fichas */
+  });
+  document.querySelectorAll('.vf-item').forEach(function (item) {
+    var i = parseInt(item.getAttribute('data-vf'), 10);
+    item.classList.remove('correct', 'incorrect');
+    if (!(i in estado.vf)) return;
+    var ok = estado.vf[i] === VF[i].resp;
+    item.classList.add(ok ? 'correct' : 'incorrect');
+    item.querySelectorAll('.vf-btn').forEach(function (b) {
+      b.classList.remove('correct', 'incorrect');
+      if (b.classList.contains('selected')) b.classList.add(ok ? 'correct' : 'incorrect');
+    });
+    if (ok) acertos++;
+  });
+  salvar();
+  setTimeout(function () { renderFichas(); renderSlots(); reaplicarConferencia(); }, 600);
+  document.getElementById('placar').innerHTML =
+    acertos + ' de ' + total + '<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span>';
+};
+function reaplicarConferencia() {
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = parseInt(slot.getAttribute('data-slot'), 10);
+    if (estado.slots[n] && eqPorId(estado.slots[n]).topico === n) slot.classList.add('certo');
+  });
+}
+document.getElementById('btnLimpar').onclick = function () {
+  estado = { slots: {}, vf: {} };
+  fichaAtiva = null;
+  salvar(); renderFichas(); renderSlots(); renderVF(); marcarAlvos();
+  document.getElementById('placar').innerHTML = '&mdash;<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span>';
+};
+
+/* ---------- grafico vivo ---------- */
+var VAG_M = 260, GAL_M = 350, X0 = 40, X1 = 600;
+function pxGal(m) { return X0 + m / GAL_M * (X1 - X0); }
+(function posicionarVagoneta() {
+  document.getElementById('vivoVagoneta').setAttribute('transform',
+    'translate(' + pxGal(VAG_M) + ',126)');
+})();
+function atualizarVivo() {
+  var om = parseInt(document.getElementById('vivoSlider').value, 10);
+  document.getElementById('vivoOrigem').setAttribute('transform',
+    'translate(' + pxGal(om) + ',126)');
+  var x = VAG_M - om;
+  var sinal = x > 0 ? '+' : (x < 0 ? '\u2212' : '');
+  document.getElementById('vivoOrigemM').textContent = om + ' m da boca';
+  document.getElementById('vivoXVal').textContent = sinal + Math.abs(x) + ' m';
+  document.getElementById('vivoLeituraX').textContent =
+    'x = ' + sinal + Math.abs(x) + ' m  (nesta escolha de origem)';
+  var msg = document.getElementById('vivoMsg');
+  if (x === 0) {
+    msg.className = 'vivo-msg tangente';
+    msg.innerHTML = 'x = 0 e a vagoneta N&Atilde;O est&aacute; na boca da galeria: <strong>zero &eacute; onde a origem est&aacute;</strong>, e a origem &eacute; escolha nossa.';
+  } else if (x < 0) {
+    msg.className = 'vivo-msg tangente';
+    msg.innerHTML = 'A posi&ccedil;&atilde;o ficou <strong>negativa</strong> sem a vagoneta se mover: ela est&aacute; do lado de tr&aacute;s da origem que VOC&Ecirc; escolheu.';
+  } else {
+    msg.className = 'vivo-msg';
+    msg.innerHTML = 'A vagoneta n&atilde;o se moveu &mdash; quem mudou foi o referencial. A posi&ccedil;&atilde;o &eacute; uma rela&ccedil;&atilde;o, n&atilde;o uma propriedade.';
+  }
+}
+document.getElementById('vivoSlider').addEventListener('input', atualizarVivo);
+document.getElementById('vivoSlider').addEventListener('change', atualizarVivo);
+
+/* ---------- boot ---------- */
+renderFichas(); renderSlots(); renderVF(); atualizarVivo();
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t07">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

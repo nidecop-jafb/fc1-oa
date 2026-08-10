@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T05 · Nota&ccedil;&atilde;o Cient&iacute;fica — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub { max-width: 960px; margin: 4px auto 0; font-size: 0.88rem; color: var(--cinza); }
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* APRESENTACAO */
+.intro-box { display:flex; gap:16px; align-items:flex-start; background:var(--superficie); border:1px solid var(--cinza-borda); border-left:3px solid var(--ouro); padding:16px 18px; margin-bottom:24px; }
+.intro-vagoneta { flex-shrink:0; width:52px; height:52px; }
+.intro-texto { font-size:.9rem; line-height:1.65; }
+.intro-texto strong { color: var(--ouro); }
+
+/* SECOES */
+.secao-titulo { font-family: var(--mono); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--azul-claro); border-bottom: 1px solid var(--cinza-borda); padding-bottom: 6px; margin: 32px 0 6px; }
+.secao-instrucao { font-size: .84rem; color: var(--cinza); margin-bottom: 14px; }
+.secao-instrucao strong { color: var(--ouro); }
+
+/* PAINEL 5 TOPICOS */
+.painel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+@media (max-width: 900px) { .painel { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .painel { grid-template-columns: 1fr; } }
+.tp-card { background: var(--superficie); border: 1px solid var(--cinza-borda); display: flex; flex-direction: column; transition: border-color .15s, outline .15s; }
+.tp-card.alvo { cursor: pointer; }
+.tp-card.alvo:hover { border-color: var(--azul); }
+.tp-card.alvo-ativo { outline: 2px dashed var(--ouro); outline-offset: 2px; }
+.tp-head { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--cinza-borda); }
+.tp-head svg { flex-shrink: 0; }
+.tp-num { font-family: var(--mono); font-size: .66rem; color: var(--cinza); letter-spacing: .08em; }
+.tp-titulo { font-size: .78rem; font-weight: 700; line-height: 1.3; padding: 8px 10px 0; min-height: 3.2em; }
+.tp-conceito { font-size: .76rem; color: var(--cinza); line-height: 1.5; padding: 6px 10px 10px; flex: 1; }
+.tp-eq-slot { margin: 0 10px 8px; border: 1px dashed var(--cinza-borda); min-height: 44px; display: flex; align-items: center; justify-content: center; padding: 6px 8px; font-family: var(--mono); font-size: .74rem; text-align: center; color: var(--cinza); transition: all .15s; }
+.tp-eq-slot.preenchido { border-style: solid; color: var(--texto); background: var(--input-bg); }
+.tp-eq-slot.certo { border-color: var(--verde); color: var(--verde); background: var(--verde-claro); }
+.tp-eq-slot.errado { border-color: var(--erro); color: var(--erro); background: var(--erro-claro); }
+.tp-palavra { margin: 0 10px 12px; }
+.tp-palavra span { display: inline-block; font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; border: 1px solid var(--ouro); color: var(--ouro); padding: 2px 8px; }
+.tp-c1 .tp-head { background: var(--azul-bg); } .tp-c1 .tp-head svg { stroke: var(--azul-claro); }
+.tp-c2 .tp-head { background: var(--azul-bg); } .tp-c2 .tp-head svg { stroke: var(--azul-claro); }
+.tp-c3 .tp-head { background: var(--ouro-claro); } .tp-c3 .tp-head svg { stroke: var(--ouro); }
+.tp-c4 .tp-head { background: var(--verde-claro); } .tp-c4 .tp-head svg { stroke: var(--verde); }
+.tp-c5 .tp-head { background: var(--erro-claro); } .tp-c5 .tp-head svg { stroke: var(--erro); }
+
+/* FICHAS DE EQUACAO */
+.fichas { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; min-height: 44px; }
+.ficha { font-family: var(--mono); font-size: .78rem; background: var(--input-bg); border: 1px solid var(--ouro); color: var(--ouro); padding: 9px 13px; cursor: pointer; transition: all .15s; user-select: none; }
+.ficha:hover { background: var(--ouro-claro); }
+.ficha.ativa { background: var(--ouro); color: oklch(0.10 0.02 260); }
+.ficha.usada { display: none; }
+.fichas-vazio { font-size: .78rem; color: var(--cinza); font-style: italic; align-self: center; }
+
+/* GRAFICO VIVO */
+.vivo-box { background: var(--superficie); border: 1px solid var(--cinza-borda); padding: 16px; }
+.vivo-svg-wrap { overflow-x: auto; }
+.vivo-svg-wrap svg { width: 100%; height: auto; display: block; }
+.vivo-controles { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.vivo-controles label { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--cinza); }
+.vivo-controles input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--azul); }
+.vivo-leitura { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+@media (max-width: 560px) { .vivo-leitura { grid-template-columns: 1fr; } }
+.vivo-val { background: var(--input-bg); border: 1px solid var(--cinza-borda); padding: 10px 12px; }
+.vivo-val .rotulo { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; color: var(--cinza); display: block; }
+.vivo-val .numero { font-family: var(--mono); font-size: 1.15rem; font-weight: 700; color: var(--azul-claro); }
+.vivo-val.destaque .numero { color: var(--ouro); }
+.vivo-msg { margin-top: 10px; font-size: .82rem; padding: 10px 12px; border-left: 3px solid var(--cinza-borda); color: var(--cinza); transition: all .2s; }
+.vivo-msg.tangente { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+
+/* VF */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item { display: flex; gap: 12px; align-items: flex-start; background: var(--input-bg); border: 1px solid var(--cinza-borda); padding: 12px 14px; transition: border-color .2s; }
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn { width: 36px; height: 36px; border: 2px solid var(--cinza-borda); background: transparent; color: var(--cinza); font-family: var(--mono); font-weight: 700; font-size: .8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.vf-btn:hover { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: .88rem; line-height: 1.5; flex: 1; }
+.vf-just { display: none; font-size: .78rem; margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--cinza-borda); color: var(--cinza); }
+.vf-item.correct .vf-just, .vf-item.incorrect .vf-just { display: block; }
+
+/* ACOES + PLACAR */
+.acoes { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+.btn { font-family: var(--mono); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 11px 20px; cursor: pointer; border: none; transition: opacity .2s; }
+.btn:hover { opacity: .85; }
+.btn-conferir { background: var(--ouro); color: oklch(0.10 0.02 260); }
+.btn-limpar { background: transparent; border: 1px solid var(--cinza-borda); color: var(--cinza); }
+.btn-print { background: transparent; border: 1px solid var(--cinza-borda); color: var(--cinza); }
+.placar { font-family: var(--mono); font-size: .85rem; font-weight: 700; color: var(--ouro); margin-left: auto; }
+.placar-nota { font-size: .72rem; color: var(--cinza); font-weight: 400; display: block; }
+
+/* ENCERRAMENTO / FOOTER */
+.encerramento { border-top: 2px solid var(--ouro); margin-top: 48px; padding-top: 20px; text-align: center; }
+.fecho-frase { font-family: var(--serif); font-size: .88rem; }
+.fecho-acao { color: var(--ouro); font-size: .82rem; text-transform: uppercase; font-weight: 700; margin-top: 8px; }
+.fecho-nidec { color: var(--cinza); font-size: .82rem; margin-top: 14px; line-height: 1.55; }
+.footer-line { text-align: center; font-size: .85rem; color: var(--cinza); padding: 16px 12px; line-height: 1.5; }
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .piazzi-bar, .acoes, .vivo-controles, .btn, .fichas, .secao-instrucao { display: none !important; }
+  .header, .intro-box, .tp-card, .vivo-box, .vf-item { background: #fff; border-color: #999; color: #111; }
+  .tp-conceito, .vf-texto, .intro-texto { color: #222; }
+  .tp-eq-slot { color: #111; border-color: #666; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T05</span> &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+    <span class="badge">Infogr&aacute;fico (IG)</span>
+  </div>
+  <div class="header-sub">Painel visual da aula &middot; 5 t&oacute;picos &middot; 2 desafios + 1 escada do universo &middot; sem nota</div>
+</header>
+
+<div class="container">
+
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLH9GvshumD2s" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Filarm&ocirc;nica de Minas Gerais &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra sinf&ocirc;nica</span>
+  </div>
+
+  <div class="intro-box">
+    <svg class="intro-vagoneta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="color:var(--ouro)">
+      <path d="M10 26 L54 26 L48 44 L16 44 Z"/>
+      <circle cx="22" cy="52" r="5"/><circle cx="42" cy="52" r="5"/>
+      <path d="M16 26 L20 16 M32 26 L32 14 M48 26 L44 16"/>
+    </svg>
+    <div class="intro-texto">
+      Este &eacute; o <strong>mapa visual da aula</strong>: os cinco t&oacute;picos da trilha num painel s&oacute;.
+      Ele n&atilde;o vale nota &mdash; use quantas vezes quiser. Complete o painel associando cada
+      <strong>equa&ccedil;&atilde;o</strong> ao seu t&oacute;pico, mexa no <strong>gr&aacute;fico vivo</strong> para ver a
+      velocidade m&eacute;dia virar instant&acirc;nea e feche com o <strong>verdadeiro ou falso</strong>.
+    </div>
+  </div>
+
+  <!-- ============ PAINEL ============ -->
+  <div class="secao-titulo">O painel da trilha</div>
+  <div class="secao-instrucao">Toque numa <strong>ficha de equa&ccedil;&atilde;o</strong> abaixo e depois no t&oacute;pico onde ela mora. O painel se completa com voc&ecirc;.</div>
+
+  <div class="fichas" id="fichas"></div>
+
+  <div class="painel" id="painel">
+    <div class="tp-card tp-c1" data-topico="1">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 20h4v-4h4v-4h4V8h4"/></svg>
+        <span class="tp-num">T&Oacute;PICO 1</span>
+      </div>
+      <div class="tp-titulo">Pot&ecirc;ncias de 10: a escada do universo</div>
+      <div class="tp-conceito">Todo n&uacute;mero vira mantissa entre 1 e 10 vezes uma pot&ecirc;ncia de 10 &mdash; do n&uacute;cleo at&ocirc;mico &agrave; gal&aacute;xia na mesma escrita.</div>
+      <div class="tp-eq-slot" data-slot="1">toque para colocar a equação</div>
+      <div class="tp-palavra"><span>mantissa</span></div>
+    </div>
+
+    <div class="tp-card tp-c2" data-topico="2">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18"/><path d="M8 7h8M8 12h2m4 0h2M8 16h2m4 0h2"/></svg>
+        <span class="tp-num">T&Oacute;PICO 2</span>
+      </div>
+      <div class="tp-titulo">Facilita&ccedil;&atilde;o de c&aacute;lculos</div>
+      <div class="tp-conceito">Multiplicar vira somar expoentes; dividir, subtrair. Os zeros saem do caminho e a conta cabe na cabe&ccedil;a.</div>
+      <div class="tp-eq-slot" data-slot="2">toque para colocar a equação</div>
+      <div class="tp-palavra"><span>expoentes</span></div>
+    </div>
+
+    <div class="tp-card tp-c3" data-topico="3">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><ellipse cx="12" cy="12" rx="10" ry="3.5"/></svg>
+        <span class="tp-num">T&Oacute;PICO 3</span>
+      </div>
+      <div class="tp-titulo">N&uacute;meros astron&ocirc;micos na produ&ccedil;&atilde;o</div>
+      <div class="tp-conceito">Toneladas lavradas, litros bombeados, gramas por tonelada: a produ&ccedil;&atilde;o mineral fala em pot&ecirc;ncias de 10 todos os dias.</div>
+      <div class="tp-eq-slot" data-slot="3">toque para colocar a equação</div>
+      <div class="tp-palavra"><span>g/t</span></div>
+    </div>
+
+    <div class="tp-card tp-c4" data-topico="4">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6h4M8 4v4M14 7h4M6 16l3 3m0-3l-3 3M14 15h4m-4 4h4"/></svg>
+        <span class="tp-num">T&Oacute;PICO 4</span>
+      </div>
+      <div class="tp-titulo">Todas as opera&ccedil;&otilde;es</div>
+      <div class="tp-conceito">Soma pede expoentes iguais; multiplica&ccedil;&atilde;o soma, divis&atilde;o subtrai, pot&ecirc;ncia multiplica e raiz divide o expoente.</div>
+      <div class="tp-eq-slot" data-slot="4">toque para colocar a equação</div>
+      <div class="tp-palavra"><span>opera&ccedil;&otilde;es</span></div>
+    </div>
+
+    <div class="tp-card tp-c5" data-topico="5">
+      <div class="tp-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M7 3h10l2 7a7 7 0 11-14 0z"/><path d="M9 14a3 3 0 006 0"/></svg>
+        <span class="tp-num">T&Oacute;PICO 5</span>
+      </div>
+      <div class="tp-titulo">Aplica&ccedil;&atilde;o em densidades</div>
+      <div class="tp-conceito">De &rho; = m/V &agrave; tonelagem de lavra: a nota&ccedil;&atilde;o cient&iacute;fica carrega os algarismos significativos da medida at&eacute; o resultado.</div>
+      <div class="tp-eq-slot" data-slot="5">toque para colocar a equação</div>
+      <div class="tp-palavra"><span>tonelagem</span></div>
+    </div>
+  </div>
+
+  <!-- ============ GRAFICO VIVO ============ -->
+  <div class="secao-titulo">A escada do universo &mdash; Powers of Ten</div>
+  <div class="secao-instrucao">A obra da trilha, <em>Powers of Ten</em> (Charles e Ray Eames, 1977), viaja o universo multiplicando por 10. Arraste o expoente <strong>n</strong> e veja o que mede 10&#8319; metros.</div>
+
+  <div class="vivo-box">
+    <div class="vivo-svg-wrap">
+      <svg id="vivoSvg" viewBox="0 0 640 200" role="img" aria-label="Escala de pot&ecirc;ncias de 10">
+        <rect x="0" y="0" width="640" height="200" fill="oklch(0.14 0.02 260)"/>
+        <line x1="60" y1="120" x2="580" y2="120" stroke="oklch(0.38 0.02 260)" stroke-width="2"/>
+        <g id="vivoTicks"></g>
+        <circle id="vivoMarcador" cy="120" r="9" fill="oklch(0.85 0.18 95)"/>
+        <text id="vivoPotencia" x="320" y="60" text-anchor="middle" font-family="monospace" font-size="34" fill="oklch(0.72 0.19 45)"></text>
+        <text id="vivoAncora" x="320" y="175" text-anchor="middle" font-family="monospace" font-size="15" fill="oklch(0.55 0.02 260)"></text>
+      </svg>
+    </div>
+    <div class="vivo-controles">
+      <label for="vivoSlider">Expoente n</label>
+      <input type="range" id="vivoSlider" min="-9" max="9" value="0" step="1" aria-label="Expoente da pot&ecirc;ncia de 10">
+    </div>
+    <div class="vivo-leitura">
+      <div class="vivo-val"><span class="rotulo">Escrito por extenso</span><span class="numero" id="vivoExtenso">1 m</span></div>
+      <div class="vivo-val destaque"><span class="rotulo">Nesta escala vive</span><span class="numero" id="vivoObjeto">um passo de adulto</span></div>
+    </div>
+    <div class="vivo-msg" id="vivoMsg">Cada passo do controle multiplica (ou divide) por 10 &mdash; dezoito passos separam a mol&eacute;cula do Sol.</div>
+  </div>
+
+  <!-- ============ VF ============ -->
+  <div class="secao-titulo">Verdadeiro ou falso &mdash; um por t&oacute;pico</div>
+  <div class="secao-instrucao">Marque <strong>V</strong> ou <strong>F</strong> e clique em Conferir. Errou? Leia a justificativa, toque de novo e refa&ccedil;a.</div>
+
+  <div class="vf-list" id="vfList"></div>
+
+  <div class="acoes">
+    <button class="btn btn-conferir" id="btnConferir">Conferir</button>
+    <button class="btn btn-limpar" id="btnLimpar">Recome&ccedil;ar</button>
+    <button class="btn btn-print" onclick="window.print()">Imprimir painel</button>
+    <div class="placar" id="placar">&mdash;<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span></div>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Aula encerrada! N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T05 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<script>
+'use strict';
+var STORAGE_KEY = 'ifmg_fc1_t05_ig_v3';
+
+/* ---------- dados ---------- */
+var EQUACOES = [
+  { id: 'e4', html: '(a &times; 10&#8319;)&#7510; = a&#7510; &times; 10&#8319;&#7511;&#8305;&#7510;', topico: 4 },
+  { id: 'e1', html: 'N = a &times; 10&#8319;, com 1 &le; a &lt; 10', topico: 1 },
+  { id: 'e3', html: 'teor de 1,5 &times; 10&sup1; g/t = 15 gramas por tonelada', topico: 3 },
+  { id: 'e5', html: 'm = &rho; &times; V', topico: 5 },
+  { id: 'e2', html: '(a &times; 10&#7504;) &times; (b &times; 10&#8319;) = ab &times; 10&#7504;&#8314;&#8319;', topico: 2 },
+];
+var VF = [
+  { t: 1, texto: 'Em nota&ccedil;&atilde;o cient&iacute;fica, 3 400 000 se escreve 34 &times; 10&#8309;.', resp: false,
+    just: 'FALSA. A mantissa fica entre 1 e 10: 3,4 &times; 10&#8310;. O valor de 34 &times; 10&#8309; at&eacute; coincide, mas a forma padr&atilde;o &eacute; uma s&oacute; (T&oacute;pico 1).' },
+  { t: 2, texto: 'Multiplicar pot&ecirc;ncias de 10 &eacute; somar expoentes: 10&sup2; &times; 10&sup3; = 10&#8309;.', resp: true,
+    just: 'VERDADEIRA. 100 &times; 1 000 = 100 000. A regra dos expoentes transforma multiplica&ccedil;&atilde;o em soma &mdash; &eacute; ela que tira os zeros do caminho (T&oacute;pico 2).' },
+  { t: 3, texto: 'Numa barragem com 4,0 &times; 10&#8311; m&sup3; que recebe mais 1,2 &times; 10&#8311; m&sup3;, o total &eacute; 5,2 &times; 10&#8311; m&sup3;: com expoentes iguais, somam-se as mantissas.', resp: true,
+    just: 'VERDADEIRA. &Eacute; a regra da soma: mesmos expoentes, mantissas somadas. Se os expoentes diferem, iguala-se primeiro (T&oacute;picos 3 e 4).' },
+  { t: 4, texto: '(3,0 &times; 10&sup2;)&sup2; = 9,0 &times; 10&sup2;.', resp: false,
+    just: 'FALSA. A pot&ecirc;ncia atinge TAMB&Eacute;M o 10&#8319;: (3,0)&sup2; &times; 10&#8314;&sup2;&#8299;&sup2;&#8300; = 9,0 &times; 10&#8308;. Esquecer o expoente &eacute; errar por cem vezes (T&oacute;pico 4).' },
+  { t: 5, texto: 'Com &rho; = 2,60 &times; 10&sup3; kg/m&sup3; e V = 6,83 &times; 10&sup2; m&sup3;, a massa lavrada &eacute; de aproximadamente 1,78 &times; 10&#8310; kg.', resp: true,
+    just: 'VERDADEIRA. m = &rho; &times; V = (2,60 &times; 6,83) &times; 10&#8309; = 17,758 &times; 10&#8309; = 1,78 &times; 10&#8310; kg &mdash; quase 1 800 toneladas numa &uacute;nica frente (T&oacute;pico 5).' },
+];
+
+/* ---------- estado ---------- */
+var estado = { slots: {}, vf: {} };
+try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (s.slots) estado = s; } catch (e) {}
+function salvar() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(estado)); } catch (e) {} }
+
+/* ---------- fichas de equacao ---------- */
+var fichaAtiva = null;
+function eqPorId(id) { for (var i = 0; i < EQUACOES.length; i++) if (EQUACOES[i].id === id) return EQUACOES[i]; return null; }
+
+function renderFichas() {
+  var box = document.getElementById('fichas');
+  box.innerHTML = '';
+  var restantes = 0;
+  EQUACOES.forEach(function (eq) {
+    var usada = false;
+    for (var k in estado.slots) if (estado.slots[k] === eq.id) usada = true;
+    if (usada) return;
+    restantes++;
+    var b = document.createElement('button');
+    b.className = 'ficha' + (fichaAtiva === eq.id ? ' ativa' : '');
+    b.innerHTML = eq.html;
+    b.onclick = function () {
+      fichaAtiva = (fichaAtiva === eq.id) ? null : eq.id;
+      renderFichas(); marcarAlvos();
+    };
+    box.appendChild(b);
+  });
+  if (!restantes) {
+    var fim = document.createElement('span');
+    fim.className = 'fichas-vazio';
+    fim.textContent = 'Todas as equações estão no painel — clique em Conferir.';
+    box.appendChild(fim);
+  }
+}
+function marcarAlvos() {
+  document.querySelectorAll('.tp-card').forEach(function (c) {
+    c.classList.toggle('alvo', !!fichaAtiva);
+    c.classList.remove('alvo-ativo');
+  });
+}
+function renderSlots() {
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = slot.getAttribute('data-slot');
+    var eqId = estado.slots[n];
+    slot.classList.remove('preenchido', 'certo', 'errado');
+    if (eqId) {
+      slot.innerHTML = eqPorId(eqId).html;
+      slot.classList.add('preenchido');
+    } else {
+      slot.textContent = 'toque para colocar a equação';
+    }
+  });
+}
+document.querySelectorAll('.tp-card').forEach(function (card) {
+  card.addEventListener('click', function () {
+    var n = card.getAttribute('data-topico');
+    if (fichaAtiva) {
+      estado.slots[n] = fichaAtiva;
+      fichaAtiva = null;
+      salvar(); renderFichas(); renderSlots(); marcarAlvos();
+    } else if (estado.slots[n]) {
+      delete estado.slots[n];           /* devolve a ficha */
+      salvar(); renderFichas(); renderSlots();
+    }
+  });
+});
+
+/* ---------- VF ---------- */
+function renderVF() {
+  var list = document.getElementById('vfList');
+  list.innerHTML = '';
+  VF.forEach(function (q, i) {
+    var item = document.createElement('div');
+    item.className = 'vf-item';
+    item.setAttribute('data-vf', i);
+    var sel = estado.vf[i];
+    item.innerHTML =
+      '<div class="vf-toggles">' +
+        '<button class="vf-btn' + (sel === true ? ' selected' : '') + '" data-val="V" aria-label="Verdadeiro">V</button>' +
+        '<button class="vf-btn' + (sel === false ? ' selected' : '') + '" data-val="F" aria-label="Falso">F</button>' +
+      '</div>' +
+      '<div class="vf-texto">' + q.texto + '<div class="vf-just">' + q.just + '</div></div>';
+    item.querySelectorAll('.vf-btn').forEach(function (b) {
+      b.onclick = function () {
+        estado.vf[i] = (b.getAttribute('data-val') === 'V');
+        item.classList.remove('correct', 'incorrect');
+        salvar(); renderVF();
+      };
+    });
+    list.appendChild(item);
+  });
+}
+
+/* ---------- conferir ---------- */
+document.getElementById('btnConferir').onclick = function () {
+  var acertos = 0, total = EQUACOES.length + VF.length;
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = parseInt(slot.getAttribute('data-slot'), 10);
+    var eqId = estado.slots[n];
+    slot.classList.remove('certo', 'errado');
+    if (!eqId) return;
+    var ok = eqPorId(eqId).topico === n;
+    slot.classList.add(ok ? 'certo' : 'errado');
+    if (ok) acertos++; else { delete estado.slots[n]; }   /* errada volta para as fichas */
+  });
+  document.querySelectorAll('.vf-item').forEach(function (item) {
+    var i = parseInt(item.getAttribute('data-vf'), 10);
+    item.classList.remove('correct', 'incorrect');
+    if (!(i in estado.vf)) return;
+    var ok = estado.vf[i] === VF[i].resp;
+    item.classList.add(ok ? 'correct' : 'incorrect');
+    item.querySelectorAll('.vf-btn').forEach(function (b) {
+      b.classList.remove('correct', 'incorrect');
+      if (b.classList.contains('selected')) b.classList.add(ok ? 'correct' : 'incorrect');
+    });
+    if (ok) acertos++;
+  });
+  salvar();
+  setTimeout(function () { renderFichas(); renderSlots(); reaplicarConferencia(); }, 600);
+  document.getElementById('placar').innerHTML =
+    acertos + ' de ' + total + '<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span>';
+};
+function reaplicarConferencia() {
+  document.querySelectorAll('.tp-eq-slot').forEach(function (slot) {
+    var n = parseInt(slot.getAttribute('data-slot'), 10);
+    if (estado.slots[n] && eqPorId(estado.slots[n]).topico === n) slot.classList.add('certo');
+  });
+}
+document.getElementById('btnLimpar').onclick = function () {
+  estado = { slots: {}, vf: {} };
+  fichaAtiva = null;
+  salvar(); renderFichas(); renderSlots(); renderVF(); marcarAlvos();
+  document.getElementById('placar').innerHTML = '&mdash;<span class="placar-nota">sem nota &middot; refa&ccedil;a &agrave; vontade</span>';
+};
+
+/* ---------- grafico vivo ---------- */
+var ANCORAS = {
+  '-9': 'uma mol\u00e9cula', '-8': 'um v\u00edrus', '-7': 'part\u00edcula de fuma\u00e7a',
+  '-6': 'uma bact\u00e9ria', '-5': 'gr\u00e3o de p\u00f3len', '-4': 'fio de cabelo (di\u00e2metro)',
+  '-3': 'gr\u00e3o de areia', '-2': 'unha do polegar', '-1': 'palmo da m\u00e3o',
+  '0': 'um passo de adulto', '1': 'quadra de v\u00f4lei', '2': 'Pra\u00e7a Tiradentes',
+  '3': 'altitude do Itacolomi', '4': 'travessia de Ouro Preto', '5': 'Ouro Preto \u2192 BH (~10\u2075 m)',
+  '6': 'Minas Gerais de ponta a ponta', '7': 'di\u00e2metro da Terra', '8': 'dist\u00e2ncia Terra\u2013Lua',
+  '9': 'di\u00e2metro do Sol'
+};
+var SOBRE = ['\u2079','\u2078','\u2077','\u2076','\u2075','\u2074','\u00b3','\u00b2','\u00b9','\u2070'];
+function sup(n) {
+  var s = '', a = Math.abs(n);
+  if (n < 0) s = '\u207b';
+  return s + String(a).split('').map(function (d) { return SOBRE[9 - parseInt(d, 10)]; }).join('');
+}
+function extenso(n) {
+  if (n >= 0) {
+    var z = '1' + new Array(n + 1).join('0');
+    return z.replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + ' m';
+  }
+  return '0,' + new Array(-n).join('0') + '1 m';
+}
+function atualizarVivo() {
+  var n = parseInt(document.getElementById('vivoSlider').value, 10);
+  var x = 60 + (n + 9) / 18 * 520;
+  document.getElementById('vivoMarcador').setAttribute('cx', x);
+  document.getElementById('vivoPotencia').textContent = '10' + sup(n) + ' m';
+  document.getElementById('vivoAncora').textContent = ANCORAS[String(n)];
+  document.getElementById('vivoExtenso').textContent = extenso(n);
+  document.getElementById('vivoObjeto').textContent = ANCORAS[String(n)];
+  var msg = document.getElementById('vivoMsg');
+  if (n === -9 || n === 9) {
+    msg.className = 'vivo-msg tangente';
+    msg.innerHTML = 'Escrever isso por extenso j&aacute; &eacute; imposs&iacute;vel de ler &mdash; <strong>&eacute; para estes n&uacute;meros que a nota&ccedil;&atilde;o cient&iacute;fica existe</strong>.';
+  } else {
+    msg.className = 'vivo-msg';
+    msg.innerHTML = 'Cada passo do controle multiplica (ou divide) por 10 &mdash; dezoito passos separam a mol&eacute;cula do Sol.';
+  }
+}
+(function ticks() {
+  var g = document.getElementById('vivoTicks'), s = '';
+  for (var n = -9; n <= 9; n += 3) {
+    var x = 60 + (n + 9) / 18 * 520;
+    s += '<line x1="' + x + '" y1="112" x2="' + x + '" y2="128" stroke="oklch(0.55 0.02 260)" stroke-width="2"/>';
+    s += '<text x="' + x + '" y="145" text-anchor="middle" font-family="monospace" font-size="11" fill="oklch(0.55 0.02 260)">10' + sup(n) + '</text>';
+  }
+  g.innerHTML = s;
+})();
+document.getElementById('vivoSlider').addEventListener('input', atualizarVivo);
+document.getElementById('vivoSlider').addEventListener('change', atualizarVivo);
+
+/* ---------- boot ---------- */
+renderFichas(); renderSlots(); renderVF(); atualizarVivo();
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t05">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>
