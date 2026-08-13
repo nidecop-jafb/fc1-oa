@@ -3,1525 +3,1382 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica &mdash; Estudante</title>
-<!--
-  IMPORTACAO EM MOODLE:
-  1. Adicionar atividade > Recurso > Arquivo
-  2. Upload deste .html > "Abrir em nova janela" > salvar.
-  OU iframe: <iframe src="T05-TR-v3-estudante.html" width="100%" height="3600"></iframe>
-
-  Design: brutalismo cientifico oklch, zero border-radius, 100% self-contained.
-  localStorage: prefixo ifmg_fc1_t01_tr_
--->
+<title>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica &mdash; Trabalho (TR) v2 &middot; estudante</title>
 <style>
+/* ============================================================
+   T05-TR-v2-estudante-impressa.html
+   Trabalho (TR) — 3 versoes A/B/C x 4 paginas A4, para ESCRITA A MAO.
+   Entrega: folha impressa preenchida, entregue na MONITORIA.
+
+   Formatacao herdada de T05-FA-v1-estudante-impressa.html (verbatim):
+   paleta de tela, paleta de impressao em escala de cinza e maximizacao
+   vertical. As classes .tr-* estao no fim desta folha de estilo.
+   ============================================================ */
+
+/* ============================================================
+   T05-FA-v7-estudante-impressa.html
+   Folha de Atividades — 4 paginas A4, para ESCRITA A MAO.
+   Piazzi (Aprendendo Inteligencia): "estudar e escrever a mao".
+
+   Estrutura:
+     pag 1  cabecalho + identificacao + epigrafe + Anotacoes T1-T3
+     pag 2  Anotacoes T4-T5 (fecha ~1,5 pag) + Aplicacao 1
+     pag 3  Aplicacoes 2, 3 e 4
+     pag 4  Aplicacoes 5 e 6 (integradora) + fechamento
+
+   Cada Aplicacao traz: enunciado + questao conceitual + as 8 etapas do
+   Protocolo C5 para o estudante preencher (mesma sequencia da AP).
+
+   IMPRESSAO: a paleta de tela (colorida) e substituida por uma ESCALA DE
+   CINZA calibrada no @media print — ver o bloco "PALETA DE IMPRESSAO".
+   ============================================================ */
+
 :root {
+  /* --- paleta de TELA --- */
   --azul: oklch(0.65 0.22 45);
-  --azul-claro: oklch(0.72 0.19 45);
   --azul-bg: oklch(0.28 0.05 45);
   --ouro: oklch(0.85 0.18 95);
-  --ouro-claro: oklch(0.25 0.04 95);
+  --ouro-bg: oklch(0.25 0.04 95);
   --verde: oklch(0.7 0.15 150);
-  --verde-claro: oklch(0.25 0.04 150);
-  --erro: oklch(0.6 0.22 25);
-  --erro-claro: oklch(0.22 0.05 25);
   --cinza: oklch(0.55 0.02 260);
-  --cinza-claro: oklch(0.18 0.02 260);
   --cinza-borda: oklch(0.38 0.02 260);
   --texto: oklch(0.93 0 0);
   --branco: oklch(0.93 0 0);
   --superficie: oklch(0.24 0.02 260);
-  --input-bg: oklch(0.2 0.02 260);
-  --hover-bg: oklch(0.22 0.02 260);
-  --r: 0px;
+  --fundo: oklch(0.18 0.02 260);
+  --linha: oklch(0.38 0.02 260);
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
   --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
   font-family: var(--font);
-  background: oklch(0.10 0.02 260);
+  background: var(--fundo);
   color: var(--texto);
-  line-height: 1.5;
-  min-height: 100vh;
+  line-height: 1.45;
 }
 
-/* HEADER */
+.folha { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+/* ── PAGINA ── */
+.pagina { margin-bottom: 28px; }
+.pagina + .pagina { border-top: 2px dashed var(--cinza-borda); padding-top: 24px; }
+
+/* ── CABECALHO ── */
 .header {
-  background: oklch(0.14 0.02 260);
-  border-top: 3px solid var(--ouro);
-  padding: 14px 20px;
-}
-.header-inner {
-  max-width: 900px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 10px;
+  gap: 12px;
+  border-top: 3px solid var(--azul);
+  border-bottom: 1px solid var(--cinza-borda);
+  padding: 10px 0; margin-bottom: 12px;
 }
-.header h1 {
-  font-size: 1.4rem; font-weight: 900;
-  letter-spacing: -0.02em;
+.header-left h1 { font-size: 1.05rem; font-weight: 700; color: var(--azul); }
+.header-left .sub { font-size: .72rem; color: var(--cinza); margin-top: 2px; }
+.header-right { text-align: right; font-size: .7rem; color: var(--cinza); line-height: 1.5; }
+.header-right .badge { font-weight: 700; color: var(--azul); font-size: .75rem; }
+
+/* ── IDENTIFICACAO ── */
+.id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin-bottom: 8px; }
+/* Curso, Turma e Data dividem a MESMA linha */
+.id-linha { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px 18px; margin-bottom: 12px; }
+.id-grid .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .8rem; border-bottom: 1px solid var(--linha); padding-bottom: 5px;
 }
-.header h1 .trilha-code { color: var(--azul); }
-.header .badge {
-  background: var(--azul); color: var(--branco);
-  padding: 4px 12px; border-radius: var(--r);
-  font-size: .68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 2px;
-}
-.header-sub {
-  max-width: 900px; margin: 4px auto 0;
-  font-size: .88rem; color: var(--cinza);
+.id-grid .campo.full { grid-column: 1 / -1; }
+.id-grid .campo label,
+.id-linha .campo label { font-weight: 700; color: var(--azul); font-size: .74rem; white-space: nowrap; }
+.id-grid .campo .linha,
+.id-linha .campo .linha { flex: 1; min-width: 0; height: 1.3em; }
+.id-linha .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .8rem; border-bottom: 1px solid var(--linha); padding-bottom: 5px;
 }
 
-/* PIAZZI BAR */
-.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
-.piazzi-bar .piazzi-ref { color:var(--cinza); }
-.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
-.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
-.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
-.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+/* ── BARRA PIAZZI ── */
+.piazzi {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  border: 1px solid var(--cinza-borda); padding: 7px 12px; margin-bottom: 10px;
+  font-size: .72rem; color: var(--cinza);
+}
+.piazzi em { color: var(--ouro); font-style: italic; }
+.piazzi .tag {
+  border: 1px solid var(--ouro); color: var(--ouro);
+  padding: 1px 7px; font-size: .65rem; font-weight: 700; text-transform: uppercase;
+}
+.piazzi .mao { color: var(--branco); font-weight: 600; }
 
-/* MAIN */
-main {
-  max-width: 900px; margin: 0 auto;
-  padding: 20px 16px;
+/* ── EPIGRAFE ── */
+.epigrafe {
+  border-left: 3px solid var(--ouro); background: var(--ouro-bg);
+  padding: 8px 12px; margin-bottom: 14px;
 }
+.epigrafe blockquote { font-family: var(--serif); font-style: italic; font-size: .8rem; color: var(--ouro); }
+.epigrafe .atrib { font-size: .68rem; color: var(--cinza); margin-top: 3px; }
 
-/* PANEL */
-.panel {
-  background: var(--superficie);
-  border-left: 3px solid var(--cinza-borda);
-  margin-bottom: 24px;
-  padding: 0;
-  overflow: hidden;
-}
-.panel-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 18px;
-  border-bottom: 1px solid oklch(0.30 0.02 260);
-  background: oklch(0.20 0.02 260);
-}
-.panel-num {
-  background: var(--azul);
-  color: oklch(0.10 0.02 260);
-  width: 32px; height: 32px;
+/* ── SECAO ── */
+.secao { margin-bottom: 12px; }
+.secao-titulo { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.secao-titulo .num {
+  width: 24px; height: 24px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: .85rem;
-  flex-shrink: 0;
-  font-family: var(--mono);
+  font-size: .78rem; font-weight: 700;
+  background: var(--azul-bg); color: var(--azul); border-radius: 50%;
 }
-.panel-title {
-  font-size: .95rem; font-weight: 700;
-  font-family: var(--serif);
-  color: var(--azul-claro);
+.secao-titulo h2 {
+  font-size: .88rem; font-weight: 700; color: var(--azul);
+  text-transform: uppercase; letter-spacing: .4px;
 }
-.panel-tag {
-  margin-left: auto;
-  font-size: .6rem; font-weight: 600;
-  padding: 2px 8px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  background: var(--ouro-claro);
-  color: var(--ouro);
+.secao-titulo .hint {
+  margin-left: auto; font-size: .66rem; color: var(--cinza); font-style: italic;
 }
-.panel-body { padding: 18px; }
 
-/* VERSION SELECTOR */
-.version-selector {
-  display: flex; gap: 0; margin-bottom: 24px;
+/* ══════════ 1 · MINHAS ANOTACOES ══════════ */
+.anot-card {
+  position: relative; overflow: hidden;
   border: 1px solid var(--cinza-borda);
-  overflow: hidden;
-}
-.version-btn {
-  flex: 1;
-  background: var(--input-bg);
-  color: var(--cinza);
-  border: none;
-  padding: 14px 16px;
-  font-family: var(--font);
-  font-size: .82rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all .2s;
-  text-align: center;
-  border-right: 1px solid var(--cinza-borda);
-}
-.version-btn:last-child { border-right: none; }
-.version-btn:hover { background: var(--hover-bg); color: var(--texto); }
-.version-btn.active {
-  background: var(--azul);
-  color: oklch(0.10 0.02 260);
-}
-.version-btn .version-letter {
-  display: block;
-  font-family: var(--mono);
-  font-size: 1.1rem;
-  margin-bottom: 2px;
-}
-.version-btn .version-name {
-  font-size: .72rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.version-content { display: none; }
-.version-content.active { display: block; }
-
-/* STUDENT ID */
-.student-id {
-  background: var(--superficie);
   border-left: 3px solid var(--ouro);
-  padding: 18px;
-  margin-bottom: 24px;
-}
-.student-id-title {
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--ouro);
-  margin-bottom: 12px;
-}
-.field-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 0;
-}
-.field {
-  display: flex; flex-direction: column; gap: 4px;
-}
-.field-label {
-  font-size: .65rem; color: var(--cinza);
-  text-transform: uppercase; letter-spacing: .5px;
-  font-weight: 600;
-}
-.field input[type="text"],
-.field input[type="date"],
-.field select {
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  color: var(--texto);
-  padding: 8px 10px;
-  font-family: var(--mono);
-  font-size: .85rem;
-  border-radius: var(--r);
-  outline: none;
-  width: 100%;
-  transition: border-color .2s;
-}
-.field input:focus,
-.field select:focus {
-  border-color: var(--ouro);
-}
-
-/* INSTRUCTIONS BOX */
-.instrucoes-box {
-  background: oklch(0.16 0.02 260);
-  border: 1px solid var(--cinza-borda);
-  border-left: 3px solid var(--azul);
-  padding: 16px 18px;
-  margin-bottom: 24px;
-  font-size: .82rem;
-  line-height: 1.6;
-}
-.instrucoes-box strong { color: var(--azul-claro); }
-.instrucoes-box ul { margin: 8px 0 0 18px; }
-.instrucoes-box li { margin-bottom: 4px; }
-
-/* CENARIO */
-.cenario-box {
-  background: oklch(0.16 0.03 45);
-  border-left: 3px solid var(--azul);
-  padding: 18px;
-  margin-bottom: 18px;
-  font-family: var(--serif);
-  font-size: .88rem;
-  line-height: 1.7;
-}
-.cenario-box .cenario-title {
-  font-family: var(--font);
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--azul-claro);
   margin-bottom: 10px;
+  background: var(--superficie);
 }
-.cenario-box em { color: oklch(0.80 0.10 95); font-style: italic; }
+.anot-fundo {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: .34; filter: grayscale(1) contrast(.9);
+  pointer-events: none;
+}
+.anot-conteudo { position: relative; padding: 9px 12px 10px; }
+.anot-titulo {
+  display: flex; align-items: baseline; gap: 7px;
+  font-size: .78rem; font-weight: 700; color: var(--ouro); margin-bottom: 3px;
+}
+.anot-titulo .t-num {
+  font-family: var(--mono); font-size: .68rem;
+  border: 1px solid var(--ouro); padding: 0 5px; flex-shrink: 0;
+}
+.anot-guia { font-size: .67rem; color: var(--cinza); font-style: italic; margin-bottom: 7px; }
+.anot-pauta { display: flex; flex-direction: column; gap: 0; }
+.anot-pauta .pauta-linha { border-bottom: 1px solid var(--linha); height: 26px; }
 
-/* DADOS TABLE */
-.dados-section {
-  margin-bottom: 18px;
-}
-.dados-title {
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--ouro);
-  margin-bottom: 8px;
-}
-.dados-list {
-  background: oklch(0.16 0.02 260);
+/* ══════════ 2 · APLICACOES ══════════ */
+.aplic {
   border: 1px solid var(--cinza-borda);
-  padding: 14px 18px;
-  font-family: var(--mono);
-  font-size: .8rem;
-  line-height: 1.8;
+  border-left: 3px solid var(--azul);
+  padding: 9px 12px 11px;
+  margin-bottom: 11px;
 }
-.dados-list .dado-item {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 4px;
+.aplic.destaque { border-color: var(--ouro); border-left-color: var(--ouro); border-width: 1.5px; border-left-width: 4px; }
+.aplic-head { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.aplic-tag {
+  font-family: var(--mono); font-size: .66rem; font-weight: 700;
+  color: var(--azul); background: var(--azul-bg); padding: 2px 7px;
 }
-.dado-label { color: var(--cinza); }
-.dado-value { color: var(--ouro); font-weight: 700; }
+.aplic.destaque .aplic-tag { color: var(--ouro); background: var(--ouro-bg); }
+.aplic-titulo { font-size: .79rem; font-weight: 700; }
+.aplic.destaque .aplic-titulo { color: var(--ouro); }
+.aplic-estrela { color: var(--ouro); font-size: 1rem; }
+.aplic-enunciado { font-size: .745rem; line-height: 1.5; margin-bottom: 6px; }
+.aplic-enunciado strong { color: var(--ouro); }
 
-/* DATA TABLE (for version C) */
-.dados-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: .78rem;
-  margin-bottom: 12px;
+.conceitual {
+  border-left: 2px solid var(--verde);
+  padding: 5px 9px; margin-bottom: 7px;
+  font-size: .72rem; line-height: 1.45;
 }
-.dados-table th {
-  background: oklch(0.20 0.02 260);
-  color: var(--ouro);
-  padding: 8px 12px;
-  text-align: left;
-  font-weight: 700;
-  font-size: .7rem;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  border: 1px solid var(--cinza-borda);
+.conceitual .rot {
+  font-size: .62rem; font-weight: 700; color: var(--verde);
+  text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 2px;
 }
-.dados-table td {
-  padding: 8px 12px;
-  border: 1px solid var(--cinza-borda);
-  font-family: var(--mono);
-  font-size: .8rem;
-}
-.dados-table td:first-child {
-  font-family: var(--font);
-  color: var(--cinza);
-}
+.conceitual .resp-linha { border-bottom: 1px solid var(--linha); height: 22px; margin-top: 4px; }
 
-/* PERGUNTAS */
-.perguntas-box {
-  background: oklch(0.18 0.03 95);
-  border-left: 3px solid var(--ouro);
-  padding: 16px 18px;
-  margin-bottom: 18px;
+/* --- grade das 8 etapas do C5 (2 colunas x 4 linhas) --- */
+.c5-rot {
+  font-size: .62rem; font-weight: 700; color: var(--azul);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px;
 }
-.perguntas-box .perguntas-title {
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--ouro);
-  margin-bottom: 8px;
+.c5 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; }
+.c5-etapa { display: grid; grid-template-columns: 18px 1fr; gap: 6px; align-items: start; }
+.c5-n {
+  font-family: var(--mono); font-size: .64rem; font-weight: 700;
+  color: var(--azul); background: var(--azul-bg);
+  width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
 }
-.perguntas-box p {
-  font-size: .82rem;
-  line-height: 1.6;
-  margin-bottom: 6px;
-}
+.aplic.destaque .c5-n { color: var(--ouro); background: var(--ouro-bg); }
+.c5-corpo { min-width: 0; }
+.c5-label { font-size: .645rem; font-weight: 600; color: var(--cinza); line-height: 1.25; }
+.c5-campo { border-bottom: 1px solid var(--linha); height: 20px; margin-top: 2px; }
+.c5-campo.alto { height: 30px; }
 
-/* EQUATION DISPLAY */
-.equation-display {
-  background: oklch(0.14 0.02 260);
-  border: 1px solid var(--cinza-borda);
-  padding: 10px 16px;
-  margin: 10px 0;
-  font-family: var(--mono);
-  font-size: .88rem;
-  color: var(--ouro);
-  text-align: center;
-  font-weight: 700;
+/* ── FECHAMENTO ── */
+.fechamento { border-top: 1px solid var(--cinza-borda); margin-top: 10px; padding-top: 9px; }
+.fechamento .frase {
+  text-align: center; font-size: .95rem; font-style: italic; color: var(--texto); line-height: 1.55;
 }
+.fechamento .frase strong { color: var(--ouro); font-style: normal; }
 
-/* C5 STEP */
-.c5-step {
-  margin-bottom: 20px;
+/* ── CHECKLIST DA TRILHA (ordem dos OAs) ── */
+.checklist { margin-top: 10px; }
+.checklist-titulo {
+  text-align: center; font-size: .68rem; font-weight: 700; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px;
 }
-.c5-step-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+.checklist-fases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fase { border: 1px solid var(--cinza-borda); border-top: 2px solid var(--ouro); padding: 6px 8px 7px; }
+.fase-nome {
+  font-size: .66rem; font-weight: 700; color: var(--ouro);
+  text-transform: uppercase; letter-spacing: .4px; margin-bottom: 5px;
 }
-.c5-step-num {
-  background: var(--azul);
-  color: oklch(0.10 0.02 260);
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: .75rem;
-  flex-shrink: 0;
-  font-family: var(--mono);
+.fase-oas { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.oa-item { display: flex; align-items: center; gap: 4px; font-size: .64rem; line-height: 1.2; }
+.oa-box {
+  width: 9px; height: 9px; border: 1px solid var(--cinza); flex-shrink: 0;
 }
-.c5-step-title {
-  font-size: .82rem;
-  font-weight: 700;
-  color: var(--azul-claro);
-}
-.c5-step-hint {
-  font-size: .72rem;
-  color: var(--cinza);
-  margin-bottom: 6px;
-  font-style: italic;
-}
+.oa-sigla { font-family: var(--mono); font-weight: 700; color: var(--texto); }
+.oa-nome { color: var(--cinza); }
 
-/* TEXTAREAS */
-.tr-textarea {
-  width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  color: var(--texto);
-  padding: 10px 12px;
-  font-family: var(--font);
-  font-size: .82rem;
-  line-height: 1.5;
-  border-radius: var(--r);
-  outline: none;
-  resize: vertical;
-  transition: border-color .2s;
+/* ── ESPACO DA EQUIPE DE MONITORIA (preenchido por quem recebe a folha) ── */
+.monitoria { border: 1.5px solid var(--verde); margin-top: 10px; padding: 8px 10px 9px; }
+.monitoria-titulo {
+  font-size: .68rem; font-weight: 700; color: var(--verde);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px;
 }
-.tr-textarea:focus { border-color: var(--ouro); }
-.char-counter {
-  display: flex;
-  justify-content: flex-end;
-  font-size: .62rem;
-  color: var(--cinza);
-  font-family: var(--mono);
-  margin-top: 3px;
+.monitoria-entrega { font-size: .8rem; font-weight: 600; margin-bottom: 7px; }
+.monitoria-marcas { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-bottom: 7px; }
+.marca { display: flex; align-items: center; gap: 5px; font-size: .72rem; }
+.marca .cx { width: 11px; height: 11px; border: 1px solid var(--cinza); flex-shrink: 0; }
+/* data de recebimento: tres lacunas (dia/mes/ano) escritas a caneta */
+.marca .data { display: inline-flex; align-items: flex-end; gap: 3px; color: var(--cinza); }
+.marca .data i { display: inline-block; border-bottom: 1px solid var(--linha); height: 1em; font-style: normal; }
+.marca .data .d, .marca .data .m { width: 22px; }
+.marca .data .a { width: 34px; }
+.monitoria-obs { font-size: .64rem; color: var(--cinza); text-transform: uppercase; letter-spacing: .4px; }
+.monitoria-linha { border-bottom: 1px solid var(--linha); height: 22px; }
+.monitoria-assina { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-top: 6px; }
+.monitoria-assina .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .72rem; border-bottom: 1px solid var(--linha); padding-bottom: 3px;
 }
-.char-counter.min-ok { color: var(--verde); }
+.monitoria-assina label { font-weight: 600; color: var(--verde); white-space: nowrap; font-size: .68rem; }
+.monitoria-assina .linha { flex: 1; min-width: 0; height: 1.2em; }
 
-/* PARTE 3 EXTENSION OPTIONS */
-.extensao-opcoes {
-  margin-bottom: 16px;
+/* ── RODAPES ── */
+.rodape-print { display: none; }
+.barra-tela { text-align: center; padding: 18px 0 6px; }
+.barra-tela .btn {
+  padding: 11px 26px; background: var(--azul); color: var(--branco);
+  border: none; font-family: var(--font); font-size: .85rem; font-weight: 700;
+  cursor: pointer; min-height: 44px;
 }
-.extensao-opcao {
-  background: oklch(0.16 0.02 260);
-  border: 1px solid var(--cinza-borda);
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  font-size: .8rem;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: border-color .2s;
-}
-.extensao-opcao:hover { border-color: var(--azul); }
-.extensao-opcao.selected {
-  border-color: var(--azul);
-  background: var(--azul-bg);
-}
-.extensao-opcao .opcao-letra {
-  font-family: var(--mono);
-  font-weight: 700;
-  color: var(--azul-claro);
-  margin-right: 6px;
-}
+.barra-tela .btn:hover { filter: brightness(1.1); }
+.barra-tela .nota { font-size: .66rem; color: var(--cinza); margin-top: 8px; line-height: 1.5; }
 
-/* UPLOAD SIM */
-.upload-sim {
-  border: 2px dashed var(--cinza-borda);
-  padding: 24px;
-  text-align: center;
-  margin-top: 16px;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-}
-.upload-sim:hover {
-  border-color: var(--ouro);
-  background: oklch(0.16 0.02 260);
-}
-.upload-sim .upload-icon {
-  font-size: 1.6rem;
-  color: var(--cinza);
-  margin-bottom: 6px;
-}
-.upload-sim .upload-text {
-  font-size: .75rem;
-  color: var(--cinza);
-}
-.upload-sim .upload-hint {
-  font-size: .65rem;
-  color: oklch(0.45 0.02 260);
-  margin-top: 4px;
-}
-.upload-sim.has-file {
-  border-color: var(--verde);
-  background: var(--verde-claro);
-}
-.upload-sim.has-file .upload-icon { color: var(--verde); }
-.upload-sim.has-file .upload-text { color: var(--verde); }
+/* ============================================================
+   PALETA DE IMPRESSAO — escala de cinza calibrada
+   ------------------------------------------------------------
+   A folha e impressa em P&B. Cores de tela (azul/ouro/verde) tem
+   luminancias parecidas e virariam o MESMO cinza no papel, apagando a
+   hierarquia visual. Aqui cada papel grafico recebe um tom com
+   luminancia distinta, e a diferenciacao passa a vir de tom + peso +
+   borda, nunca de matiz:
 
-/* CRITERIOS */
-.criterios-box {
-  margin-top: 16px;
-}
-.criterios-title {
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--verde);
-  margin-bottom: 8px;
-}
-.criterios-list {
-  font-size: .78rem;
-  line-height: 1.6;
-}
-.criterio-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.criterio-check {
-  width: 16px; height: 16px;
-  border: 1px solid var(--cinza-borda);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.criterios-sub-title {
-  font-size: .68rem;
-  font-weight: 700;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  margin-top: 10px;
-  margin-bottom: 6px;
-}
-
-/* RUBRICA TABLE */
-.rubrica-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: .72rem;
-  margin-top: 8px;
-}
-.rubrica-table th {
-  background: oklch(0.20 0.02 260);
-  color: var(--ouro);
-  padding: 8px 10px;
-  text-align: left;
-  font-weight: 700;
-  font-size: .68rem;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  border: 1px solid var(--cinza-borda);
-}
-.rubrica-table td {
-  padding: 8px 10px;
-  border: 1px solid var(--cinza-borda);
-  vertical-align: top;
-  line-height: 1.4;
-}
-.rubrica-table td:nth-child(3) {
-  font-family: var(--mono);
-  text-align: center;
-  font-weight: 700;
-  color: var(--ouro);
-}
-.rubrica-formula {
-  font-family: var(--mono);
-  font-size: .8rem;
-  color: var(--ouro);
-  font-weight: 700;
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* CONTEXT NOTE */
-.context-note {
-  background: var(--ouro-claro);
-  border-left: 3px solid var(--ouro);
-  padding: 10px 14px;
-  margin-top: 14px;
-  font-size: .78rem;
-  line-height: 1.5;
-}
-.context-note strong { color: var(--ouro); }
-
-/* BTN */
-.btn {
-  background: var(--azul);
-  color: oklch(0.10 0.02 260);
-  border: none;
-  padding: 8px 16px;
-  font-weight: 700;
-  font-size: .75rem;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  cursor: pointer;
-  font-family: var(--font);
-  border-radius: var(--r);
-  transition: background .2s;
-}
-.btn:hover { background: var(--azul-claro); }
-.btn-ouro {
-  background: var(--ouro);
-  color: oklch(0.10 0.02 260);
-}
-.btn-ouro:hover { background: oklch(0.90 0.18 95); }
-.btn-sec {
-  background: transparent;
-  color: var(--ouro);
-  border: 1px solid var(--ouro);
-}
-.btn-sec:hover { background: var(--ouro-claro); }
-.btn-erro {
-  background: var(--erro);
-  color: var(--branco);
-}
-.btn-erro:hover { background: oklch(0.65 0.22 25); }
-.btn-row {
-  display: flex; gap: 8px; flex-wrap: wrap;
-  margin-top: 16px;
-}
-
-/* PROGRESS */
-.progress-bar-container {
-  margin-bottom: 24px;
-}
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: .68rem;
-  color: var(--cinza);
-  font-family: var(--mono);
-  margin-bottom: 4px;
-}
-.progress-track {
-  height: 6px;
-  background: var(--cinza-borda);
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--ouro);
-  transition: width .3s;
-  width: 0%;
-}
-
-/* SECTION TITLE */
-.section-title {
-  font-family: var(--serif);
-  font-size: .85rem;
-  font-weight: 700;
-  color: var(--ouro);
-  padding-bottom: 6px;
-  border-bottom: 1px solid oklch(0.25 0.04 95);
-  margin-bottom: 12px;
-  margin-top: 24px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* ENCERRAMENTO */
-.encerramento { max-width:900px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
-.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
-.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
-.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
-
-/* FOOTER */
-.footer {
-  text-align: center;
-  font-size: .7rem;
-  color: var(--cinza);
-  padding: 16px 0;
-  margin-top: 12px;
-  letter-spacing: .5px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .header-inner { flex-direction: column; text-align: center; }
-  .field-group { grid-template-columns: 1fr; }
-  .version-selector { flex-direction: column; }
-  .version-btn { border-right: none; border-bottom: 1px solid var(--cinza-borda); }
-  .version-btn:last-child { border-bottom: none; }
-  .panel-header { flex-wrap: wrap; }
-  .panel-tag { margin-left: 0; }
-  .rubrica-table { font-size: .65rem; }
-  .dados-table { font-size: .7rem; }
-}
-
-/* PRINT */
+     #000000  texto principal
+     #1A1A1A  titulos e numeros de etapa
+     #4D4D4D  rotulos e legendas
+     #7A7A7A  linhas de escrita (visiveis, nao dominantes)
+     #B5B5B5  bordas de caixa
+     #E4E4E4  fundo de marcador (tag, numero de etapa)
+     #F4F4F4  fundo de caixa (anotacoes)
+   ============================================================ */
 @media print {
-  body { background: #fff; color: #111; font-size: 10pt; }
-  .header { border-top-color: #333; background: #f5f5f5; }
-  .header h1 .trilha-code { color: #333; }
-  .header .badge { background: #555; color: #fff; }
-  .header-sub { color: #666; }
-  .piazzi-bar { display: none; }
-  .panel { border-left-color: #888; break-inside: avoid; }
-  .panel-header { background: #eee; }
-  .panel-num { background: #555; color: #fff; }
-  .panel-title { color: #333; }
-  .panel-tag { background: #eee; color: #555; }
-  .version-selector { border-color: #ccc; }
-  .version-btn { background: #f5f5f5; color: #666; border-color: #ccc; }
-  .version-btn.active { background: #555; color: #fff; }
-  .student-id { border-left-color: #888; background: #fafafa; }
-  .instrucoes-box { border-color: #ccc; border-left-color: #555; background: #fafafa; }
-  .cenario-box { background: #f8f8f0; border-left-color: #555; }
-  .dados-list { background: #fafafa; border-color: #ccc; }
-  .perguntas-box { background: #fdf8f0; border-left-color: #888; }
-  .tr-textarea { border-color: #aaa; background: #fff; min-height: 80px; }
-  .c5-step-num { background: #555; color: #fff; }
-  .rubrica-table th { background: #eee; color: #333; border-color: #ccc; }
-  .rubrica-table td { border-color: #ccc; }
-  .dados-table th { background: #eee; color: #333; border-color: #ccc; }
-  .dados-table td { border-color: #ccc; }
-  .btn-row { display: none; }
-  .upload-sim { border-color: #aaa; }
-  .char-counter { display: none; }
-  .progress-bar-container { display: none; }
-  .encerramento { border-top-color: #333; }
-  .footer { color: #999; }
-  .equation-display { border-color: #ccc; background: #fafafa; color: #333; }
-  .context-note { background: #fdf8f0; border-left-color: #888; }
-  .context-note strong { color: #333; }
-  .version-content { display: none !important; }
-  .version-content.active { display: block !important; }
+  /* margin: 0 no @page e o que SUPRIME o cabecalho e o rodape que o navegador
+     injeta no PDF (titulo da pagina a esquerda, data e URL file:// a direita).
+     A margem real da folha nao desaparece: ela migra para o padding de .pagina,
+     na mesma medida de antes (11mm 13mm 9mm 13mm). */
+  @page { size: A4 portrait; margin: 0; }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 8.6pt;
+    line-height: 1.34;
+  }
+  .folha { max-width: none; padding: 0; }
+
+  /* Uma .pagina por folha A4. Com @page zerado, a margem vira padding daqui —
+     e a altura precisa ser a da folha inteira: sem `height`, o Chrome descarta
+     o padding do topo dos blocos que comecam depois de uma quebra forcada, e as
+     paginas 2 a 4 saem coladas na borda superior. */
+  .pagina {
+    margin: 0; padding: 11mm 13mm 9mm 13mm;
+    break-after: page; page-break-after: always;
+  }
+  .pagina:last-of-type { break-after: auto; page-break-after: auto; }
+  /* ARMADILHA: a regra de tela `.pagina + .pagina` tem especificidade MAIOR que
+     `.pagina` e vence mesmo dentro do @media print — se o padding-top nao for
+     repetido aqui, as folhas 2 a 4 saem com os 24px da tela (6,3mm) no lugar
+     dos 11mm de margem superior. */
+  .pagina + .pagina { border-top: none; padding-top: 11mm; }
+
+  .header { border-top: 2.5pt solid #1A1A1A; border-bottom: .5pt solid #B5B5B5; padding: 5pt 0; margin-bottom: 7pt; }
+  .header-left h1 { color: #000000 !important; font-size: 12pt; }
+  .header-left .sub, .header-right { color: #4D4D4D !important; }
+  .header-right .badge { color: #000000 !important; }
+
+  .id-grid { gap: 6pt 14pt; margin-bottom: 5pt; }
+  .id-linha { gap: 6pt 14pt; margin-bottom: 8pt; }
+  .id-grid .campo,
+  .id-linha .campo { border-bottom: .75pt solid #7A7A7A !important; padding-bottom: 4pt; }
+  .id-grid .campo label,
+  .id-linha .campo label { color: #000000 !important; }
+
+  .piazzi { border: .5pt solid #B5B5B5 !important; color: #4D4D4D !important; padding: 4pt 8pt; margin-bottom: 7pt; }
+  .piazzi em { color: #1A1A1A !important; }
+  .piazzi .tag {
+    border: .75pt solid #1A1A1A !important; color: #1A1A1A !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .piazzi .mao { color: #000000 !important; }
+
+  .epigrafe {
+    background: #F4F4F4 !important; border-left: 2.5pt solid #1A1A1A !important;
+    padding: 5pt 9pt; margin-bottom: 9pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .epigrafe blockquote { color: #1A1A1A !important; font-size: 9pt; }
+  .epigrafe .atrib { color: #4D4D4D !important; }
+
+  .secao-titulo { margin-bottom: 6pt; gap: 6pt; }
+  .secao-titulo .num {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .75pt solid #1A1A1A;
+    width: 15pt; height: 15pt; font-size: 8pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .secao-titulo h2 { color: #000000 !important; font-size: 9.5pt; }
+  .secao-titulo .hint { color: #4D4D4D !important; font-size: 7pt; }
+
+  /* ---- Minhas Anotacoes ---- */
+  .anot-card {
+    background: #FFFFFF !important;
+    border: .5pt solid #B5B5B5 !important;
+    border-left: 2.5pt solid #1A1A1A !important;
+    margin-bottom: 6pt;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  /* Imagem de fundo: visivel o bastante para ilustrar o topico, clara o
+     bastante para a caneta passar por cima. A impressora P&B costuma clarear
+     meios-tons, por isso o valor de tela nao serve aqui — este e calibrado
+     no PDF (validar_contraste_pdf.py continua PASS neste nivel). */
+  .anot-fundo {
+    opacity: .26 !important;
+    filter: grayscale(1) contrast(.95) brightness(1.02) !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .anot-conteudo { padding: 6pt 9pt 7pt; }
+  .anot-titulo { color: #000000 !important; font-size: 9pt; margin-bottom: 2pt; }
+  .anot-titulo .t-num { border: .75pt solid #1A1A1A !important; color: #000000 !important; font-size: 7.5pt; }
+  .anot-guia { color: #4D4D4D !important; font-size: 7.2pt; margin-bottom: 5pt; }
+  .anot-pauta .pauta-linha { border-bottom: .5pt solid #7A7A7A !important; height: 9.5mm; }
+  /* Aproveitamento da folha (commit 2f37597): linha MAIS ALTA em vez de
+     mais uma linha de escrita — o branco no pe e medido no PDF. */
+  .anot-card.pauta-alta .anot-pauta .pauta-linha { height: 10.5mm; }
+  .anot-card.pauta-media .anot-pauta .pauta-linha { height: 10mm; }
+
+  /* ---- Aplicacoes ---- */
+  .aplic {
+    border: .5pt solid #B5B5B5 !important;
+    border-left: 2.5pt solid #1A1A1A !important;
+    padding: 4.5pt 8pt 5pt; margin-bottom: 4.5pt;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque { border: 1pt solid #1A1A1A !important; border-left: 3.5pt solid #000000 !important; }
+  .aplic-head { margin-bottom: 2.5pt; gap: 5pt; }
+  .aplic-tag {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .5pt solid #1A1A1A; font-size: 7.4pt; padding: 1pt 5pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque .aplic-tag { background: #1A1A1A !important; color: #FFFFFF !important; }
+  .aplic-titulo, .aplic.destaque .aplic-titulo { color: #000000 !important; font-size: 9pt; }
+  .aplic-estrela { color: #000000 !important; }
+  .aplic-enunciado { color: #000000 !important; font-size: 8pt; line-height: 1.34; margin-bottom: 3pt; }
+  .aplic-enunciado strong { color: #000000 !important; font-weight: 700; }
+
+  .conceitual {
+    border-left: 2pt solid #7A7A7A !important;
+    background: #F4F4F4 !important;
+    padding: 3pt 6pt; margin-bottom: 4pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .conceitual .rot { color: #1A1A1A !important; font-size: 7pt; }
+  .conceitual .resp-linha { border-bottom: .5pt solid #7A7A7A !important; height: 5.4mm; }
+
+  .c5-rot { color: #1A1A1A !important; font-size: 7pt; margin-bottom: 2pt; }
+  .c5 { gap: 2.5pt 8pt; }
+  .c5-n {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .5pt solid #1A1A1A;
+    width: 13pt; height: 13pt; font-size: 7.2pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque .c5-n { background: #1A1A1A !important; color: #FFFFFF !important; }
+  .c5-etapa { grid-template-columns: 13pt 1fr; gap: 4pt; }
+  .c5-label { color: #4D4D4D !important; font-size: 6.9pt; line-height: 1.2; }
+  .c5-campo { border-bottom: .5pt solid #7A7A7A !important; height: 5.0mm; }
+  .c5-campo.alto { height: 6.4mm; }
+
+  .fechamento { border-top: .5pt solid #B5B5B5 !important; margin-top: 6pt; padding-top: 5pt; }
+  .fechamento .frase { color: #000000 !important; font-size: 9.8pt; line-height: 1.4; }
+  .fechamento .frase strong { color: #000000 !important; }
+
+  .checklist { margin-top: 6pt; }
+  .checklist-titulo { color: #1A1A1A !important; font-size: 7.2pt; margin-bottom: 3pt; }
+  .checklist-fases { gap: 6pt; }
+  .fase {
+    border: .5pt solid #B5B5B5 !important; border-top: 1.5pt solid #1A1A1A !important;
+    padding: 4pt 6pt 4.5pt;
+    break-inside: avoid;
+  }
+  .fase-nome { color: #000000 !important; font-size: 7.4pt; margin-bottom: 3pt; }
+  .fase-oas { gap: 3pt 7pt; }
+  .oa-item { font-size: 7pt; }
+  .oa-box { width: 7pt; height: 7pt; border: .75pt solid #1A1A1A !important; }
+  .oa-sigla { color: #000000 !important; }
+  .oa-nome { color: #4D4D4D !important; }
+
+  /* Espaco da Equipe de Monitoria: quem RECEBE a folha escreve aqui, entao a
+     moldura e mais forte que a das demais caixas e as linhas sao altas o
+     bastante para caneta. */
+  .monitoria {
+    border: 1pt solid #1A1A1A !important;
+    margin-top: 5pt; padding: 4pt 7pt 4.5pt;
+    break-inside: avoid;
+  }
+  .monitoria-titulo { color: #000000 !important; font-size: 7pt; margin-bottom: 2pt; }
+  .monitoria-entrega { color: #000000 !important; font-size: 8.6pt; margin-bottom: 3.5pt; }
+  .monitoria-marcas { gap: 3pt 24pt; margin-bottom: 3.5pt; }
+  .marca { font-size: 7.8pt; color: #000000 !important; }
+  .marca .cx { width: 8.5pt; height: 8.5pt; border: .75pt solid #1A1A1A !important; }
+  .marca .data { color: #000000 !important; gap: 2pt; }
+  .marca .data i { border-bottom: .75pt solid #7A7A7A !important; height: .95em; }
+  .marca .data .d, .marca .data .m { width: 16pt; }
+  .marca .data .a { width: 26pt; }
+  .monitoria-obs { color: #4D4D4D !important; font-size: 6.6pt; }
+  .monitoria-linha { border-bottom: .5pt solid #7A7A7A !important; height: 6mm; }
+  .monitoria-assina { gap: 16pt; margin-top: 3pt; }
+  .monitoria-assina .campo { border-bottom: .75pt solid #7A7A7A !important; padding-bottom: 2.5pt; font-size: 7.8pt; }
+  .monitoria-assina label { color: #000000 !important; font-size: 7.2pt; }
+
+  .barra-tela { display: none !important; }
+  .rodape-print {
+    display: block; text-align: center;
+    font-size: 6.8pt; color: #4D4D4D;
+    border-top: .5pt solid #B5B5B5; padding-top: 3pt; margin-top: 5pt;
+  }
+
+  /* -- MAXIMIZACAO VERTICAL (regra do TR aplicada a FA) -- */
+  /* A folha fecha na BASE da A4, nao onde o conteudo acaba: coluna flex com a
+     altura da folha, rodape colado embaixo e a folga distribuida nos campos de
+     escrita. Sem isso sobra branco no pe (medido: 22 mm na T09). */
+  .pagina { display: flex; flex-direction: column; height: 297mm; }
+  .pagina > .secao:last-of-type { flex: 1 1 auto; }
+  .rodape-print { margin-top: auto; }
+
+  .anot-card { display: flex; }
+  .anot-conteudo { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .anot-pauta { display: flex; flex-direction: column; justify-content: space-between;
+                flex: 1 1 auto; }
+  .aplic { display: flex; flex-direction: column; }
+  .c5 { flex: 1 1 auto; }
+  .c5-corpo { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .c5-campo { flex: 1 1 auto; min-height: 5.4mm; }
+  .c5-campo.alto { min-height: 7mm; }
+
+  /* professor: gabarito e texto corrido — so o rodape desce para a base */
+  .gab-lista, .gab-texto, .c5-resp { flex: 0 0 auto; }
+
 }
+
+
+/* ============================================================
+   CLASSES PROPRIAS DO TRABALHO (TR) — o resto da folha de estilo
+   vem verbatim da Folha de Atividades impressa.
+   ============================================================ */
+.tr-versao {
+  display: inline-block; font-family: var(--mono); font-size: .7rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  border: 1.5px solid var(--ouro); color: var(--ouro);
+  padding: 3px 10px; margin-left: 8px;
+}
+.tr-cenario p { font-size: .82rem; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+.tr-cenario p:last-child { margin-bottom: 0; }
+
+.tr-dados { border: 1px solid var(--linha); margin: 8px 0; }
+.tr-dados .l { display: flex; border-bottom: 1px solid var(--linha); }
+.tr-dados .l:last-child { border-bottom: none; }
+.tr-dados .r { flex: 0 0 44%; padding: 4px 8px; font-size: .74rem; color: var(--cinza);
+               border-right: 1px solid var(--linha); }
+.tr-dados .v { flex: 1; padding: 4px 8px; font-size: .78rem; font-weight: 600;
+               font-family: var(--mono); }
+
+.tr-itens { margin-top: 8px; }
+.tr-item { display: flex; gap: 8px; margin-bottom: 5px; font-size: .82rem; line-height: 1.45; }
+.tr-item .a { flex: 0 0 auto; font-family: var(--mono); font-weight: 700; color: var(--azul); }
+.tr-eq {
+  border-left: 3px solid var(--ouro); background: var(--ouro-bg);
+  padding: 6px 10px; margin-top: 8px; font-size: .78rem; line-height: 1.5;
+}
+.tr-eq .rot { display: block; font-size: .62rem; font-weight: 700; color: var(--ouro);
+              text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+
+.tr-hint { font-size: .68rem; color: var(--cinza); line-height: 1.35; margin-bottom: 3px; }
+
+/* o C5 do TR e de COLUNA UNICA: cada etapa precisa de area real de escrita a
+   mao, ao contrario da FA, em que as 8 etapas cabem numa grade 2x4 */
+.tr-c5 { display: flex; flex-direction: column; gap: 9px; }
+.tr-c5 .c5-etapa { grid-template-columns: 20px 1fr; }
+.tr-c5 .c5-label { font-size: .78rem; }
+.tr-pauta { display: flex; flex-direction: column; margin-top: 3px; }
+.tr-pauta .pauta-linha { border-bottom: 1px solid var(--linha); height: 6.6mm; }
+.tr-desenho { border: 1px solid var(--linha); height: 52mm; margin-top: 3px; }
+.tr-peso { font-family: var(--mono); font-size: .66rem; color: var(--cinza); }
+
+.tr-p3-opcao { display: flex; gap: 8px; margin-bottom: 6px; font-size: .78rem; line-height: 1.45; }
+.tr-p3-opcao .cx { width: 12px; height: 12px; border: 1.5px solid var(--cinza);
+                   flex-shrink: 0; margin-top: 3px; }
+/* pauta com BORDAS, e nao com gradiente de fundo: o Chrome nao imprime fundo
+   por padrao e o campo sairia em branco na folha do estudante */
+.tr-p3-pauta { display: flex; flex-direction: column; margin-top: 6px; }
+.tr-p3-pauta .pauta-linha { border-bottom: 1px solid var(--linha); height: 7.2mm; }
+
+.tr-crit { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+.tr-crit-cx { border: 1px solid var(--linha); padding: 6px 9px 7px; }
+.tr-crit-cx h4 { font-size: .68rem; font-weight: 700; text-transform: uppercase;
+                 letter-spacing: .4px; color: var(--azul); margin-bottom: 4px; }
+.tr-crit-cx ul { margin: 0; padding-left: 14px; }
+.tr-crit-cx li { font-size: .7rem; line-height: 1.4; margin-bottom: 3px; }
+
+.tr-rubrica { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.tr-rubrica th, .tr-rubrica td {
+  border: 1px solid var(--linha); padding: 4px 7px; font-size: .7rem;
+  line-height: 1.35; text-align: left; vertical-align: top;
+}
+.tr-rubrica th { background: var(--superficie); font-weight: 700; font-size: .66rem;
+                 text-transform: uppercase; letter-spacing: .4px; color: var(--cinza); }
+.tr-rubrica td:first-child { font-weight: 600; white-space: nowrap; }
+.tr-rubrica td:last-child { text-align: center; font-family: var(--mono); font-weight: 700;
+                            white-space: nowrap; }
+
+.tr-resp {
+  border-left: 3px solid var(--verde); background: var(--superficie);
+  padding: 6px 10px; margin-top: 4px; font-size: .74rem; line-height: 1.45;
+}
+.tr-resp .rot { display: block; font-size: .6rem; font-weight: 700; color: var(--verde);
+                text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+
+@media print {
+  .tr-versao { border-color: #000 !important; color: #000 !important; }
+  .tr-eq { background: #f2f2f2 !important; border-left-color: #555 !important; }
+  .tr-resp { background: #f2f2f2 !important; border-left-color: #555 !important; }
+  .tr-rubrica th { background: #ececec !important; }
+  /* MAXIMIZACAO VERTICAL (regra aprovada na FA): a folha fecha na BASE da A4,
+     e a folga vai para os campos de escrita, nao para o pe da pagina. */
+  /* :last-of-type NAO serve aqui: todos os filhos da .pagina sao <div>, entao
+     ele casaria com o .rodape-print. A secao que cresce e marcada por classe. */
+  .pagina > .cresce { flex: 1 1 auto; display: flex; flex-direction: column; }
+  .tr-c5 { flex: 1 1 auto; }
+  /* align-items:start vem da FA e IMPEDE o corpo da etapa de esticar dentro
+     da grade — sem stretch, a folga volta a sobrar no pe da folha */
+  .tr-c5 .c5-etapa { flex: 1 1 auto; align-items: stretch; }
+  .tr-c5 .c5-corpo { display: flex; flex-direction: column; }
+  .tr-pauta { flex: 1 1 auto; }
+  .tr-pauta .pauta-linha { flex: 1 1 auto; min-height: 6.6mm; }
+  .tr-desenho { flex: 1 1 auto; min-height: 52mm; }
+  .tr-p3-pauta { flex: 1 1 auto; }
+  .tr-p3-pauta .pauta-linha { flex: 1 1 auto; min-height: 7.2mm; }
+  .tr-leitura { flex: 1 1 auto; display: flex; flex-direction: column; }
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <h1><span class="trilha-code">T05</span> &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h1>
-    <span class="badge">Trabalho (TR)</span>
-  </div>
-  <div class="header-sub">3 vers&otilde;es (Sofia / Pedro / Lucas) &middot; Componente 5 em 8 etapas &middot; Bloom L5&ndash;L6 &middot; peso 20%</div>
-</header>
+<div class="folha">
 
-<main>
-
-<div class="piazzi-bar">
-  <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
-  <span class="piazzi-tag">Ler</span>
-  <span class="piazzi-tag">Escrever</span>
-  <span class="piazzi-tag">Medir</span>
-  <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-  <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
-</div>
-
-<div class="student-id">
-  <div class="student-id-title">Identifica&ccedil;&atilde;o do Estudante</div>
-  <div class="field-group">
-    <div class="field">
-      <span class="field-label">Nome completo</span>
-      <input type="text" id="id-nome" placeholder="Seu nome completo">
+<!-- ═══ VERS&Atilde;O A · P&Aacute;GINA 1 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto</div>
     </div>
-    <div class="field">
-      <span class="field-label">Turma</span>
-      <select id="id-turma">
-        <option value="">Selecione...</option>
-        <option value="MIN1A">MIN1A</option>
-        <option value="MIN1B">MIN1B</option>
-        <option value="MIN1C">MIN1C</option>
-      </select>
-    </div>
-    <div class="field">
-      <span class="field-label">Data</span>
-      <input type="date" id="id-data">
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos &middot; 4 p&aacute;ginas</div>
     </div>
   </div>
-</div>
 
-<div class="version-selector">
-  <button class="version-btn active" data-version="A" onclick="selectVersion('A')">
-    <span class="version-letter">A</span>
-    <span class="version-name">Sofia</span>
-  </button>
-  <button class="version-btn" data-version="B" onclick="selectVersion('B')">
-    <span class="version-letter">B</span>
-    <span class="version-name">Pedro</span>
-  </button>
-  <button class="version-btn" data-version="C" onclick="selectVersion('C')">
-    <span class="version-letter">C</span>
-    <span class="version-name">Lucas</span>
-  </button>
-</div>
-
-<div class="progress-bar-container">
-  <div class="progress-label">
-    <span>Progresso</span>
-    <span id="progress-text">0 / 10 campos preenchidos</span>
+  <div class="id-grid">
+    <div class="campo full"><label>Nome:</label><div class="linha"></div></div>
   </div>
-  <div class="progress-track">
-    <div class="progress-fill" id="progress-fill"></div>
+  <div class="id-linha">
+    <div class="campo"><label>Curso:</label><div class="linha"></div></div>
+    <div class="campo"><label>Turma:</label><div class="linha"></div></div>
+    <div class="campo"><label>Data:</label><div class="linha"></div></div>
   </div>
-</div>
 
-<div class="instrucoes-box">
-  <strong>Instru&ccedil;&otilde;es gerais</strong>
-  <p style="margin-top:8px;">Avalia&ccedil;&atilde;o somativa p&oacute;s-aula. <strong>3 partes obrigat&oacute;rias</strong>, peso 20%.</p>
-  <p>Prazo: <strong>23h50 do 6&ordm; dia ap&oacute;s a aula</strong>.</p>
-  <p>Entrega: <strong>1 foto da Parte 3 manuscrita</strong> no Moodle (as Partes 1 e 2 voc&ecirc; resolve aqui ou no caderno).</p>
-  <p style="margin-top:8px;"><strong>Estrutura obrigat&oacute;ria:</strong></p>
-  <ul>
-    <li><strong>Situa&ccedil;&atilde;o-problema</strong> &mdash; leia a narrativa e identifique o que est&aacute; sendo pedido.</li>
-    <li><strong>Resolu&ccedil;&atilde;o t&eacute;cnica</strong> &mdash; apresente as <strong>8 etapas do Componente 5</strong>, na ordem, como no Texto Tem&aacute;tico (TT) da trilha.</li>
-    <li><strong>Extens&atilde;o criativa</strong> &mdash; proposta original, fundamentada no Texto Tem&aacute;tico (TT).</li>
-  </ul>
-  <p style="margin-top:8px;">Consulte livremente: Texto Tem&aacute;tico (TT), Mapa Conceitual (MC), Cart&otilde;es Did&aacute;ticos (CD), Folha de Atividades (FA) e Tarefa Complementar (TC).</p>
-  <p style="margin-top:8px;">Escolha <strong>uma</strong> das tr&ecirc;s vers&otilde;es &mdash; a que o seu professor indicar.</p>
-</div>
+  <div class="epigrafe">
+    <blockquote>&ldquo;O universo é um grande livro escrito em linguagem matemática, e seus caracteres são triângulos, círculos e outras figuras geométricas.&rdquo;</blockquote>
+    <div class="atrib">— Galileu Galilei (1564–1642)</div>
+  </div>
 
-<div class="version-content active" id="version-A">
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">1</div>
-      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
-      <span class="panel-tag">Vers&atilde;o A &middot; Sofia</span>
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">1</div>
+      <h2>Situa&ccedil;&atilde;o-Problema<span class="tr-versao">Vers&atilde;o A &middot; Sofia</span></h2>
+      <span class="hint">20 pontos &middot; leitura e extra&ccedil;&atilde;o de dados</span>
     </div>
-    <div class="panel-body">
-      <div class="cenario-box">
-        <div class="cenario-title">Quantas viagens a pilha vai custar</div>
+
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">P1</span>
+        <span class="aplic-titulo">Quantas viagens a pilha vai custar</span>
+      </div>
+      <div class="tr-cenario">
         <p>A pilha de itabirito fragmentado do pátio precisa ser transferida para a usina de beneficiamento, e o planejamento quer saber quantas viagens de caminhão isso vai custar. Sofia tem o volume aparente da pilha, levantado com drone, e a densidade aparente do material, medida no laboratório.</p>
-        <p style="margin-top:8px;">O supervisor pediu a resposta “em ordem de grandeza, para hoje” — mas o planejamento vai usar o número para reservar caminhões, e reservar a mais ou a menos custa igual: frota parada ou pilha que não sai do pátio.</p>
-        <p style="margin-top:8px;">Sofia decide manter tudo em notação científica do começo ao fim, justamente para não perder a conta dos zeros no caminho.</p>
+        <p>O supervisor pediu a resposta “em ordem de grandeza, para hoje” — mas o planejamento vai usar o número para reservar caminhões, e reservar a mais ou a menos custa igual: frota parada ou pilha que não sai do pátio.</p>
+        <p>Sofia decide manter tudo em notação científica do começo ao fim, justamente para não perder a conta dos zeros no caminho.</p>
       </div>
 
-      <div class="dados-section">
-        <div class="dados-title">Dados fornecidos</div>
-        <div class="dados-list">
-          <div class="dado-item"><span class="dado-label">Volume aparente da pilha:</span> <span class="dado-value">V = 8,5 &times; 10&sup2; m&sup3;</span></div>
-          <div class="dado-item"><span class="dado-label">Densidade aparente do itabirito:</span> <span class="dado-value">&rho; = 3,2 &times; 10&sup3; kg/m&sup3;</span></div>
-          <div class="dado-item"><span class="dado-label">Capacidade útil do caminhão:</span> <span class="dado-value">35 t por viagem</span></div>
-          <div class="dado-item"><span class="dado-label">Turno disponível:</span> <span class="dado-value">8 h, com ciclo médio de 25 min por viagem</span></div>
-          <div class="dado-item"><span class="dado-label">Frota disponível:</span> <span class="dado-value">4 caminhões</span></div>
+      <div class="tr-dados">
+      <div class="l"><div class="r">Volume aparente da pilha:</div><div class="v">V = 8,5 &times; 10&sup2; m&sup3;</div></div>
+      <div class="l"><div class="r">Densidade aparente do itabirito:</div><div class="v">&rho; = 3,2 &times; 10&sup3; kg/m&sup3;</div></div>
+      <div class="l"><div class="r">Capacidade útil do caminhão:</div><div class="v">35 t por viagem</div></div>
+      <div class="l"><div class="r">Turno disponível:</div><div class="v">8 h, com ciclo médio de 25 min por viagem</div></div>
+      <div class="l"><div class="r">Frota disponível:</div><div class="v">4 caminhões</div></div>
+      </div>
+
+      <div class="tr-itens">
+      <div class="tr-item"><span class="a">(a)</span><span>Calcule a <strong>massa total</strong> da pilha, em quilogramas e em toneladas, mantendo a notação científica.</span></div>
+      <div class="tr-item"><span class="a">(b)</span><span>Determine o <strong>número de viagens</strong> necessárias e explique por que o resultado deve ser arredondado para cima.</span></div>
+      <div class="tr-item"><span class="a">(c)</span><span>Avalie se a <strong>frota disponível</strong> dá conta da transferência em um único turno de 8 h e, se não der, quantos turnos serão necessários.</span></div>
+      </div>
+
+      <div class="tr-eq"><span class="rot">Equa&ccedil;&otilde;es da trilha</span>m = &rho; &middot; V (Eq. 10) &nbsp;&middot;&nbsp; (a &times; 10<sup>m</sup>)(b &times; 10<sup>n</sup>) = (ab) &times; 10<sup>m+n</sup> (Eq. 5) &nbsp;&middot;&nbsp; 1 t = 10<sup>3</sup> kg</div>
+    </div>
+  </div>
+
+  <div class="secao cresce tr-leitura">
+    <div class="secao-titulo">
+      <div class="num">&#9733;</div>
+      <h2>Leitura do enunciado</h2>
+      <span class="hint">parte dos 20 pontos da Situa&ccedil;&atilde;o-Problema</span>
+    </div>
+    <div class="tr-hint">Anote o que voc&ecirc; percebeu na leitura: quais dados importam,
+      qual &eacute; a armadilha do problema e qual n&uacute;mero vai sustentar a
+      decis&atilde;o do item (c).</div>
+    <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o A
+    &middot; p&aacute;gina 1 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O A · P&Aacute;GINA 2 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o A &middot; Sofia</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</h2>
+      <span class="hint">55 pontos &middot; etapas 1 a 4</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">1</div>
+          <div class="c5-corpo">
+            <div class="c5-label">O que est&aacute; sendo pedido?</div>
+            <div class="tr-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
-      </div>
-
-      <div class="perguntas-box">
-        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Calcule a <strong>massa total</strong> da pilha, em quilogramas e em toneladas, mantendo a notação científica.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Determine o <strong>número de viagens</strong> necessárias e explique por que o resultado deve ser arredondado para cima.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Avalie se a <strong>frota disponível</strong> dá conta da transferência em um único turno de 8 h e, se não der, quantos turnos serão necessários.</div>
-      </div>
-
-      <div class="equation-display">m = &rho; &middot; V (Eq. 10) &nbsp;&middot;&nbsp; (a &times; 10<sup>m</sup>)(b &times; 10<sup>n</sup>) = (ab) &times; 10<sup>m+n</sup> (Eq. 5) &nbsp;&middot;&nbsp; 1 t = 10<sup>3</sup> kg</div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">2</div>
-      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
-      <span class="panel-tag">8 etapas</span>
-    </div>
-    <div class="panel-body">
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
-        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
-      <textarea class="tr-textarea" data-key="A_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
-        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
-      <textarea class="tr-textarea" data-key="A_e2" rows="5" placeholder="V = ... &middot; &rho; = ... &middot; capacidade = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
-        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (material, regime, o que se despreza).</div>
-      <textarea class="tr-textarea" data-key="A_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
-        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
-      <textarea class="tr-textarea" data-key="A_e4" rows="4" placeholder="Esboço da pilha e do ciclo..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
-        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
-      <textarea class="tr-textarea" data-key="A_e5" rows="4" placeholder="Equações: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
-        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
-      <textarea class="tr-textarea" data-key="A_e6" rows="5" placeholder="m = ... &middot; viagens = ... &middot; turnos = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
-        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
-      <textarea class="tr-textarea" data-key="A_e7" rows="4" placeholder="Análise: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
-        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
-      <textarea class="tr-textarea" data-key="A_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">3</div>
-      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
-      <span class="panel-tag">25%</span>
-    </div>
-    <div class="panel-body">
-      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do planejamento de Sofia:</p>
-
-      <div class="extensao-opcoes">
-        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Uma <strong>regra de bolso</strong> que converta volume de pilha direto em número de viagens, para o supervisor usar em campo sem calculadora. Deduza a regra a partir dos dados da Parte 1 e declare em que condições ela deixa de valer.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Um <strong>plano de turno</strong> que conclua a transferência sem hora extra: quantos caminhões seriam necessários, ou quanto o ciclo precisaria encurtar? Apresente as duas alternativas com contas e escolha uma.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>análise de sensibilidade da densidade</strong>: se a densidade aparente medida estiver 10% errada, quantas viagens a mais ou a menos seriam? Discuta o impacto no planejamento.</div>
-      </div>
-
-      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
-
-      <textarea class="tr-textarea" data-key="A_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-
-      <div class="upload-sim" id="upload-A" onclick="simulateUpload('A')">
-        <div class="upload-icon">&#128247;</div>
-        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
-        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
-      </div>
-
-      <div class="criterios-box">
-        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
-        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de notação científica, ordem de grandeza ou operações com potências de 10 (conteúdo da T05)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
+        <div class="c5-etapa">
+          <div class="c5-n">2</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o os dados?</div>
+            <div class="tr-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
-        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
+        <div class="c5-etapa">
+          <div class="c5-n">3</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div>
+            <div class="tr-hint">Declare pelo menos 2 hipóteses físicas explícitas (material, regime, o que se despreza).</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
+        <div class="c5-etapa">
+          <div class="c5-n">4</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Qual &eacute; o desenho do problema?</div>
+            <div class="tr-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+            <div class="tr-desenho"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o A
+    &middot; p&aacute;gina 2 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O A · P&Aacute;GINA 3 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o A &middot; Sofia</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5 (continua&ccedil;&atilde;o)</h2>
+      <span class="hint">55 pontos &middot; etapas 5 a 8</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">5</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div>
+            <div class="tr-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">6</div>
+          <div class="c5-corpo">
+            <div class="c5-label">C&aacute;lculo com unidades</div>
+            <div class="tr-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">7</div>
+          <div class="c5-corpo">
+            <div class="c5-label">An&aacute;lise de resultados</div>
+            <div class="tr-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">8</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Responda o que foi pedido</div>
+            <div class="tr-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o A
+    &middot; p&aacute;gina 3 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O A · P&Aacute;GINA 4 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o A &middot; Sofia</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">3</div>
+      <h2>Extens&atilde;o Criativa</h2>
+      <span class="hint">25 pontos &middot; escolha UMA op&ccedil;&atilde;o e marque o quadrinho</span>
+    </div>
+    <div class="tr-hint" style="margin-bottom:6px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do planejamento de Sofia:</div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(a)</strong> Uma <strong>regra de bolso</strong> que converta volume de pilha direto em número de viagens, para o supervisor usar em campo sem calculadora. Deduza a regra a partir dos dados da Parte 1 e declare em que condições ela deixa de valer.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(b)</strong> Um <strong>plano de turno</strong> que conclua a transferência sem hora extra: quantos caminhões seriam necessários, ou quanto o ciclo precisaria encurtar? Apresente as duas alternativas com contas e escolha uma.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(c)</strong> Uma <strong>análise de sensibilidade da densidade</strong>: se a densidade aparente medida estiver 10% errada, quantas viagens a mais ou a menos seriam? Discuta o impacto no planejamento.</span></div>
+      <div class="tr-p3-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+  </div>
+
+  <div class="tr-crit">
+    <div class="tr-crit-cx"><h4>Aceita&ccedil;&atilde;o (obrigat&oacute;rio)</h4><ul><li>A proposta responde ao desafio escolhido e cabe no cen&aacute;rio da Parte 1.</li><li>H&aacute; pelo menos um c&aacute;lculo ou um crit&eacute;rio num&eacute;rico expl&iacute;cito.</li><li>A f&iacute;sica usada &eacute; a da trilha, com a equa&ccedil;&atilde;o citada.</li></ul></div>
+    <div class="tr-crit-cx"><h4>Valoriza&ccedil;&atilde;o (soma pontos)</h4><ul><li>Proposta exequ&iacute;vel com os recursos que a escola ou a mina j&aacute; t&ecirc;m.</li><li>Discute uma limita&ccedil;&atilde;o ou um risco da pr&oacute;pria proposta.</li><li>Usa dados da Parte 1 e generaliza para outra situa&ccedil;&atilde;o.</li><li>Escreve para quem vai ler (operador, coordena&ccedil;&atilde;o, colega), n&atilde;o para o professor.</li><li>Fecha com uma recomenda&ccedil;&atilde;o clara, e n&atilde;o com um resumo.</li></ul></div>
+  </div>
+
+  <div class="tr-eq" style="margin-top:8px;"><span class="rot">Distribui&ccedil;&atilde;o dos 100 pontos</span>
+    Parte 1 &mdash; Situa&ccedil;&atilde;o-Problema: <strong>20</strong> &nbsp;&middot;&nbsp;
+    Parte 2 &mdash; Componente 5 (8 etapas): <strong>55</strong> &nbsp;&middot;&nbsp;
+    Parte 3 &mdash; Extens&atilde;o Criativa: <strong>25</strong></div>
+
+  <div class="monitoria">
+    <div class="monitoria-titulo">Espa&ccedil;o da Equipe de Monitoria</div>
+    <div class="monitoria-entrega">Entregue a folha preenchida &agrave; m&atilde;o na monitoria,
+      dentro do prazo de 6 dias.</div>
+    <div class="monitoria-marcas">
+      <span class="marca"><span class="cx"></span> Parte 1 preenchida</span>
+      <span class="marca"><span class="cx"></span> Componente 5 completo (8 etapas)</span>
+      <span class="marca"><span class="cx"></span> Extens&atilde;o Criativa</span>
+      <span class="marca"><span class="cx"></span> Vers&atilde;o A</span>
+    </div>
+    <div class="monitoria-assina">
+      <label>Recebido por:</label><div class="linha"></div>
+      <label>Data:</label><div class="linha"></div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o A
+    &middot; p&aacute;gina 4 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O B · P&Aacute;GINA 1 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos &middot; 4 p&aacute;ginas</div>
+    </div>
+  </div>
+
+  <div class="id-grid">
+    <div class="campo full"><label>Nome:</label><div class="linha"></div></div>
+  </div>
+  <div class="id-linha">
+    <div class="campo"><label>Curso:</label><div class="linha"></div></div>
+    <div class="campo"><label>Turma:</label><div class="linha"></div></div>
+    <div class="campo"><label>Data:</label><div class="linha"></div></div>
+  </div>
+
+  <div class="epigrafe">
+    <blockquote>&ldquo;O universo é um grande livro escrito em linguagem matemática, e seus caracteres são triângulos, círculos e outras figuras geométricas.&rdquo;</blockquote>
+    <div class="atrib">— Galileu Galilei (1564–1642)</div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">1</div>
+      <h2>Situa&ccedil;&atilde;o-Problema<span class="tr-versao">Vers&atilde;o B &middot; Pedro</span></h2>
+      <span class="hint">20 pontos &middot; leitura e extra&ccedil;&atilde;o de dados</span>
+    </div>
+
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">P1</span>
+        <span class="aplic-titulo">A frente entra ou não na planta</span>
       </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">R</div>
-      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
-      <span class="panel-tag">Vers&atilde;o A</span>
-    </div>
-    <div class="panel-body">
-      <table class="rubrica-table">
-        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
-        <tbody>
-          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa volume, densidade e ciclo na etapa 2; retoma a reserva de frota na etapa 7</td><td>20%</td></tr>
-          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo a avaliação do turno</td><td>5%</td></tr>
-          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>V, &rho;, capacidade, ciclo e frota com unidades</td><td>4%</td></tr>
-          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (densidade uniforme, carga cheia, ciclo completo)</td><td>5%</td></tr>
-          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Pilha com V e &rho; e linha do tempo do turno em ciclos</td><td>6%</td></tr>
-          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 10 resolvida pela Equação 5, com normalização do resultado</td><td>6%</td></tr>
-          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>2,72 × 10<sup>6</sup> kg, 78 viagens e 2 turnos corretos (&plusmn;5%)</td><td>10%</td></tr>
-          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Usa a ordem de grandeza como teste e comenta o arredondamento para cima</td><td>12%</td></tr>
-          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) com a conclusão sobre os turnos</td><td>7%</td></tr>
-          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com o pátio, com cálculo e equação</td><td>25%</td></tr>
-        </tbody>
-      </table>
-      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
-    </div>
-  </div>
-
-</div><!-- /version-A -->
-
-<div class="version-content" id="version-B">
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">1</div>
-      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
-      <span class="panel-tag">Vers&atilde;o B &middot; Pedro</span>
-    </div>
-    <div class="panel-body">
-      <div class="cenario-box">
-        <div class="cenario-title">A frente entra ou não na planta</div>
+      <div class="tr-cenario">
         <p>Uma nova frente foi aberta e o laboratório devolveu o teor de ouro da amostra na forma de <strong>fração mássica</strong> — quilogramas de ouro por quilograma de minério, um número com expoente negativo que ninguém na sala de reunião consegue interpretar de cabeça.</p>
-        <p style="margin-top:8px;">A decisão é binária e cara: se o teor superar o <strong>teor de corte</strong> da planta, a frente entra na programação; se não superar, o material vai para a pilha de estéril e a frente é abandonada.</p>
-        <p style="margin-top:8px;">Pedro se oferece para traduzir o número do laboratório para a unidade que a equipe usa — gramas por tonelada — e para estimar quanto ouro a reserva daquela frente conteria.</p>
+        <p>A decisão é binária e cara: se o teor superar o <strong>teor de corte</strong> da planta, a frente entra na programação; se não superar, o material vai para a pilha de estéril e a frente é abandonada.</p>
+        <p>Pedro se oferece para traduzir o número do laboratório para a unidade que a equipe usa — gramas por tonelada — e para estimar quanto ouro a reserva daquela frente conteria.</p>
       </div>
 
-      <div class="dados-section">
-        <div class="dados-title">Dados fornecidos</div>
-        <div class="dados-list">
-          <div class="dado-item"><span class="dado-label">Teor da amostra (laboratório):</span> <span class="dado-value">4,8 &times; 10<sup>&minus;6</sup> kg Au / kg de minério</span></div>
-          <div class="dado-item"><span class="dado-label">Teor de corte da planta:</span> <span class="dado-value">3,0 g/t</span></div>
-          <div class="dado-item"><span class="dado-label">Reserva estimada da frente:</span> <span class="dado-value">5,0 &times; 10<sup>5</sup> t de minério</span></div>
-          <div class="dado-item"><span class="dado-label">Conversão:</span> <span class="dado-value">1 kg/kg = 10<sup>6</sup> g/t</span></div>
-          <div class="dado-item"><span class="dado-label">Preço de referência do ouro:</span> <span class="dado-value">R$ 380,00 por grama</span></div>
+      <div class="tr-dados">
+      <div class="l"><div class="r">Teor da amostra (laboratório):</div><div class="v">4,8 &times; 10<sup>&minus;6</sup> kg Au / kg de minério</div></div>
+      <div class="l"><div class="r">Teor de corte da planta:</div><div class="v">3,0 g/t</div></div>
+      <div class="l"><div class="r">Reserva estimada da frente:</div><div class="v">5,0 &times; 10<sup>5</sup> t de minério</div></div>
+      <div class="l"><div class="r">Conversão:</div><div class="v">1 kg/kg = 10<sup>6</sup> g/t</div></div>
+      <div class="l"><div class="r">Preço de referência do ouro:</div><div class="v">R$ 380,00 por grama</div></div>
+      </div>
+
+      <div class="tr-itens">
+      <div class="tr-item"><span class="a">(a)</span><span>Converta o teor do laboratório para <strong>gramas por tonelada</strong>, mostrando a operação com potências de 10.</span></div>
+      <div class="tr-item"><span class="a">(b)</span><span>Compare com o teor de corte e <strong>decida</strong> se a frente entra na programação, indicando por qual fator ela supera (ou não) o limite.</span></div>
+      <div class="tr-item"><span class="a">(c)</span><span>Estime a <strong>massa total de ouro</strong> contida na reserva, em gramas, quilogramas e toneladas, e o valor bruto correspondente.</span></div>
+      </div>
+
+      <div class="tr-eq"><span class="rot">Equa&ccedil;&otilde;es da trilha</span>(a &times; 10<sup>m</sup>) &divide; (b &times; 10<sup>n</sup>) = (a&divide;b) &times; 10<sup>m&minus;n</sup> (Eq. 6) &nbsp;&middot;&nbsp; teor(g/t) = fração mássica &times; 10<sup>6</sup> &nbsp;&middot;&nbsp; m<sub>Au</sub> = teor &times; massa de minério</div>
+    </div>
+  </div>
+
+  <div class="secao cresce tr-leitura">
+    <div class="secao-titulo">
+      <div class="num">&#9733;</div>
+      <h2>Leitura do enunciado</h2>
+      <span class="hint">parte dos 20 pontos da Situa&ccedil;&atilde;o-Problema</span>
+    </div>
+    <div class="tr-hint">Anote o que voc&ecirc; percebeu na leitura: quais dados importam,
+      qual &eacute; a armadilha do problema e qual n&uacute;mero vai sustentar a
+      decis&atilde;o do item (c).</div>
+    <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o B
+    &middot; p&aacute;gina 1 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O B · P&Aacute;GINA 2 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o B &middot; Pedro</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</h2>
+      <span class="hint">55 pontos &middot; etapas 1 a 4</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">1</div>
+          <div class="c5-corpo">
+            <div class="c5-label">O que est&aacute; sendo pedido?</div>
+            <div class="tr-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
-      </div>
-
-      <div class="perguntas-box">
-        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Converta o teor do laboratório para <strong>gramas por tonelada</strong>, mostrando a operação com potências de 10.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Compare com o teor de corte e <strong>decida</strong> se a frente entra na programação, indicando por qual fator ela supera (ou não) o limite.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Estime a <strong>massa total de ouro</strong> contida na reserva, em gramas, quilogramas e toneladas, e o valor bruto correspondente.</div>
-      </div>
-
-      <div class="equation-display">(a &times; 10<sup>m</sup>) &divide; (b &times; 10<sup>n</sup>) = (a&divide;b) &times; 10<sup>m&minus;n</sup> (Eq. 6) &nbsp;&middot;&nbsp; teor(g/t) = fração mássica &times; 10<sup>6</sup> &nbsp;&middot;&nbsp; m<sub>Au</sub> = teor &times; massa de minério</div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">2</div>
-      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
-      <span class="panel-tag">8 etapas</span>
-    </div>
-    <div class="panel-body">
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
-        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
-      <textarea class="tr-textarea" data-key="B_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
-        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
-      <textarea class="tr-textarea" data-key="B_e2" rows="5" placeholder="teor = ... &middot; corte = ... &middot; reserva = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
-        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (amostragem, o que se despreza).</div>
-      <textarea class="tr-textarea" data-key="B_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
-        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
-      <textarea class="tr-textarea" data-key="B_e4" rows="4" placeholder="Esboço da decisão..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
-        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
-      <textarea class="tr-textarea" data-key="B_e5" rows="4" placeholder="Equações: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
-        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
-      <textarea class="tr-textarea" data-key="B_e6" rows="5" placeholder="teor = ... &middot; m(Au) = ... &middot; valor = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
-        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
-      <textarea class="tr-textarea" data-key="B_e7" rows="4" placeholder="Análise: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
-        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
-      <textarea class="tr-textarea" data-key="B_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">3</div>
-      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
-      <span class="panel-tag">25%</span>
-    </div>
-    <div class="panel-body">
-      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados da decisão de Pedro:</p>
-
-      <div class="extensao-opcoes">
-        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Um <strong>quadro de conversão</strong> que traduza frações mássicas (10⁻⁷ a 10⁻⁴) para g/t e diga, de bate-pronto, se o teor passa do corte. Explique por que o quadro depende do corte adotado.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Uma <strong>análise do teor de corte</strong>: se o preço do ouro caísse 30%, qual teor de corte manteria a mesma receita por tonelada? Calcule e discuta o efeito sobre esta frente.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Uma <strong>estimativa com recuperação</strong>: se a planta recupera 88% do ouro contido, quanto sai de fato? Recalcule massa e valor e discuta por que relatórios devem distinguir ouro contido de ouro recuperável.</div>
-      </div>
-
-      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
-
-      <textarea class="tr-textarea" data-key="B_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-
-      <div class="upload-sim" id="upload-B" onclick="simulateUpload('B')">
-        <div class="upload-icon">&#128247;</div>
-        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
-        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
-      </div>
-
-      <div class="criterios-box">
-        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
-        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de notação científica, ordem de grandeza ou operações com potências de 10 (conteúdo da T05)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
+        <div class="c5-etapa">
+          <div class="c5-n">2</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o os dados?</div>
+            <div class="tr-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
-        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
+        <div class="c5-etapa">
+          <div class="c5-n">3</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div>
+            <div class="tr-hint">Declare pelo menos 2 hipóteses físicas explícitas (amostragem, o que se despreza).</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
         </div>
+        <div class="c5-etapa">
+          <div class="c5-n">4</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Qual &eacute; o desenho do problema?</div>
+            <div class="tr-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+            <div class="tr-desenho"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o B
+    &middot; p&aacute;gina 2 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O B · P&Aacute;GINA 3 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o B &middot; Pedro</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5 (continua&ccedil;&atilde;o)</h2>
+      <span class="hint">55 pontos &middot; etapas 5 a 8</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">5</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div>
+            <div class="tr-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">6</div>
+          <div class="c5-corpo">
+            <div class="c5-label">C&aacute;lculo com unidades</div>
+            <div class="tr-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">7</div>
+          <div class="c5-corpo">
+            <div class="c5-label">An&aacute;lise de resultados</div>
+            <div class="tr-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">8</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Responda o que foi pedido</div>
+            <div class="tr-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o B
+    &middot; p&aacute;gina 3 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O B · P&Aacute;GINA 4 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o B &middot; Pedro</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">3</div>
+      <h2>Extens&atilde;o Criativa</h2>
+      <span class="hint">25 pontos &middot; escolha UMA op&ccedil;&atilde;o e marque o quadrinho</span>
+    </div>
+    <div class="tr-hint" style="margin-bottom:6px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados da decisão de Pedro:</div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(a)</strong> Um <strong>quadro de conversão</strong> que traduza frações mássicas (10⁻⁷ a 10⁻⁴) para g/t e diga, de bate-pronto, se o teor passa do corte. Explique por que o quadro depende do corte adotado.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(b)</strong> Uma <strong>análise do teor de corte</strong>: se o preço do ouro caísse 30%, qual teor de corte manteria a mesma receita por tonelada? Calcule e discuta o efeito sobre esta frente.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(c)</strong> Uma <strong>estimativa com recuperação</strong>: se a planta recupera 88% do ouro contido, quanto sai de fato? Recalcule massa e valor e discuta por que relatórios devem distinguir ouro contido de ouro recuperável.</span></div>
+      <div class="tr-p3-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+  </div>
+
+  <div class="tr-crit">
+    <div class="tr-crit-cx"><h4>Aceita&ccedil;&atilde;o (obrigat&oacute;rio)</h4><ul><li>A proposta responde ao desafio escolhido e cabe no cen&aacute;rio da Parte 1.</li><li>H&aacute; pelo menos um c&aacute;lculo ou um crit&eacute;rio num&eacute;rico expl&iacute;cito.</li><li>A f&iacute;sica usada &eacute; a da trilha, com a equa&ccedil;&atilde;o citada.</li></ul></div>
+    <div class="tr-crit-cx"><h4>Valoriza&ccedil;&atilde;o (soma pontos)</h4><ul><li>Proposta exequ&iacute;vel com os recursos que a escola ou a mina j&aacute; t&ecirc;m.</li><li>Discute uma limita&ccedil;&atilde;o ou um risco da pr&oacute;pria proposta.</li><li>Usa dados da Parte 1 e generaliza para outra situa&ccedil;&atilde;o.</li><li>Escreve para quem vai ler (operador, coordena&ccedil;&atilde;o, colega), n&atilde;o para o professor.</li><li>Fecha com uma recomenda&ccedil;&atilde;o clara, e n&atilde;o com um resumo.</li></ul></div>
+  </div>
+
+  <div class="tr-eq" style="margin-top:8px;"><span class="rot">Distribui&ccedil;&atilde;o dos 100 pontos</span>
+    Parte 1 &mdash; Situa&ccedil;&atilde;o-Problema: <strong>20</strong> &nbsp;&middot;&nbsp;
+    Parte 2 &mdash; Componente 5 (8 etapas): <strong>55</strong> &nbsp;&middot;&nbsp;
+    Parte 3 &mdash; Extens&atilde;o Criativa: <strong>25</strong></div>
+
+  <div class="monitoria">
+    <div class="monitoria-titulo">Espa&ccedil;o da Equipe de Monitoria</div>
+    <div class="monitoria-entrega">Entregue a folha preenchida &agrave; m&atilde;o na monitoria,
+      dentro do prazo de 6 dias.</div>
+    <div class="monitoria-marcas">
+      <span class="marca"><span class="cx"></span> Parte 1 preenchida</span>
+      <span class="marca"><span class="cx"></span> Componente 5 completo (8 etapas)</span>
+      <span class="marca"><span class="cx"></span> Extens&atilde;o Criativa</span>
+      <span class="marca"><span class="cx"></span> Vers&atilde;o B</span>
+    </div>
+    <div class="monitoria-assina">
+      <label>Recebido por:</label><div class="linha"></div>
+      <label>Data:</label><div class="linha"></div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o B
+    &middot; p&aacute;gina 4 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══ VERS&Atilde;O C · P&Aacute;GINA 1 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos &middot; 4 p&aacute;ginas</div>
+    </div>
+  </div>
+
+  <div class="id-grid">
+    <div class="campo full"><label>Nome:</label><div class="linha"></div></div>
+  </div>
+  <div class="id-linha">
+    <div class="campo"><label>Curso:</label><div class="linha"></div></div>
+    <div class="campo"><label>Turma:</label><div class="linha"></div></div>
+    <div class="campo"><label>Data:</label><div class="linha"></div></div>
+  </div>
+
+  <div class="epigrafe">
+    <blockquote>&ldquo;O universo é um grande livro escrito em linguagem matemática, e seus caracteres são triângulos, círculos e outras figuras geométricas.&rdquo;</blockquote>
+    <div class="atrib">— Galileu Galilei (1564–1642)</div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">1</div>
+      <h2>Situa&ccedil;&atilde;o-Problema<span class="tr-versao">Vers&atilde;o C &middot; Lucas</span></h2>
+      <span class="hint">20 pontos &middot; leitura e extra&ccedil;&atilde;o de dados</span>
+    </div>
+
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">P1</span>
+        <span class="aplic-titulo">Quantos anos de cava</span>
       </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">R</div>
-      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
-      <span class="panel-tag">Vers&atilde;o B</span>
-    </div>
-    <div class="panel-body">
-      <table class="rubrica-table">
-        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
-        <tbody>
-          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa teor, corte e reserva na etapa 2; retoma a decisão sobre a frente na etapa 7</td><td>20%</td></tr>
-          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo a estimativa de valor</td><td>5%</td></tr>
-          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>Teor, corte, reserva, conversão e preço com unidades</td><td>4%</td></tr>
-          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (amostra representativa, teor homogêneo, sem recuperação)</td><td>5%</td></tr>
-          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Eixo de teor com o corte marcado e o fluxo reserva &rarr; ouro</td><td>6%</td></tr>
-          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 6 com subtração de expoentes e conversão por 10<sup>6</sup></td><td>6%</td></tr>
-          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>4,8 g/t, 2,4 × 10<sup>6</sup> g e valor &asymp; R$ 9,1 × 10<sup>8</sup> corretos</td><td>10%</td></tr>
-          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Situa a ordem de grandeza do teor e comenta a escala rocha/metal</td><td>12%</td></tr>
-          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) com a decisão sobre a frente justificada</td><td>7%</td></tr>
-          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com a planta, com cálculo e equação</td><td>25%</td></tr>
-        </tbody>
-      </table>
-      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
-    </div>
-  </div>
-
-</div><!-- /version-B -->
-
-<div class="version-content" id="version-C">
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">1</div>
-      <span class="panel-title">Situa&ccedil;&atilde;o-Problema</span>
-      <span class="panel-tag">Vers&atilde;o C &middot; Lucas</span>
-    </div>
-    <div class="panel-body">
-      <div class="cenario-box">
-        <div class="cenario-title">Quantos anos de cava</div>
+      <div class="tr-cenario">
         <p>O plano diretor da mina precisa de um número que ninguém tem: quantos anos de lavra restam na cava atual. Lucas recebeu do setor de topografia a área da cava — medida por levantamento aéreo — e a profundidade média projetada até o limite de escavação.</p>
-        <p style="margin-top:8px;">A cava é aproximadamente quadrada, e a equipe também quer o comprimento do lado, para planejar o cinturão de drenagem que contorna a área. Esse número exige uma raiz quadrada de um valor na casa dos milhões.</p>
-        <p style="margin-top:8px;">O ritmo de remoção é conhecido e estável. Com ele, o volume total vira cronograma — e o cronograma vira decisão de investimento.</p>
+        <p>A cava é aproximadamente quadrada, e a equipe também quer o comprimento do lado, para planejar o cinturão de drenagem que contorna a área. Esse número exige uma raiz quadrada de um valor na casa dos milhões.</p>
+        <p>O ritmo de remoção é conhecido e estável. Com ele, o volume total vira cronograma — e o cronograma vira decisão de investimento.</p>
       </div>
 
-      <div class="dados-section">
-        <div class="dados-title">Dados fornecidos</div>
-        <div class="dados-list">
-          <div class="dado-item"><span class="dado-label">Área da cava (levantamento aéreo):</span> <span class="dado-value">A = 1,44 &times; 10<sup>6</sup> m&sup2;</span></div>
-          <div class="dado-item"><span class="dado-label">Profundidade média projetada:</span> <span class="dado-value">h = 45 m</span></div>
-          <div class="dado-item"><span class="dado-label">Ritmo de remoção da frota:</span> <span class="dado-value">3,0 &times; 10<sup>6</sup> m&sup3; por ano</span></div>
-          <div class="dado-item"><span class="dado-label">Formato considerado:</span> <span class="dado-value">cava aproximadamente quadrada em planta</span></div>
-          <div class="dado-item"><span class="dado-label">Regra:</span> <span class="dado-value">&#8730;(a &times; 10<sup>m</sup>) = &#8730;a &times; 10<sup>m/2</sup>, com m par (Eq. 8)</span></div>
-        </div>
+      <div class="tr-dados">
+      <div class="l"><div class="r">Área da cava (levantamento aéreo):</div><div class="v">A = 1,44 &times; 10<sup>6</sup> m&sup2;</div></div>
+      <div class="l"><div class="r">Profundidade média projetada:</div><div class="v">h = 45 m</div></div>
+      <div class="l"><div class="r">Ritmo de remoção da frota:</div><div class="v">3,0 &times; 10<sup>6</sup> m&sup3; por ano</div></div>
+      <div class="l"><div class="r">Formato considerado:</div><div class="v">cava aproximadamente quadrada em planta</div></div>
+      <div class="l"><div class="r">Regra:</div><div class="v">&#8730;(a &times; 10<sup>m</sup>) = &#8730;a &times; 10<sup>m/2</sup>, com m par (Eq. 8)</div></div>
       </div>
 
-      <div class="perguntas-box">
-        <div class="perguntas-title">O que voc&ecirc; precisa determinar:</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(a)</span> Calcule o <strong>lado</strong> da cava em notação científica, aplicando a radiciação, e diga o perímetro do cinturão de drenagem.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(b)</span> Calcule o <strong>volume total</strong> a ser removido até o limite de escavação.</div>
-        <div class="pergunta-item"><span class="pergunta-letra">(c)</span> Determine em <strong>quantos anos</strong> a cava se esgota no ritmo atual e avalie a plausibilidade do resultado para um plano diretor.</div>
+      <div class="tr-itens">
+      <div class="tr-item"><span class="a">(a)</span><span>Calcule o <strong>lado</strong> da cava em notação científica, aplicando a radiciação, e diga o perímetro do cinturão de drenagem.</span></div>
+      <div class="tr-item"><span class="a">(b)</span><span>Calcule o <strong>volume total</strong> a ser removido até o limite de escavação.</span></div>
+      <div class="tr-item"><span class="a">(c)</span><span>Determine em <strong>quantos anos</strong> a cava se esgota no ritmo atual e avalie a plausibilidade do resultado para um plano diretor.</span></div>
       </div>
 
-      <div class="equation-display">&#8730;(a &times; 10<sup>m</sup>) = &#8730;a &times; 10<sup>m/2</sup> (Eq. 8) &nbsp;&middot;&nbsp; (a &times; 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> &times; 10<sup>n&times;p</sup> (Eq. 7) &nbsp;&middot;&nbsp; V = A &times; h &nbsp;&middot;&nbsp; t = V &divide; ritmo</div>
+      <div class="tr-eq"><span class="rot">Equa&ccedil;&otilde;es da trilha</span>&#8730;(a &times; 10<sup>m</sup>) = &#8730;a &times; 10<sup>m/2</sup> (Eq. 8) &nbsp;&middot;&nbsp; (a &times; 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> &times; 10<sup>n&times;p</sup> (Eq. 7) &nbsp;&middot;&nbsp; V = A &times; h &nbsp;&middot;&nbsp; t = V &divide; ritmo</div>
     </div>
   </div>
 
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">2</div>
-      <span class="panel-title">Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</span>
-      <span class="panel-tag">8 etapas</span>
+  <div class="secao cresce tr-leitura">
+    <div class="secao-titulo">
+      <div class="num">&#9733;</div>
+      <h2>Leitura do enunciado</h2>
+      <span class="hint">parte dos 20 pontos da Situa&ccedil;&atilde;o-Problema</span>
     </div>
-    <div class="panel-body">
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">1</div><span class="c5-step-title">O que está sendo pedido?</span></div>
-        <div class="c5-step-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
-      <textarea class="tr-textarea" data-key="C_e1" rows="4" placeholder="Descreva o que você precisa resolver..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">2</div><span class="c5-step-title">Quais são os dados?</span></div>
-        <div class="c5-step-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
-      <textarea class="tr-textarea" data-key="C_e2" rows="5" placeholder="A = ... &middot; h = ... &middot; ritmo = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">3</div><span class="c5-step-title">Quais são as hipóteses?</span></div>
-        <div class="c5-step-hint">Declare pelo menos 2 hipóteses físicas explícitas (geometria, regime, o que se despreza).</div>
-      <textarea class="tr-textarea" data-key="C_e3" rows="4" placeholder="Hipótese 1: ... Hipótese 2: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">4</div><span class="c5-step-title">Qual é o desenho do problema?</span></div>
-        <div class="c5-step-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
-      <textarea class="tr-textarea" data-key="C_e4" rows="4" placeholder="Esboço da cava..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">5</div><span class="c5-step-title">Quais são as equações?</span></div>
-        <div class="c5-step-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
-      <textarea class="tr-textarea" data-key="C_e5" rows="4" placeholder="Equações: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">6</div><span class="c5-step-title">Cálculo com unidades</span></div>
-        <div class="c5-step-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
-      <textarea class="tr-textarea" data-key="C_e6" rows="5" placeholder="lado = ... &middot; V = ... &middot; t = ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">7</div><span class="c5-step-title">Análise de resultados</span></div>
-        <div class="c5-step-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
-      <textarea class="tr-textarea" data-key="C_e7" rows="4" placeholder="Análise: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-      <div class="c5-step">
-        <div class="c5-step-header"><div class="c5-step-num">8</div><span class="c5-step-title">Responda o que foi pedido</span></div>
-        <div class="c5-step-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
-      <textarea class="tr-textarea" data-key="C_e8" rows="4" placeholder="(a) ... (b) ... (c) ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-      </div>
-
-    </div>
+    <div class="tr-hint">Anote o que voc&ecirc; percebeu na leitura: quais dados importam,
+      qual &eacute; a armadilha do problema e qual n&uacute;mero vai sustentar a
+      decis&atilde;o do item (c).</div>
+    <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
   </div>
 
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">3</div>
-      <span class="panel-title">Extens&atilde;o Criativa (L6)</span>
-      <span class="panel-tag">25%</span>
-    </div>
-    <div class="panel-body">
-      <p style="font-size:.82rem;margin-bottom:12px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do plano de Lucas:</p>
-
-      <div class="extensao-opcoes">
-        <div class="extensao-opcao"><span class="opcao-letra">(a)</span> Uma <strong>correção do modelo</strong>: proponha uma forma de descontar taludes e bancadas da estimativa de volume (um percentual, uma geometria simplificada) e recalcule os anos de lavra. Justifique a escolha.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(b)</span> Um <strong>cenário de expansão</strong>: se o ritmo de remoção subisse para 4,5 × 10⁶ m³/ano, quantos anos duraria a cava? Discuta o que a empresa ganha e o que perde ao antecipar o esgotamento.</div>
-        <div class="extensao-opcao"><span class="opcao-letra">(c)</span> Um <strong>gráfico de vida útil</strong> relacionando profundidade projetada (20 a 80 m) com anos de lavra, para a mesma área e o mesmo ritmo. Explique por que a relação é linear e onde ela deixaria de ser.</div>
-      </div>
-
-      <p style="font-size:.78rem;color:var(--cinza);margin-bottom:8px;">Sua proposta deve incluir: descri&ccedil;&atilde;o em texto (m&iacute;nimo 5 frases), um diagrama ou esquema (pode ser texto/ASCII) e <strong>pelo menos uma equa&ccedil;&atilde;o f&iacute;sica justificadora</strong>.</p>
-
-      <textarea class="tr-textarea" data-key="C_p3" rows="12" placeholder="Minha proposta:&#10;&#10;Descri&ccedil;&atilde;o: ...&#10;&#10;Diagrama: ...&#10;&#10;Equa&ccedil;&atilde;o: ..."></textarea>
-      <div class="char-counter"><span class="cc-count">0</span> caracteres</div>
-
-      <div class="upload-sim" id="upload-C" onclick="simulateUpload('C')">
-        <div class="upload-icon">&#128247;</div>
-        <div class="upload-text">Fotografe a Parte 3 (manuscrita) e envie no Moodle</div>
-        <div class="upload-hint">Clique para simular sele&ccedil;&atilde;o &mdash; a entrega real &eacute; pelo Moodle</div>
-      </div>
-
-      <div class="criterios-box">
-        <div class="criterios-title">Crit&eacute;rios de aceita&ccedil;&atilde;o &mdash; Parte 3</div>
-        <div class="criterios-sub-title">Obrigat&oacute;rio</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta trata de notação científica, ordem de grandeza ou operações com potências de 10 (conteúdo da T05)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta é coerente com os dados e o cenário da Parte 1</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>A proposta tem pelo menos 1 fundamento no Texto Temático (citado ou parafraseado)</span></div>
-        </div>
-        <div class="criterios-sub-title">Valoriza&ccedil;&atilde;o</div>
-        <div class="criterios-list">
-          <div class="criterio-item"><div class="criterio-check"></div><span>Usa dado numérico para apoiar a proposta</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Conecta com Ouro Preto, mineração colonial ou patrimônio</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Cita conexão com outra disciplina do curso técnico</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Identifica uma limitação do próprio raciocínio (metacognição)</span></div>
-          <div class="criterio-item"><div class="criterio-check"></div><span>Propõe experimento ou verificação possível</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-num">R</div>
-      <span class="panel-title">Rubrica de Corre&ccedil;&atilde;o</span>
-      <span class="panel-tag">Vers&atilde;o C</span>
-    </div>
-    <div class="panel-body">
-      <table class="rubrica-table">
-        <thead><tr><th>Parte</th><th>Crit&eacute;rio</th><th>Peso</th></tr></thead>
-        <tbody>
-          <tr><td><strong>P1 &mdash; Leitura</strong></td><td>Usa área, profundidade e ritmo na etapa 2; retoma o uso no plano diretor na etapa 7</td><td>20%</td></tr>
-          <tr><td><strong>P2.1 &mdash; O que está sendo pedido?</strong></td><td>Identifica os três itens, incluindo o perímetro do cinturão</td><td>5%</td></tr>
-          <tr><td><strong>P2.2 &mdash; Quais são os dados?</strong></td><td>A, h e ritmo com unidades e expoentes corretos</td><td>4%</td></tr>
-          <tr><td><strong>P2.3 &mdash; Quais são as hipóteses?</strong></td><td>&ge; 2 hipóteses explícitas (prisma de base quadrada, ritmo estável)</td><td>5%</td></tr>
-          <tr><td><strong>P2.4 &mdash; Qual é o desenho do problema?</strong></td><td>Planta quadrada com o lado e corte com a profundidade</td><td>6%</td></tr>
-          <tr><td><strong>P2.5 &mdash; Quais são as equações?</strong></td><td>Equação 8 com expoente par e V = A&middot;h em notação científica</td><td>6%</td></tr>
-          <tr><td><strong>P2.6 &mdash; Cálculo com unidades</strong></td><td>1,2 × 10<sup>3</sup> m, 6,48 × 10<sup>7</sup> m&sup3; e 21,6 anos corretos</td><td>10%</td></tr>
-          <tr><td><strong>P2.7 &mdash; Análise de resultados</strong></td><td>Julga a plausibilidade do horizonte e reconhece o efeito de desprezar taludes</td><td>12%</td></tr>
-          <tr><td><strong>P2.8 &mdash; Responda o que foi pedido</strong></td><td>Responde (a), (b) e (c) com a ressalva do modelo declarada</td><td>7%</td></tr>
-          <tr><td><strong>P3 &mdash; Criatividade</strong></td><td>Proposta original, coerente com o plano de lavra, com cálculo e equação</td><td>25%</td></tr>
-        </tbody>
-      </table>
-      <div class="rubrica-formula">Nota<sub>TR</sub> = P1 &times; 0,20 + P2 &times; 0,55 + P3 &times; 0,25</div>
-    </div>
-  </div>
-
-</div><!-- /version-C -->
-  <button class="btn btn-ouro" onclick="exportJSON()" type="button">Exportar JSON</button>
-  <button class="btn btn-sec" onclick="window.print()" type="button">Imprimir</button>
-  <button class="btn btn-erro" onclick="confirmClear()" type="button">Limpar tudo</button>
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o C
+    &middot; p&aacute;gina 1 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
 </div>
 
-</main>
+<!-- ═══ VERS&Atilde;O C · P&Aacute;GINA 2 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o C &middot; Lucas</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
 
-<div class="encerramento">
-  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
-  <div class="fecho-acao">Voc&ecirc; fechou a P&oacute;s-Aula desta trilha &mdash; na pr&oacute;xima, o movimento vira <strong>gr&aacute;fico</strong>.</div>
-  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5</h2>
+      <span class="hint">55 pontos &middot; etapas 1 a 4</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">1</div>
+          <div class="c5-corpo">
+            <div class="c5-label">O que est&aacute; sendo pedido?</div>
+            <div class="tr-hint">Releia o enunciado e escreva, com suas palavras, o que precisa ser determinado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">2</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o os dados?</div>
+            <div class="tr-hint">Liste cada grandeza com símbolo, valor e unidade.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">3</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div>
+            <div class="tr-hint">Declare pelo menos 2 hipóteses físicas explícitas (geometria, regime, o que se despreza).</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">4</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Qual &eacute; o desenho do problema?</div>
+            <div class="tr-hint">Faça um esboço, diagrama ou linha do tempo com as grandezas identificadas (pode ser texto/ASCII).</div>
+            <div class="tr-desenho"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o C
+    &middot; p&aacute;gina 2 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
 </div>
 
-<div class="footer">
-  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T05 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+<!-- ═══ VERS&Atilde;O C · P&Aacute;GINA 3 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o C &middot; Lucas</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
+
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Resolu&ccedil;&atilde;o T&eacute;cnica &mdash; Componente 5 (continua&ccedil;&atilde;o)</h2>
+      <span class="hint">55 pontos &middot; etapas 5 a 8</span>
+    </div>
+    <div class="tr-c5">
+        <div class="c5-etapa">
+          <div class="c5-n">5</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div>
+            <div class="tr-hint">Identifique as equações do Texto Temático e isole algebricamente a variável pedida.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">6</div>
+          <div class="c5-corpo">
+            <div class="c5-label">C&aacute;lculo com unidades</div>
+            <div class="tr-hint">Substitua os valores e acompanhe as unidades passo a passo até o resultado.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">7</div>
+          <div class="c5-corpo">
+            <div class="c5-label">An&aacute;lise de resultados</div>
+            <div class="tr-hint">O resultado faz sentido? Compare com valores típicos da mineração e do cotidiano.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+        <div class="c5-etapa">
+          <div class="c5-n">8</div>
+          <div class="c5-corpo">
+            <div class="c5-label">Responda o que foi pedido</div>
+            <div class="tr-hint">Escreva a resposta completa, com unidade e interpretação no contexto — item por item.</div>
+            <div class="tr-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o C
+    &middot; p&aacute;gina 3 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
 </div>
 
-<script>
-// ===== STORAGE =====
-var PREFIX = 'ifmg_fc1_t05_tr_';
-function save(k, v) { try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); } catch(e){} }
-function load(k, d) { try { var v = localStorage.getItem(PREFIX + k); return v !== null ? JSON.parse(v) : d; } catch(e){ return d; } }
+<!-- ═══ VERS&Atilde;O C · P&Aacute;GINA 4 ═══ -->
+<div class="pagina">
+  <div class="header">
+    <div class="header-left">
+      <h1>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h1>
+      <div class="sub">Trabalho (TR) &middot; Vers&atilde;o C &middot; Lucas</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Trabalho (TR)</div>
+      <div>peso 20% &middot; 100 pontos</div>
+    </div>
+  </div>
 
-// ===== VERSION SELECTOR =====
-var currentVersion = load('versao', 'A');
+  <div class="secao cresce">
+    <div class="secao-titulo">
+      <div class="num">3</div>
+      <h2>Extens&atilde;o Criativa</h2>
+      <span class="hint">25 pontos &middot; escolha UMA op&ccedil;&atilde;o e marque o quadrinho</span>
+    </div>
+    <div class="tr-hint" style="margin-bottom:6px;">Apresente <strong>uma proposta original</strong> para um dos desafios derivados do plano de Lucas:</div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(a)</strong> Uma <strong>correção do modelo</strong>: proponha uma forma de descontar taludes e bancadas da estimativa de volume (um percentual, uma geometria simplificada) e recalcule os anos de lavra. Justifique a escolha.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(b)</strong> Um <strong>cenário de expansão</strong>: se o ritmo de remoção subisse para 4,5 × 10⁶ m³/ano, quantos anos duraria a cava? Discuta o que a empresa ganha e o que perde ao antecipar o esgotamento.</span></div>
+      <div class="tr-p3-opcao"><span class="cx"></span><span><strong>(c)</strong> Um <strong>gráfico de vida útil</strong> relacionando profundidade projetada (20 a 80 m) com anos de lavra, para a mesma área e o mesmo ritmo. Explique por que a relação é linear e onde ela deixaria de ser.</span></div>
+      <div class="tr-p3-pauta"><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div><div class="pauta-linha"></div></div>
+  </div>
 
-function selectVersion(v) {
-  currentVersion = v;
-  save('versao', v);
-  // Update buttons
-  var btns = document.querySelectorAll('.version-btn');
-  btns.forEach(function(b) {
-    b.classList.toggle('active', b.getAttribute('data-version') === v);
-  });
-  // Update content
-  var contents = document.querySelectorAll('.version-content');
-  contents.forEach(function(c) {
-    c.classList.toggle('active', c.id === 'version-' + v);
-  });
-  updateProgress();
-}
+  <div class="tr-crit">
+    <div class="tr-crit-cx"><h4>Aceita&ccedil;&atilde;o (obrigat&oacute;rio)</h4><ul><li>A proposta responde ao desafio escolhido e cabe no cen&aacute;rio da Parte 1.</li><li>H&aacute; pelo menos um c&aacute;lculo ou um crit&eacute;rio num&eacute;rico expl&iacute;cito.</li><li>A f&iacute;sica usada &eacute; a da trilha, com a equa&ccedil;&atilde;o citada.</li></ul></div>
+    <div class="tr-crit-cx"><h4>Valoriza&ccedil;&atilde;o (soma pontos)</h4><ul><li>Proposta exequ&iacute;vel com os recursos que a escola ou a mina j&aacute; t&ecirc;m.</li><li>Discute uma limita&ccedil;&atilde;o ou um risco da pr&oacute;pria proposta.</li><li>Usa dados da Parte 1 e generaliza para outra situa&ccedil;&atilde;o.</li><li>Escreve para quem vai ler (operador, coordena&ccedil;&atilde;o, colega), n&atilde;o para o professor.</li><li>Fecha com uma recomenda&ccedil;&atilde;o clara, e n&atilde;o com um resumo.</li></ul></div>
+  </div>
 
-// ===== STUDENT ID =====
-var idNome = document.getElementById('id-nome');
-var idTurma = document.getElementById('id-turma');
-var idData = document.getElementById('id-data');
+  <div class="tr-eq" style="margin-top:8px;"><span class="rot">Distribui&ccedil;&atilde;o dos 100 pontos</span>
+    Parte 1 &mdash; Situa&ccedil;&atilde;o-Problema: <strong>20</strong> &nbsp;&middot;&nbsp;
+    Parte 2 &mdash; Componente 5 (8 etapas): <strong>55</strong> &nbsp;&middot;&nbsp;
+    Parte 3 &mdash; Extens&atilde;o Criativa: <strong>25</strong></div>
 
-function saveId() {
-  save('meta', {
-    nome: idNome.value,
-    turma: idTurma.value,
-    data: idData.value
-  });
-}
+  <div class="monitoria">
+    <div class="monitoria-titulo">Espa&ccedil;o da Equipe de Monitoria</div>
+    <div class="monitoria-entrega">Entregue a folha preenchida &agrave; m&atilde;o na monitoria,
+      dentro do prazo de 6 dias.</div>
+    <div class="monitoria-marcas">
+      <span class="marca"><span class="cx"></span> Parte 1 preenchida</span>
+      <span class="marca"><span class="cx"></span> Componente 5 completo (8 etapas)</span>
+      <span class="marca"><span class="cx"></span> Extens&atilde;o Criativa</span>
+      <span class="marca"><span class="cx"></span> Vers&atilde;o C</span>
+    </div>
+    <div class="monitoria-assina">
+      <label>Recebido por:</label><div class="linha"></div>
+      <label>Data:</label><div class="linha"></div>
+    </div>
+  </div>
 
-idNome.addEventListener('input', saveId);
-idTurma.addEventListener('change', saveId);
-idData.addEventListener('input', saveId);
+  <div class="rodape-print">T05 &middot; Trabalho (TR) v2 &middot; Vers&atilde;o C
+    &middot; p&aacute;gina 4 de 4 &middot; IFMG &mdash; Campus Ouro Preto</div>
+</div>
 
-// ===== TEXTAREA PERSISTENCE & CHAR COUNTER =====
-var allTextareas = document.querySelectorAll('.tr-textarea');
-allTextareas.forEach(function(ta) {
-  var key = ta.getAttribute('data-key');
-  // Restore
-  var saved = load(key, '');
-  if (saved) ta.value = saved;
-  // Update counter
-  updateCharCounter(ta);
+</div>
 
-  // Events
-  ta.addEventListener('input', function() {
-    save(key, ta.value);
-    updateCharCounter(ta);
-    updateProgress();
-  });
-});
+<div class="barra-tela">
+  <button class="btn" onclick="window.print()">Imprimir / Salvar em PDF</button>
+  <div class="nota">12 p&aacute;ginas A4 &mdash; 4 por vers&atilde;o.
+    Vers&atilde;o A: p&aacute;ginas 1-4 &middot; Vers&atilde;o B: 5-8 &middot; Vers&atilde;o C: 9-12.<br>
+    Imprima apenas a faixa da vers&atilde;o do estudante. Margens: Padr&atilde;o &middot;
+    Gr&aacute;ficos de segundo plano: LIGADO.</div>
+</div>
 
-function updateCharCounter(ta) {
-  var counter = ta.parentElement.querySelector('.cc-count');
-  if (counter) {
-    var len = ta.value.length;
-    counter.textContent = len;
-    var container = counter.closest('.char-counter');
-    if (container) {
-      container.classList.toggle('min-ok', len >= 50);
-    }
-  }
-}
-
-// ===== PROGRESS BAR =====
-function updateProgress() {
-  var v = currentVersion;
-  var keys = [v+'_e1', v+'_e2', v+'_e3', v+'_e4', v+'_e5', v+'_e6', v+'_e7', v+'_e8', v+'_p3'];
-  var filled = 0;
-  var total = keys.length + 1; // +1 for student ID
-  keys.forEach(function(k) {
-    var val = load(k, '');
-    if (val && val.trim().length > 10) filled++;
-  });
-  // Check student ID
-  var meta = load('meta', {});
-  if (meta.nome && meta.nome.trim().length > 2 && meta.turma) filled++;
-
-  var pct = Math.round((filled / total) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = filled + ' / ' + total + ' campos preenchidos';
-}
-
-// ===== UPLOAD SIMULATION =====
-function simulateUpload(v) {
-  var el = document.getElementById('upload-' + v);
-  if (el.classList.contains('has-file')) {
-    el.classList.remove('has-file');
-    el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
-    save('upload_' + v, false);
-  } else {
-    el.classList.add('has-file');
-    el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
-    save('upload_' + v, true);
-  }
-}
-
-// ===== EXPORT JSON =====
-function exportJSON() {
-  var v = currentVersion;
-  var meta = load('meta', {});
-  var data = {
-    versao: v,
-    estudante: meta,
-    timestamp: new Date().toISOString(),
-    trilha: 'T05',
-    tipo: 'TR',
-    etapas: {}
-  };
-  var keys = ['e1','e2','e3','e4','e5','e6','e7','e8','p3'];
-  var labels = ['OQuePedido','Dados','Hipoteses','Desenho','Equacoes','CalculoComUnidades','AnaliseResultados','Resposta','ExtensaoCriativa'];
-  keys.forEach(function(k, i) {
-    data.etapas[labels[i]] = load(v + '_' + k, '');
-  });
-
-  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'T05-TR-v3-versao' + v + '-' + (meta.nome || 'estudante').replace(/\s+/g, '_') + '.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// ===== CLEAR ALL =====
-function confirmClear() {
-  if (confirm('Tem certeza que deseja apagar TODAS as respostas? Esta acao nao pode ser desfeita.')) {
-    var allKeys = [];
-    for (var i = 0; i < localStorage.length; i++) {
-      var key = localStorage.key(i);
-      if (key && key.indexOf(PREFIX) === 0) {
-        allKeys.push(key);
-      }
-    }
-    allKeys.forEach(function(k) { localStorage.removeItem(k); });
-    // Reset form
-    idNome.value = '';
-    idTurma.value = '';
-    idData.value = '';
-    allTextareas.forEach(function(ta) {
-      ta.value = '';
-      updateCharCounter(ta);
-    });
-    // Reset uploads
-    ['A','B','C'].forEach(function(v) {
-      var el = document.getElementById('upload-' + v);
-      if (el) {
-        el.classList.remove('has-file');
-        el.querySelector('.upload-text').textContent = 'Fotografe a Parte 3 (manuscrita) e envie no Moodle';
-      }
-    });
-    updateProgress();
-  }
-}
-
-// ===== RESTORE STATE =====
-function restoreState() {
-  // Student ID
-  var meta = load('meta', {});
-  if (meta.nome) idNome.value = meta.nome;
-  if (meta.turma) idTurma.value = meta.turma;
-  if (meta.data) idData.value = meta.data;
-
-  // Version
-  var v = load('versao', 'A');
-  selectVersion(v);
-
-  // Upload states
-  ['A','B','C'].forEach(function(ver) {
-    if (load('upload_' + ver, false)) {
-      var el = document.getElementById('upload-' + ver);
-      if (el) {
-        el.classList.add('has-file');
-        el.querySelector('.upload-text').textContent = 'Foto marcada como pronta para envio';
-      }
-    }
-  });
-
-  updateProgress();
-}
-
-// Init
-restoreState();
-</script>
 <!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
 <style>
 .aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
