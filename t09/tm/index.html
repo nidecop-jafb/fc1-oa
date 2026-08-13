@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T03 · Sistema de Numeração de Base 10 — Estudante</title>
+<title>T09 · Aceleração Média e Instantânea — Estudante</title>
 <style>
 :root {
   --azul: oklch(0.65 0.22 45);
@@ -398,10 +398,10 @@ body {
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
-      <h1><span class="trilha-code">T03</span> &middot; Sistema de Numeração de Base 10</h1>
-      <span class="badge">Provinha (PR)</span>
+      <h1><span class="trilha-code">T09</span> &middot; Aceleração Média e Instantânea</h1>
+      <span class="badge">Tarefa M&iacute;nima (TM)</span>
     </div>
-    <div class="header-sub">2 quest&otilde;es &middot; 10 pontos &middot; 15 min</div>
+    <div class="header-sub">8 quest&otilde;es &middot; 10 pontos &middot; ~22 min &middot; consulta livre ao TT</div>
   </header>
 
   <!-- PIAZZI BAR -->
@@ -411,8 +411,8 @@ body {
     <span class="piazzi-tag">Escrever</span>
     <span class="piazzi-tag">Medir</span>
     <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
-    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLLck6FRNMdAs" target="_blank" rel="noopener">YouTube Music</a>
-    <span class="piazzi-text">Orquestra Ouro Preto &mdash; sele&ccedil;&atilde;o instrumental &middot; orquestra</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
   </div>
 
   <!-- VERSION SELECTOR -->
@@ -427,6 +427,12 @@ body {
   <div class="progress-bar" id="progressBar">
     <div class="progress-seg" id="prog-0"></div>
     <div class="progress-seg" id="prog-1"></div>
+    <div class="progress-seg" id="prog-2"></div>
+    <div class="progress-seg" id="prog-3"></div>
+    <div class="progress-seg" id="prog-4"></div>
+    <div class="progress-seg" id="prog-5"></div>
+    <div class="progress-seg" id="prog-6"></div>
+    <div class="progress-seg" id="prog-7"></div>
   </div>
 
   <!-- STUDENT ID -->
@@ -475,12 +481,12 @@ body {
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
-  <div class="fecho-acao">Aula encerrada! N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
+  <div class="fecho-acao">Aula dada, aula estudada HOJE! N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA COMPLEMENTAR</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
 </div>
 
 <div class="footer-line">
-  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T03 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T09 &middot; J. Azevedo &amp; F. Beato &middot; 2026
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -510,128 +516,259 @@ body {
 
 <script>
 /* ============================================================
-   BANCO DE QUESTÕES — 3 VERSÕES (A, B, C) × 2 QUESTÕES
-   Provinha (PR-v2 digital) — Q1 Pense e Use (MC, 4 pt) +
-   Q2 Componente 5 simplificado (VF, 6 pt) = 10 pt
+   BANCO DE QUESTÕES — 12 ITENS (5 R + 4 F + 3 U)
+   Tarefa Mínima (TM-v3 digital) — janela deslizante A/B/C:
+   3 Revisão (1 pt) + 3 Pense e Faça (1 pt) + 2 Pense e Use (2 pt) = 10 pt
    ============================================================ */
 
-const BANCO = {
-  A: [
-    /* ── Q1-A: Pense e Use (MC) — 4 pt ── */
-    {
-      id:"T03-PR-Q1-A", num:1, bloom:'L3', pts:4, tipo:'MC',
-      tipoLabel:'Pense e Use',
-      enunciado:"No laboratório do IFMG-OP, Sofia mede com o paquímetro a espessura de uma placa de aço usada na blindagem de um chute de transferência: <strong>12,40 mm</strong>. A ficha técnica exige o valor em metros. <strong>Aplicando a Equação 3 (L(m) = L(mm) × 10⁻³), qual é a espessura em metros?</strong>",
-      opcoes:[
-        {letra:"A", texto:"0,01240 m"},
-        {letra:"B", texto:"0,1240 m"},
-        {letra:"C", texto:"1,240 m"},
-        {letra:"D", texto:"12.400 m"}
-      ],
-      correta:"A",
-      feedbacks:{
-        A:{ok:true,html:"<div class=\"fb-title\">\u2714 Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> dividir por mil é deslocar a vírgula três casas para a esquerda — 12,40 → 1,240 → 0,1240 → 0,01240 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> o zero final foi mantido de propósito: ele é significativo e diz que o paquímetro leu até o centésimo de milímetro.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> a Tarefa Mínima (TM) repete o degrau na outra direção, de metros para quilômetros.</div>"},
-        B:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> são três degraus de 10 de uma vez — 12,40 × 10⁻³ = 0,01240 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — dividiu por 100 (converteu para centímetros)</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 4, Equação 3 — e confira contando as casas: mm → cm → dm → m.</div>"},
-        C:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> são três degraus de 10 de uma vez — 12,40 × 10⁻³ = 0,01240 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — dividiu por 10</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 4, Equação 3 — e confira contando as casas: mm → cm → dm → m.</div>"},
-        D:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> são três degraus de 10 de uma vez — 12,40 × 10⁻³ = 0,01240 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — multiplicou por 10³ em vez de dividir</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 4, Equação 3 — e confira contando as casas: mm → cm → dm → m.</div>"}
-      }
-    },
-    /* ── Q2-A: C5 simplificado (VF) — 6 pt ── */
-    {
-      id:"T03-PR-Q2-A", num:2, bloom:'L4', pts:6, tipo:'VF',
-      tipoLabel:'Componente 5 simplificado',
-      enunciado:"O boletim de avanço de uma galeria da Mina da Passagem registrou, no mesmo turno, um avanço de <strong>3,2 m</strong> pela manhã e mais <strong>85 cm</strong> à tarde. O encarregado anotou: <em>“avanço total do turno: 3,85 m — é só colocar os 85 depois da vírgula”</em>. Analise a anotação seguindo as 4 etapas do Componente 5 simplificado. <strong>Marque V ou F em cada afirmação.</strong>",
-      afirmacoes:[
-        {texto:"<strong>Interpretação:</strong> A vírgula não separa dois números independentes: as casas à direita são décimos, centésimos e milésimos do metro — potências negativas de 10.", correta:"V", just:"É o Tópico 3 do Texto Temático (TT), Equações 1 e 2."},
-        {texto:"<strong>Inventário:</strong> Os dados são 3,2 m e 85 cm; nada precisa ser assumido, mas é preciso levar as duas medidas à mesma unidade antes de somar.", correta:"V", just:"Inventário completo — o que falta é a conversão, não o dado."},
-        {texto:"<strong>Cálculo:</strong> Convertendo, 85 cm = 0,85 m, e o avanço total do turno é 3,2 + 0,85 = 4,05 m.", correta:"V", just:"85 × 10⁻² = 0,85 m. A soma respeita as ordens: 3,2 + 0,85 = 4,05 m."},
-        {texto:"<strong>Plausibilidade:</strong> A anotação de 3,85 m está correta, porque 85 cm são justamente as casas decimais do metro.", correta:"F", just:"Se fosse assim, 85 cm e 8,5 cm dariam a mesma anotação. Os 85 cm valem 0,85 m, e 0,2 + 0,85 = 1,05 — a soma passa de um metro e sobe para a coluna das unidades. Erro E1 — casas decimais tratadas como um número à parte."},
-        {texto:"<strong>Decisão:</strong> O boletim subestima o avanço em 0,20 m; repetido nos 22 turnos do mês, some do apontamento mais de 4 metros de galeria.", correta:"V", just:"4,05 − 3,85 = 0,20 m; 0,20 × 22 = 4,4 m — quase um dia inteiro de avanço."}
-      ],
-      feedbackGeral:"Função pedagógica: mostrar que somar medidas exige a mesma unidade e o respeito às ordens decimais. Conclusão-modelo: o boletim deveria registrar <em>avanço total do turno: 4,05 m</em>. Revise: Texto Temático (TT), Tópico 3, Equação 2."
+/* ============================================================
+   ITENS DO BANCO (12) — reutilizados nas versões A, B e C
+   pela janela deslizante do Protocolo TM-v3.
+   ============================================================ */
+const ITENS = {
+
+  R1: {
+    id:"T09-TM-R1", bloom:'L1-L2', pts:1, tipo:'MC', tipoLabel:"Revis&atilde;o Conceitual",
+    enunciado:"Segundo o Texto Tem&aacute;tico (TT) e a <em>F&iacute;sica Identidade</em> (p. 52), <strong>a acelera&ccedil;&atilde;o escalar m&eacute;dia de um corpo &eacute;:</strong>",
+    opcoes:[
+      {letra:"A", texto:"a velocidade que o corpo atinge ao final do intervalo de tempo."},
+      {letra:"B", texto:"a grandeza que mede a taxa de varia&ccedil;&atilde;o da velocidade num intervalo de tempo: a<sub>m</sub> = &Delta;v / &Delta;t."},
+      {letra:"C", texto:"a dist&acirc;ncia percorrida dividida pelo tempo gasto para percorr&ecirc;-la."},
+      {letra:"D", texto:"uma caracter&iacute;stica fixa do ve&iacute;culo, a mesma em qualquer manobra."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A velocidade final &eacute; um valor; a acelera&ccedil;&atilde;o &eacute; a varia&ccedil;&atilde;o dela dividida pelo tempo.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; confundiu o estado (velocidade) com a taxa de mudan&ccedil;a.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, Equa&ccedil;&atilde;o 2.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> A acelera&ccedil;&atilde;o &eacute; uma TAXA: quanto a velocidade mudou, dividido pelo tempo que levou para mudar.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> &Eacute; o que separa &ldquo;estar r&aacute;pido&rdquo; de &ldquo;estar acelerando&rdquo; &mdash; o paraquedista a 200 km/h tem acelera&ccedil;&atilde;o zero.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> Guarde a pergunta que ela responde: &ldquo;a velocidade est&aacute; mudando com que rapidez?&rdquo;</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Deslocamento dividido por tempo &eacute; a velocidade m&eacute;dia, assunto da T08. Aqui o numerador &eacute; a varia&ccedil;&atilde;o da VELOCIDADE.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E6 &mdash; trocou a grandeza do numerador.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, e a <em>F&iacute;sica Identidade</em>, p. 52.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A acelera&ccedil;&atilde;o depende da manobra: a mesma van tem +1,25 m/s&sup2; no arranque e &minus;2,5 m/s&sup2; na freada.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; modelo mental de propriedade fixa do ve&iacute;culo.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 1.</div>"}
     }
-  ],
-  B: [
-    /* ── Q1-B: Pense e Use (MC) — 4 pt ── */
-    {
-      id:"T03-PR-Q1-B", num:1, bloom:'L3', pts:4, tipo:'MC',
-      tipoLabel:'Pense e Use',
-      enunciado:"O relatório mensal de perfuração registra <strong>2.408,6 m</strong> de galeria aberta no Quadrilátero Ferrífero. <strong>Aplicando a Equação 1 (valor posicional), quanto vale o algarismo 4 nesse número?</strong>",
-      opcoes:[
-        {letra:"A", texto:"4 m"},
-        {letra:"B", texto:"40 m"},
-        {letra:"C", texto:"400 m"},
-        {letra:"D", texto:"4.000 m"}
-      ],
-      correta:"C",
-      feedbacks:{
-        A:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> decomponha o número — 2.408,6 = 2·10³ + 4·10² + 0·10¹ + 8·10⁰ + 6·10⁻¹; o 4 está nas centenas e vale 400 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E5 — leu o símbolo e ignorou a posição</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 2, Equação 1.</div>"},
-        B:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> decomponha o número — 2.408,6 = 2·10³ + 4·10² + 0·10¹ + 8·10⁰ + 6·10⁻¹; o 4 está nas centenas e vale 400 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — uma ordem decimal abaixo</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 2, Equação 1.</div>"},
-        C:{ok:true,html:"<div class=\"fb-title\">\u2714 Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> o 4 ocupa a casa das centenas — 4 × 10² = 400 m.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> o mesmo algarismo vale 4, 40, 400 ou 4.000 conforme onde está sentado; é isso que a base 10 significa.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> repare no zero das dezenas — ele não é 'nada', é o marcador que segura o 4 na casa das centenas.</div>"},
-        D:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> decomponha o número — 2.408,6 = 2·10³ + 4·10² + 0·10¹ + 8·10⁰ + 6·10⁻¹; o 4 está nas centenas e vale 400 m.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — uma ordem decimal acima</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 2, Equação 1.</div>"}
-      }
-    },
-    /* ── Q2-B: C5 simplificado (VF) — 6 pt ── */
-    {
-      id:"T03-PR-Q2-B", num:2, bloom:'L4', pts:6, tipo:'VF',
-      tipoLabel:'Componente 5 simplificado',
-      enunciado:"A produção do dia foi apontada na frente de lavra como <strong>1.070 t</strong>. Ao digitar no sistema, o estagiário lançou <strong>107 t</strong> e explicou: <em>“o zero do fim não vale nada mesmo”</em>. Analise o lançamento seguindo as 4 etapas do Componente 5 simplificado. <strong>Marque V ou F em cada afirmação.</strong>",
-      afirmacoes:[
-        {texto:"<strong>Interpretação:</strong> No sistema decimal o zero é um marcador de posição: ele indica que aquela ordem existe e está vazia, e por isso sustenta os algarismos à sua esquerda.", correta:"V", just:"É o Tópico 2 do Texto Temático (TT) — sem o zero, 107 viraria 17."},
-        {texto:"<strong>Inventário:</strong> Os dados a confrontar são o apontamento de campo (1.070 t) e o lançamento digitado no sistema (107 t).", correta:"V", just:"Inventário completo — o que se pede é comparar as duas quantidades."},
-        {texto:"<strong>Cálculo:</strong> Decompondo, 1.070 = 1·10³ + 0·10² + 7·10¹ + 0·10⁰; suprimir o zero final desloca todos os algarismos uma casa e divide o número por dez.", correta:"V", just:"1.070 ÷ 107 = 10 — o lançamento vale um décimo do apontamento."},
-        {texto:"<strong>Plausibilidade:</strong> O lançamento de 107 t está correto, porque o zero no fim do número não altera o valor.", correta:"F", just:"Zero à direita da vírgula em 2,50 não altera o valor; zero à direita do último algarismo de um inteiro é posição pura — tirá-lo divide o número por dez. Erro E5 — o zero confundido com 'nada'."},
-        {texto:"<strong>Decisão:</strong> O sistema perde 963 t de produção — cerca de 28 viagens de um caminhão de 35 t que somem do relatório e do faturamento do dia.", correta:"V", just:"1.070 − 107 = 963 t; 963 ÷ 35 ≈ 27,5 viagens."}
-      ],
-      feedbackGeral:"Função pedagógica: reconhecer o zero como posição, e não como ausência. Conclusão-modelo: o sistema deveria registrar <em>1.070 t</em>; o lançamento digitado apaga 90% da produção do dia. Revise: Texto Temático (TT), Tópico 2, Quadro 2."
+  },
+
+  R2: {
+    id:"T09-TM-R2", bloom:'L1-L2', pts:1, tipo:'MC', tipoLabel:"Revis&atilde;o Conceitual",
+    enunciado:"A <em>F&iacute;sica Identidade</em> (p. 53) apresenta acelera&ccedil;&otilde;es como 0,75 m/s&sup2; e &minus;1 m/s&sup2;. <strong>O que a unidade m/s&sup2; significa em palavras?</strong>",
+    opcoes:[
+      {letra:"A", texto:"metros percorridos a cada segundo de viagem."},
+      {letra:"B", texto:"metros por segundo, a cada segundo &mdash; quanto a velocidade (em m/s) muda em 1 s."},
+      {letra:"C", texto:"segundos necess&aacute;rios para percorrer um metro, ao quadrado."},
+      {letra:"D", texto:"metros percorridos durante o quadrado do tempo gasto."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Metros por segundo (m/s) &eacute; VELOCIDADE. A acelera&ccedil;&atilde;o tem um segundo por segundo a mais no denominador.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E6 &mdash; leu m/s&sup2; como se fosse m/s.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, o par&aacute;grafo da unidade no SI.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> m/s&sup2; = (m/s) por segundo: uma gaiola com 0,50 m/s&sup2; ganha meio metro por segundo de velocidade a cada segundo que passa.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Ler a unidade em voz alta j&aacute; entrega o conceito &mdash; e evita confundir acelera&ccedil;&atilde;o com velocidade.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> A mesma leitura vale para m/s&sup3; (jerk), que mede a rapidez com que a pr&oacute;pria acelera&ccedil;&atilde;o muda.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O quadrado est&aacute; no segundo do DENOMINADOR, e a grandeza continua sendo metro dividido por tempo ao quadrado.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E6 &mdash; inverteu a estrutura da unidade derivada.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia a <em>F&iacute;sica Identidade</em>, p. 53.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> N&atilde;o h&aacute; tempo ao quadrado multiplicando: m/s&sup2; &eacute; uma DIVIS&Atilde;O por segundo, feita duas vezes.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E6 &mdash; leu a unidade como produto em vez de raz&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2.</div>"}
     }
-  ],
-  C: [
-    /* ── Q1-C: Pense e Use (MC) — 4 pt ── */
-    {
-      id:"T03-PR-Q1-C", num:1, bloom:'L3', pts:4, tipo:'MC',
-      tipoLabel:'Pense e Use',
-      enunciado:"Um fio de cobre da instalação elétrica da usina tem diâmetro medido em <strong>0,04520 m</strong>. <strong>Aplicando a Equação 5 (N = a × 10ⁿ), qual é a escrita correta em notação científica, preservando todos os algarismos significativos da medida?</strong>",
-      opcoes:[
-        {letra:"A", texto:"4,52 × 10⁻² m"},
-        {letra:"B", texto:"4,520 × 10⁻² m"},
-        {letra:"C", texto:"45,20 × 10⁻³ m"},
-        {letra:"D", texto:"4,520 × 10² m"}
-      ],
-      correta:"B",
-      feedbacks:{
-        A:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,04520 m = 4,520 × 10⁻² m — mantissa entre 1 e 10, expoente negativo e o zero final preservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E6 — descartou o zero final, que é significativo (perde 1 algarismo)</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 5, Equação 5.</div>"},
-        B:{ok:true,html:"<div class=\"fb-title\">\u2714 Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> a vírgula anda duas casas para a direita, então o expoente é −2; o zero final permanece porque foi medido.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> a mantissa precisa ficar entre 1 e 10 — é ela que exibe os algarismos significativos.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> a ordem de grandeza é 10⁻², a mesma de qualquer medida em centímetros.</div>"},
-        C:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,04520 m = 4,520 × 10⁻² m — mantissa entre 1 e 10, expoente negativo e o zero final preservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E2 — mantissa fora do intervalo 1 ≤ a < 10</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 5, Equação 5.</div>"},
-        D:{ok:false,html:"<div class=\"fb-title\">\u274c Aten\u00e7\u00e3o!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 0,04520 m = 4,520 × 10⁻² m — mantissa entre 1 e 10, expoente negativo e o zero final preservado.</div><div class=\"fb-level\"><strong>② ERRO:</strong> E1 — trocou o sinal do expoente</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia o Texto Temático (TT), Tópico 5, Equação 5.</div>"}
-      }
-    },
-    /* ── Q2-C: C5 simplificado (VF) — 6 pt ── */
-    {
-      id:"T03-PR-Q2-C", num:2, bloom:'L4', pts:6, tipo:'VF',
-      tipoLabel:'Componente 5 simplificado',
-      enunciado:"Na bancada do laboratório, Lucas mede uma amostra de itabirito com uma <strong>régua milimetrada</strong> e anota no relatório: <em>“comprimento: 12,4567 cm — quanto mais casas, mais precisa a medida”</em>. Analise a anotação seguindo as 4 etapas do Componente 5 simplificado. <strong>Marque V ou F em cada afirmação.</strong>",
-      afirmacoes:[
-        {texto:"<strong>Interpretação:</strong> Quem define quantos algarismos a medida pode ter é o instrumento: a incerteza é metade da menor divisão da escala.", correta:"V", just:"É a Equação 4 do Texto Temático (TT), Tópico 5."},
-        {texto:"<strong>Inventário:</strong> Para julgar a anotação basta o valor registrado, 12,4567 cm.", correta:"F", just:"Falta o dado que decide a questão — a menor divisão da régua (1 mm), da qual sai a incerteza de ±0,5 mm. Erro E3 — inventário incompleto."},
-        {texto:"<strong>Cálculo:</strong> Com menor divisão de 1 mm, o resultado deve ser escrito (124,0 ± 0,5) mm, ou (12,40 ± 0,05) cm — 4 algarismos significativos, o último duvidoso.", correta:"V", just:"Incerteza = 1 mm ÷ 2 = 0,5 mm; a régua permite estimar até o décimo de milímetro."},
-        {texto:"<strong>Plausibilidade:</strong> A anotação de 12,4567 cm é mais confiável, porque tem mais casas decimais.", correta:"F", just:"As três últimas casas não foram medidas por régua nenhuma: são invenção. Mais casas do que o instrumento permite não é mais precisão, é precisão falsa. Erro E5."},
-        {texto:"<strong>Decisão:</strong> O relatório deve registrar (12,40 ± 0,05) cm; anotar casas que o instrumento não mede compromete o laudo e obriga a repetir o ensaio.", correta:"V", just:"É a fronteira entre o que se mede e o que se imagina — Tópico 5 do TT."}
-      ],
-      feedbackGeral:"Função pedagógica: reconhecer que o número de algarismos significativos é imposto pelo instrumento, não pela vontade de quem escreve. Conclusão-modelo: o relatório deveria registrar <em>(12,40 ± 0,05) cm</em>. Revise: Texto Temático (TT), Tópico 5, Equação 4."
+  },
+
+  R3: {
+    id:"T09-TM-R3", bloom:'L1-L2', pts:1, tipo:'MC', tipoLabel:"Revis&atilde;o Conceitual",
+    enunciado:"Segundo o Texto Tem&aacute;tico (TT) (T&oacute;pico 2) e a <em>F&iacute;sica Identidade</em> (p. 53), <strong>o que classifica um movimento retil&iacute;neo como acelerado ou retardado?</strong>",
+    opcoes:[
+      {letra:"A", texto:"o sinal da acelera&ccedil;&atilde;o: negativa significa sempre retardado."},
+      {letra:"B", texto:"o sentido em que o ve&iacute;culo est&aacute; indo: subindo &eacute; acelerado, descendo &eacute; retardado."},
+      {letra:"C", texto:"o produto v&middot;a: positivo, o movimento &eacute; acelerado; negativo, retardado."},
+      {letra:"D", texto:"o valor absoluto da acelera&ccedil;&atilde;o: acima de 1 m/s&sup2; &eacute; acelerado."}
+    ],
+    correta:"C",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O sinal informa o SENTIDO no eixo adotado, n&atilde;o o efeito sobre o movimento.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; leu o sinal como se fosse a classifica&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, o aviso sobre o sinal.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Subir ou descer n&atilde;o classifica nada por si: o que vale &eacute; a rela&ccedil;&atilde;o entre os sentidos de v e de a.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; trocou a geometria do terreno pela f&iacute;sica do movimento.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> Se velocidade e acelera&ccedil;&atilde;o apontam para o mesmo lado, o m&oacute;dulo da velocidade cresce; se apontam para lados opostos, diminui.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Um caminh&atilde;o com v = &minus;8,0 m/s e a = &minus;0,5 m/s&sup2; est&aacute; GANHANDO velocidade rampa abaixo.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> Essa leitura reaparece no Trabalho (TR), na etapa de an&aacute;lise do C5.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O m&oacute;dulo diz a INTENSIDADE da mudan&ccedil;a; a classifica&ccedil;&atilde;o vem do produto v&middot;a.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E4 &mdash; confundiu intensidade com natureza do movimento.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, Equa&ccedil;&atilde;o 3.</div>"}
     }
-  ]
+  },
+
+  R4: {
+    id:"T09-TM-R4", bloom:'L1-L2', pts:1, tipo:'MC', tipoLabel:"Revis&atilde;o Conceitual",
+    enunciado:"No T&oacute;pico 3 do Texto Tem&aacute;tico (TT), o quadro mostra a acelera&ccedil;&atilde;o m&eacute;dia calculada em intervalos cada vez menores: &minus;2,50 &rarr; &minus;3,60 &rarr; &minus;4,00 &rarr; &minus;4,16 &rarr; &minus;4,20 m/s&sup2;. <strong>O que esses n&uacute;meros mostram?</strong>",
+    opcoes:[
+      {letra:"A", texto:"que a conta fica cada vez mais imprecisa &agrave; medida que o intervalo diminui."},
+      {letra:"B", texto:"que os valores convergem: encolhendo &Delta;t, a m&eacute;dia se aproxima da acelera&ccedil;&atilde;o naquele instante."},
+      {letra:"C", texto:"que a acelera&ccedil;&atilde;o do ve&iacute;culo aumentou ao longo da freada."},
+      {letra:"D", texto:"que a acelera&ccedil;&atilde;o m&eacute;dia e a instant&acirc;nea s&atilde;o sempre iguais."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O contr&aacute;rio: quanto menor o intervalo, mais o valor se estabiliza em torno de &minus;4,2 m/s&sup2;.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; leu a converg&ecirc;ncia como perda de precis&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3, o quadro da converg&ecirc;ncia.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> A partir de certo ponto, encolher mais o intervalo j&aacute; n&atilde;o muda a resposta &mdash; &eacute; a ideia de limite.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> &Eacute; o mesmo racioc&iacute;nio da velocidade instant&acirc;nea, na T08, agora aplicado &agrave; varia&ccedil;&atilde;o da velocidade.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> O aceler&ocirc;metro do celular faz exatamente isso, centenas de vezes por segundo.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Os n&uacute;meros s&atilde;o do MESMO instante, medidos com intervalos diferentes &mdash; n&atilde;o de instantes diferentes.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E3 &mdash; leu a tabela como uma sequ&ecirc;ncia temporal.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> S&oacute; coincidem quando a acelera&ccedil;&atilde;o &eacute; constante (movimento uniformemente variado). Aqui a m&eacute;dia deu &minus;2,5 e o instante, &minus;4,2.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; generalizou um caso particular.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3, e a <em>F&iacute;sica Identidade</em>, p. 53.</div>"}
+    }
+  },
+
+  R5: {
+    id:"T09-TM-R5", bloom:'L1-L2', pts:1, tipo:'MC', tipoLabel:"Revis&atilde;o Conceitual",
+    enunciado:"No T&oacute;pico 4 do Texto Tem&aacute;tico (TT), o paraquedista em velocidade limite cai a cerca de 200 km/h. <strong>Qual &eacute; a acelera&ccedil;&atilde;o dele nesse trecho?</strong>",
+    opcoes:[
+      {letra:"A", texto:"zero &mdash; a resist&ecirc;ncia do ar equilibra o peso e a velocidade deixa de mudar."},
+      {letra:"B", texto:"9,8 m/s&sup2;, porque todo corpo em queda tem a acelera&ccedil;&atilde;o da gravidade."},
+      {letra:"C", texto:"muito alta, porque a velocidade &eacute; muito alta."},
+      {letra:"D", texto:"negativa, porque ele est&aacute; caindo."}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> Velocidade constante &rArr; &Delta;v = 0 &rArr; a = 0, por mais alta que seja a velocidade.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> D&aacute; para estar muito r&aacute;pido e n&atilde;o estar acelerando &mdash; e &eacute; por isso que ele n&atilde;o sente nada al&eacute;m do vento.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> O mesmo vale para o &ocirc;nibus a 80 km/h no trecho reto: garrafa em p&eacute; no painel.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> 9,8 m/s&sup2; vale na queda LIVRE, sem resist&ecirc;ncia do ar. Em velocidade limite as for&ccedil;as se equilibram e a acelera&ccedil;&atilde;o zera.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; aplicou queda livre a um trecho que n&atilde;o &eacute; queda livre.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Velocidade e acelera&ccedil;&atilde;o s&atilde;o grandezas independentes: uma pode ser enorme com a outra valendo zero.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; ligou o valor da velocidade ao valor da acelera&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4, o trecho da velocidade limite.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Descer d&aacute; sinal negativo &agrave; VELOCIDADE, se o eixo apontar para cima; a acelera&ccedil;&atilde;o, aqui, &eacute; nula.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; confundiu sentido do movimento com acelera&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4.</div>"}
+    }
+  },
+
+  F1: {
+    id:"T09-TM-F1", bloom:'L3', pts:1, tipo:'MC', tipoLabel:"Pense e Fa&ccedil;a",
+    enunciado:"Numa freada, o aceler&ocirc;metro registrou pico de &minus;4,2 m/s&sup2;, mas a acelera&ccedil;&atilde;o m&eacute;dia do trecho foi &minus;2,5 m/s&sup2;. <strong>Por que os dois valores s&atilde;o t&atilde;o diferentes?</strong>",
+    opcoes:[
+      {letra:"A", texto:"porque um dos instrumentos est&aacute; descalibrado."},
+      {letra:"B", texto:"porque a m&eacute;dia distribui a freada por todo o intervalo, incluindo o come&ccedil;o suave e o fim quase parado, enquanto o pico &eacute; um instante s&oacute;."},
+      {letra:"C", texto:"porque a m&eacute;dia foi calculada em km/h e o pico em m/s."},
+      {letra:"D", texto:"porque o pico ocorreu depois de o ve&iacute;culo parar."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> N&atilde;o h&aacute; erro de instrumento: as duas medidas respondem perguntas diferentes &mdash; uma sobre o trecho, outra sobre o instante.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; atribuiu a diferen&ccedil;a a defeito de medi&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> A m&eacute;dia &eacute; um resumo do intervalo; o pico &eacute; o valor de um instante dentro dele.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> &Eacute; o pico que joga o corpo para a frente &mdash; e &eacute; sobre ele que a norma de conforto e a an&aacute;lise de risco atuam.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> A Provinha (PR) cobrou essa mesma distin&ccedil;&atilde;o num relat&oacute;rio de turno.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> As duas est&atilde;o em m/s&sup2;. A diferen&ccedil;a &eacute; conceitual, n&atilde;o de unidade.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E1 &mdash; procurou uma explica&ccedil;&atilde;o de unidade onde o problema &eacute; de conceito.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3, o quadro da converg&ecirc;ncia.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Depois de parar n&atilde;o h&aacute; mais varia&ccedil;&atilde;o de velocidade: o pico ocorre DURANTE a freada.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E3 &mdash; posicionou o pico fora do intervalo analisado.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3.</div>"}
+    }
+  },
+
+  F2: {
+    id:"T09-TM-F2", bloom:'L3', pts:1, tipo:'MC', tipoLabel:"Pense e Fa&ccedil;a",
+    enunciado:"Na descida da rampa de cava, o painel marca a = &minus;0,4 m/s&sup2; e o veloc&iacute;metro sobe. O sentido positivo aponta rampa acima. <strong>Como um operador deve registrar esse movimento?</strong>",
+    opcoes:[
+      {letra:"A", texto:"retardado, porque a acelera&ccedil;&atilde;o &eacute; negativa."},
+      {letra:"B", texto:"uniforme, porque a acelera&ccedil;&atilde;o &eacute; pequena."},
+      {letra:"C", texto:"acelerado, porque a velocidade tamb&eacute;m &eacute; negativa (descida) e o produto v&middot;a fica positivo."},
+      {letra:"D", texto:"imposs&iacute;vel decidir sem saber a massa do caminh&atilde;o."}
+    ],
+    correta:"C",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O sinal informa o sentido no eixo adotado. Com a velocidade tamb&eacute;m negativa, o movimento &eacute; acelerado.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; leu o sinal como efeito sobre a velocidade.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, o aviso sobre o sinal.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Uniforme exige a = 0. Aqui a acelera&ccedil;&atilde;o existe, ainda que pequena &mdash; e o veloc&iacute;metro sobe.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E4 &mdash; confundiu valor pequeno com valor nulo.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 1.</div>"},
+      C:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> v &lt; 0 e a &lt; 0 &rarr; v&middot;a &gt; 0 &rarr; movimento acelerado &mdash; e o veloc&iacute;metro subindo confirma.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Registrar &ldquo;freando&rdquo; nessa situa&ccedil;&atilde;o &eacute; um erro de turno com consequ&ecirc;ncia real na rampa.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> A regra vale para qualquer eixo, desde que ele seja declarado antes.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A classifica&ccedil;&atilde;o cinem&aacute;tica n&atilde;o depende da massa: basta o produto v&middot;a.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E3 &mdash; pediu um dado que a pergunta n&atilde;o exige.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2.</div>"}
+    }
+  },
+
+  F3: {
+    id:"T09-TM-F3", bloom:'L3', pts:1, tipo:'MC', tipoLabel:"Pense e Fa&ccedil;a",
+    enunciado:"A <em>F&iacute;sica Identidade</em> (p. 53) define o movimento uniformemente variado (MUV) como aquele em que a acelera&ccedil;&atilde;o escalar &eacute; constante e diferente de zero. <strong>O que isso implica para a acelera&ccedil;&atilde;o m&eacute;dia?</strong>",
+    opcoes:[
+      {letra:"A", texto:"nada: m&eacute;dia e instant&acirc;nea nunca coincidem."},
+      {letra:"B", texto:"que a m&eacute;dia de qualquer intervalo coincide com a acelera&ccedil;&atilde;o instant&acirc;nea, porque n&atilde;o h&aacute; picos nem vales para a m&eacute;dia esconder."},
+      {letra:"C", texto:"que a m&eacute;dia vale sempre metade da instant&acirc;nea."},
+      {letra:"D", texto:"que a acelera&ccedil;&atilde;o instant&acirc;nea deixa de existir no MUV."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> Coincidem exatamente quando a acelera&ccedil;&atilde;o &eacute; constante.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; negou o caso particular em que as duas se encontram.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia a <em>F&iacute;sica Identidade</em>, p. 53, e o Texto Tem&aacute;tico (TT), T&oacute;pico 3.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> Com a acelera&ccedil;&atilde;o constante, todo instante tem o mesmo valor &mdash; e a m&eacute;dia de valores iguais &eacute; esse mesmo valor.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> A freada da van do T&oacute;pico 3 N&Atilde;O &eacute; MUV: por isso a m&eacute;dia (&minus;2,5) diverge do pico (&minus;4,2).</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> O MUV &eacute; o modelo mais simples &mdash; e por isso o primeiro a ser estudado.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> N&atilde;o h&aacute; fator 1/2 nenhum: no MUV os dois valores s&atilde;o iguais.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E4 &mdash; inventou uma propor&ccedil;&atilde;o inexistente.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia a <em>F&iacute;sica Identidade</em>, p. 53.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A instant&acirc;nea continua existindo &mdash; ela s&oacute; passa a ser a mesma em todos os instantes.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; confundiu &ldquo;constante&rdquo; com &ldquo;inexistente&rdquo;.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 3.</div>"}
+    }
+  },
+
+  F4: {
+    id:"T09-TM-F4", bloom:'L3', pts:1, tipo:'MC', tipoLabel:"Pense e Fa&ccedil;a",
+    enunciado:"Um caminh&atilde;o faz uma curva da pista de servi&ccedil;o mantendo o veloc&iacute;metro fixo em 30 km/h. <strong>Ele est&aacute; acelerando?</strong>",
+    opcoes:[
+      {letra:"A", texto:"n&atilde;o &mdash; o veloc&iacute;metro n&atilde;o muda, logo a acelera&ccedil;&atilde;o &eacute; zero."},
+      {letra:"B", texto:"sim &mdash; a dire&ccedil;&atilde;o da velocidade muda, e isso &eacute; acelera&ccedil;&atilde;o centr&iacute;peta (a<sub>c</sub> = v&sup2;/r)."},
+      {letra:"C", texto:"sim, mas s&oacute; se ele estiver carregado."},
+      {letra:"D", texto:"n&atilde;o &mdash; acelera&ccedil;&atilde;o s&oacute; existe em linha reta."}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O veloc&iacute;metro s&oacute; mostra o M&Oacute;DULO. A dire&ccedil;&atilde;o mudou, logo a velocidade mudou.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; reduziu velocidade a um n&uacute;mero, sem dire&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5, a acelera&ccedil;&atilde;o centr&iacute;peta.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> Velocidade tem m&oacute;dulo E dire&ccedil;&atilde;o. Mudar a dire&ccedil;&atilde;o j&aacute; &eacute; mudar a velocidade.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> &Eacute; por isso que a carga solta continua reto e sai da caroceria na curva &mdash; in&eacute;rcia.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> A centr&iacute;fuga do laborat&oacute;rio da mina chega a 1.000 g sem nunca mudar de rapidez.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A carga muda a for&ccedil;a necess&aacute;ria, n&atilde;o o fato de haver acelera&ccedil;&atilde;o: a<sub>c</sub> = v&sup2;/r n&atilde;o tem massa.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E3 &mdash; trouxe um dado que a cinem&aacute;tica n&atilde;o usa.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A curva &eacute; justamente o caso em que a acelera&ccedil;&atilde;o aparece sem mudan&ccedil;a de rapidez.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; restringiu acelera&ccedil;&atilde;o ao movimento retil&iacute;neo.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5.</div>"}
+    }
+  },
+
+  U1: {
+    id:"T09-TM-U1", bloom:'L3', pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"Um trem de min&eacute;rio parte do repouso no p&aacute;tio de carregamento e atinge <strong>45 km/h</strong> em <strong>50 s</strong>. <strong>Qual &eacute; a acelera&ccedil;&atilde;o escalar m&eacute;dia do trem?</strong>",
+    opcoes:[
+      {letra:"A", texto:"0,90 m/s&sup2;"},
+      {letra:"B", texto:"0,25 m/s&sup2;"},
+      {letra:"C", texto:"2,5 m/s&sup2;"},
+      {letra:"D", texto:"0,25 m/s"}
+    ],
+    correta:"B",
+    feedbacks:{
+      A:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A velocidade precisa ir para m/s antes: 45 km/h = 12,5 m/s, e n&atilde;o 45.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E1 &mdash; dividiu 45 km/h por 50 s sem converter.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, e a convers&atilde;o km/h &divide; 3,6.</div>"},
+      B:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> 45 &divide; 3,6 = 12,5 m/s; a<sub>m</sub> = 12,5 / 50 = 0,25 m/s&sup2;.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Arranque lento de prop&oacute;sito: com milhares de toneladas atr&aacute;s, acelerar depressa arrebentaria os engates.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> Compare com a van da trilha (+1,25 m/s&sup2;): cinco vezes mais &aacute;gil.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> 12,5 &divide; 50 = 0,25. O resultado &eacute; dez vezes menor do que 2,5.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E1 &mdash; deslocou a v&iacute;rgula na divis&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, Equa&ccedil;&atilde;o 2.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O n&uacute;mero est&aacute; certo, a unidade n&atilde;o: acelera&ccedil;&atilde;o se mede em m/s&sup2;.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E6 &mdash; trocou a unidade da grandeza derivada.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 2, a unidade no SI.</div>"}
+    }
+  },
+
+  U2: {
+    id:"T09-TM-U2", bloom:'L3', pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"Uma pedra solta da borda de um po&ccedil;o de mina cai <strong>20 m</strong> at&eacute; o fundo. Considerando queda livre com <strong>g = 9,8 m/s&sup2;</strong> e usando &Delta;s = &frac12;&middot;g&middot;t&sup2; e v = g&middot;t, <strong>qual &eacute; aproximadamente a velocidade de chegada?</strong>",
+    opcoes:[
+      {letra:"A", texto:"20 m/s, cerca de 71 km/h"},
+      {letra:"B", texto:"9,8 m/s, cerca de 35 km/h"},
+      {letra:"C", texto:"4,5 m/s, cerca de 16 km/h"},
+      {letra:"D", texto:"196 m/s, cerca de 706 km/h"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> t = &radic;(2&middot;20/9,8) = 2,0 s; v = 9,8 &times; 2,0 &asymp; 20 m/s &asymp; 71 km/h.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Vinte metros parecem pouco &mdash; e a pedra chega a 70 por hora. &Eacute; por isso que boca de po&ccedil;o tem prote&ccedil;&atilde;o e capacete &eacute; obrigat&oacute;rio.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> O mesmo c&aacute;lculo explica o fio d&rsquo;&aacute;gua afinando na cachoeira.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> 9,8 &eacute; a acelera&ccedil;&atilde;o, n&atilde;o a velocidade de chegada: ainda falta multiplicar pelo tempo de queda.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E5 &mdash; confundiu a acelera&ccedil;&atilde;o com a velocidade final.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> &radic;20 = 4,5 &eacute; a raiz da altura, n&atilde;o a velocidade. Calcule t primeiro e depois v = g&middot;t.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E2 &mdash; aplicou a raiz na grandeza errada.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4, Equa&ccedil;&atilde;o 4.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> 9,8 &times; 20 = 196 usa a ALTURA no lugar do tempo. O tempo de queda &eacute; 2,0 s.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E3 &mdash; substituiu o tempo pela altura na equa&ccedil;&atilde;o.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 4.</div>"}
+    }
+  },
+
+  U3: {
+    id:"T09-TM-U3", bloom:'L3', pts:2, tipo:'MC', tipoLabel:"Pense e Use",
+    enunciado:"Adaptado da <em>F&iacute;sica Identidade</em> (p. 53): um caminh&atilde;o de servi&ccedil;o trafega a <strong>72 km/h</strong> numa via da mina quando freia com desacelera&ccedil;&atilde;o constante de <strong>4,0 m/s&sup2;</strong>. <strong>Usando &Delta;s = v&sup2; / (2&middot;|a|), qual &eacute; a dist&acirc;ncia at&eacute; parar?</strong>",
+    opcoes:[
+      {letra:"A", texto:"50 m"},
+      {letra:"B", texto:"648 m"},
+      {letra:"C", texto:"100 m"},
+      {letra:"D", texto:"2,5 m"}
+    ],
+    correta:"A",
+    feedbacks:{
+      A:{ok:true,html:"<div class=\"fb-title\">&#10004; Correto!</div><div class=\"fb-level\"><strong>&#9312; VALIDA&Ccedil;&Atilde;O:</strong> 72 &divide; 3,6 = 20 m/s; &Delta;s = 20&sup2; / (2 &times; 4,0) = 400 / 8,0 = 50 m.</div><div class=\"fb-level\"><strong>&#9313; REFOR&Ccedil;O:</strong> Meio quarteir&atilde;o de dist&acirc;ncia &mdash; e ainda sem contar o tempo de rea&ccedil;&atilde;o do operador.</div><div class=\"fb-level\"><strong>&#9314; EXTENS&Atilde;O:</strong> Dobrar a velocidade quadruplicaria essa dist&acirc;ncia: 200 m a 144 km/h.</div>"},
+      B:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A velocidade tem de estar em m/s antes de ser elevada ao quadrado: 72 km/h = 20 m/s.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E1 &mdash; elevou ao quadrado a velocidade ainda em km/h.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5, Equa&ccedil;&atilde;o 6.</div>"},
+      C:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> O denominador &eacute; 2&middot;|a| = 8,0, e n&atilde;o 4,0.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E2 &mdash; esqueceu o fator 2 do denominador.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5, Equa&ccedil;&atilde;o 6.</div>"},
+      D:{ok:false,html:"<div class=\"fb-title\">&#10006; Aten&ccedil;&atilde;o!</div><div class=\"fb-level\"><strong>&#9312; CORRE&Ccedil;&Atilde;O:</strong> A velocidade entra ao QUADRADO: 20&sup2; = 400, e n&atilde;o 20.</div><div class=\"fb-level\"><strong>&#9313; ERRO:</strong> E4 &mdash; tratou a dist&acirc;ncia como proporcional &agrave; velocidade.</div><div class=\"fb-level\"><strong>&#9314; ORIENTA&Ccedil;&Atilde;O:</strong> Releia o Texto Tem&aacute;tico (TT), T&oacute;pico 5.</div>"}
+    }
+  }
+
 };
+
+/* Janela deslizante: 8 por versao (3 R + 3 F + 2 U) */
+const MAPA_VERSOES = {
+  A: ['R1','R2','R3','F1','F2','F3','U1','U2'],
+  B: ['R2','R3','R4','F2','F3','F4','U2','U3'],
+  C: ['R3','R4','R5','F3','F4','F1','U3','U1']
+};
+
+const BANCO = {};
+Object.keys(MAPA_VERSOES).forEach(function (v) {
+  BANCO[v] = MAPA_VERSOES[v].map(function (chave, i) {
+    const base = ITENS[chave];
+    return Object.assign({}, base, { num: i + 1 });
+  });
+});
 
 /* ============================================================
    STATE
    ============================================================ */
-const PREFIX = 'ifmg_fc1_t03_pr_';
+const PREFIX = 'ifmg_fc1_t09_tm_';
 
 /* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
    Default embutido pelo autor; a Equipe de Professores pode sobrescrever via
    aba `config` da planilha (o coletor injetado chama aplicarConfigOA). ── */
-var OA_ID = { trilha: 'T03', oa: 'PR' };
+var OA_ID = { trilha: 'T09', oa: 'TM' };
 var OA_CFG = {
   schema: 'ifmg-oa-cfg-v1',
   versao_precarga: 'auto',   /* 'auto' (por RA) | 'A' | 'B' | 'C' | 'livre' */
@@ -1217,8 +1354,8 @@ function montarPacote() {
   var now = new Date();
   const qs = BANCO[currentVersion];
   return {
-    schema: 'ifmg-fc1-provinha-v2',
-    trilha: 'T03',
+    schema: 'ifmg-fc1-tarefa-minima-v3',
+    trilha: 'T09',
     tipo: 'TN',
     versao: currentVersion,
     tentativa: tentativaAtual,
@@ -1256,7 +1393,7 @@ function exportJSON() {
   const a = document.createElement('a');
   a.href = url;
   const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
-  a.download = `T03-PR-v4-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.download = `T08-TN-v${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'Comprovante exportado com sucesso');
@@ -1468,11 +1605,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T03-PR-v4-estudante.html
+   Arquivo fonte: T09-TM-v1-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T03-PR-v4-estudante.html';
+var ARQUIVO_FONTE = 'T09-TM-v1-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
@@ -1656,7 +1793,7 @@ function enviarColeta(isRetry) {
 <button class="aba-site-toggle" id="abaSiteToggle">Site</button>
 <aside class="aba-site-painel" id="abaSitePainel">
   <h3>Site</h3>
-  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t03">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t09">Ver todos os OAs da trilha</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
   <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>

@@ -269,7 +269,10 @@ body {
   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
 }
 .score-breakdown {
-  display: flex; justify-content: center; gap: 16px; margin-top: 12px;
+  /* flex-wrap: com 8 questoes a linha unica estourava 375 px e o celular
+     ganhava rolagem lateral (medido em T08 e T09). */
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px 16px; margin-top: 12px; max-width: 100%;
   font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
 }
 .score-breakdown span { display: flex; align-items: center; gap: 4px; }
