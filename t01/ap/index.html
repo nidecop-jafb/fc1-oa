@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 · Física, uma linguagem básica da ciência — Apresentação de Aula (AP) v21</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO — MODO PALCO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.72 0.16 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.65 0.24 25);
+  --cinza: oklch(0.60 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.40 0.02 260);
+  --texto: oklch(0.96 0 0);
+  --branco: oklch(0.98 0 0);
+  --superficie: oklch(0.20 0.02 260);
+  --fundo: oklch(0.09 0.02 260);
+  --input-bg: oklch(0.18 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-palco: 1.5rem;   /* base do "modo palco" — maior que TT (1.15) */
+}
+
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.45 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.72 0.02 260);
+  --texto: oklch(0.15 0 0);
+  --branco: oklch(0.10 0 0);
+  --superficie: oklch(0.96 0.01 260);
+  --fundo: oklch(0.99 0.005 260);
+  --input-bg: oklch(0.94 0.01 260);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--font);
+  font-size: var(--fs-palco);
+  line-height: 1.5;
+  border-radius: 0;
+}
+
+/* ═══ BARRA DE PROGRESSO ═══ */
+.progress-top {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 4px; z-index: 1000;
+  background: var(--cinza-claro);
+}
+.progress-top .bar {
+  height: 100%; background: var(--ouro);
+  width: 0%; transition: width 0.3s ease;
+}
+
+/* ═══ TOOLBAR (topo-direita) ═══ */
+.toolbar {
+  position: fixed; top: 4px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--cinza-borda);
+  border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--font);
+  font-size: 0.75rem; padding: 6px 10px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ SIDEBARS (6 abas laterais — flex container) ═══ */
+.sb-toggles {
+  position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+  z-index: 998; display: flex; flex-direction: column; gap: 2px;
+}
+.sb-toggle {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem;
+  padding: 6px 8px; cursor: pointer;
+  font-family: var(--font);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+  border-radius: 0; transition: color 0.15s;
+}
+.sb-toggle:hover { color: var(--ouro); }
+@media (max-height: 780px) {
+  .sb-toggle { font-size: 0.65rem; padding: 5px 6px; }
+}
+
+/* Blocos internos de créditos e imagens */
+.cred-grupo { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--cinza-borda); }
+.cred-grupo:last-child { border-bottom: none; margin-bottom: 8px; }
+.cred-instituicao { color: var(--ouro); font-size: 0.88rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
+.cred-cargo { color: var(--cinza); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.cred-nome { color: var(--branco); font-weight: 700; font-size: 0.9rem; }
+.cred-bio { font-size: 0.82rem; color: oklch(0.78 0 0); line-height: 1.5; margin-top: 4px; }
+[data-theme="light"] .cred-bio { color: oklch(0.28 0 0); }
+.cred-footer { font-size: 0.7rem; color: var(--cinza); font-style: italic; text-align: center; margin-top: 12px; letter-spacing: 0.5px; }
+.imagens-nota { font-size: 0.8rem; color: var(--cinza); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--cinza-borda); line-height: 1.5; }
+.figura-num { font-weight: 700; color: var(--azul); }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie);
+  border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 46px;
+  transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem;
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar h3 {
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda);
+  padding-bottom: 8px;
+}
+.sidebar .toc-item {
+  display: block; padding: 8px 0; font-size: 0.85rem;
+  color: oklch(0.75 0 0); text-decoration: none;
+  border-bottom: 1px solid var(--cinza-claro);
+  transition: color 0.15s; cursor: pointer;
+}
+[data-theme="light"] .sidebar .toc-item { color: oklch(0.28 0 0); }
+.sidebar .toc-item:hover { color: var(--ouro); }
+.sidebar .toc-item .toc-num {
+  font-family: var(--mono); color: var(--azul);
+  font-size: 0.75rem; margin-right: 10px; min-width: 30px; display: inline-block;
+}
+.sidebar .toc-item.ativo .toc-num { color: var(--ouro); font-weight: 700; }
+.sidebar .toc-item.ato-titulo {
+  color: var(--azul); font-weight: 700;
+  border-bottom: 2px solid var(--azul);
+  margin-top: 12px; padding-top: 12px;
+}
+.sidebar p { font-size: 0.9rem; margin-bottom: 12px; color: oklch(0.80 0 0); line-height: 1.6; }
+[data-theme="light"] .sidebar p { color: oklch(0.25 0 0); }
+.sidebar .link-yt {
+  display: inline-block; margin-top: 8px; padding: 8px 14px;
+  background: var(--erro); color: white; text-decoration: none;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sidebar .link-yt:hover { background: oklch(0.72 0.24 25); }
+.sidebar .refs-grupo { margin-bottom: 18px; }
+.sidebar .refs-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 6px;
+}
+.sidebar .refs-item {
+  font-size: 0.8rem; color: oklch(0.78 0 0);
+  margin-bottom: 4px; line-height: 1.4;
+}
+[data-theme="light"] .sidebar .refs-item { color: oklch(0.28 0 0); }
+
+/* ═══ DECK / SLIDES ═══ */
+.deck { width: 100%; height: 100%; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  padding: 5vh 6vw 60px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  display: flex; flex-direction: column;
+  /* Rolagem em TODOS os slides: com overflow hidden, o que passava da dobra
+     ficava inalcancavel por qualquer gesto e so aparecia reduzindo o zoom.
+     A barra fica OCULTA de proposito — exibi-la custa 15px de largura, o
+     texto reflui e o transbordo aumenta (medido na T07: 75 -> 143px).
+     Rolagem por roda, arrasto e pelas teclas Cima/Baixo. */
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;              /* Firefox */
+}
+.slide::-webkit-scrollbar { width: 0; height: 0; }   /* Chrome / Edge */
+.slide.ativo { opacity: 1; pointer-events: auto; }
+
+/* Título de slide (sem "linha SLIDE X" — info já está no rodapé/sumário) */
+.slide-titulo {
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--ouro); line-height: 1.15;
+  margin-bottom: 18px;
+}
+.slide-subtitulo { font-size: 1.1rem; color: var(--cinza); margin-top: -18px; margin-bottom: 24px; }
+
+.slide-body {
+  width: 100%; flex: 1;
+  display: flex; flex-direction: column;
+  /* "safe center": centraliza, mas NUNCA corta o topo quando o conteudo excede */
+  justify-content: center;
+  justify-content: safe center;
+  gap: 12px;
+}
+
+/* ── SLIDE 1: CAPA ── */
+.capa-slide {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center;
+  /* NAO redefinir position aqui: o .slide e position:absolute com inset:0.
+     Com position:relative a capa saia do posicionamento absoluto, encolhia
+     para a altura do conteudo e sobrava faixa preta no rodape. */
+  overflow: hidden !important;
+}
+.capa-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(0.35) saturate(1.1);
+  z-index: 0; min-height: 100%;
+}
+[data-theme="light"] .capa-bg { filter: brightness(0.65) saturate(1.1); }
+.capa-conteudo {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  padding: 5vh 6vw;
+}
+.capa-disciplina {
+  font-size: 3.4rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 4px;
+  color: var(--ouro); text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.capa-curso {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  margin-top: 10px; letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-trilha {
+  font-size: 1.15rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 3px;
+  margin-top: 32px; font-weight: 700;
+}
+.capa-titulo {
+  font-size: 3rem; font-weight: 700; color: var(--branco);
+  margin-top: 14px; line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  max-width: 900px;
+}
+.capa-epigrafe {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  max-width: 640px; text-align: center; line-height: 1.4;
+  margin-top: 32px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-epigrafe-autor {
+  font-size: 1rem; color: var(--ouro); margin-top: 8px; font-weight: 600;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-autores {
+  font-size: 1.15rem; color: oklch(0.85 0 0);
+  margin-top: 40px; font-weight: 500;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-inst {
+  font-size: 0.9rem; color: oklch(0.70 0 0);
+  margin-top: 6px; letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+[data-theme="light"] .capa-disciplina,
+[data-theme="light"] .capa-curso,
+[data-theme="light"] .capa-titulo,
+[data-theme="light"] .capa-epigrafe,
+[data-theme="light"] .capa-autores,
+[data-theme="light"] .capa-inst {
+  text-shadow: 0 2px 12px rgba(255,255,255,0.7);
+}
+
+/* ── CONTEÚDO GENÉRICO ── */
+.cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: start; width: 100%;
+}
+.cols.img-r { grid-template-columns: 1.15fr 0.85fr; }
+.cols.img-l { grid-template-columns: 0.85fr 1.15fr; }
+
+.col-text { display: flex; flex-direction: column; gap: 10px; }
+.col-text p { font-size: 1.35rem; line-height: 1.55; color: oklch(0.90 0 0); }
+[data-theme="light"] .col-text p { color: oklch(0.18 0 0); }
+.hi { color: var(--ouro); font-weight: 700; }
+.hv { color: var(--verde); font-weight: 700; }
+.he { color: var(--erro); font-weight: 700; }
+
+.col-img {
+  width: 100%; border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  overflow: hidden;
+  align-self: center;
+}
+.col-img img { width: 100%; display: block; height: auto; max-height: 48vh; object-fit: cover; }
+.col-img-legenda {
+  font-size: 0.85rem; color: var(--cinza);
+  text-align: center; padding: 8px 12px; font-style: italic;
+  border-top: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+}
+
+/* ── TIMELINE ROTEIRO ── */
+.tl {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 12px 16px; background: var(--superficie);
+  border-left: 4px solid var(--ouro);
+}
+.tl-t {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--azul); min-width: 100px; flex-shrink: 0;
+  font-weight: 700;
+}
+.tl-d { font-size: 1.2rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .tl-d { color: oklch(0.22 0 0); }
+.tl-d strong { color: var(--ouro); }
+
+/* ── DEFINIÇÃO / CONCEITO ── */
+.def {
+  background: var(--superficie);
+  padding: 16px 22px;
+  border-left: 4px solid var(--ouro);
+}
+.def .termo {
+  font-weight: 700; color: var(--ouro);
+  text-transform: uppercase; font-size: 0.95rem;
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.def p { font-size: 1.25rem; color: oklch(0.90 0 0); line-height: 1.5; }
+[data-theme="light"] .def p { color: oklch(0.18 0 0); }
+
+/* ── EQUAÇÃO ── */
+.eq {
+  background: var(--input-bg);
+  padding: 10px 22px; text-align: center;
+  font-family: var(--serif); font-size: 1.9rem;
+  color: var(--branco); border: 1px solid var(--cinza-borda);
+}
+
+/* ── PASSOS NUMERADOS ── */
+.passos { display: flex; flex-direction: column; gap: 8px; }
+.passo {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 14px; background: var(--superficie);
+}
+.passo-n {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 1.3rem; min-width: 28px;
+}
+.passo-t { font-size: 1.1rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .passo-t { color: oklch(0.22 0 0); }
+
+/* ── TIMELINE ERAS ── */
+.era {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 7px 16px; background: var(--superficie);
+  border-left: 4px solid var(--azul);
+}
+.era-p {
+  font-family: var(--mono); font-size: 0.95rem;
+  color: var(--azul); min-width: 130px; flex-shrink: 0;
+  padding-top: 3px; font-weight: 700;
+}
+.era-c { font-size: 1.15rem; color: oklch(0.88 0 0); line-height: 1.5; }
+[data-theme="light"] .era-c { color: oklch(0.22 0 0); }
+.era-c strong { color: var(--ouro); }
+
+/* ── TABELA ── */
+.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 1.15rem;
+}
+.tbl th {
+  padding: 12px 14px; text-align: left; font-weight: 700;
+  color: var(--ouro); border-bottom: 2px solid var(--cinza-borda);
+  text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+}
+.tbl td {
+  padding: 12px 14px; border-bottom: 1px solid var(--cinza-claro);
+  color: oklch(0.88 0 0); vertical-align: middle;
+}
+[data-theme="light"] .tbl td { color: oklch(0.20 0 0); }
+.tbl td.eq-cell { font-family: var(--serif); font-size: 1.2rem; }
+
+/* ── EXERCÍCIOS / APLICAÇÕES ── */
+.exercicio {
+  background: var(--superficie);
+  padding: 14px 22px;
+  border-left: 4px solid var(--azul);
+}
+.exercicio-label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--azul); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px; font-weight: 700;
+}
+.exercicio-enunciado {
+  font-size: 1.2rem; color: oklch(0.90 0 0);
+  line-height: 1.5; margin-bottom: 12px;
+}
+[data-theme="light"] .exercicio-enunciado { color: oklch(0.18 0 0); }
+.exercicio-resposta {
+  font-size: 1.25rem; color: var(--verde);
+  font-weight: 600; line-height: 1.5;
+  padding: 12px 16px; background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+}
+[data-theme="light"] .exercicio-resposta {
+  color: oklch(0.28 0.14 150);
+}
+
+/* ── PROTOCOLO C5 (8 etapas) — aplicado a cada exercício ── */
+.c5-ap {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px minmax(0, 1fr);
+  column-gap: 30px;
+  row-gap: 0;
+  margin-top: 10px;
+  font-family: var(--font);
+}
+/* Etapas 1-4 na coluna esquerda, 5-8 na direita: a mesma informacao na metade
+   da altura, sem reduzir corpo de fonte nenhum. O botao de revelacao e IRMAO
+   do .c5-ap (parent.insertBefore(btn, c5)), nao filho — por isso os nth-child
+   abaixo sao estaveis mesmo com as etapas ocultas. */
+.c5-ap > :nth-child(-n+8):nth-child(odd)  { grid-column: 1; }
+.c5-ap > :nth-child(-n+8):nth-child(even) { grid-column: 2; }
+.c5-ap > :nth-child(n+9):nth-child(odd)   { grid-column: 3; }
+.c5-ap > :nth-child(n+9):nth-child(even)  { grid-column: 4; }
+.c5-ap > :nth-child(1),  .c5-ap > :nth-child(2),
+.c5-ap > :nth-child(9),  .c5-ap > :nth-child(10) { grid-row: 1; }
+.c5-ap > :nth-child(3),  .c5-ap > :nth-child(4),
+.c5-ap > :nth-child(11), .c5-ap > :nth-child(12) { grid-row: 2; }
+.c5-ap > :nth-child(5),  .c5-ap > :nth-child(6),
+.c5-ap > :nth-child(13), .c5-ap > :nth-child(14) { grid-row: 3; }
+.c5-ap > :nth-child(7),  .c5-ap > :nth-child(8),
+.c5-ap > :nth-child(15), .c5-ap > :nth-child(16) { grid-row: 4; }
+@media (max-width: 1100px) {
+  .c5-ap { grid-template-columns: 44px minmax(0, 1fr); column-gap: 0; }
+  .c5-ap > * { grid-column: auto !important; grid-row: auto !important; }
+}
+.c5-ap-etapa {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 0.9rem;
+  padding: 6px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 3px;
+}
+.c5-icon {
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  color: var(--azul);
+  flex-shrink: 0; display: block;
+}
+.c5-ap-conteudo {
+  font-size: 1rem;
+  color: oklch(0.88 0 0);
+  padding: 6px 0 6px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  line-height: 1.45;
+}
+[data-theme="light"] .c5-ap-conteudo { color: oklch(0.22 0 0); }
+.c5-ap-conteudo strong { color: var(--ouro); }
+.c5-ap-conteudo .eq-inline {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--branco);
+  padding: 0 4px;
+}
+[data-theme="light"] .c5-ap-conteudo .eq-inline { color: oklch(0.15 0 0); }
+.c5-ap-etapa:first-child,
+.c5-ap > *:nth-child(2) { border-top: none; padding-top: 4px; }
+
+/* Etapa 8 — resposta como última linha da tabela C5 (ícone + número injetados via JS) */
+.c5-resposta {
+  position: relative;
+  margin-top: -1px;
+  padding: 10px 12px 12px 56px;
+  background: none;
+  border-top: 2px solid var(--verde);
+  color: var(--verde);
+  font-family: var(--font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.c5-resposta .c5-resp-etapa {
+  position: absolute; left: 4px; top: 8px;
+  width: 44px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  font-family: var(--mono); font-weight: 700;
+  color: var(--verde); font-size: 0.95rem;
+}
+.c5-resposta .c5-icon { color: var(--verde); }
+.c5-resposta strong { color: var(--verde); }
+[data-theme="light"] .c5-resposta,
+[data-theme="light"] .c5-resposta strong,
+[data-theme="light"] .c5-resposta .c5-resp-etapa,
+[data-theme="light"] .c5-resposta .c5-icon { color: oklch(0.28 0.14 150); }
+
+/* Botão de revelação da solução — foco no enunciado por padrão */
+.btn-solucao {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  background: var(--azul); color: white; border: none;
+  font-family: var(--font); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 12px 22px; cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0;
+}
+.btn-solucao:hover { background: var(--azul-claro); }
+[data-theme="light"] .btn-solucao { color: white; }
+.c5-solucao { margin-top: 14px; }
+.c5-solucao[hidden] { display: none !important; }
+
+/* Slides de exercício: IT-11 (símbolo) à direita, texto ocupa o restante */
+.slide-body.com-simbolo { position: relative; }
+.img-simbolo {
+  position: absolute; top: 0; right: 0;
+  width: 220px; height: auto;
+  border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  z-index: 1;
+}
+.slide-body.com-simbolo > .exercicio,
+.slide-body.com-simbolo > .qi {
+  padding-right: 250px;
+}
+@media (max-width: 1100px) {
+  .img-simbolo { width: 180px; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 200px; }
+}
+@media (max-width: 900px) {
+  .img-simbolo { position: static; width: 140px; margin: 0 auto 14px; display: block; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 0; }
+}
+
+/* Slides 8-13 (Aplicações + Integradora) — fluxograma C5 valorizado */
+.img-c5 {
+  width: 360px !important;
+  height: auto !important;
+  max-height: 560px;
+  object-fit: contain;
+  border: none !important;
+  background: transparent !important;
+}
+.slide-body.com-c5 > .qi,
+.slide-body.com-c5 > .exercicio { padding-right: 390px; }
+@media (max-width: 1100px) {
+  .img-c5 { width: 300px !important; max-height: 460px; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 330px; }
+}
+@media (max-width: 900px) {
+  .img-c5 { position: static; width: 90vw !important; max-height: none; margin: 0 auto 14px; display: block; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 0; }
+}
+
+/* ── QUESTÃO INTEGRADORA ── */
+.qi {
+  border: 3px solid var(--ouro);
+  padding: 16px 26px;
+  background: oklch(0.13 0.04 95);
+}
+[data-theme="light"] .qi { background: oklch(0.96 0.03 95); }
+.qi-label {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--ouro); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 12px; font-weight: 700;
+}
+.qi-enunciado {
+  font-size: 1.2rem; color: oklch(0.92 0 0);
+  line-height: 1.55; margin-bottom: 14px;
+}
+[data-theme="light"] .qi-enunciado { color: oklch(0.15 0 0); }
+.qi-item {
+  font-size: 1.15rem; color: var(--verde);
+  line-height: 1.5; margin-bottom: 6px;
+}
+
+/* ── CIÊNCIA E ARTE ── */
+.ca-obra {
+  text-align: left; font-family: var(--serif);
+  font-size: 1.2rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.ca-obra em { font-style: italic; color: var(--ouro); }
+.ca-versos {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.15rem; color: oklch(0.88 0 0);
+  text-align: left; line-height: 1.5;
+  margin: 12px 0; max-width: 700px;
+}
+[data-theme="light"] .ca-versos { color: oklch(0.20 0 0); }
+.ca-analise {
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  line-height: 1.42; max-width: 900px; margin: 0 auto;
+}
+[data-theme="light"] .ca-analise { color: oklch(0.18 0 0); }
+.ca-analise strong { color: var(--ouro); }
+.ca-epigrafe-box {
+  border: 2px solid var(--ouro);
+  padding: 26px 30px;
+  background: var(--superficie);
+  max-width: 720px; margin: 0 auto;
+  text-align: center;
+}
+.ca-epigrafe-box p {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.6rem; color: oklch(0.92 0 0);
+  line-height: 1.45;
+}
+[data-theme="light"] .ca-epigrafe-box p { color: oklch(0.15 0 0); }
+.ca-epigrafe-box .autor {
+  font-family: var(--font); font-style: normal;
+  font-size: 1rem; color: var(--ouro);
+  margin-top: 16px; font-weight: 700; letter-spacing: 1px;
+}
+
+.ca-provinha {
+  background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+  padding: 18px 22px; margin-top: 24px;
+  max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.ca-provinha .label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--verde); text-transform: uppercase;
+  letter-spacing: 1px; font-weight: 700; margin-bottom: 6px;
+}
+.ca-provinha p {
+  font-size: 1.2rem; color: oklch(0.90 0 0); line-height: 1.5;
+}
+[data-theme="light"] .ca-provinha p { color: oklch(0.18 0 0); }
+
+/* ── DESPEDIDA ── */
+.despedida {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center;
+}
+.desp-body {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 32px; max-width: 800px;
+}
+.desp-frase {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 2.6rem; color: var(--branco); line-height: 1.35;
+}
+.desp-acao {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  line-height: 1.5;
+}
+[data-theme="light"] .desp-acao { color: oklch(0.20 0 0); }
+.desp-tarefa {
+  background: var(--erro);
+  color: white; font-weight: 800;
+  padding: 18px 32px; letter-spacing: 2px;
+  text-transform: uppercase; font-size: 1.25rem;
+}
+.desp-sofia {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.80 0 0);
+  line-height: 1.5; margin-top: 12px;
+}
+[data-theme="light"] .desp-sofia { color: oklch(0.28 0 0); }
+.desp-proximo {
+  font-size: 1rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+  padding-top: 20px; border-top: 1px solid var(--cinza-borda); width: 100%;
+}
+.desp-inst {
+  font-size: 0.9rem; color: var(--cinza);
+  margin-top: 16px; letter-spacing: 1px;
+}
+
+/* ═══ RODAPÉ FIXO ═══ */
+.rodape {
+  position: fixed; bottom: 0; left: 0;
+  width: 100%; z-index: 200;
+  background: var(--fundo);
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 20px;
+}
+.rodape-info {
+  font-size: 0.75rem; color: var(--cinza);
+  display: flex; gap: 14px; align-items: center;
+}
+.rodape-info em { color: var(--ouro); font-style: normal; font-weight: 600; }
+.rodape-info .tag {
+  border: 1px solid var(--cinza-borda);
+  padding: 2px 8px; font-size: 0.7rem;
+  color: var(--cinza); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rodape-nav {
+  display: flex; gap: 6px; align-items: center;
+}
+.rodape-nav button {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  color: var(--cinza); width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.9rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+.rodape-nav button:hover { color: var(--ouro); border-color: var(--ouro); }
+.rodape-nav .contador {
+  font-family: var(--mono); font-size: 0.85rem;
+  color: var(--cinza); min-width: 60px; text-align: center; font-weight: 700;
+}
+
+/* ═══ OVERVIEW GRID (tecla O) ═══ */
+.overview {
+  position: fixed; inset: 0; z-index: 1500;
+  background: var(--fundo);
+  padding: 60px 40px 40px;
+  overflow-y: auto;
+  display: none;
+}
+.overview.aberto { display: block; }
+.overview-titulo {
+  font-size: 1.2rem; color: var(--ouro);
+  text-transform: uppercase; letter-spacing: 3px;
+  font-weight: 700; margin-bottom: 24px;
+}
+.overview-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.overview-cell {
+  aspect-ratio: 16/9;
+  background: var(--superficie);
+  border: 2px solid var(--cinza-borda);
+  padding: 14px 16px; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+}
+.overview-cell:hover {
+  border-color: var(--ouro);
+  transform: translateY(-2px);
+}
+.overview-cell .ov-num {
+  font-family: var(--mono); font-size: 0.75rem;
+  color: var(--azul); font-weight: 700;
+  letter-spacing: 1px;
+}
+.overview-cell .ov-tit {
+  font-size: 0.95rem; color: var(--texto);
+  font-weight: 600; line-height: 1.3;
+}
+.overview-cell.ativo { border-color: var(--ouro); }
+.overview-cell.ativo .ov-num { color: var(--ouro); }
+.overview-fechar {
+  position: fixed; top: 16px; right: 24px; z-index: 1600;
+  background: var(--erro); color: white;
+  border: none; padding: 8px 16px;
+  font-family: var(--font); font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  text-transform: uppercase; font-size: 0.8rem;
+}
+
+/* ═══ RESPONSIVO ═══ */
+@media (max-width: 900px) {
+  html, body { font-size: 1.05rem; }
+  .slide { padding: 3vh 4vw 60px; }
+  .capa-disciplina { font-size: 2rem; }
+  .capa-titulo { font-size: 1.6rem; }
+  .slide-titulo { font-size: 1.4rem; }
+  .cols { grid-template-columns: 1fr !important; gap: 20px; }
+  .eq { font-size: 1.3rem; padding: 12px 16px; }
+  .tbl { font-size: 0.95rem; }
+  .desp-frase { font-size: 1.6rem; }
+  .rodape { padding: 4px 10px; }
+  .sidebar { width: 90vw; }
+  .toolbar button { padding: 4px 8px; font-size: 0.68rem; }
+}
+
+/* ═══ PRINT ═══ */
+/* ── CAMADA 3: escala por altura de tela. Sem estes blocos um deck novo
+   nasce transbordando em 1366x768. Valores validados em T07 e T08. ── */
+@media (max-height: 820px) {
+  :root { --fs-palco: 1.22rem; }
+  /* Com a capa de volta ao posicionamento absoluto (1080 -> altura real da
+     tela), o conteudo dela passava 8px em 768px de altura — e a capa e
+     overflow:hidden, entao cortava. */
+  .capa-conteudo { padding: 3vh 6vw; }
+  .slide { padding: 3.2vh 5vw 68px; }
+  .slide-titulo { font-size: 1.85rem; margin-bottom: 8px; }
+  .slide-body { gap: 10px; }
+  .cols { gap: 24px; }
+  .col-text { gap: 10px; }
+  .col-text p { font-size: 1.08rem; line-height: 1.45; }
+  .def { padding: 10px 16px; }
+  .def .termo { font-size: 0.85rem; margin-bottom: 4px; }
+  .def p { font-size: 1.02rem; }
+  .eq { font-size: 1.35rem; padding: 10px 16px; }
+  .col-img img { max-height: 36vh; }
+  .col-img-legenda { font-size: 0.8rem; padding: 8px 12px; }
+  .tbl { font-size: 0.95rem; }
+  .tbl th, .tbl td { padding: 7px 9px; }
+  .passo { padding: 7px 12px; }
+  .passo-t, .era-c { font-size: 0.98rem; }
+  .era { padding: 9px 14px; }
+  /* Ajuste fino da camada 3: sem estes valores os slides 8 e 13 ficavam
+     13px e 39px alem da dobra em 1366x768. */
+  .exercicio, .qi { padding: 11px 18px; }
+  .c5-ap { margin-top: 8px; }
+  .c5-ap-etapa { padding: 5px 4px; }
+  .c5-resposta { padding: 8px 12px 8px 56px; }
+  .exercicio-enunciado, .qi-enunciado { font-size: 1.08rem; margin-bottom: 6px; }
+  .c5-ap-conteudo { font-size: 0.95rem; padding: 5px 0 5px 4px; }
+  .c5-resposta { font-size: 1rem; }
+  .ca-obra { font-size: 1.05rem; margin-bottom: 8px; }
+  .ca-analise { font-size: 1.15rem; }
+  .ca-versos { font-size: 1rem; margin: 8px 0; }
+  .desp-frase { font-size: 2rem; }
+  .desp-body { gap: 14px; }
+}
+
+@media (max-height: 820px) and (max-width: 1150px) {
+  :root { --fs-palco: 1.05rem; }
+  .cols.img-r { grid-template-columns: 1.5fr 0.5fr; }
+  .cols.img-l { grid-template-columns: 0.5fr 1.5fr; }
+  .slide-titulo { font-size: 1.55rem; }
+  .col-text p { font-size: 0.98rem; }
+  .def p { font-size: 0.95rem; }
+  .eq { font-size: 1.15rem; padding: 8px 14px; }
+  .col-img img { max-height: 30vh; }
+  .tbl { font-size: 0.86rem; }
+  .tbl th, .tbl td { padding: 5px 7px; }
+  .passo-t, .era-c { font-size: 0.92rem; }
+  .ca-analise { font-size: 1rem; }
+}
+
+@media (max-height: 700px) {
+  :root { --fs-palco: 1.05rem; }
+  .slide-titulo { font-size: 1.55rem; margin-bottom: 10px; }
+  .col-text p { font-size: 0.98rem; }
+  .col-img img { max-height: 30vh; }
+  .eq { font-size: 1.2rem; }
+  .ca-analise { font-size: 1rem; }
+  .desp-frase { font-size: 1.7rem; }
+}
+
+@media print {
+  .progress-top, .toolbar, .sb-toggles, .sidebar,
+  .rodape, .overview, .overview-fechar { display: none !important; }
+  .slide {
+    position: relative !important; opacity: 1 !important;
+    pointer-events: auto !important; page-break-after: always;
+    min-height: 100vh; padding: 20mm 15mm;
+    overflow: visible !important;
+  }
+  html, body { overflow: visible !important; background: white !important; color: #1A1A1A !important; }
+  .capa-bg { display: none !important; }
+  .capa-slide { background: white !important; }
+  .capa-disciplina, .capa-titulo, .capa-epigrafe, .capa-autores, .capa-inst { text-shadow: none !important; color: #1A1A1A !important; }
+  .capa-trilha { color: #005599 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-top"><div class="bar" id="barraProgresso"></div></div>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="toolbar">
+  <button id="btn-overview" title="Overview grid (tecla O)">▦ O</button>
+  <button id="btn-tema" title="Alternar tema (T)">Tema</button>
+  <button id="btn-fullscreen" title="Tela cheia (F)">⛶ F</button>
+  <button id="btn-config" title="Configurar tempos (G)">⚙ G</button>
+</div>
+
+<!-- ═══ SIDEBAR TOGGLES ═══ -->
+<div class="sb-toggles">
+<button class="sb-toggle toc-toggle"        data-sb="sb-toc">Sumário</button>
+<button class="sb-toggle musica-toggle"     data-sb="sb-musica">Música</button>
+<button class="sb-toggle ineditismo-toggle" data-sb="sb-ineditismo">Ineditismo</button>
+<button class="sb-toggle imagens-toggle"    data-sb="sb-imagens">Imagens</button>
+<button class="sb-toggle creditos-toggle"   data-sb="sb-creditos">Créditos</button>
+<button class="sb-toggle refs-toggle"       data-sb="sb-refs">Referências</button>
+</div>
+
+<!-- ═══ SIDEBAR: SUMÁRIO ═══ -->
+<aside class="sidebar" id="sb-toc">
+  <h3>Sumário — 17 slides</h3>
+  <div class="toc-lista" id="toc-lista">
+    <a class="toc-item ato-titulo" data-goto="1"><span class="toc-num">01</span>Capa</a>
+    <a class="toc-item ato-titulo" data-goto="2"><span class="toc-num">02</span>Ato I — O Gancho</a>
+    <a class="toc-item ato-titulo" data-goto="3"><span class="toc-num">03</span>Ato II — Tópicos 1-5</a>
+    <a class="toc-item" data-goto="3"><span class="toc-num">03</span>Tópico 1: Praça Tiradentes</a>
+    <a class="toc-item" data-goto="4"><span class="toc-num">04</span>Tópico 2: Teoria × Experimental</a>
+    <a class="toc-item" data-goto="5"><span class="toc-num">05</span>Tópico 3: Pesquisa Científica</a>
+    <a class="toc-item" data-goto="6"><span class="toc-num">06</span>Tópico 4: Evolução da Física</a>
+    <a class="toc-item" data-goto="7"><span class="toc-num">07</span>Tópico 5: Física na Mineração</a>
+    <a class="toc-item ato-titulo" data-goto="8"><span class="toc-num">08</span>Ato III — Exercícios (C5)</a>
+    <a class="toc-item" data-goto="8"><span class="toc-num">08</span>Ex. T1 — Volume e massa</a>
+    <a class="toc-item" data-goto="9"><span class="toc-num">09</span>Ex. T2 — Erro relativo</a>
+    <a class="toc-item" data-goto="10"><span class="toc-num">10</span>Ex. T3 — Média e desvio</a>
+    <a class="toc-item" data-goto="11"><span class="toc-num">11</span>Ex. T4 — Energia do fóton</a>
+    <a class="toc-item" data-goto="12"><span class="toc-num">12</span>Ex. T5 — Potência e pressão</a>
+    <a class="toc-item" data-goto="13"><span class="toc-num">13</span>★ Ex. T6 — Integradora</a>
+    <a class="toc-item ato-titulo" data-goto="14"><span class="toc-num">14</span>Ciência e Arte</a>
+    <a class="toc-item" data-goto="14"><span class="toc-num">14</span>Drummond: A Máquina do Mundo</a>
+    <a class="toc-item" data-goto="15"><span class="toc-num">15</span>Reflexão</a>
+    <a class="toc-item ato-titulo" data-goto="16"><span class="toc-num">16</span>Despedida</a>
+  </div>
+</aside>
+
+<!-- ═══ SIDEBAR: MÚSICA ═══ -->
+<aside class="sidebar" id="sb-musica">
+  <h3>Trilha sonora sugerida</h3>
+  <p><strong>Recomendação Piazzi:</strong> aula com música instrumental ao fundo, em volume baixo, para favorecer a concentração.</p>
+  <p style="font-size:0.75rem; color:var(--cinza); text-transform:uppercase; letter-spacing:1px; margin-top:14px;">Ler · Escrever · Medir</p>
+  <p style="color: var(--branco); font-weight:600; font-size:1.1rem; margin-top:8px;">Baden Powell</p>
+  <p><em>Sele&ccedil;&atilde;o instrumental</em><br>viol&atilde;o solo</p>
+  <a class="link-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">▶ Ouvir no YouTube Music</a>
+</aside>
+
+<!-- ═══ SIDEBAR: INEDITISMO ═══ -->
+<aside class="sidebar" id="sb-ineditismo">
+  <h3>Ineditismo</h3>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto <strong>Física Conceitual 1 + Física Experimental 1</strong>, aprovados pela Coordenadoria da Área de Física, em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG Campus Ouro Preto — fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, esta é uma apresentação ancorada no primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esta <strong>APRESENTAÇÃO</strong> foi elaborada com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- ═══ SIDEBAR: IMAGENS ═══ -->
+<aside class="sidebar" id="sb-imagens">
+  <h3>Índice de Imagens</h3>
+  <p><span class="figura-num">Capa</span> — Praça Tiradentes ao amanhecer — monumento ao Tiradentes sem personagem.</p>
+  <p><span class="figura-num">Figura 1</span> — Três órbitas desenham no vazio o primeiro símbolo — antes de medir, a física precisou imaginar o invisível.</p>
+  <p><span class="figura-num">Figura 2</span> — Dedos no granito — o toque como primeiro instrumento de medida.</p>
+  <p><span class="figura-num">Figura 3</span> — Sofia cruza o calçamento de quartzito como quem abre um livro antigo.</p>
+  <p><span class="figura-num">Figura 4</span> — A Praça se revela como um diagrama vivo: grandezas invisíveis — massa, comprimento, tempo — habitam cada pedra, cada sombra, cada eco entre os casarões.</p>
+  <p><span class="figura-num">Figura 5</span> — Prof. Julio e Sofia diante do monumento: dois olhares, duas escalas — o mestre lê a história na pedra, a estudante descobre a física dentro dela.</p>
+  <p><span class="figura-num">Figura 6</span> — Quatro ciências giram em torno do mesmo mundo como vozes de uma fuga de Bach — cada uma revela o que as outras não alcançam sozinhas.</p>
+  <p><span class="figura-num">Figura 7</span> — Ouro Preto vista de cima: raios, chamas, átomos e lentes brotam do mapa como flores invisíveis — a física mora em cada esquina, esperando ser nomeada.</p>
+  <p><span class="figura-num">Figura 8</span> — Cinco máquinas da mineração contam a mesma história em dialetos diferentes — perfurar, transportar, drenar, ventilar, escavar: verbos da linguagem que Sofia aprende.</p>
+  <p><span class="figura-num">Figura 9</span> — Sofia retorna ao ponto de partida, mas a Praça já não é a mesma — quem aprende a linguagem da física nunca mais vê pedra como apenas pedra.</p>
+  <p><span class="figura-num">Figura 10</span> — Cinco fios partem da Física como raízes de uma árvore antiga — Matemática, Química, Geologia, Português, História: nenhuma ciência caminha sozinha.</p>
+  <p><span class="figura-num">Figura 11</span> — O livro da natureza se abre em oito etapas — do enunciado à resposta, o Protocolo C5 ensina a ler cada página com a precisão que a mineração exige.</p>
+  <p><span class="figura-num">Figura 12</span> — Granito, equações e poesia — a máquina do mundo se abre para quem ousa medir.</p>
+  <p class="imagens-nota">Imagens Temáticas (IT) geradas por Google Imagen (Gemini) sob direção autoral. Protocolo IT v7.1.4-manual.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: CRÉDITOS ═══ -->
+<aside class="sidebar" id="sb-creditos">
+  <h3>Créditos</h3>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Instituto Federal de Minas Gerais</p>
+    <p><span class="cred-cargo">Reitor</span><br><span class="cred-nome">Rafael Bastos Teixeira</span></p>
+    <p><span class="cred-cargo">Pró-Reitor de Ensino</span><br><span class="cred-nome">Mário Luiz Viana Alvarenga</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Campus Ouro Preto</p>
+    <p><span class="cred-cargo">Diretor-Geral</span><br><span class="cred-nome">Reginato Fernandes dos Santos</span></p>
+    <p><span class="cred-cargo">Diretora de Ensino</span><br><span class="cred-nome">Talita Valadares</span></p>
+    <p><span class="cred-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</span><br><span class="cred-nome">Ariana Cristina Santos Almeida</span></p>
+    <p><span class="cred-cargo">Coordenador da Área de Física (CODAFIS)</span><br><span class="cred-nome">Lázaro Souza Lima</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Autores da Trilha</p>
+    <p><span class="cred-nome">Julio Azevedo</span></p>
+    <p class="cred-bio">Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do Campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física, ambos da UFOP.</p>
+    <p style="margin-top:12px;"><span class="cred-nome">Felipe Beato</span></p>
+    <p class="cred-bio">Professor, pesquisador e colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG Campus Ouro Preto. Licenciado em Física; Mestre em Física dos Materiais.</p>
+  </div>
+
+  <div class="cred-grupo">
+    <p><span class="cred-cargo">Edição</span><br>1.ª edição — Ouro Preto, 2026</p>
+    <p><span class="cred-cargo">Ilustrações</span><br><span class="cred-bio" style="margin-top:2px;">Imagens Temáticas (IT) geradas por Google Imagen (Gemini) sob direção autoral. Protocolo IT v7.1.4-manual.</span></p>
+    <p><span class="cred-cargo">Design digital</span><br><span class="cred-bio" style="margin-top:2px;">Sistema Brutalismo Científico — modo palco (AP v21 + cronometro, dark-first, oklch, self-contained).</span></p>
+  </div>
+
+  <p class="cred-footer">IFMG — Campus Ouro Preto · Curso Técnico em Mineração Integrado ao Ensino Médio · NIDEC-CODAFIS · 1ª edição, 2026.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: REFERÊNCIAS ═══ -->
+<aside class="sidebar" id="sb-refs">
+  <h3>Bibliografia</h3>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia Básica de Física</div>
+    <p class="refs-item">BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+    <p class="refs-item">MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+    <p class="refs-item">TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia Pedagógica Científica</div>
+    <p class="refs-item">BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+    <p class="refs-item">HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+    <p class="refs-item">NICOLELIS, Miguel. <em>O verdadeiro criador de tudo</em>. São Paulo: Planeta, 2020.</p>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Aprendendo inteligência</em>. São Paulo: Aleph, 2008.</p>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Inteligência em concursos</em>. São Paulo: Aleph, 2013.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Ciência e Arte</div>
+    <p class="refs-item">ANDRADE, Carlos Drummond de. <em>A Máquina do Mundo</em>. In: <em>Claro Enigma</em>. Rio de Janeiro: José Olympio, 1951.</p>
+    <p class="refs-item">GALILEI, Galileu. <em>O Ensaiador</em>. São Paulo: Abril Cultural, 1973. (Coleção Os Pensadores)</p>
+  </div>
+</aside>
+
+<!-- ═══ DECK ═══ -->
+<div class="deck" id="deck">
+
+  <!-- ─── SLIDE 1 · CAPA ─── -->
+  <section class="slide capa-slide ativo" data-slide="1" data-titulo="Capa">
+    <div class="capa-bg" style="background-image: url('../_imagens/_web/T01-IT-00-v22.jpg');"></div>
+    <div class="capa-conteudo">
+      <div class="capa-disciplina">Física Conceitual 1</div>
+      <div class="capa-curso">Técnico em Mineração Integrado ao Ensino Médio</div>
+      <div class="capa-trilha">Trilha T01</div>
+      <div class="capa-titulo">Física, uma linguagem<br>básica da ciência</div>
+      <div class="capa-epigrafe">&ldquo;O livro da natureza está escrito na linguagem da matemática.&rdquo;</div>
+      <div class="capa-epigrafe-autor">— Galileu Galilei (1564–1642)</div>
+      <div class="capa-inst" style="margin-top:40px;">IFMG — Campus Ouro Preto &middot; 2026</div>
+    </div>
+  </section>
+
+
+  <!-- ─── SLIDE 2 · ATO I ─── -->
+  <section class="slide" data-slide="2" data-titulo="Ato I: O Gancho">
+    <div class="slide-titulo">Ato I — O Gancho</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <p class="pergunta-investigativa" style="font-size:1.4em; font-weight:bold; line-height:1.6; margin-top:2em; color: #fff;">&ldquo;Sem balança &mdash; como você descobriria a massa de um bloco de granito?&rdquo;</p>
+          <p class="resposta-investigativa" style="font-size:1.2em; font-weight:bold; line-height:1.5; margin-top:1em; color: var(--ouro);">Meça o volume (c &times; l &times; h) e multiplique pela densidade: m = &rho; &times; V</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-02-v22.jpg" alt="Sofia diante do pedestal de granito do monumento ao Tiradentes">
+          <div class="col-img-legenda">Sofia na Praça Tiradentes — o granito é a rocha, as grandezas físicas a descrevem</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 3 · TÓPICO 1 ─── -->
+  <section class="slide" data-slide="3" data-titulo="Tópico 1: Praça Tiradentes">
+    <div class="slide-titulo">Tópico 1 — A Física na Praça Tiradentes</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Conceito central</div>
+            <p>Grandeza física é uma propriedade mensurável do mundo natural.</p>
+          </div>
+          <div class="eq">V = c × l × h</div>
+          <div class="eq">m = ρ × V</div>
+          <p><strong>Exemplo — bloco de granito na Praça Tiradentes:</strong><br>
+          ρ = 2 700 kg/m³, V = 0,20 m³ → m = 2 700 × 0,20 = <span class="hi">540 kg</span></p>
+          <p style="font-style:italic; color: var(--ouro);">"Física é enxergar o que não dá para ver só olhando."</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-03-v22.jpg" alt="Praça Tiradentes — pedestal de granito com blocos de arenito ao redor">
+          <div class="col-img-legenda">Praça Tiradentes — o granito nomeado, medido e pesado</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="8">Aplica&ccedil;&atilde;o 1 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 4 · TÓPICO 2 ─── -->
+  <section class="slide" data-slide="4" data-titulo="Tópico 2: Teoria × Experimental">
+    <div class="slide-titulo">Tópico 2 — Física Teórica × Experimental</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Conceito central</div>
+            <p>Teoria prevê, experimento verifica. Nenhum funciona sozinho.</p>
+          </div>
+          <div class="eq" style="font-size:1.15rem;">E<sub>r</sub> = |V<sub>m</sub> − V<sub>t</sub>| / V<sub>t</sub> × 100 %</div>
+          <p style="font-size:1.15rem;"><strong>Exemplo:</strong> previsão 540 kg, medição 556 kg. E<sub>r</sub> = |556 − 540| / 540 × 100 % ≈ <span class="hi">3,0 %</span></p>
+          <p style="font-style:italic; font-size:1.1rem; color: var(--ouro);">"Teoria e experimento andam juntos — nenhum funciona sozinho."</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-04-v22.jpg" alt="Laboratório — teoria escrita no quadro dialogando com o experimento na bancada">
+          <div class="col-img-legenda">Quadro e bancada — a Física em dois idiomas que se corrigem</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="9">Aplica&ccedil;&atilde;o 2 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 5 · TÓPICO 3 ─── -->
+  <section class="slide" data-slide="5" data-titulo="Tópico 3: Pesquisa Científica">
+    <div class="slide-titulo">Tópico 3 — Pesquisa Científica na Física</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Ciclo científico</div>
+            <p>Seis etapas que se retroalimentam:</p>
+          </div>
+          <div class="passos">
+            <div class="passo"><span class="passo-n">1</span><span class="passo-t"><strong>Observação</strong> — identificar um fenômeno ou padrão.</span></div>
+            <div class="passo"><span class="passo-n">2</span><span class="passo-t"><strong>Hipótese</strong> — propor uma explicação testável.</span></div>
+            <div class="passo"><span class="passo-n">3</span><span class="passo-t"><strong>Experimento</strong> — testar a hipótese com dados.</span></div>
+            <div class="passo"><span class="passo-n">4</span><span class="passo-t"><strong>Análise</strong> — interpretar resultados.</span></div>
+            <div class="passo"><span class="passo-n">5</span><span class="passo-t"><strong>Publicação</strong> — compartilhar com a comunidade.</span></div>
+            <div class="passo"><span class="passo-n">6</span><span class="passo-t"><strong>Revisão por pares</strong> — outros cientistas verificam.</span></div>
+          </div>
+          <p style="font-style:italic; color: var(--ouro);">Conclusão: O ciclo científico garante que a Física se autocorrige — observar, propor, testar, publicar e revisar.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-05-v22.jpg" alt="Cena de pesquisa científica — observação, hipótese, experimento em circulação">
+          <div class="col-img-legenda">Ciclo científico — observar, propor, testar, revisar</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="10">Aplica&ccedil;&atilde;o 3 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 6 · TÓPICO 4 ─── -->
+  <section class="slide" data-slide="6" data-titulo="Tópico 4: Evolução das Áreas">
+    <div class="slide-titulo">Tópico 4 — Evolução das Áreas da Física</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text" style="gap:10px;">
+          <div class="era">
+            <span class="era-p">Séc. XVI–XVII</span>
+            <span class="era-c"><strong>Galileu / Newton</strong> — Mecânica Clássica. Leis do movimento, gravitação universal. A Física nasce como ciência experimental.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">Séc. XIX</span>
+            <span class="era-c"><strong>Faraday / Maxwell</strong> — Eletromagnetismo. Campos elétrico e magnético unificados. A luz é uma onda eletromagnética.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">Séc. XX</span>
+            <span class="era-c"><strong>Einstein / Planck</strong> — Relatividade + Mecânica Quântica.</span>
+          </div>
+          <div class="eq">E = h × f</div>
+          <div class="era">
+            <span class="era-p">Séc. XXI</span>
+            <span class="era-c"><strong>Fronteiras</strong> — matéria escura, ondas gravitacionais, computação quântica. O mapa ainda está sendo desenhado.</span>
+          </div>
+          <p style="font-style:italic; color: var(--ouro);">Conclusão: A Física evolui em saltos — cada revolução amplia o mapa do mundo sem apagar o que veio antes.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-06-v22.jpg" alt="Linha do tempo da Física — Galileu, Newton, Maxwell, Einstein, Planck">
+          <div class="col-img-legenda">Quatro séculos de Física — o mapa em construção</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="11">Aplica&ccedil;&atilde;o 4 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 7 · TÓPICO 5 ─── -->
+  <section class="slide" data-slide="7" data-titulo="Tópico 5: Física na Mineração">
+    <div class="slide-titulo">Tópico 5 — A Física na Mineração · 5 processos</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <table class="tbl">
+            <thead>
+              <tr><th>Processo</th><th>Equação</th><th>Grandeza</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Detonação</td><td class="eq-cell">P = ρ<sub>e</sub> × D² / 8</td><td>Pressão</td></tr>
+              <tr><td>Correia transportadora</td><td class="eq-cell">P = F × v</td><td>Potência</td></tr>
+              <tr><td>Drenagem</td><td class="eq-cell">P<sub>h</sub> = ρ × g × h</td><td>Pressão hidrostática</td></tr>
+              <tr><td>Ventilação</td><td class="eq-cell">Q = A × v</td><td>Vazão</td></tr>
+              <tr><td>Talude</td><td class="eq-cell">FS = (c + σ tan φ) / τ</td><td>Fator de segurança</td></tr>
+            </tbody>
+          </table>
+          <div class="def" style="border-left-color:var(--erro);">
+            <div class="termo" style="color:var(--erro);">Destaque NR-22</div>
+            <p><span class="he">FS ≥ 1,3</span> — exigência mínima em projetos de mineração (Norma Regulamentadora 22 — Associação Brasileira de Normas Técnicas — ABNT).</p>
+          </div>
+          <p style="font-style:italic; color: var(--ouro);">Conclusão: Na mineração, cada processo obedece a uma equação — e cada equação carrega uma grandeza que protege vidas.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-07-v22.jpg" alt="Mineração — correia transportadora e frente de lavra">
+          <div class="col-img-legenda">Mineração — cinco equações em cinco processos</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="12">Aplica&ccedil;&atilde;o 5 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 8 · EXERCÍCIO T1 (C5) ─── -->
+  <section class="slide" data-slide="8" data-titulo="Exercício T1 — Volume e massa">
+    <div class="slide-titulo">Exercício T1 — Volume e massa (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Um bloco de <strong>andesito</strong> tem dimensões c = 1,2 m, l = 0,6 m, h = 0,3 m e densidade ρ = 2 650 kg/m³. Calcular o volume V e a massa m.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Volume V (em m³) e massa m (em kg) do bloco.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> c = 1,2 m · l = 0,6 m · h = 0,3 m · ρ = 2 650 kg/m³.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> bloco homogêneo, geometria retangular perfeita, densidade tabelada válida.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> prisma retangular c × l × h; massa uniformemente distribuída.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">V = c × l × h</span> · <span class="eq-inline">m = ρ × V</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> V = 1,2 × 0,6 × 0,3 = 0,216 m³; m = 2 650 × 0,216 = 572,4 kg.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> unidades consistentes (kg); ordem de grandeza (~10² kg) compatível com bloco médio.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> V ≈ 0,216 m³ · m ≈ 572 kg.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="4">&larr; T&oacute;pico 2</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 9 · EXERCÍCIO T2 (C5) ─── -->
+  <section class="slide" data-slide="9" data-titulo="Exercício T2 — Erro relativo">
+    <div class="slide-titulo">Exercício T2 — Erro relativo (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Medição em campo do mesmo bloco: 588 kg. Valor teórico calculado no Ex T1: 572 kg. Calcular o erro relativo percentual.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Erro relativo percentual E<sub>r</sub> entre medição e teoria.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> V<sub>m</sub> = 588 kg (medido) · V<sub>t</sub> = 572 kg (teórico).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> balança calibrada · V<sub>t</sub> confiável · sem viés sistemático dominante.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> duas quantidades escalares na mesma unidade (kg); comparar por razão.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">E<sub>r</sub> = |V<sub>m</sub> − V<sub>t</sub>| / V<sub>t</sub> × 100 %</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> |588 − 572| = 16; 16 ÷ 572 = 0,0280; × 100 % ≈ 2,80 %.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> E<sub>r</sub> < 5 % — dentro do aceitável para medições de campo em Mineração.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> E<sub>r</sub> ≈ 2,8 %.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="5">&larr; T&oacute;pico 3</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 10 · EXERCÍCIO T3 (C5) ─── -->
+  <section class="slide" data-slide="10" data-titulo="Exercício T3 — Média e desvio">
+    <div class="slide-titulo">Exercício T3 — Média e desvio padrão (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Quatro medições independentes do mesmo bloco: {570, 575, 573, 574} kg. Calcular a média x̄ e o desvio padrão σ, escrevendo o resultado como (x̄ ± σ).
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Média e desvio padrão de 4 medidas; resultado rigoroso.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> {570, 575, 573, 574} kg (N = 4).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> medições independentes · erros aleatórios dominantes · sem outliers.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> 4 pontos numa reta numérica; buscar centro (x̄) e dispersão (σ).</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">x̄ = Σx<sub>i</sub> / N</span> · <span class="eq-inline">σ = √(Σ(x<sub>i</sub> − x̄)² / N)</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> x̄ = 2 292/4 = 573 kg. Desvios: −3, +2, 0, +1 → quadrados 9, 4, 0, 1 → soma 14 → σ = √(14/4) ≈ 1,87 kg → arredondar para 2 kg.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> σ ≈ 0,3 % da média — medida de alta precisão para instrumentação de campo.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> (573 ± 2) kg.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="6">&larr; T&oacute;pico 4</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 11 · EXERCÍCIO T4 (C5) ─── -->
+  <section class="slide" data-slide="11" data-titulo="Exercício T4 — Energia do fóton">
+    <div class="slide-titulo">Exercício T4 — Energia do fóton · Planck (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Um fóton de luz visível tem frequência f = 5,4 × 10<sup>14</sup> Hz. Sabendo que a constante de Planck é h = 6,63 × 10<sup>−34</sup> J·s, calcular a energia E do fóton.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Energia E do fóton, em joules.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> f = 5,4 × 10<sup>14</sup> Hz · h = 6,63 × 10<sup>−34</sup> J·s.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> luz monocromática · fóton livre · relação de Planck válida (regime quântico).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> onda eletromagnética descrita também como partícula (fóton) — energia ∝ frequência.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equação:</strong> <span class="eq-inline">E = h × f</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> E = 6,63 × 10<sup>−34</sup> × 5,4 × 10<sup>14</sup> = 35,8 × 10<sup>−20</sup> = 3,58 × 10<sup>−19</sup> J.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> E ÷ e ≈ 2,24 eV — coerente com luz visível verde (~550 nm).</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> E ≈ 3,6 × 10<sup>−19</sup> J (≈ 2,24 eV).</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="7">&larr; T&oacute;pico 5</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 12 · EXERCÍCIO T5 (C5) ─── -->
+  <section class="slide" data-slide="12" data-titulo="Exercício T5 — Potência e pressão">
+    <div class="slide-titulo">Exercício T5 — Potência e pressão hidrostática (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Uma correia transportadora aplica F = 1 500 N a v = 6 m/s. Uma coluna d'água na drenagem tem h = 60 m, com ρ = 1 000 kg/m³ e g = 9,8 m/s². Calcular a potência P e a pressão hidrostática P<sub>h</sub>.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> P (em W) da correia e P<sub>h</sub> (em Pa) na base da coluna d'água.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> F = 1 500 N · v = 6 m/s · h = 60 m · ρ = 1 000 kg/m³ · g = 9,8 m/s².</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> correia em velocidade constante (sem aceleração) · fluido incompressível · superfície à atmosfera.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> correia horizontal com força tangencial constante; coluna vertical de água de altura h.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">P = F × v</span> · <span class="eq-inline">P<sub>h</sub> = ρ × g × h</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> P = 1 500 × 6 = 9 000 W = 9 kW. P<sub>h</sub> = 1 000 × 9,8 × 60 = 588 000 Pa = 588 kPa.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> 9 kW ≈ motor industrial médio; 588 kPa ≈ 5,9 atm — coerente com base de coluna de 60 m.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> P = 9 kW · P<sub>h</sub> = 588 kPa.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="13">&larr; &#9733; Integradora</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 13 · EXERCÍCIO T6 ★ INTEGRADORA (C5) ─── -->
+  <section class="slide" data-slide="13" data-titulo="★ Exercício T6 — Integradora (Chico Rei)">
+    <div class="slide-titulo">★ Exercício T6 — Integradora · Hematita na Mina Chico Rei (C5)</div>
+    <div class="slide-body">
+<div class="qi">
+        <div class="qi-label">★ Enunciado — Integra T1 + T2 + T5</div>
+        <div class="qi-enunciado">
+          Bloco de <strong>hematita</strong> na Mina Chico Rei: ρ = 5 200 kg/m³; c = 0,40 m; l = 0,30 m; h = 0,80 m. A correia transporta o minério a v = 5 m/s com F = 1 400 N. Medição de campo: m<sub>medido</sub> = 500 kg. Determinar <strong>(i)</strong> V e m; <strong>(ii)</strong> E<sub>r</sub>; <strong>(iii)</strong> P.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Três grandezas: volume/massa do bloco, erro relativo da medição, potência da correia.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> ρ, c, l, h, m<sub>medido</sub>, F, v (todos numéricos acima).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> hematita homogênea · balança calibrada · correia sem escorregamento · atrito desprezível.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> bloco 0,4 × 0,3 × 0,8 m sobre correia horizontal a 5 m/s; balança à esquerda registra m<sub>medido</sub>.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">V = c × l × h</span> · <span class="eq-inline">m = ρ × V</span> · <span class="eq-inline">E<sub>r</sub> = |m − m<sub>med</sub>|/m × 100 %</span> · <span class="eq-inline">P = F × v</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> V = 0,40 × 0,30 × 0,80 = 0,096 m³ · m = 5 200 × 0,096 = 499,2 kg · E<sub>r</sub> = |499,2 − 500|/499,2 × 100 % ≈ 0,16 % · P = 1 400 × 5 = 7 000 W = 7 kW.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> E<sub>r</sub> < 1 % — precisão excelente; potência típica de correia curta em galeria.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> V = 0,096 m³ · m ≈ 499 kg · E<sub>r</sub> ≈ 0,2 % · P = 7 kW.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 14 · CIÊNCIA E ARTE (obra) ─── -->
+  <section class="slide" data-slide="14" data-titulo="Ciência e Arte: Drummond">
+    <div class="slide-titulo">Ciência e Arte — A Máquina do Mundo</div>
+    <div class="slide-body">
+      <div class="cols img-l">
+        <div class="col-img">
+          <img src="../_imagens/_web/T01-IT-10-v22.jpg" alt="A Máquina do Mundo — composição gráfica inspirada no poema de Drummond">
+          <div class="col-img-legenda">Granito, equações e poesia — a máquina do mundo se abre para quem ousa medir</div>
+        </div>
+        <div class="col-text">
+          <div class="ca-obra"><strong>Poesia:</strong> <em>A Máquina do Mundo</em><br>Carlos Drummond de Andrade &middot; <em>Claro Enigma</em> (1951)</div>
+          <div class="ca-versos">
+            &ldquo;E como eu palmilhasse vagamente<br>
+            uma estrada de Minas, pedregosa…&rdquo;
+          </div>
+          <div class="ca-versos">
+            &ldquo;a máquina do mundo, repelida,<br>
+            se foi miudamente recompondo,<br>
+            enquanto eu, avaliando o que perdera,<br>
+            seguia vagaroso, de mãos pensas.&rdquo;
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 15 · REFLEXÃO ─── -->
+  <section class="slide" data-slide="15" data-titulo="Reflexão">
+    <div class="slide-titulo">Reflexão</div>
+    <div class="slide-body">
+      <p class="ca-analise">
+        <strong>Análise:</strong> Drummond descreve um caminhante que encontra, numa estrada de Minas, a revelação completa do funcionamento do universo — e recusa. O poema não é sobre Física; é sobre o peso de compreender.
+      </p>
+      <p class="ca-analise" style="margin-top:14px;">
+        Mas a estrutura é a mesma: um observador diante de um fenômeno, uma linguagem que tenta capturá-lo, e a consciência de que toda representação é parcial.
+      </p>
+      <p class="ca-analise" style="margin-top:14px;">
+        Sofia, diante do pedestal de granito, fez exatamente o que o caminhante de Drummond fez — olhou, nomeou, mediu. A diferença é que ela <strong>não recusou</strong>. Aceitou a equação como quem aceita um poema: sabendo que é uma aproximação, não a coisa em si.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ─── SLIDE 16 · DESPEDIDA ─── -->
+  <section class="slide despedida" data-slide="16" data-titulo="Despedida">
+    <div class="desp-body">
+      <div class="desp-sofia" style="color: var(--ouro);">&ldquo;Física é enxergar o que não dá para ver só olhando.&rdquo; — Sofia</div>
+      <div class="desp-acao">Não esqueça de fazer a</div>
+      <div class="desp-tarefa">Tarefa Mínima · HOJE</div>
+      <div class="ca-provinha" style="margin-top:24px;">
+        <div class="label" style="color: var(--verde);">▶ Próximo passo</div>
+        <p><strong>Sucesso na Provinha!</strong></p>
+      </div>
+      <div class="desp-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+      <div class="desp-inst">IFMG — Campus Ouro Preto &middot; NIDEC-CODAFIS &middot; FC1 &middot; T01 &middot; 1ª edição 2026</div>
+    </div>
+  </section>
+
+
+  <!-- ─── SLIDE 17 · CONFIGURAÇÃO DE TEMPOS (oculto por padrão) ─── -->
+  <section class="slide" data-slide="17" data-titulo="⚙ Tempos e visibilidade" data-oculto-padrao="true" style="overflow-y:auto;">
+    <div class="slide-titulo">⚙ Tempos e visibilidade dos slides</div>
+    <div class="slide-body" style="justify-content:flex-start; overflow-y:auto;">
+      <div class="config-wrap">
+        <table class="tbl" id="config-tbl">
+          <thead><tr><th>#</th><th>Slide</th><th>Tempo (m:ss)</th></tr></thead>
+          <tbody id="config-tbody"></tbody>
+        </table>
+        <div class="config-acoes">
+          <button class="config-btn" id="cfg-aplicar" type="button">✓ Aplicar</button>
+          <button class="config-btn config-reset" id="cfg-reset" type="button">↺ Restaurar padrão</button>
+        </div>
+        <p class="config-nota">Alterações ficam salvas no navegador (localStorage). Este slide é oculto por padrão — acesse pelo botão ⚙ G ou pelo Overview (O).</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+<!-- ═══ OVERVIEW GRID ═══ -->
+<div class="overview" id="overview">
+  <div class="overview-titulo">Overview — 17 slides · clique para navegar</div>
+  <div class="overview-grid" id="overview-grid"></div>
+</div>
+<button class="overview-fechar" id="overview-fechar" style="display:none;">✕ Fechar (O)</button>
+
+<!-- ═══ RODAPÉ ═══ -->
+<div class="rodape">
+  <div class="rodape-info">
+    <em>FC1 · T01</em>
+    <span>Física, uma linguagem básica da ciência</span>
+    <span class="tag">45 min</span>
+  </div>
+  <div class="rodape-nav">
+    <button id="btn-anterior" title="Slide anterior (←)">◀</button>
+    <div class="contador"><span id="num-atual">1</span> / <span id="num-total">18</span></div>
+    <button id="btn-proximo" title="Próximo slide (→)">▶</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = 'T01-AP-v21';
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var atual = 1;
+  var ocultos = {};
+  function salvarOcultos() { try { localStorage.setItem(STORAGE_KEY + '-ocultos', JSON.stringify(ocultos)); } catch(e) {} }
+  try {
+    var rawOc = localStorage.getItem(STORAGE_KEY + '-ocultos');
+    if (rawOc) { ocultos = JSON.parse(rawOc); }
+    else {
+      slides.forEach(function(sl, i) { if (sl.dataset.ocultoPadrao === 'true') ocultos[i + 1] = true; });
+      if (Object.keys(ocultos).length) salvarOcultos();
+    }
+  } catch(e) {}
+  function proximoVisivel(de, dir) {
+    var n = de + dir;
+    while (n >= 1 && n <= total) { if (!ocultos[n]) return n; n += dir; }
+    return de;
+  }
+
+  document.getElementById('num-total').textContent = total;
+
+  // ─── NAVEGAÇÃO ───
+  function irPara(n, opts) {
+    if (n < 1 || n > total) return;
+    slides.forEach(function(s) { s.classList.remove('ativo'); });
+    slides[n - 1].classList.add('ativo');
+    atual = n;
+    document.getElementById('num-atual').textContent = atual;
+    document.getElementById('barraProgresso').style.width = ((atual / total) * 100) + '%';
+    // marcar item ativo no TOC
+    document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+      a.classList.toggle('ativo', parseInt(a.dataset.goto, 10) === atual);
+    });
+    // marcar cell ativa no overview
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+    // rodapé transparente na capa (mantém navegação visível)
+    var rodape = document.querySelector('.rodape');
+    if (rodape) {
+      rodape.style.background = (n === 1) ? 'transparent' : '';
+      rodape.style.borderTop = (n === 1) ? 'none' : '';
+    }
+    // persistir
+    try { localStorage.setItem(STORAGE_KEY + '-slide', atual); } catch(e) {}
+    // fechar overview se aberto
+    fecharOverview();
+    // rolar slide para topo
+    slides[n - 1].scrollTop = 0;
+  }
+
+  // ─── CONTROLES RODAPÉ ───
+  document.getElementById('btn-anterior').addEventListener('click', function() { irPara(proximoVisivel(atual, -1)); });
+  document.getElementById('btn-proximo').addEventListener('click',  function() { irPara(proximoVisivel(atual, 1)); });
+
+  // ─── TOOLBAR ───
+  document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+  document.getElementById('btn-tema').addEventListener('click', toggleTema);
+  document.getElementById('btn-overview').addEventListener('click', toggleOverview);
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen || function() {}).call(document.documentElement);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  function toggleTema() {
+    var atual = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', atual);
+    try { localStorage.setItem(STORAGE_KEY + '-theme', atual); } catch(e) {}
+  }
+
+  // ─── SIDEBARS (exclusão mútua) ───
+  var toggles = document.querySelectorAll('.sb-toggle');
+  var sidebars = document.querySelectorAll('.sidebar');
+  toggles.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var alvoId = btn.dataset.sb;
+      var alvo = document.getElementById(alvoId);
+      var estaAberta = alvo.classList.contains('open');
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      if (!estaAberta) alvo.classList.add('open');
+    });
+  });
+  // click-outside fecha
+  document.addEventListener('click', function(e) {
+    var dentroSb = e.target.closest('.sidebar');
+    var noToggle = e.target.closest('.sb-toggle');
+    if (!dentroSb && !noToggle) {
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+    }
+  });
+
+  // ─── TOC — clique navega ───
+  document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var n = parseInt(a.dataset.goto, 10);
+      if (n) {
+        irPara(n);
+        sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      }
+    });
+  });
+
+  // ─── OVERVIEW ───
+  var overview = document.getElementById('overview');
+  var overviewFechar = document.getElementById('overview-fechar');
+  var overviewGrid = document.getElementById('overview-grid');
+
+  function construirOverview() {
+    overviewGrid.innerHTML = '';
+    slides.forEach(function(sl, i) {
+      var n = i + 1;
+      var titulo = sl.dataset.titulo || ('Slide ' + n);
+      var cell = document.createElement('div');
+      cell.className = 'overview-cell' + (ocultos[n] ? ' oculto' : '');
+      cell.dataset.n = n;
+      cell.innerHTML = '<div class="ov-num">SLIDE ' + (n < 10 ? '0' + n : n) + '</div>' +
+                       '<div class="ov-tit">' + titulo + '</div>';
+      var eyeBtn = document.createElement('button');
+      eyeBtn.className = 'ov-eye';
+      eyeBtn.title = 'Ocultar/mostrar slide';
+      eyeBtn.textContent = ocultos[n] ? '○' : '●';
+      (function(slideN, btn, c) {
+        btn.addEventListener('click', function(ev) {
+          ev.stopPropagation();
+          if (ocultos[slideN]) { delete ocultos[slideN]; }
+          else { ocultos[slideN] = true; }
+          c.classList.toggle('oculto', !!ocultos[slideN]);
+          btn.textContent = ocultos[slideN] ? '○' : '●';
+          salvarOcultos();
+        });
+      })(n, eyeBtn, cell);
+      cell.appendChild(eyeBtn);
+      cell.addEventListener('click', function() { irPara(n); });
+      overviewGrid.appendChild(cell);
+    });
+  }
+  construirOverview();
+
+  function toggleOverview() {
+    if (overview.classList.contains('aberto')) fecharOverview();
+    else abrirOverview();
+  }
+  function abrirOverview() {
+    overview.classList.add('aberto');
+    overviewFechar.style.display = 'inline-block';
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+  }
+  function fecharOverview() {
+    overview.classList.remove('aberto');
+    overviewFechar.style.display = 'none';
+  }
+  overviewFechar.addEventListener('click', fecharOverview);
+
+  // ─── KEYBOARD ───
+  document.addEventListener('keydown', function(e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown') { e.preventDefault(); irPara(proximoVisivel(atual, 1)); return; }
+    if (k === 'ArrowLeft'  || k === 'PageUp')                { e.preventDefault(); irPara(proximoVisivel(atual, -1)); return; }
+    if (k === 'ArrowDown' || k === 'ArrowUp') {
+      /* Rola o slide ativo. Sem barra visivel, e o caminho deterministico
+         para alcancar o rodape de um slide que transbordou. */
+      var alvo = slides[atual - 1];
+      if (alvo && alvo.scrollHeight > alvo.clientHeight) {
+        e.preventDefault();
+        alvo.scrollTop += (k === 'ArrowDown' ? 80 : -80);
+        return;
+      }
+    }
+    if (k === 'Home')  { e.preventDefault(); irPara(1); return; }
+    if (k === 'End')   { e.preventDefault(); irPara(total); return; }
+    if (k === 'f' || k === 'F') { e.preventDefault(); toggleFullscreen(); return; }
+    if (k === 't' || k === 'T') { e.preventDefault(); toggleTema(); return; }
+    if (k === 'o' || k === 'O') { e.preventDefault(); toggleOverview(); return; }
+    if (k === 'Escape') {
+      if (overview.classList.contains('aberto')) { fecharOverview(); return; }
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      return;
+    }
+    // 1-9 salto direto
+    if (k >= '1' && k <= '9') {
+      var n = parseInt(k, 10);
+      if (n <= total) { e.preventDefault(); irPara(n); }
+    }
+  });
+
+  // ─── TOUCH SWIPE ───
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 60) { irPara(atual + (diff < 0 ? 1 : -1)); }
+  });
+
+  // ─── ÍCONES C5 (8 SVGs inline) + ocultar solução por clique ───
+  var ICONS_C5 = {
+    1: '<svg class="c5-icon" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20" stroke-linecap="round"/><text x="10" y="13.5" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">?</text></svg>',
+    2: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>',
+    3: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M8 10 A 4 4 0 0 1 16 10 C 16 12 14 14 14 15 L 10 15 C 10 14 8 12 8 10 Z"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/><line x1="11" y1="20.5" x2="13" y2="20.5" stroke-linecap="round"/></svg>',
+    4: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="20" x2="21" y2="20"/><line x1="3" y1="20" x2="21" y2="6" stroke-linecap="round"/><rect x="10" y="9" width="5" height="5" transform="rotate(-38 12.5 11.5)"/></svg>',
+    5: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M14 4 C 12 4, 11 5, 11 7 L 11 17 C 11 19, 10 20, 8 20" stroke-width="2" stroke-linecap="round"/></svg>',
+    6: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18"/><rect x="7" y="5.5" width="10" height="3.5"/><circle cx="9" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="1" fill="currentColor" stroke="none"/></svg>',
+    7: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="21" x2="21" y2="21"/><rect x="5" y="14" width="3" height="7" fill="currentColor" stroke="none"/><rect x="10" y="10" width="3" height="11" fill="currentColor" stroke="none"/><rect x="15" y="5" width="3" height="16" fill="currentColor" stroke="none"/><path d="M4 14 L10 10 L15 6 L20 3" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3 L20 3 L20 6" stroke-linecap="round"/></svg>',
+    8: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7"/><path d="M4 7.5 L6 9.5 L9 5.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="6" x2="21" y2="6"/><line x1="12" y1="9.5" x2="19" y2="9.5"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="18" x2="18" y2="18"/></svg>'
+  };
+
+  // Injeta ícone antes do número em cada .c5-ap-etapa (1..7)
+  document.querySelectorAll('.c5-ap-etapa').forEach(function(el) {
+    var n = parseInt(el.textContent.trim(), 10);
+    if (n >= 1 && n <= 8 && ICONS_C5[n]) {
+      el.insertAdjacentHTML('afterbegin', ICONS_C5[n]);
+    }
+  });
+
+  // Injeta badge (ícone + "8") no .c5-resposta
+  document.querySelectorAll('.c5-resposta').forEach(function(el) {
+    var badge = document.createElement('span');
+    badge.className = 'c5-resp-etapa';
+    badge.innerHTML = ICONS_C5[8] + '<span>8</span>';
+    el.insertBefore(badge, el.firstChild);
+  });
+
+  // Envolve .ca-provinha (slide 15) em .c5-solucao[hidden] + botão "Próximo passo"
+  document.querySelectorAll('.ca-provinha').forEach(function(prov) {
+    var parent = prov.parentNode;
+    var inDesp = !!prov.closest('.despedida');
+    var wrap = document.createElement('div');
+    wrap.className = 'c5-solucao';
+    wrap.setAttribute('hidden', '');
+    parent.insertBefore(wrap, prov);
+    wrap.appendChild(prov);
+    var btn = document.createElement('button');
+    btn.className = 'btn-solucao';
+    btn.type = 'button';
+    var labelA = inDesp ? '▶ Próximo Passo' : '▼';
+    var labelB = inDesp ? '▲ Próximo Passo' : '▲';
+    btn.textContent = labelA;
+    if (inDesp) btn.style.background = 'var(--verde)';
+    btn.addEventListener('click', function() {
+      var hidden = wrap.hasAttribute('hidden');
+      if (hidden) {
+        wrap.removeAttribute('hidden');
+        btn.textContent = labelB;
+      } else {
+        wrap.setAttribute('hidden', '');
+        btn.textContent = labelA;
+      }
+    });
+    parent.insertBefore(btn, wrap);
+  });
+
+  // Revelação progressiva das etapas C5 (uma a uma, como slide 7)
+  document.querySelectorAll('.c5-ap').forEach(function(c5) {
+    var resp = c5.nextElementSibling;
+    var parent = c5.parentNode;
+    var etapas = c5.querySelectorAll('.c5-ap-etapa');
+    var conteudos = c5.querySelectorAll('.c5-ap-conteudo');
+    var items = [];
+    for (var i = 0; i < etapas.length; i++) {
+      etapas[i].setAttribute('hidden', '');
+      conteudos[i].setAttribute('hidden', '');
+      items.push([etapas[i], conteudos[i]]);
+    }
+    if (resp && resp.classList && resp.classList.contains('c5-resposta')) {
+      resp.setAttribute('hidden', '');
+      items.push([resp]);
+    }
+    var idx = 0;
+    var btn = document.createElement('button');
+    btn.className = 'btn-reveal-icon';
+    btn.type = 'button';
+    btn.textContent = '▼';
+    btn.addEventListener('click', function() {
+      if (idx < items.length) {
+        items[idx].forEach(function(el) { el.removeAttribute('hidden'); });
+        idx++;
+        if (idx >= items.length) { btn.textContent = '▲'; btn.classList.add('aberto'); }
+      } else {
+        items.forEach(function(pair) { pair.forEach(function(el) { el.setAttribute('hidden', ''); }); });
+        idx = 0;
+        btn.textContent = '▼';
+        btn.classList.remove('aberto');
+      }
+    });
+    parent.insertBefore(btn, c5);
+  });
+
+  // ─── RESTAURAR ESTADO ───
+  try {
+    var savedTheme = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    var savedSlide = parseInt(localStorage.getItem(STORAGE_KEY + '-slide'), 10);
+    if (savedSlide && savedSlide >= 1 && savedSlide <= total) irPara(savedSlide);
+    else irPara(1);
+  } catch(e) { irPara(1); }
+
+  // ─── EXPOR API PARA CONFIG ───
+  window.__AP = {
+    irPara: irPara,
+    ocultos: ocultos,
+    salvarOcultos: salvarOcultos,
+    reconstruirOverview: construirOverview,
+    getTotal: function() { return total; }
+  };
+})();
+</script>
+<!-- ═══ CRONÔMETRO POR SLIDE — add-on v1 (Protocolo AP-v21) ═══ -->
+<style>
+/* ═══ CRONÔMETRO POR SLIDE ═══ */
+.crono-chip {
+  display: none;
+  align-items: center; gap: 12px;
+  font-family: var(--mono);
+  padding: 2px 12px;
+  border-left: 1px solid var(--cinza-borda);
+  border-right: 1px solid var(--cinza-borda);
+  cursor: pointer;
+  user-select: none;
+}
+.crono-chip.on { display: flex; }
+.crono-chip:hover { background: var(--superficie); }
+
+.crono-restante {
+  font-size: 1.15rem; font-weight: 700; line-height: 1;
+  color: var(--verde);
+  font-variant-numeric: tabular-nums;
+  min-width: 74px; text-align: right;
+}
+.crono-prev {
+  font-size: 0.7rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.crono-total {
+  font-size: 0.7rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 1px;
+  padding-left: 12px; border-left: 1px solid var(--cinza-borda);
+}
+
+.crono-chip.alerta .crono-restante { color: var(--ouro); }
+.crono-chip.estouro .crono-restante { color: var(--erro); animation: crono-pulso 1s steps(2, end) infinite; }
+.crono-chip.pausado .crono-restante { color: var(--cinza); }
+.crono-chip.pausado .crono-prev::after { content: ' · pausado'; color: var(--ouro); }
+.crono-chip.sem-tempo .crono-restante { color: var(--cinza); }
+
+@keyframes crono-pulso { 0% { opacity: 1; } 50% { opacity: 0.35; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .crono-chip.estouro .crono-restante { animation: none; }
+}
+
+.crono-barra {
+  position: fixed; bottom: 45px; left: 0;
+  width: 100%; height: 2px; z-index: 201;
+  background: transparent; display: none;
+}
+.crono-barra.on { display: block; }
+.crono-barra .fill {
+  height: 100%; width: 0%;
+  background: var(--verde);
+  transition: width 0.3s linear, background 0.3s;
+}
+.crono-barra.alerta .fill { background: var(--ouro); }
+.crono-barra.estouro .fill { background: var(--erro); }
+
+@media (max-width: 900px) {
+  .crono-total { display: none; }
+  .crono-chip { padding: 2px 8px; gap: 8px; }
+}
+@media print {
+  .crono-chip, .crono-barra, #btn-crono { display: none !important; }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'T01-AP-v21-crono';
+
+  /* ─────────────────────────────────────────────────────────────
+     MAPA — cada linha do Roteiro (Slide 2) -> intervalo de slides.
+     "linha" é a posição da faixa no Slide 2, começando em 0.
+     Ajuste apenas esta tabela se a ordem dos slides mudar.
+     ───────────────────────────────────────────────────────────── */
+  var MAPA = [
+    { linha: 0, de: 1,  ate: 2  },  /* 0-3   Abertura     -> Capa + Ato I       */
+    { linha: 1, de: 3,  ate: 3  },  /* 3-8   Topico 1     -> slide 3            */
+    { linha: 2, de: 4,  ate: 4  },  /* 8-13  Topico 2     -> slide 4            */
+    { linha: 3, de: 5,  ate: 5  },  /* 13-18 Topico 3     -> slide 5            */
+    { linha: 4, de: 6,  ate: 6  },  /* 18-23 Topico 4     -> slide 6            */
+    { linha: 5, de: 7,  ate: 7  },  /* 23-28 Topico 5     -> slide 7            */
+    { linha: 6, de: 8,  ate: 13 },  /* 28-35 Aplicacoes   -> T1..T6 (6 slides)  */
+    { linha: 7, de: 14, ate: 15 },  /* 35-40 C&A+Reflexao -> slides 14-15       */
+    { linha: 8, de: 16, ate: 16 }   /* 40-45 Encerramento -> Despedida          */
+  ];
+
+  var slides = document.querySelectorAll('.slide');
+  if (!slides.length) return;
+
+  /* ─── TEMPOS PADRÃO (padronizados para todas as trilhas) ─── */
+  var previsto = {
+    1: 60, 2: 60,
+    3: 180, 4: 180, 5: 180, 6: 180, 7: 180,
+    8: 180, 9: 180, 10: 180, 11: 180, 12: 180,
+    13: 240,
+    14: 120, 15: 120,
+    16: 300
+  };
+
+  /* Backup original + expor para o slide de configuração */
+  var previstoOriginal = {};
+  for (var k in previsto) { if (previsto.hasOwnProperty(k)) previstoOriginal[k] = previsto[k]; }
+  window.__AP_PREVISTO = previsto;
+  window.__AP_PREVISTO_ORIGINAL = previstoOriginal;
+
+  /* Aplicar tempos customizados salvos */
+  try {
+    var tcust = JSON.parse(localStorage.getItem('T01-AP-v21-tempos-custom') || '{}');
+    for (var kc in tcust) { if (tcust.hasOwnProperty(kc)) previsto[parseInt(kc, 10)] = tcust[kc]; }
+  } catch(e) {}
+
+  /* ─── 2. INTERFACE ─── */
+  var toolbar = document.querySelector('.toolbar');
+  var rodape = document.querySelector('.rodape');
+  var rodapeNav = document.querySelector('.rodape-nav');
+  if (!toolbar || !rodape) return;
+
+  var btn = document.createElement('button');
+  btn.id = 'btn-crono';
+  btn.type = 'button';
+  btn.title = 'Cronometro por slide (C)';
+  btn.textContent = '\u23F1 C';
+  toolbar.appendChild(btn);
+
+  var chip = document.createElement('div');
+  chip.className = 'crono-chip';
+  chip.title = 'Clique para pausar ou retomar';
+  chip.innerHTML =
+    '<span class="crono-restante">--:--</span>' +
+    '<span class="crono-prev">prev 00:00</span>' +
+    '<span class="crono-total">aula 00:00</span>';
+  rodape.insertBefore(chip, rodapeNav);
+
+  var barra = document.createElement('div');
+  barra.className = 'crono-barra';
+  barra.innerHTML = '<div class="fill"></div>';
+  document.body.appendChild(barra);
+
+  var elRestante = chip.querySelector('.crono-restante');
+  var elPrev = chip.querySelector('.crono-prev');
+  var elTotal = chip.querySelector('.crono-total');
+  var elFill = barra.querySelector('.fill');
+
+  /* ─── 3. ESTADO ─── */
+  var ligado = false, pausado = false;
+  var ref = 0, gastoSlide = 0, gastoAula = 0, tique = null;
+  var atual = slideAtivo();
+
+  function slideAtivo() {
+    var s = document.querySelector('.slide.ativo');
+    return s ? parseInt(s.dataset.slide, 10) || 1 : 1;
+  }
+
+  function acumular() {
+    var t = Date.now();
+    if (ligado && !pausado) {
+      var d = (t - ref) / 1000;
+      gastoSlide += d;
+      gastoAula += d;
+    }
+    ref = t;
+  }
+
+  function fmt(seg) {
+    seg = Math.max(0, Math.round(seg));
+    var m = Math.floor(seg / 60), s = seg % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function pintar() {
+    if (!ligado) return;
+    var prev = previsto[atual];
+    chip.classList.remove('alerta', 'estouro', 'sem-tempo');
+    barra.classList.remove('alerta', 'estouro');
+    chip.classList.toggle('pausado', pausado);
+    elTotal.textContent = 'aula ' + fmt(gastoAula);
+
+    if (!prev) {
+      chip.classList.add('sem-tempo');
+      elRestante.textContent = '--:--';
+      elPrev.textContent = 'sem tempo no roteiro';
+      elFill.style.width = '0%';
+      return;
+    }
+
+    var resta = prev - gastoSlide;
+    elPrev.textContent = 'prev ' + fmt(prev);
+    elRestante.textContent = (resta < 0 ? '+' : '') + fmt(Math.abs(resta));
+    elFill.style.width = Math.min(100, (gastoSlide / prev) * 100) + '%';
+
+    if (resta < 0) { chip.classList.add('estouro'); barra.classList.add('estouro'); }
+    else if (resta <= prev * 0.2) { chip.classList.add('alerta'); barra.classList.add('alerta'); }
+  }
+
+  function tick() { acumular(); pintar(); }
+
+  function ligar() {
+    ligado = true; pausado = false;
+    gastoSlide = 0; gastoAula = 0;
+    atual = slideAtivo();
+    ref = Date.now();
+    chip.classList.add('on');
+    barra.classList.add('on');
+    btn.classList.add('active');
+    pintar();
+    tique = setInterval(tick, 250);
+    guardar();
+  }
+
+  function desligar() {
+    ligado = false; pausado = false;
+    clearInterval(tique); tique = null;
+    chip.classList.remove('on', 'pausado', 'alerta', 'estouro', 'sem-tempo');
+    barra.classList.remove('on', 'alerta', 'estouro');
+    btn.classList.remove('active');
+    guardar();
+  }
+
+  function alternar() { ligado ? desligar() : ligar(); }
+
+  function guardar() {
+    try { localStorage.setItem(KEY, ligado ? '1' : '0'); } catch (e) {}
+  }
+
+  /* ─── 4. EVENTOS ─── */
+  btn.addEventListener('click', alternar);
+
+  chip.addEventListener('click', function () {
+    if (!ligado) return;
+    acumular();
+    pausado = !pausado;
+    ref = Date.now();
+    pintar();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); alternar(); }
+  });
+
+  var obs = new MutationObserver(function () {
+    var n = slideAtivo();
+    if (n === atual) return;
+    acumular();
+    atual = n;
+    gastoSlide = 0;
+    pintar();
+  });
+  slides.forEach(function (s) {
+    obs.observe(s, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  /* ─── 5. RESTAURAR PREFERÊNCIA ─── */
+  try { if (localStorage.getItem(KEY) === '1') ligar(); } catch (e) {}
+})();
+</script>
+
+<!-- ═══ OCULTAR SLIDES + CONFIGURAÇÃO DE TEMPOS — add-on v1 ═══ -->
+<style>
+/* ── Overview: eye toggle + estado oculto ── */
+.ov-eye {
+  position: absolute; top: 6px; right: 6px;
+  background: none; border: 1px solid var(--cinza-borda);
+  color: var(--cinza); width: 24px; height: 24px;
+  font-size: 0.85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0; z-index: 2;
+  transition: color 0.15s, border-color 0.15s;
+}
+.ov-eye:hover { color: var(--ouro); border-color: var(--ouro); }
+.overview-cell.oculto { opacity: 0.35; border-style: dashed; }
+.overview-cell.oculto .ov-tit { text-decoration: line-through; }
+
+/* ── Slide de configuração ── */
+.config-wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.config-wrap .tbl td { padding: 8px 14px; }
+.config-wrap input[type="text"] {
+  width: 80px; background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto); font-family: var(--mono);
+  padding: 5px 8px; font-size: 0.9rem; text-align: center;
+  transition: border-color 0.15s;
+}
+.config-wrap input[type="text"]:focus {
+  outline: none; border-color: var(--ouro);
+}
+.config-acoes { display: flex; gap: 12px; margin-top: 20px; }
+.config-btn {
+  background: var(--azul); color: white; border: none;
+  font-family: var(--font); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 20px; cursor: pointer;
+  transition: background 0.15s;
+}
+.config-btn:hover { background: var(--azul-claro); }
+.config-btn.config-reset {
+  background: var(--superficie);
+  color: var(--cinza);
+  border: 1px solid var(--cinza-borda);
+}
+.config-btn.config-reset:hover { color: var(--texto); border-color: var(--texto); }
+.config-nota {
+  font-size: 0.8rem; color: var(--cinza);
+  margin-top: 16px; font-style: italic; line-height: 1.5;
+}
+@media print {
+  .ov-eye, .config-wrap, #btn-config { display: none !important; }
+}
+
+/* ── BOTÃO REVEAL ICON-ONLY (sem texto) ── */
+.btn-reveal-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; margin-top: 12px;
+  background: var(--azul); color: white; border: none;
+  font-size: 1.1rem; cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  border-radius: 0; padding: 0;
+}
+.btn-reveal-icon:hover { background: var(--azul-claro); }
+.btn-reveal-icon.aberto { transform: rotate(180deg); }
+[data-theme="light"] .btn-reveal-icon { color: white; }
+
+/* Forçar hidden em elementos com display explícito no CSS */
+[hidden] { display: none !important; }
+
+/* == REFINO-AP v1 == padrao de todas as APs == */
+/* 1. O paragrafo sob a legenda encostava na borda da caixa da figura. */
+.col-img p { margin: 0; padding: 12px 18px 14px; }
+.col-img p + p { padding-top: 0; }
+
+/* 2. Salto Conceito <-> Aplicacao (dinamica do professor em aula). */
+.salto-bar {
+  flex: 0 0 auto; display: flex; gap: 12px;
+  justify-content: flex-end; align-items: center;
+  margin-top: 6px;
+}
+.salto {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 1px;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--ouro); border: 1px solid var(--ouro);
+  padding: 7px 14px; cursor: pointer; text-decoration: none;
+  background: transparent; transition: background .15s, color .15s;
+}
+.salto:hover { background: var(--ouro); color: #000; }
+.salto.volta { color: var(--verde); border-color: var(--verde); }
+.salto.volta:hover { background: var(--verde); color: #000; }
+
+/* 3. Figura: recortar so quando o texto fala de um trecho especifico. */
+.col-img img.fig-inteira { max-height: none; object-fit: contain; }
+.col-img img.fig-trecho-inferior {
+  aspect-ratio: var(--rec-ar, 1000 / 340);
+  max-height: 34vh; object-fit: cover; object-position: 50% 100%;
+}
+
+@media (max-height: 800px) {
+  .salto { font-size: 0.72rem; padding: 5px 11px; }
+  .salto-bar { margin-top: 2px; }
+  .col-img p { padding: 9px 14px 10px; }
+}
+
+</style>
+
+<script>
+(function() {
+  'use strict';
+  var STORAGE_KEY = 'T01-AP-v21';
+  var KEY_TEMPOS = STORAGE_KEY + '-tempos-custom';
+  var allSlides = document.querySelectorAll('.slide');
+  var configSlideNum = allSlides.length;
+  var tbody = document.getElementById('config-tbody');
+  var previsto = window.__AP_PREVISTO || {};
+  var original = window.__AP_PREVISTO_ORIGINAL || {};
+  var ap = window.__AP || {};
+
+  function fmtInput(seg) {
+    if (!seg && seg !== 0) return '';
+    seg = Math.round(seg);
+    var m = Math.floor(seg / 60), s = seg % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function parseInput(val) {
+    var parts = val.trim().split(':');
+    if (parts.length === 2) {
+      var m = parseInt(parts[0], 10) || 0;
+      var s = parseInt(parts[1], 10) || 0;
+      return m * 60 + s;
+    }
+    if (parts.length === 1 && parts[0] !== '') {
+      return (parseInt(parts[0], 10) || 0) * 60;
+    }
+    return null;
+  }
+
+  function construirTabela() {
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    for (var i = 0; i < allSlides.length; i++) {
+      var n = i + 1;
+      if (n === configSlideNum) continue;
+      var sl = allSlides[i];
+      var titulo = sl.dataset.titulo || ('Slide ' + n);
+      var prev = previsto[n];
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td style="font-family:var(--mono);color:var(--azul);font-weight:700;width:50px;">' +
+          (n < 10 ? '0' + n : n) + '</td>' +
+        '<td>' + titulo + '</td>' +
+        '<td><input type="text" class="cfg-input" data-slide="' + n +
+          '" value="' + fmtInput(prev) + '" placeholder="m:ss"></td>';
+      tbody.appendChild(tr);
+    }
+  }
+  construirTabela();
+
+  var btnAplicar = document.getElementById('cfg-aplicar');
+  var btnReset = document.getElementById('cfg-reset');
+
+  if (btnAplicar) {
+    btnAplicar.addEventListener('click', function() {
+      var inputs = tbody.querySelectorAll('.cfg-input');
+      var newCustom = {};
+      inputs.forEach(function(inp) {
+        var n = parseInt(inp.dataset.slide, 10);
+        var val = parseInput(inp.value);
+        if (val !== null && val > 0) {
+          previsto[n] = val;
+          newCustom[n] = val;
+        }
+      });
+      try { localStorage.setItem(KEY_TEMPOS, JSON.stringify(newCustom)); } catch(e) {}
+      this.textContent = '✓ Aplicado!';
+      var self = this;
+      setTimeout(function() { self.textContent = '✓ Aplicar'; }, 1500);
+    });
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener('click', function() {
+      var k;
+      for (k in original) {
+        if (original.hasOwnProperty(k)) previsto[parseInt(k, 10)] = original[k];
+      }
+      for (k in previsto) {
+        if (previsto.hasOwnProperty(k) && !original.hasOwnProperty(k)) delete previsto[k];
+      }
+      try { localStorage.removeItem(KEY_TEMPOS); } catch(e) {}
+      construirTabela();
+      this.textContent = '↺ Restaurado!';
+      var self = this;
+      setTimeout(function() { self.textContent = '↺ Restaurar padrão'; }, 1500);
+    });
+  }
+
+  var btnConfig = document.getElementById('btn-config');
+  if (btnConfig) {
+    btnConfig.addEventListener('click', function() {
+      if (ap.irPara) ap.irPara(configSlideNum);
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'g' || e.key === 'G') {
+      e.preventDefault();
+      if (ap.irPara) ap.irPara(configSlideNum);
+    }
+  });
+})();
+</script>
+
+<script>
+(function() {
+  'use strict';
+  function slideN(n) { return document.querySelector('.slide[data-slide="' + n + '"]'); }
+
+  /* A conclusao de cada topico (paragrafo em italico ao pe do slide) tem de
+     nascer OCULTA: ela e a resposta que o professor revela por ultimo. Nos
+     slides 3-5 ela ja entrava na lista; nos slides 6 e 7 ficava visivel desde
+     o inicio. Busca no slide inteiro porque em algumas trilhas a conclusao
+     foi para a coluna da imagem. */
+  function conclusaoDe(sl) {
+    var ps = sl.querySelectorAll('.slide-body p');
+    for (var i = ps.length - 1; i >= 0; i--) {
+      if (getComputedStyle(ps[i]).fontStyle === 'italic') return ps[i];
+    }
+    return null;
+  }
+
+  function progressiveReveal(containerOrParent, items, insertBefore) {
+    var idx = 0;
+    items.forEach(function(it) {
+      if (Array.isArray(it)) { it.forEach(function(el) { el.setAttribute('hidden', ''); }); }
+      else { it.setAttribute('hidden', ''); }
+    });
+    var btn = document.createElement('button');
+    btn.className = 'btn-reveal-icon';
+    btn.type = 'button';
+    btn.textContent = '▼';
+    btn.addEventListener('click', function() {
+      if (idx < items.length) {
+        var item = items[idx];
+        if (Array.isArray(item)) { item.forEach(function(el) { el.removeAttribute('hidden'); }); }
+        else { item.removeAttribute('hidden'); }
+        idx++;
+        if (idx >= items.length) { btn.textContent = '▲'; btn.classList.add('aberto'); }
+      } else {
+        items.forEach(function(it) {
+          if (Array.isArray(it)) { it.forEach(function(el) { el.setAttribute('hidden', ''); }); }
+          else { it.setAttribute('hidden', ''); }
+        });
+        idx = 0;
+        btn.textContent = '▼';
+        btn.classList.remove('aberto');
+      }
+    });
+    containerOrParent.insertBefore(btn, insertBefore || containerOrParent.firstChild);
+    return btn;
+  }
+
+  // ── Slide 2: resposta investigativa oculta ──
+  (function() {
+    var sl = slideN(2);
+    if (!sl) return;
+    var resp = sl.querySelector('.resposta-investigativa');
+    if (resp) {
+      var parent = resp.parentNode;
+      progressiveReveal(parent, [resp], resp);
+    }
+  })();
+
+  // ── Slides 3, 4: Fórmulas + Exemplo + Conclusão progressivos ──
+  [3, 4].forEach(function(n) {
+    var sl = slideN(n);
+    if (!sl) return;
+    var colText = sl.querySelector('.col-text');
+    if (!colText) return;
+    var items = [];
+    colText.querySelectorAll('.eq, p').forEach(function(el) {
+      if (el.classList.contains('eq')) { items.push(el); return; }
+      var html = el.innerHTML || '';
+      if (html.indexOf('Exemplo') > -1 && html.indexOf('Exemplo') < 40) items.push(el);
+      if (el.style.fontStyle === 'italic') items.push(el);
+    });
+    if (items.length) {
+      progressiveReveal(colText, items, items[0]);
+    }
+  });
+
+  // ── Slide 5: passos progressivos ──
+  (function() {
+    var sl = slideN(5);
+    if (!sl) return;
+    var container = sl.querySelector('.passos');
+    if (!container) return;
+    var items = [];
+    container.querySelectorAll('.passo').forEach(function(it) { items.push(it); });
+    var centros = sl.querySelector('.col-text > p:last-child');
+    if (centros && centros.textContent.indexOf('Centros') > -1) items.push(centros);
+    var concl5 = conclusaoDe(sl);
+    if (concl5 && items.indexOf(concl5) === -1) items.push(concl5);
+    if (items.length) progressiveReveal(container.parentNode, items, container);
+  })();
+
+  // ── Slide 6: eras progressivas ──
+  (function() {
+    var sl = slideN(6);
+    if (!sl) return;
+    var colText = sl.querySelector('.col-text');
+    if (!colText) return;
+    var items = [];
+    colText.querySelectorAll('.era, .eq').forEach(function(el) { items.push(el); });
+    var concl6 = conclusaoDe(sl);
+    if (concl6 && items.indexOf(concl6) === -1) items.push(concl6);
+    if (items.length) progressiveReveal(colText, items);
+  })();
+
+  // ── Slide 7: linhas da tabela + destaque ──
+  (function() {
+    var sl = slideN(7);
+    if (!sl) return;
+    var items = [];
+    sl.querySelectorAll('tbody tr').forEach(function(r) { items.push(r); });
+    var destaque = sl.querySelector('.def');
+    if (destaque) items.push(destaque);
+    var concl7 = conclusaoDe(sl);
+    if (concl7 && items.indexOf(concl7) === -1) items.push(concl7);
+    var colText = sl.querySelector('.col-text');
+    if (colText && items.length) progressiveReveal(colText, items);
+  })();
+
+  // ── Slide 14: parágrafos progressivos ──
+  (function() {
+    var sl = slideN(14);
+    if (!sl) return;
+    var colText = sl.querySelector('.col-text');
+    if (!colText) return;
+    var children = colText.querySelectorAll('.ca-obra, .ca-versos');
+    var items = [];
+    for (var i = 1; i < children.length; i++) items.push(children[i]);
+    if (items.length) progressiveReveal(colText, items, items[0]);
+  })();
+
+  // ── Slide 15: parágrafos progressivos ──
+  (function() {
+    var sl = slideN(15);
+    if (!sl) return;
+    var ps = sl.querySelectorAll('.ca-analise');
+    var items = [];
+    for (var i = 1; i < ps.length; i++) items.push(ps[i]);
+    if (items.length) progressiveReveal(ps[0].parentNode, items, items[0]);
+  })();
+
+  // ── Slide 16: itens progressivos ──
+  (function() {
+    var sl = slideN(16);
+    if (!sl) return;
+    var body = sl.querySelector('.desp-body');
+    if (!body) return;
+    var children = body.children;
+    var items = [];
+    for (var i = 1; i < children.length; i++) items.push(children[i]);
+    if (items.length) progressiveReveal(body, items, items[0]);
+  })();
+})();
+
+/* == REFINO-AP v1 - salto Conceito<->Aplicacao == */
+/* Delegado no documento e reaproveitando o clique do Sumario: assim o salto
+   funciona sem depender do escopo onde irPara() foi declarada em cada deck. */
+document.addEventListener('click', function (ev) {
+  var alvo = ev.target.closest && ev.target.closest('.salto[data-goto]');
+  if (!alvo) return;
+  ev.preventDefault();
+  var item = document.querySelector('#toc-lista .toc-item[data-goto="' + alvo.dataset.goto + '"]');
+  if (item) item.click();
+});
+
+</script>
+
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t01">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

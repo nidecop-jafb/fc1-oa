@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T05 · Notação Científica: A Linguagem da Escala — Apresentação de Aula (AP) v21</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO — MODO PALCO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.72 0.16 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.65 0.24 25);
+  --cinza: oklch(0.60 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.40 0.02 260);
+  --texto: oklch(0.96 0 0);
+  --branco: oklch(0.98 0 0);
+  --superficie: oklch(0.20 0.02 260);
+  --fundo: oklch(0.09 0.02 260);
+  --input-bg: oklch(0.18 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-palco: 1.5rem;   /* base do "modo palco" — maior que TT (1.15) */
+}
+
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.45 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.72 0.02 260);
+  --texto: oklch(0.15 0 0);
+  --branco: oklch(0.10 0 0);
+  --superficie: oklch(0.96 0.01 260);
+  --fundo: oklch(0.99 0.005 260);
+  --input-bg: oklch(0.94 0.01 260);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--font);
+  font-size: var(--fs-palco);
+  line-height: 1.5;
+  border-radius: 0;
+}
+
+/* ═══ BARRA DE PROGRESSO ═══ */
+.progress-top {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 4px; z-index: 1000;
+  background: var(--cinza-claro);
+}
+.progress-top .bar {
+  height: 100%; background: var(--ouro);
+  width: 0%; transition: width 0.3s ease;
+}
+
+/* ═══ TOOLBAR (topo-direita) ═══ */
+.toolbar {
+  position: fixed; top: 4px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--cinza-borda);
+  border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--font);
+  font-size: 0.75rem; padding: 6px 10px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ SIDEBARS (4: SUMÁRIO / MÚSICA / CRÉDITOS / REFERÊNCIAS) ═══ */
+.sb-toggle {
+  position: fixed; left: 0; z-index: 998;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem;
+  padding: 6px 8px; cursor: pointer;
+  font-family: var(--font);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+  border-radius: 0; transition: color 0.15s;
+}
+.sb-toggle:hover { color: var(--ouro); }
+/* Posições calculadas por comprimento real (letras × ~11px + padding 14 + border 2) */
+.toc-toggle        { top: 60px; }   /* SUMÁRIO — 7  chars → ~92px */
+.musica-toggle     { top: 158px; }  /* MÚSICA — 6  chars → ~82px */
+.ineditismo-toggle { top: 246px; }  /* INEDITISMO — 10 chars → ~126px */
+.imagens-toggle    { top: 378px; }  /* IMAGENS — 7  chars → ~92px */
+.creditos-toggle   { top: 476px; }  /* CRÉDITOS — 8  chars → ~102px */
+.refs-toggle       { top: 584px; }  /* REFERÊNCIAS — 11 chars → ~138px */
+@media (max-height: 780px) {
+  .sb-toggle { font-size: 0.65rem; padding: 5px 6px; }
+  .toc-toggle        { top: 50px; }
+  .musica-toggle     { top: 138px; }
+  .ineditismo-toggle { top: 218px; }
+  .imagens-toggle    { top: 334px; }
+  .creditos-toggle   { top: 422px; }
+  .refs-toggle       { top: 518px; }
+}
+
+/* Blocos internos de créditos e imagens */
+.cred-grupo { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--cinza-borda); }
+.cred-grupo:last-child { border-bottom: none; margin-bottom: 8px; }
+.cred-instituicao { color: var(--ouro); font-size: 0.88rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
+.cred-cargo { color: var(--cinza); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.cred-nome { color: var(--branco); font-weight: 700; font-size: 0.9rem; }
+.cred-bio { font-size: 0.82rem; color: oklch(0.78 0 0); line-height: 1.5; margin-top: 4px; }
+[data-theme="light"] .cred-bio { color: oklch(0.28 0 0); }
+.cred-footer { font-size: 0.7rem; color: var(--cinza); font-style: italic; text-align: center; margin-top: 12px; letter-spacing: 0.5px; }
+.imagens-nota { font-size: 0.8rem; color: var(--cinza); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--cinza-borda); line-height: 1.5; }
+.figura-num { font-weight: 700; color: var(--azul); }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie);
+  border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 46px;
+  transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem;
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar h3 {
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda);
+  padding-bottom: 8px;
+}
+.sidebar .toc-item {
+  display: block; padding: 8px 0; font-size: 0.85rem;
+  color: oklch(0.75 0 0); text-decoration: none;
+  border-bottom: 1px solid var(--cinza-claro);
+  transition: color 0.15s; cursor: pointer;
+}
+[data-theme="light"] .sidebar .toc-item { color: oklch(0.28 0 0); }
+.sidebar .toc-item:hover { color: var(--ouro); }
+.sidebar .toc-item .toc-num {
+  font-family: var(--mono); color: var(--azul);
+  font-size: 0.75rem; margin-right: 10px; min-width: 30px; display: inline-block;
+}
+.sidebar .toc-item.ativo .toc-num { color: var(--ouro); font-weight: 700; }
+.sidebar .toc-item.ato-titulo {
+  color: var(--azul); font-weight: 700;
+  border-bottom: 2px solid var(--azul);
+  margin-top: 12px; padding-top: 12px;
+}
+.sidebar p { font-size: 0.9rem; margin-bottom: 12px; color: oklch(0.80 0 0); line-height: 1.6; }
+[data-theme="light"] .sidebar p { color: oklch(0.25 0 0); }
+.sidebar .link-yt {
+  display: inline-block; margin-top: 8px; padding: 8px 14px;
+  background: var(--erro); color: white; text-decoration: none;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sidebar .link-yt:hover { background: oklch(0.72 0.24 25); }
+.sidebar .refs-grupo { margin-bottom: 18px; }
+.sidebar .refs-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 6px;
+}
+.sidebar .refs-item {
+  font-size: 0.8rem; color: oklch(0.78 0 0);
+  margin-bottom: 4px; line-height: 1.4;
+}
+[data-theme="light"] .sidebar .refs-item { color: oklch(0.28 0 0); }
+
+/* ═══ DECK / SLIDES ═══ */
+.deck { width: 100%; height: 100%; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  padding: 5vh 6vw 60px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.slide.ativo { opacity: 1; pointer-events: auto; }
+
+/* Título de slide (sem "linha SLIDE X" — info já está no rodapé/sumário) */
+.slide-titulo {
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--ouro); line-height: 1.15;
+  margin-bottom: 24px;
+}
+.slide-subtitulo { font-size: 1.1rem; color: var(--cinza); margin-top: -18px; margin-bottom: 24px; }
+
+.slide-body {
+  width: 100%; flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 18px;
+}
+
+/* ── SLIDE 1: CAPA ── */
+.capa-slide {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center; position: relative; overflow: hidden;
+}
+.capa-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(0.35) saturate(1.1);
+  z-index: 0;
+}
+[data-theme="light"] .capa-bg { filter: brightness(0.65) saturate(1.1); }
+.capa-conteudo {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  padding: 5vh 6vw;
+}
+.capa-disciplina {
+  font-size: 3.4rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 4px;
+  color: var(--ouro); text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.capa-curso {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  margin-top: 10px; letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-trilha {
+  font-size: 1.15rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 3px;
+  margin-top: 32px; font-weight: 700;
+}
+.capa-titulo {
+  font-size: 3rem; font-weight: 700; color: var(--branco);
+  margin-top: 14px; line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  max-width: 900px;
+}
+.capa-epigrafe {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  max-width: 640px; text-align: center; line-height: 1.4;
+  margin-top: 32px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-epigrafe-autor {
+  font-size: 1rem; color: var(--ouro); margin-top: 8px; font-weight: 600;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-autores {
+  font-size: 1.15rem; color: oklch(0.85 0 0);
+  margin-top: 40px; font-weight: 500;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-inst {
+  font-size: 0.9rem; color: oklch(0.70 0 0);
+  margin-top: 6px; letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+[data-theme="light"] .capa-disciplina,
+[data-theme="light"] .capa-curso,
+[data-theme="light"] .capa-titulo,
+[data-theme="light"] .capa-epigrafe,
+[data-theme="light"] .capa-autores,
+[data-theme="light"] .capa-inst {
+  text-shadow: 0 2px 12px rgba(255,255,255,0.7);
+}
+
+/* ── CONTEÚDO GENÉRICO ── */
+.cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: start; width: 100%;
+}
+.cols.img-r { grid-template-columns: 1.15fr 0.85fr; }
+.cols.img-l { grid-template-columns: 0.85fr 1.15fr; }
+
+.col-text { display: flex; flex-direction: column; gap: 16px; }
+.col-text p { font-size: 1.35rem; line-height: 1.55; color: oklch(0.90 0 0); }
+[data-theme="light"] .col-text p { color: oklch(0.18 0 0); }
+.hi { color: var(--ouro); font-weight: 700; }
+.hv { color: var(--verde); font-weight: 700; }
+.he { color: var(--erro); font-weight: 700; }
+
+.col-img {
+  width: 100%; border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  overflow: hidden;
+  align-self: center;
+}
+.col-img img { width: 100%; display: block; height: auto; }
+.col-img-legenda {
+  font-size: 0.85rem; color: var(--cinza);
+  text-align: center; padding: 8px 12px; font-style: italic;
+  border-top: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+}
+
+/* ── TIMELINE ROTEIRO ── */
+.tl {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 12px 16px; background: var(--superficie);
+  border-left: 4px solid var(--ouro);
+}
+.tl-t {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--azul); min-width: 100px; flex-shrink: 0;
+  font-weight: 700;
+}
+.tl-d { font-size: 1.2rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .tl-d { color: oklch(0.22 0 0); }
+.tl-d strong { color: var(--ouro); }
+
+/* ── DEFINIÇÃO / CONCEITO ── */
+.def {
+  background: var(--superficie);
+  padding: 16px 22px;
+  border-left: 4px solid var(--ouro);
+}
+.def .termo {
+  font-weight: 700; color: var(--ouro);
+  text-transform: uppercase; font-size: 0.95rem;
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.def p { font-size: 1.25rem; color: oklch(0.90 0 0); line-height: 1.5; }
+[data-theme="light"] .def p { color: oklch(0.18 0 0); }
+
+/* ── EQUAÇÃO ── */
+.eq {
+  background: var(--input-bg);
+  padding: 18px 24px; text-align: center;
+  font-family: var(--serif); font-size: 1.9rem;
+  color: var(--branco); border: 1px solid var(--cinza-borda);
+}
+
+/* ── PASSOS NUMERADOS ── */
+.passos { display: flex; flex-direction: column; gap: 8px; }
+.passo {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 14px; background: var(--superficie);
+}
+.passo-n {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 1.3rem; min-width: 28px;
+}
+.passo-t { font-size: 1.1rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .passo-t { color: oklch(0.22 0 0); }
+
+/* ── TIMELINE ERAS ── */
+.era {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 12px 16px; background: var(--superficie);
+  border-left: 4px solid var(--azul);
+}
+.era-p {
+  font-family: var(--mono); font-size: 0.95rem;
+  color: var(--azul); min-width: 130px; flex-shrink: 0;
+  padding-top: 3px; font-weight: 700;
+}
+.era-c { font-size: 1.15rem; color: oklch(0.88 0 0); line-height: 1.5; }
+[data-theme="light"] .era-c { color: oklch(0.22 0 0); }
+.era-c strong { color: var(--ouro); }
+
+/* ── TABELA ── */
+.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 1.15rem;
+}
+.tbl th {
+  padding: 12px 14px; text-align: left; font-weight: 700;
+  color: var(--ouro); border-bottom: 2px solid var(--cinza-borda);
+  text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+}
+.tbl td {
+  padding: 12px 14px; border-bottom: 1px solid var(--cinza-claro);
+  color: oklch(0.88 0 0); vertical-align: middle;
+}
+[data-theme="light"] .tbl td { color: oklch(0.20 0 0); }
+.tbl td.eq-cell { font-family: var(--serif); font-size: 1.2rem; }
+
+/* ── EXERCÍCIOS / APLICAÇÕES ── */
+.exercicio {
+  background: var(--superficie);
+  padding: 18px 22px;
+  border-left: 4px solid var(--azul);
+}
+.exercicio-label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--azul); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px; font-weight: 700;
+}
+.exercicio-enunciado {
+  font-size: 1.2rem; color: oklch(0.90 0 0);
+  line-height: 1.5; margin-bottom: 12px;
+}
+[data-theme="light"] .exercicio-enunciado { color: oklch(0.18 0 0); }
+.exercicio-resposta {
+  font-size: 1.25rem; color: var(--verde);
+  font-weight: 600; line-height: 1.5;
+  padding: 12px 16px; background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+}
+[data-theme="light"] .exercicio-resposta {
+  color: oklch(0.28 0.14 150);
+}
+
+/* ── PROTOCOLO C5 (8 etapas) — aplicado a cada exercício ── */
+.c5-ap {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0;
+  margin-top: 14px;
+  font-family: var(--font);
+}
+.c5-ap-etapa {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 0.9rem;
+  padding: 8px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 3px;
+}
+.c5-icon {
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  color: var(--azul);
+  flex-shrink: 0; display: block;
+}
+.c5-ap-conteudo {
+  font-size: 1rem;
+  color: oklch(0.88 0 0);
+  padding: 8px 0 8px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  line-height: 1.45;
+}
+[data-theme="light"] .c5-ap-conteudo { color: oklch(0.22 0 0); }
+.c5-ap-conteudo strong { color: var(--ouro); }
+.c5-ap-conteudo .eq-inline {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--branco);
+  padding: 0 4px;
+}
+[data-theme="light"] .c5-ap-conteudo .eq-inline { color: oklch(0.15 0 0); }
+.c5-ap-etapa:first-child,
+.c5-ap > *:nth-child(2) { border-top: none; padding-top: 4px; }
+
+/* Etapa 8 — resposta como última linha da tabela C5 (ícone + número injetados via JS) */
+.c5-resposta {
+  position: relative;
+  margin-top: -1px;
+  padding: 10px 12px 12px 56px;
+  background: var(--verde-claro);
+  border-top: 2px solid var(--verde);
+  color: var(--verde);
+  font-family: var(--font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.c5-resposta .c5-resp-etapa {
+  position: absolute; left: 4px; top: 8px;
+  width: 44px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  font-family: var(--mono); font-weight: 700;
+  color: var(--verde); font-size: 0.95rem;
+}
+.c5-resposta .c5-icon { color: var(--verde); }
+.c5-resposta strong { color: var(--verde); }
+[data-theme="light"] .c5-resposta,
+[data-theme="light"] .c5-resposta strong,
+[data-theme="light"] .c5-resposta .c5-resp-etapa,
+[data-theme="light"] .c5-resposta .c5-icon { color: oklch(0.28 0.14 150); }
+
+/* Botão de revelação da solução — foco no enunciado por padrão */
+.btn-solucao {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  background: var(--azul); color: white; border: none;
+  font-family: var(--font); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 12px 22px; cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0;
+}
+.btn-solucao:hover { background: var(--azul-claro); }
+[data-theme="light"] .btn-solucao { color: white; }
+.c5-solucao { margin-top: 14px; }
+.c5-solucao[hidden] { display: none !important; }
+
+/* Slides de exercício: IT-11 (símbolo) à direita, texto ocupa o restante */
+.slide-body.com-simbolo { position: relative; }
+.img-simbolo {
+  position: absolute; top: 0; right: 0;
+  width: 220px; height: auto;
+  border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  z-index: 1;
+}
+.slide-body.com-simbolo > .exercicio,
+.slide-body.com-simbolo > .qi {
+  padding-right: 250px;
+}
+@media (max-width: 1100px) {
+  .img-simbolo { width: 180px; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 200px; }
+}
+@media (max-width: 900px) {
+  .img-simbolo { position: static; width: 140px; margin: 0 auto 14px; display: block; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 0; }
+}
+
+/* Slides 8-13 (Aplicações + Integradora) — fluxograma C5 valorizado */
+.img-c5 {
+  width: 360px !important;
+  height: auto !important;
+  max-height: 560px;
+  object-fit: contain;
+  border: none !important;
+  background: transparent !important;
+}
+.slide-body.com-c5 > .qi,
+.slide-body.com-c5 > .exercicio { padding-right: 390px; }
+@media (max-width: 1100px) {
+  .img-c5 { width: 300px !important; max-height: 460px; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 330px; }
+}
+@media (max-width: 900px) {
+  .img-c5 { position: static; width: 90vw !important; max-height: none; margin: 0 auto 14px; display: block; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 0; }
+}
+
+/* ── QUESTÃO INTEGRADORA ── */
+.qi {
+  border: 3px solid var(--ouro);
+  padding: 22px 26px;
+  background: oklch(0.13 0.04 95);
+}
+[data-theme="light"] .qi { background: oklch(0.96 0.03 95); }
+.qi-label {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--ouro); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 12px; font-weight: 700;
+}
+.qi-enunciado {
+  font-size: 1.2rem; color: oklch(0.92 0 0);
+  line-height: 1.55; margin-bottom: 14px;
+}
+[data-theme="light"] .qi-enunciado { color: oklch(0.15 0 0); }
+.qi-item {
+  font-size: 1.15rem; color: var(--verde);
+  line-height: 1.5; margin-bottom: 6px;
+}
+
+/* ── CIÊNCIA E ARTE ── */
+.ca-obra {
+  text-align: center; font-family: var(--serif);
+  font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 20px;
+}
+.ca-obra em { font-style: italic; color: var(--ouro); }
+.ca-versos {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  text-align: center; line-height: 1.55;
+  margin: 24px auto; max-width: 700px;
+}
+[data-theme="light"] .ca-versos { color: oklch(0.20 0 0); }
+.ca-analise {
+  font-size: 1.2rem; color: oklch(0.88 0 0);
+  line-height: 1.55; max-width: 900px; margin: 0 auto;
+}
+[data-theme="light"] .ca-analise { color: oklch(0.18 0 0); }
+.ca-analise strong { color: var(--ouro); }
+.ca-epigrafe-box {
+  border: 2px solid var(--ouro);
+  padding: 26px 30px;
+  background: var(--superficie);
+  max-width: 720px; margin: 0 auto;
+  text-align: center;
+}
+.ca-epigrafe-box p {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.6rem; color: oklch(0.92 0 0);
+  line-height: 1.45;
+}
+[data-theme="light"] .ca-epigrafe-box p { color: oklch(0.15 0 0); }
+.ca-epigrafe-box .autor {
+  font-family: var(--font); font-style: normal;
+  font-size: 1rem; color: var(--ouro);
+  margin-top: 16px; font-weight: 700; letter-spacing: 1px;
+}
+
+.ca-provinha {
+  background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+  padding: 18px 22px; margin-top: 24px;
+  max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.ca-provinha .label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--verde); text-transform: uppercase;
+  letter-spacing: 1px; font-weight: 700; margin-bottom: 6px;
+}
+.ca-provinha p {
+  font-size: 1.2rem; color: oklch(0.90 0 0); line-height: 1.5;
+}
+[data-theme="light"] .ca-provinha p { color: oklch(0.18 0 0); }
+
+/* ── DESPEDIDA ── */
+.despedida {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center;
+}
+.desp-body {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 32px; max-width: 800px;
+}
+.desp-frase {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 2.6rem; color: var(--branco); line-height: 1.35;
+}
+.desp-acao {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  line-height: 1.5;
+}
+[data-theme="light"] .desp-acao { color: oklch(0.20 0 0); }
+.desp-tarefa {
+  background: var(--erro);
+  color: white; font-weight: 800;
+  padding: 18px 32px; letter-spacing: 2px;
+  text-transform: uppercase; font-size: 1.25rem;
+}
+.desp-sofia {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.80 0 0);
+  line-height: 1.5; margin-top: 12px;
+}
+[data-theme="light"] .desp-sofia { color: oklch(0.28 0 0); }
+.desp-proximo {
+  font-size: 1rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+  padding-top: 20px; border-top: 1px solid var(--cinza-borda); width: 100%;
+}
+.desp-inst {
+  font-size: 0.9rem; color: var(--cinza);
+  margin-top: 16px; letter-spacing: 1px;
+}
+
+/* ═══ RODAPÉ FIXO ═══ */
+.rodape {
+  position: fixed; bottom: 0; left: 0;
+  width: 100%; z-index: 200;
+  background: var(--fundo);
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 20px;
+}
+.rodape-info {
+  font-size: 0.75rem; color: var(--cinza);
+  display: flex; gap: 14px; align-items: center;
+}
+.rodape-info em { color: var(--ouro); font-style: normal; font-weight: 600; }
+.rodape-info .tag {
+  border: 1px solid var(--cinza-borda);
+  padding: 2px 8px; font-size: 0.7rem;
+  color: var(--cinza); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rodape-nav {
+  display: flex; gap: 6px; align-items: center;
+}
+.rodape-nav button {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  color: var(--cinza); width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.9rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+.rodape-nav button:hover { color: var(--ouro); border-color: var(--ouro); }
+.rodape-nav .contador {
+  font-family: var(--mono); font-size: 0.85rem;
+  color: var(--cinza); min-width: 60px; text-align: center; font-weight: 700;
+}
+
+/* ═══ OVERVIEW GRID (tecla O) ═══ */
+.overview {
+  position: fixed; inset: 0; z-index: 1500;
+  background: var(--fundo);
+  padding: 60px 40px 40px;
+  overflow-y: auto;
+  display: none;
+}
+.overview.aberto { display: block; }
+.overview-titulo {
+  font-size: 1.2rem; color: var(--ouro);
+  text-transform: uppercase; letter-spacing: 3px;
+  font-weight: 700; margin-bottom: 24px;
+}
+.overview-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.overview-cell {
+  aspect-ratio: 16/9;
+  background: var(--superficie);
+  border: 2px solid var(--cinza-borda);
+  padding: 14px 16px; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+}
+.overview-cell:hover {
+  border-color: var(--ouro);
+  transform: translateY(-2px);
+}
+.overview-cell .ov-num {
+  font-family: var(--mono); font-size: 0.75rem;
+  color: var(--azul); font-weight: 700;
+  letter-spacing: 1px;
+}
+.overview-cell .ov-tit {
+  font-size: 0.95rem; color: var(--texto);
+  font-weight: 600; line-height: 1.3;
+}
+.overview-cell.ativo { border-color: var(--ouro); }
+.overview-cell.ativo .ov-num { color: var(--ouro); }
+.overview-fechar {
+  position: fixed; top: 16px; right: 24px; z-index: 1600;
+  background: var(--erro); color: white;
+  border: none; padding: 8px 16px;
+  font-family: var(--font); font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  text-transform: uppercase; font-size: 0.8rem;
+}
+
+/* ═══ RESPONSIVO ═══ */
+@media (max-width: 900px) {
+  html, body { font-size: 1.05rem; }
+  .slide { padding: 3vh 4vw 60px; }
+  .capa-disciplina { font-size: 2rem; }
+  .capa-titulo { font-size: 1.6rem; }
+  .slide-titulo { font-size: 1.4rem; }
+  .cols { grid-template-columns: 1fr !important; gap: 20px; }
+  .eq { font-size: 1.3rem; padding: 12px 16px; }
+  .tbl { font-size: 0.95rem; }
+  .desp-frase { font-size: 1.6rem; }
+  .rodape { padding: 4px 10px; }
+  .sidebar { width: 90vw; }
+  .toolbar button { padding: 4px 8px; font-size: 0.68rem; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  .progress-top, .toolbar, .sb-toggle, .sidebar,
+  .rodape, .overview, .overview-fechar { display: none !important; }
+  .slide {
+    position: relative !important; opacity: 1 !important;
+    pointer-events: auto !important; page-break-after: always;
+    min-height: 100vh; padding: 20mm 15mm;
+    overflow: visible !important;
+  }
+  html, body { overflow: visible !important; background: white !important; color: #1A1A1A !important; }
+  .capa-bg { display: none !important; }
+  .capa-slide { background: white !important; }
+  .capa-disciplina, .capa-titulo, .capa-epigrafe, .capa-autores, .capa-inst { text-shadow: none !important; color: #1A1A1A !important; }
+  .capa-trilha { color: #005599 !important; }
+}
+
+/* == REFINO-AP v1 == padrao de todas as APs == */
+/* 1. O paragrafo sob a legenda encostava na borda da caixa da figura. */
+.col-img p { margin: 0; padding: 12px 18px 14px; }
+.col-img p + p { padding-top: 0; }
+
+/* 2. Salto Conceito <-> Aplicacao (dinamica do professor em aula). */
+.salto-bar {
+  flex: 0 0 auto; display: flex; gap: 12px;
+  justify-content: flex-end; align-items: center;
+  margin-top: 6px;
+}
+.salto {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 1px;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--ouro); border: 1px solid var(--ouro);
+  padding: 7px 14px; cursor: pointer; text-decoration: none;
+  background: transparent; transition: background .15s, color .15s;
+}
+.salto:hover { background: var(--ouro); color: #000; }
+.salto.volta { color: var(--verde); border-color: var(--verde); }
+.salto.volta:hover { background: var(--verde); color: #000; }
+
+/* 3. Figura: recortar so quando o texto fala de um trecho especifico. */
+.col-img img.fig-inteira { max-height: none; object-fit: contain; }
+.col-img img.fig-trecho-inferior {
+  aspect-ratio: var(--rec-ar, 1000 / 340);
+  max-height: 34vh; object-fit: cover; object-position: 50% 100%;
+}
+
+@media (max-height: 800px) {
+  .salto { font-size: 0.72rem; padding: 5px 11px; }
+  .salto-bar { margin-top: 2px; }
+  .col-img p { padding: 9px 14px 10px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-top"><div class="bar" id="barraProgresso"></div></div>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="toolbar">
+  <button id="btn-overview" title="Overview grid (tecla O)">▦ O</button>
+  <button id="btn-tema" title="Alternar tema (T)">Tema</button>
+  <button id="btn-fullscreen" title="Tela cheia (F)">⛶ F</button>
+</div>
+
+<!-- ═══ SIDEBAR TOGGLES ═══ -->
+<button class="sb-toggle toc-toggle"        data-sb="sb-toc">Sumário</button>
+<button class="sb-toggle musica-toggle"     data-sb="sb-musica">Música</button>
+<button class="sb-toggle ineditismo-toggle" data-sb="sb-ineditismo">Ineditismo</button>
+<button class="sb-toggle imagens-toggle"    data-sb="sb-imagens">Imagens</button>
+<button class="sb-toggle creditos-toggle"   data-sb="sb-creditos">Créditos</button>
+<button class="sb-toggle refs-toggle"       data-sb="sb-refs">Referências</button>
+
+<!-- ═══ SIDEBAR: SUMÁRIO ═══ -->
+<aside class="sidebar" id="sb-toc">
+  <h3>Sumário — 16 slides</h3>
+  <div class="toc-lista" id="toc-lista">
+    <a class="toc-item ato-titulo" data-goto="1"><span class="toc-num">01</span>Capa</a>
+    <a class="toc-item ato-titulo" data-goto="2"><span class="toc-num">02</span>Roteiro (45 min)</a>
+    <a class="toc-item ato-titulo" data-goto="3"><span class="toc-num">03</span>Ato II — Tópicos 1-5</a>
+    <a class="toc-item" data-goto="3"><span class="toc-num">03</span>Tópico 1: Escada do Universo</a>
+    <a class="toc-item" data-goto="4"><span class="toc-num">04</span>Tópico 2: Regras de Cálculo</a>
+    <a class="toc-item" data-goto="5"><span class="toc-num">05</span>Tópico 3: Quadrilátero Ferrífero</a>
+    <a class="toc-item" data-goto="6"><span class="toc-num">06</span>Tópico 4: Cinco Operações</a>
+    <a class="toc-item" data-goto="7"><span class="toc-num">07</span>Tópico 5: Densidades e Tonelagem</a>
+    <a class="toc-item ato-titulo" data-goto="8"><span class="toc-num">08</span>Ato III — Exercícios (C5)</a>
+    <a class="toc-item" data-goto="8"><span class="toc-num">08</span>Ex. T1 — Pedra ao papel</a>
+    <a class="toc-item" data-goto="9"><span class="toc-num">09</span>Ex. T2 — Volume da galeria</a>
+    <a class="toc-item" data-goto="10"><span class="toc-num">10</span>Ex. T3 — Teor de ouro (g/t)</a>
+    <a class="toc-item" data-goto="11"><span class="toc-num">11</span>Ex. T4 — Potenciação e raiz</a>
+    <a class="toc-item" data-goto="12"><span class="toc-num">12</span>Ex. T5 — Tonelagem</a>
+    <a class="toc-item" data-goto="13"><span class="toc-num">13</span>★ Ex. T6 — Integradora</a>
+    <a class="toc-item ato-titulo" data-goto="14"><span class="toc-num">14</span>Ciência e Arte</a>
+    <a class="toc-item" data-goto="14"><span class="toc-num">14</span>Eames: Powers of Ten</a>
+    <a class="toc-item" data-goto="15"><span class="toc-num">15</span>Análise da trilha</a>
+    <a class="toc-item ato-titulo" data-goto="16"><span class="toc-num">16</span>Despedida</a>
+  </div>
+</aside>
+
+<!-- ═══ SIDEBAR: MÚSICA ═══ -->
+<aside class="sidebar" id="sb-musica">
+  <h3>Trilha sonora sugerida</h3>
+  <p><strong>Recomendação Piazzi:</strong> aula com música instrumental ao fundo, em volume baixo, para favorecer a concentração.</p>
+  <p style="font-size:0.75rem; color:var(--cinza); text-transform:uppercase; letter-spacing:1px; margin-top:14px;">Ler · Escrever · Medir</p>
+  <p style="color: var(--branco); font-weight:600; font-size:1.1rem; margin-top:8px;">Baden Powell</p>
+  <p><em>Sele&ccedil;&atilde;o instrumental</em><br>viol&atilde;o solo</p>
+  <a class="link-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">▶ Ouvir no YouTube Music</a>
+</aside>
+
+<!-- ═══ SIDEBAR: INEDITISMO ═══ -->
+<aside class="sidebar" id="sb-ineditismo">
+  <h3>Ineditismo</h3>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto <strong>Física Conceitual 1 + Física Experimental 1</strong>, aprovados pela Coordenadoria da Área de Física, em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG Campus Ouro Preto — fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, esta é uma apresentação ancorada no primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Esta <strong>APRESENTAÇÃO</strong> foi elaborada com auxílio de inteligência artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026 + Notebook LM, Google 2026).</p>
+</aside>
+
+<!-- ═══ SIDEBAR: IMAGENS ═══ -->
+<aside class="sidebar" id="sb-imagens">
+  <h3>Índice de Imagens</h3>
+  <p><span class="figura-num">Capa</span> — Pedro descendo a Rua Dom Silvério — onde cada paralelepípedo guarda uma potência de dez em segredo.</p>
+  <p><span class="figura-num">Figura 1</span> — Régua-cunha dos prefixos — de yocto a yotta, quarenta e oito ordens de grandeza comprimidas numa escultura.</p>
+  <p><span class="figura-num">Figura 2</span> — Pedro diante do portão colonial — de costas para o presente, de frente para três séculos de engenharia gravada em pedra.</p>
+  <p><span class="figura-num">Figura 3</span> — Pedro e Prof. Julio iluminando a inscrição colonial — 4.320 palmos cúbicos gravados em quartzito, ancestrais da notação científica.</p>
+  <p><span class="figura-num">Figura 4</span> — Do próton à galáxia — 41 ordens de grandeza comprimidas numa escada que só a notação científica consegue subir.</p>
+  <p><span class="figura-num">Figura 5</span> — Pedro no banco da galeria — a lanterna do capacete e o bloco de notas, duas ferramentas para iluminar o que os zeros escondem.</p>
+  <p><span class="figura-num">Figura 6</span> — Dupla escala — do cristal de quartzito ao Quadrilátero Ferrífero, onze potências de dez separam o microscópico do geológico.</p>
+  <p><span class="figura-num">Figura 7</span> — Pedro ao fundo da galeria — cinco operações, uma linguagem, nenhum zero perdido.</p>
+  <p><span class="figura-num">Figura 8</span> — Quartzo, feldspato, pirita, hematita, ouro — a densidade é a impressão digital que a balança lê e a notação científica traduz.</p>
+  <p><span class="figura-num">Figura 9</span> — Pedro no batente entre sombra e luz — o mesmo limiar que separa o número gravado em pedra do número escrito em ciência.</p>
+  <p><span class="figura-num">Figura 10</span> — Cinco disciplinas em órbita — a notação científica como <em>lingua franca</em> da Física, Química, Geologia, Português e Segurança.</p>
+  <p><span class="figura-num">Figura 11</span> — <em>Powers of Ten</em> — quatro janelas para o universo, uma potência de dez de cada vez, na câmera dos Eames.</p>
+  <p class="imagens-nota">Imagens Temáticas (IT) geradas por Google Imagen (Gemini) sob direção autoral. Protocolo IT v7.1.4-manual.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: CRÉDITOS ═══ -->
+<aside class="sidebar" id="sb-creditos">
+  <h3>Créditos</h3>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Instituto Federal de Minas Gerais</p>
+    <p><span class="cred-cargo">Reitor</span><br><span class="cred-nome">Rafael Bastos Teixeira</span></p>
+    <p><span class="cred-cargo">Pró-Reitor de Ensino</span><br><span class="cred-nome">Mário Luiz Viana Alvarenga</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Campus Ouro Preto</p>
+    <p><span class="cred-cargo">Diretor-Geral</span><br><span class="cred-nome">Reginato Fernandes dos Santos</span></p>
+    <p><span class="cred-cargo">Diretora de Ensino</span><br><span class="cred-nome">Talita Valadares</span></p>
+    <p><span class="cred-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</span><br><span class="cred-nome">Ariana Cristina Santos Almeida</span></p>
+    <p><span class="cred-cargo">Coordenador da Área de Física (CODAFIS)</span><br><span class="cred-nome">Lázaro Souza Lima</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Autores da Trilha</p>
+    <p><span class="cred-nome">Julio Azevedo</span></p>
+    <p class="cred-bio">Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do Campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física, ambos da UFOP.</p>
+    <p style="margin-top:12px;"><span class="cred-nome">Felipe Beato</span></p>
+    <p class="cred-bio">Professor, pesquisador e colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG Campus Ouro Preto. Licenciado em Física; Mestre em Física dos Materiais.</p>
+  </div>
+
+  <div class="cred-grupo">
+    <p><span class="cred-cargo">Edição</span><br>1.ª edição — Ouro Preto, 2026</p>
+    <p><span class="cred-cargo">Ilustrações</span><br><span class="cred-bio" style="margin-top:2px;">Imagens Temáticas (IT) geradas por Google Imagen (Gemini) sob direção autoral. Protocolo IT v7.1.4-manual.</span></p>
+    <p><span class="cred-cargo">Design digital</span><br><span class="cred-bio" style="margin-top:2px;">Sistema Brutalismo Científico — modo palco (AP v21, dark-first, oklch, self-contained).</span></p>
+  </div>
+
+  <p class="cred-footer">IFMG — Campus Ouro Preto · Curso Técnico em Mineração Integrado ao Ensino Médio · NIDEC-CODAFIS · 1ª edição, 2026.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: REFERÊNCIAS ═══ -->
+<aside class="sidebar" id="sb-refs">
+  <h3>Bibliografia</h3>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia Básica de Física</div>
+    <p class="refs-item">BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+    <p class="refs-item">MAXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+    <p class="refs-item">TALAVEIRA, A. C. et al. <em>Física: ensino médio, v. único</em>. São Paulo: Nova Geração, 2005.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia Pedagógica Científica</div>
+    <p class="refs-item">BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+    <p class="refs-item">HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+    <p class="refs-item">NICOLELIS, Miguel. <em>O verdadeiro criador de tudo</em>. São Paulo: Planeta, 2020.</p>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Aprendendo inteligência</em>. São Paulo: Aleph, 2008.</p>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Inteligência em concursos</em>. São Paulo: Aleph, 2013.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Ciência e Arte</div>
+    <p class="refs-item">EAMES, Charles; EAMES, Ray. <em>Powers of Ten</em> [Cinema]. Los Angeles: Eames Office, 1977. 9 min.</p>
+    <p class="refs-item">EAMES OFFICE. <em>Scales of the Universe in Powers of Ten</em> (HD 1080p). Disponível em: <a href="https://www.youtube.com/watch?v=44cv416bKP4" target="_blank" rel="noopener" style="color:var(--verde);">youtube.com/watch?v=44cv416bKP4</a>. Acesso em: jul. 2026.</p>
+    <p class="refs-item">SAGAN, Carl. <em>Cosmos</em>. Rio de Janeiro: Francisco Alves, 1982.</p>
+  </div>
+</aside>
+
+<!-- ═══ DECK ═══ -->
+<div class="deck" id="deck">
+
+  <!-- ─── SLIDE 1 · CAPA ─── -->
+  <section class="slide capa-slide ativo" data-slide="1" data-titulo="Capa">
+    <div class="capa-bg" style="background-image: url('../_imagens/_web/T05-IT-00.jpg');"></div>
+    <div class="capa-conteudo">
+      <div class="capa-disciplina">Física Conceitual 1</div>
+      <div class="capa-curso">Técnico em Mineração Integrado ao Ensino Médio</div>
+      <div class="capa-trilha">Trilha T05</div>
+      <div class="capa-titulo">Notação Científica<br>A Linguagem da Escala</div>
+      <div class="capa-epigrafe">&ldquo;O universo é um grande livro escrito em linguagem matemática, e seus caracteres são triângulos, círculos e outras figuras geométricas.&rdquo;</div>
+      <div class="capa-epigrafe-autor">— Galileu Galilei (1564–1642) · <em>Il Saggiatore</em>, 1623</div>
+      <div class="capa-inst" style="margin-top:40px;">IFMG — Campus Ouro Preto &middot; 2026</div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 2 · ROTEIRO ─── -->
+  <section class="slide" data-slide="2" data-titulo="Roteiro (45 min)">
+    <div class="slide-titulo">Roteiro da aula — 45 min</div>
+    <div class="slide-body">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="tl"><span class="tl-t">0–3 min</span><span class="tl-d"><strong>Abertura</strong> — Epígrafe (Galileu) + Ponto de Partida (quiz diagnóstico)</span></div>
+        <div class="tl"><span class="tl-t">3–8 min</span><span class="tl-d"><strong>Tópico 1</strong> — Potências de 10 · a escada do universo (N = a × 10<sup>n</sup>, 1 ≤ a &lt; 10)</span></div>
+        <div class="tl"><span class="tl-t">8–13 min</span><span class="tl-d"><strong>Tópico 2</strong> — Regras de ouro do cálculo (multiplicar soma expoentes · dividir subtrai)</span></div>
+        <div class="tl"><span class="tl-t">13–18 min</span><span class="tl-d"><strong>Tópico 3</strong> — Números astronômicos da produção mineral (Quadrilátero Ferrífero · Avogadro)</span></div>
+        <div class="tl"><span class="tl-t">18–23 min</span><span class="tl-d"><strong>Tópico 4</strong> — As cinco operações sistematizadas (± × ÷ potência raiz)</span></div>
+        <div class="tl"><span class="tl-t">23–28 min</span><span class="tl-d"><strong>Tópico 5</strong> — Densidades e tonelagem de lavra (ρ = m/V)</span></div>
+        <div class="tl"><span class="tl-t">28–35 min</span><span class="tl-d"><strong>Aplicações</strong> — Exercícios T1 a T5 + Questão Integradora</span></div>
+        <div class="tl"><span class="tl-t">35–40 min</span><span class="tl-d"><strong>Provinha</strong> — questões de fechamento (peso 10 %)</span></div>
+        <div class="tl"><span class="tl-t">40–45 min</span><span class="tl-d"><strong>Encerramento</strong> — Tarefa Mínima HOJE + próxima trilha</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 3 · TÓPICO 1 ─── -->
+  <section class="slide" data-slide="3" data-titulo="Tópico 1: Escada do Universo">
+    <div class="slide-titulo">Tópico 1 — Potências de 10 · a escada do universo</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Conceito central</div>
+            <p>Qualquer número real cabe na forma <strong>N = a × 10<sup>n</sup></strong>, com 1 ≤ a &lt; 10 e n inteiro.</p>
+          </div>
+          <div class="eq">N = a × 10<sup>n</sup></div>
+          <p><strong>A escada:</strong> do raio do próton (10<sup>−15</sup> m) ao diâmetro do universo observável (10<sup>26</sup> m) — <span class="hi">41 ordens de grandeza</span> em uma única linguagem.</p>
+          <p><strong>Na Mina do Chico Rei:</strong> <em>4.320 palmos³</em> gravado no quartzito colonial → <span class="hi">4,32 × 10³ palmos³ ≈ 350 m³</span>. Três séculos, dois formatos, mesma necessidade.</p>
+          <p style="font-style:italic;"><span class="hi">&ldquo;Notação científica não é estética — é protocolo de segurança.&rdquo;</span></p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-03-v10.jpg" alt="Diagrama de escala do universo — do próton à galáxia, 41 ordens de grandeza">
+          <div class="col-img-legenda">Do próton à galáxia — 41 ordens de grandeza numa escada única</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="8">Aplica&ccedil;&atilde;o 1 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 4 · TÓPICO 2 ─── -->
+  <section class="slide" data-slide="4" data-titulo="Tópico 2: Regras de Cálculo">
+    <div class="slide-titulo">Tópico 2 — Regras de ouro do cálculo</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Propriedade dos expoentes</div>
+            <p>Multiplicar soma; dividir subtrai. O coeficiente e o expoente vivem separados.</p>
+          </div>
+          <div class="eq">(a × 10<sup>m</sup>) × (b × 10<sup>n</sup>) = (a × b) × 10<sup>m+n</sup></div>
+          <div class="eq">(a × 10<sup>m</sup>) ÷ (b × 10<sup>n</sup>) = (a ÷ b) × 10<sup>m−n</sup></div>
+          <p><strong>Teor de ouro na mina:</strong> 7,5 × 10<sup>−8</sup> kg Au ÷ 5,0 × 10<sup>−3</sup> kg minério = <span class="hi">1,5 × 10<sup>−5</sup></span> → <span class="hi">15 g/t</span> (67 t de rocha para 1 kg de ouro).</p>
+          <p style="font-style:italic;"><span class="hi">&ldquo;Agora você está raciocinando como um técnico.&rdquo;</span> — Prof. Julio</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-04-v10.jpg" alt="Pedro calculando operações com potências de 10 na galeria da Mina do Chico Rei">
+          <div class="col-img-legenda">A lanterna do capacete e o bloco de notas — duas ferramentas para o que os zeros escondem</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="9">Aplica&ccedil;&atilde;o 2 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 5 · TÓPICO 3 ─── -->
+  <section class="slide" data-slide="5" data-titulo="Tópico 3: Quadrilátero Ferrífero">
+    <div class="slide-titulo">Tópico 3 — Números astronômicos na produção mineral</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <table class="tbl">
+            <thead>
+              <tr><th>Grandeza</th><th>Notação científica</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Reserva de Fe no Quadrilátero</td><td class="eq-cell">6,8 × 10<sup>10</sup> t</td></tr>
+              <tr><td>Produção anual de Fe no Brasil</td><td class="eq-cell">4,0 × 10<sup>8</sup> t/ano</td></tr>
+              <tr><td>Número de Avogadro</td><td class="eq-cell">6,022 × 10<sup>23</sup> mol<sup>−1</sup></td></tr>
+              <tr><td>Átomos em 1 g de ouro</td><td class="eq-cell">3,06 × 10<sup>21</sup></td></tr>
+              <tr><td>Idade do Quadrilátero</td><td class="eq-cell">2,5 × 10<sup>9</sup> anos</td></tr>
+              <tr><td>Caminhão Cat 797F</td><td class="eq-cell">3,5 × 10<sup>2</sup> t</td></tr>
+            </tbody>
+          </table>
+          <p style="font-style:italic;"><span class="hi">&ldquo;Um número que você não consegue comparar é um número que não te serve.&rdquo;</span> — Prof. Julio</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-05-v10.jpg" alt="Dupla escala — micrografia de quartzito e imagem de satélite do Quadrilátero Ferrífero">
+          <div class="col-img-legenda">Do cristal ao Quadrilátero — onze potências de dez separam o microscópico do geológico</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="10">Aplica&ccedil;&atilde;o 3 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 6 · TÓPICO 4 ─── -->
+  <section class="slide" data-slide="6" data-titulo="Tópico 4: Cinco Operações">
+    <div class="slide-titulo">Tópico 4 — As cinco operações com notação científica</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text" style="gap:10px;">
+          <div class="era">
+            <span class="era-p">± Adição / Subtr.</span>
+            <span class="era-c"><strong>Igualar expoentes antes</strong> · (a ± b) × 10<sup>n</sup>. Ex.: rejeitos Mariana + Brumadinho = 4,0 × 10<sup>7</sup> + 1,2 × 10<sup>7</sup> = <strong>5,2 × 10<sup>7</sup> m³</strong>.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">× Multiplicação</span>
+            <span class="era-c"><strong>Coef. × coef., expoentes somam</strong> · (a × b) × 10<sup>m+n</sup>. Ex.: massa da pilha 6,83 × 10² × 4,0 × 10³ = <strong>2,73 × 10<sup>6</sup> kg</strong>.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">÷ Divisão</span>
+            <span class="era-c"><strong>Coef. ÷ coef., expoentes subtraem</strong> · (a ÷ b) × 10<sup>m−n</sup>. Ex.: 15 g/t ÷ 10<sup>6</sup> g/t = <strong>1,5 × 10<sup>−5</sup></strong>.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">Potenciação</span>
+            <span class="era-c"><strong>(a × 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> × 10<sup>n×p</sup></strong>. Ex.: (3,0 × 10<sup>2</sup>)² = <strong>9,0 × 10<sup>4</sup> m²</strong>.</span>
+          </div>
+          <div class="era">
+            <span class="era-p">Radiciação</span>
+            <span class="era-c"><strong><sup>n</sup>√(a × 10<sup>m</sup>) = <sup>n</sup>√a × 10<sup>m/n</sup></strong> (ajustar se m ímpar). Ex.: √(4,0) = <strong>2,0 m</strong>.</span>
+          </div>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-06-v10.jpg" alt="Pedro ao fundo da galeria com bloco de notas contendo as cinco operações">
+          <div class="col-img-legenda">Cinco operações, uma linguagem — nenhum zero perdido</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="11">Aplica&ccedil;&atilde;o 4 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 7 · TÓPICO 5 ─── -->
+  <section class="slide" data-slide="7" data-titulo="Tópico 5: Densidades">
+    <div class="slide-titulo">Tópico 5 — Aplicação em densidades e tonelagem</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="def">
+            <div class="termo">Conceito central</div>
+            <p>Densidade é a impressão digital do mineral: <strong>ρ = m / V</strong>. Ela converte volume (galeria) em massa (tonelagem).</p>
+          </div>
+          <table class="tbl">
+            <thead>
+              <tr><th>Mineral</th><th>ρ (kg/m³)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Quartzo</td><td class="eq-cell">2,65 × 10<sup>3</sup></td></tr>
+              <tr><td>Pirita ("ouro de tolo")</td><td class="eq-cell">5,0 × 10<sup>3</sup></td></tr>
+              <tr><td>Hematita</td><td class="eq-cell">5,26 × 10<sup>3</sup></td></tr>
+              <tr><td>Ouro</td><td class="eq-cell">19,3 × 10<sup>3</sup></td></tr>
+            </tbody>
+          </table>
+          <div class="def" style="border-left-color:var(--erro);">
+            <div class="termo" style="color:var(--erro);">Destaque NR-22</div>
+            <p><span class="he">Rastreabilidade dos cálculos de reserva</span> é exigência da Norma Regulamentadora 22 — e notação científica é o formato que a garante.</p>
+          </div>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-07-v10.jpg" alt="Bancada de amostras minerais com etiquetas em notação científica no laboratório IFMG-OP">
+          <div class="col-img-legenda">Quartzo, pirita, hematita, ouro — a densidade que a balança lê, a notação traduz</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="12">Aplica&ccedil;&atilde;o 5 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 8 · EXERCÍCIO T1 (C5) ─── -->
+  <section class="slide" data-slide="8" data-titulo="Exercício T1 — Pedra ao papel">
+    <div class="slide-titulo">Exercício T1 — Notação científica: da pedra ao papel (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Na galeria da Mina do Chico Rei, Pedro leu a inscrição colonial: <strong>Vol. = 4.320 palmos cúbicos</strong>. Uma ficha registra a reserva histórica: <strong>2.347.823.412 t</strong>. Escreva ambos em notação científica e compare os expoentes.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Escrever dois números em N = a × 10<sup>n</sup> e comparar suas ordens de grandeza.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> V<sub>colonial</sub> = 4.320 palmos³ · m<sub>reserva</sub> = 2.347.823.412 t.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> mesma unidade dentro de cada número · notação padrão 1 ≤ a &lt; 10 · algarismos significativos preservados.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> régua logarítmica horizontal com os dois números marcados como pontos em escala de expoentes.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equação:</strong> <span class="eq-inline">N = a × 10<sup>n</sup></span>, com 1 ≤ a &lt; 10.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> 4.320 = 4,32 × 10³ (n = 3) · 2.347.823.412 ≈ 2,348 × 10<sup>9</sup> (n = 9). Diferença: 9 − 3 = 6.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> 6 ordens de grandeza — a reserva é um <strong>milhão de vezes maior</strong> que o volume da galeria. Só a notação científica torna isso legível de relance.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> 4,32 × 10³ palmos³ e 2,348 × 10<sup>9</sup> t · diferença de 6 ordens de grandeza.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="4">&larr; T&oacute;pico 2</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 9 · EXERCÍCIO T2 (C5) ─── -->
+  <section class="slide" data-slide="9" data-titulo="Exercício T2 — Volume da galeria">
+    <div class="slide-titulo">Exercício T2 — Multiplicação: volume da galeria principal (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Galeria principal da Mina do Chico Rei — comprimento 4,8 × 10² m, seção transversal 2,0 m × 2,5 m = 5,0 m². Calcule o volume total V e normalize à forma padrão.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Volume total V (em m³) da galeria, em notação científica padrão.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 4,8 × 10² m · A = 5,0 × 10<sup>0</sup> m² (seção).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> seção uniforme ao longo do comprimento · galeria retilínea · sem desabamentos.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> prisma horizontal com área transversal A e comprimento L.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equação:</strong> <span class="eq-inline">V = L × A</span> · <span class="eq-inline">(a × 10<sup>m</sup>)(b × 10<sup>n</sup>) = (a·b) × 10<sup>m+n</sup></span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> V = 4,8 × 10² × 5,0 × 10<sup>0</sup> = (4,8 × 5,0) × 10<sup>2+0</sup> = 24,0 × 10² m³. Normalização: coeficiente ≥ 10 → divide por 10, soma 1 ao expoente → <strong>2,40 × 10³ m³</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> ~2 400 m³ é ordem de grandeza compatível com galeria única de mina histórica — coerente com a extensão iluminada de 325 m descrita no TT.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> V = 2,40 × 10³ m³.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="5">&larr; T&oacute;pico 3</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 10 · EXERCÍCIO T3 (C5) ─── -->
+  <section class="slide" data-slide="10" data-titulo="Exercício T3 — Teor de ouro">
+    <div class="slide-titulo">Exercício T3 — Divisão: teor de ouro em g/t (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Amostra da Mina do Chico Rei: massa de ouro <strong>7,5 × 10<sup>−8</sup> kg</strong>; massa total de minério <strong>5,0 × 10<sup>−3</sup> kg</strong>. Calcule o teor (razão mássica) e converta para g/t (1 g/t = 10<sup>−6</sup> kg Au/kg minério).
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Razão mássica adimensional (kg/kg) e conversão a g/t.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> m<sub>Au</sub> = 7,5 × 10<sup>−8</sup> kg · m<sub>minério</sub> = 5,0 × 10<sup>−3</sup> kg.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> amostra representativa do veio · balança calibrada · sem perda de material.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> torrão de rocha com pequenas partículas de ouro disseminadas — proporção mássica.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equação:</strong> <span class="eq-inline">Teor = m<sub>Au</sub> ÷ m<sub>minério</sub></span> · <span class="eq-inline">(a × 10<sup>m</sup>) ÷ (b × 10<sup>n</sup>) = (a÷b) × 10<sup>m−n</sup></span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> (7,5 × 10<sup>−8</sup>) ÷ (5,0 × 10<sup>−3</sup>) = 1,5 × 10<sup>−8−(−3)</sup> = <strong>1,5 × 10<sup>−5</sup> kg/kg</strong>. Em g/t: 1,5 × 10<sup>−5</sup> ÷ 10<sup>−6</sup> = <strong>15 g/t</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> 15 g/t significa que para extrair 1 kg de ouro trituram-se <strong>~67 t</strong> de rocha — teor típico de veios de ouro filoniano em Ouro Preto.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> teor = 1,5 × 10<sup>−5</sup> kg/kg = 15 g/t.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="6">&larr; T&oacute;pico 4</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 11 · EXERCÍCIO T4 (C5) ─── -->
+  <section class="slide" data-slide="11" data-titulo="Exercício T4 — Potenciação e raiz">
+    <div class="slide-titulo">Exercício T4 — Potenciação e radiciação: frente de lavra (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          (i) Frente de lavra quadrada com lado L = 3,0 × 10² m — calcule a área A = L². (ii) Partícula de ouro com área projetada A = 7,85 × 10<sup>−9</sup> m² — estime o diâmetro d ≈ √(4A/π), com π ≈ 3,14. Expresse em mm.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Uma potenciação (área da frente) e uma radiciação (diâmetro da partícula).</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 3,0 × 10² m · A<sub>partícula</sub> = 7,85 × 10<sup>−9</sup> m² · π ≈ 3,14.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> frente quadrada perfeita · partícula circular equivalente em área · geometria projetada em microscópio.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> quadrado L × L (frente) · círculo de área A (partícula).</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">(a × 10<sup>n</sup>)<sup>p</sup> = a<sup>p</sup> × 10<sup>n·p</sup></span> · <span class="eq-inline">d = √(4A/π)</span> · <span class="eq-inline"><sup>n</sup>√(a × 10<sup>m</sup>) = <sup>n</sup>√a × 10<sup>m/n</sup></span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> (i) A = (3,0 × 10²)² = 3,0² × 10<sup>2·2</sup> = <strong>9,0 × 10<sup>4</sup> m²</strong>. (ii) 4A/π = 4 × 7,85 × 10<sup>−9</sup> / 3,14 = 10<sup>−8</sup> · d = √(10<sup>−8</sup>) = <strong>10<sup>−4</sup> m = 0,1 mm</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> 9 × 10<sup>4</sup> m² é ordem de grandeza compatível com uma quadra de futebol (~7 × 10<sup>3</sup> m²) multiplicada por 13; 0,1 mm é a espessura de um fio de cabelo — escala típica de partícula de ouro recuperável.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> A = 9,0 × 10<sup>4</sup> m² · d ≈ 10<sup>−4</sup> m = 0,1 mm.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="7">&larr; T&oacute;pico 5</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 12 · EXERCÍCIO T5 (C5) ─── -->
+  <section class="slide" data-slide="12" data-titulo="Exercício T5 — Tonelagem">
+    <div class="slide-titulo">Exercício T5 — Tonelagem de lavra · densidade × volume (C5)</div>
+    <div class="slide-body">
+<div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Pilha de quartzito fragmentado: V = <strong>6,83 × 10² m³</strong>; densidade aparente ρ = <strong>2,60 × 10³ kg/m³</strong>. Calcule a massa m = ρ × V, normalize e converta para toneladas (1 t = 10³ kg).
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Massa total da pilha em kg e em t, na forma padrão.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> V = 6,83 × 10² m³ · ρ = 2,60 × 10³ kg/m³.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> densidade aparente (inclui vazios entre fragmentos) · pilha homogênea · sem umidade significativa.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> pilha cônica de fragmentos de quartzito sobre superfície plana; densidade média assumida.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equação:</strong> <span class="eq-inline">m = ρ × V</span> · <span class="eq-inline">(a × 10<sup>m</sup>)(b × 10<sup>n</sup>) = (a·b) × 10<sup>m+n</sup></span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> m = 2,60 × 10³ × 6,83 × 10² = (2,60 × 6,83) × 10<sup>5</sup> = 17,758 × 10<sup>5</sup> kg. Normalização: <strong>1,78 × 10<sup>6</sup> kg</strong>. Em t: 1,78 × 10<sup>6</sup> ÷ 10³ = <strong>1,78 × 10³ t ≈ 1 780 t</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> ordem de grandeza 10³ t — compatível com pilha de lavra média; ~5 caminhões Cat 797F (3,5 × 10² t cada).</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> m = 1,78 × 10<sup>6</sup> kg = 1,78 × 10³ t ≈ 1 780 t.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="13">&larr; &#9733; Integradora</a></div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 13 · EXERCÍCIO T6 ★ INTEGRADORA (C5) ─── -->
+  <section class="slide" data-slide="13" data-titulo="★ Exercício T6 — Integradora (laudo da Mina)">
+    <div class="slide-titulo">★ Exercício T6 — Integradora · laudo da Mina do Chico Rei (C5)</div>
+    <div class="slide-body">
+<div class="qi">
+        <div class="qi-label">★ Enunciado — Integra T2 + T5</div>
+        <div class="qi-enunciado">
+          Laudo de reserva da Mina do Chico Rei: <strong>V = 2 300 m³</strong>; ρ<sub>quartzito</sub> = 2 600 kg/m³; teor médio de ouro <strong>15 g/t</strong>; ρ<sub>ouro</sub> = 19,3 × 10³ kg/m³. Determine <strong>(i)</strong> V, ρ e m em notação científica; <strong>(ii)</strong> massa recuperável de ouro em gramas; <strong>(iii)</strong> volume desse ouro em cm³ (1 m³ = 10<sup>6</sup> cm³) — compare com um cubo de 4 cm de aresta.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que está sendo pedido?</strong> Três grandezas: tonelagem total da reserva, massa de ouro recuperável, volume do ouro extraído comparado a um cubo de referência.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> V, ρ, teor, ρ<sub>ouro</sub> (todos numéricos acima).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hipóteses:</strong> quartzito homogêneo · balança calibrada · recuperação metalúrgica de 100 % (idealização) · ouro puro (Au).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> câmara escavada de 2 300 m³ · fluxo Reserva → Tonelagem → Ouro (g) → Volume (cm³) → cubo de 4 cm para comparação.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equações:</strong> <span class="eq-inline">m = ρ × V</span> · <span class="eq-inline">m<sub>Au</sub> = m<sub>t</sub> × teor</span> · <span class="eq-inline">V<sub>Au</sub> = m<sub>Au</sub> / ρ<sub>Au</sub></span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>Cálculo:</strong> (i) V = 2,3 × 10³ m³ · ρ = 2,6 × 10³ kg/m³ · m = 5,98 × 10<sup>6</sup> kg ≈ 5,98 × 10³ t. (ii) m<sub>Au</sub> = 5,98 × 10³ t × 15 g/t = <strong>8,97 × 10<sup>4</sup> g ≈ 89,7 kg</strong>. (iii) ρ<sub>Au</sub> = 19,3 g/cm³ → V<sub>Au</sub> = 8,97 × 10<sup>4</sup> ÷ 1,93 × 10<sup>1</sup> ≈ <strong>4,65 × 10<sup>3</sup> cm³</strong>. Cubo 4 cm: 4³ = 64 cm³ → o ouro ocupa ~73 cubos de 4 cm.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>Análise:</strong> tonelagem da ordem de 10³ t + massa de ouro da ordem de 10<sup>2</sup> kg + volume da ordem de 10³ cm³ — três escalas distintas, uma linguagem só. Sem notação científica, a rastreabilidade NR-22 seria impraticável.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> V = 2,3 × 10³ m³ · m = 5,98 × 10<sup>6</sup> kg · m<sub>Au</sub> ≈ 8,97 × 10<sup>4</sup> g ≈ 89,7 kg · V<sub>Au</sub> ≈ 4,65 × 10³ cm³ (≈ 73 cubos de 4 cm).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 14 · CIÊNCIA E ARTE (obra) ─── -->
+  <section class="slide" data-slide="14" data-titulo="Ciência e Arte: Eames">
+    <div class="slide-titulo">Ciência e Arte — Powers of Ten</div>
+    <div class="slide-body">
+      <div class="cols img-l">
+        <div class="col-img">
+          <img src="../_imagens/_web/T05-IT-10-v10.jpg" alt="Grade 2x2 vintage com quatro quadros do filme Powers of Ten dos Eames: galáxias, Terra, piquenique, célula">
+          <div class="col-img-legenda">Quatro janelas para o universo — uma potência de dez de cada vez, na câmera dos Eames</div>
+        </div>
+        <div class="col-text">
+          <div class="ca-obra"><strong>Cinema:</strong> <em>Powers of Ten</em><br>Charles e Ray Eames &middot; Eames Office (1977) &middot; 9 min</div>
+          <div class="ca-versos">
+            &ldquo;Em cada potência de dez,<br>
+            um mundo diferente se revela.&rdquo;
+          </div>
+          <div class="ca-versos" style="font-size:1.15rem;">
+            &ldquo;Somos feitos de matéria estelar.&rdquo;<br>
+            <span style="font-size:0.9rem; font-style:normal; color:var(--ouro);">— Carl Sagan (1934–1996)</span>
+          </div>
+          <p style="text-align:center; font-size:0.95rem; color:var(--verde); margin-top:8px;">
+            ▶ Assista em HD: <a href="https://www.youtube.com/watch?v=44cv416bKP4" target="_blank" rel="noopener" style="color:var(--verde);">youtube.com/watch?v=44cv416bKP4</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 15 · REFLEXÃO ─── -->
+  <section class="slide" data-slide="15" data-titulo="Análise da trilha">
+    <div class="slide-titulo">Análise da trilha</div>
+    <div class="slide-body">
+      <p class="ca-analise">
+        <strong>Análise:</strong> Em 1977, Charles e Ray Eames produziram um curta-metragem de nove minutos que se tornou a representação visual mais célebre da notação científica. O filme começa com um casal fazendo piquenique em Chicago (10<sup>0</sup> m), afasta a câmera em progressão geométrica — a cada dez segundos o campo de visão se multiplica por dez —, até que em 10<sup>26</sup> m as galáxias se tornam poeira luminosa. Depois retorna e mergulha na pele humana até 10<sup>−15</sup> m. Nenhum narrador dramático, nenhuma trilha épica: apenas o zumbido do universo e a câmera avançando, firme, uma potência de dez de cada vez.
+      </p>
+      <p class="ca-analise" style="margin-top:14px;">
+        A escolha artística dos Eames é onde <strong>Ciência e Arte se fundem</strong>: cada enquadramento é uma equação visual — a notação científica não é explicada, ela é <strong>sentida</strong>. Pedro, ao percorrer a Mina do Chico Rei com sua lanterna e ler <em>4.320 palmos³</em> gravado no quartzito colonial, praticou o mesmo gesto dos Eames: mudou de escala para enxergar o que o olho desarmado não alcança. E, como Sagan lembrou, os átomos do granito, do ouro e do próprio Pedro foram forjados em estrelas há bilhões de anos — <em>somos feitos de matéria estelar</em>, e é a notação científica que nos permite dizer isso sem contar zeros.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── SLIDE 16 · DESPEDIDA ─── -->
+  <section class="slide despedida" data-slide="16" data-titulo="Despedida">
+    <div class="desp-body">
+      <div class="desp-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+      <div class="desp-acao">Não esqueça de fazer a</div>
+      <div class="desp-tarefa">Tarefa Mínima · HOJE</div>
+      <div class="desp-sofia">&ldquo;A luz percorreu 1,5 × 10<sup>11</sup> metros para chegar até mim.&rdquo; — Pedro</div>
+      <div class="ca-provinha">
+        <div class="label">▶ Próximo passo &middot; ~10 min</div>
+        <p><strong>Sucesso na Provinha!</strong> Questões de fechamento (peso 10 %). Leia com calma e use a Resolução Científica de Problemas — Protocolo C5 para orientar seu raciocínio.</p>
+      </div>
+      <div class="desp-proximo">Próxima trilha: T06 — Ordem de Grandeza</div>
+      <div class="desp-inst">IFMG — Campus Ouro Preto &middot; NIDEC-CODAFIS &middot; FC1 &middot; T05 &middot; 1ª edição 2026</div>
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+<!-- ═══ OVERVIEW GRID ═══ -->
+<div class="overview" id="overview">
+  <div class="overview-titulo">Overview — 16 slides · clique para navegar</div>
+  <div class="overview-grid" id="overview-grid"></div>
+</div>
+<button class="overview-fechar" id="overview-fechar" style="display:none;">✕ Fechar (O)</button>
+
+<!-- ═══ RODAPÉ ═══ -->
+<div class="rodape">
+  <div class="rodape-info">
+    <em>FC1 · T05</em>
+    <span>Notação Científica: A Linguagem da Escala</span>
+    <span class="tag">45 min</span>
+  </div>
+  <div class="rodape-nav">
+    <button id="btn-anterior" title="Slide anterior (←)">◀</button>
+    <div class="contador"><span id="num-atual">1</span> / <span id="num-total">14</span></div>
+    <button id="btn-proximo" title="Próximo slide (→)">▶</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = 'T05-AP-v21';
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var atual = 1;
+
+  document.getElementById('num-total').textContent = total;
+
+  // ─── NAVEGAÇÃO ───
+  function irPara(n, opts) {
+    if (n < 1 || n > total) return;
+    slides.forEach(function(s) { s.classList.remove('ativo'); });
+    slides[n - 1].classList.add('ativo');
+    atual = n;
+    document.getElementById('num-atual').textContent = atual;
+    document.getElementById('barraProgresso').style.width = ((atual / total) * 100) + '%';
+    // marcar item ativo no TOC
+    document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+      a.classList.toggle('ativo', parseInt(a.dataset.goto, 10) === atual);
+    });
+    // marcar cell ativa no overview
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+    // persistir
+    try { localStorage.setItem(STORAGE_KEY + '-slide', atual); } catch(e) {}
+    // fechar overview se aberto
+    fecharOverview();
+    // rolar slide para topo
+    slides[n - 1].scrollTop = 0;
+  }
+
+  // ─── CONTROLES RODAPÉ ───
+  document.getElementById('btn-anterior').addEventListener('click', function() { irPara(atual - 1); });
+  document.getElementById('btn-proximo').addEventListener('click',  function() { irPara(atual + 1); });
+
+  // ─── TOOLBAR ───
+  document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+  document.getElementById('btn-tema').addEventListener('click', toggleTema);
+  document.getElementById('btn-overview').addEventListener('click', toggleOverview);
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen || function() {}).call(document.documentElement);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  function toggleTema() {
+    var atual = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', atual);
+    try { localStorage.setItem(STORAGE_KEY + '-theme', atual); } catch(e) {}
+  }
+
+  // ─── SIDEBARS (exclusão mútua) ───
+  var toggles = document.querySelectorAll('.sb-toggle');
+  var sidebars = document.querySelectorAll('.sidebar');
+  toggles.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var alvoId = btn.dataset.sb;
+      var alvo = document.getElementById(alvoId);
+      var estaAberta = alvo.classList.contains('open');
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      if (!estaAberta) alvo.classList.add('open');
+    });
+  });
+  // click-outside fecha
+  document.addEventListener('click', function(e) {
+    var dentroSb = e.target.closest('.sidebar');
+    var noToggle = e.target.closest('.sb-toggle');
+    if (!dentroSb && !noToggle) {
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+    }
+  });
+
+  // ─── TOC — clique navega ───
+  document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var n = parseInt(a.dataset.goto, 10);
+      if (n) {
+        irPara(n);
+        sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      }
+    });
+  });
+
+  // ─── OVERVIEW ───
+  var overview = document.getElementById('overview');
+  var overviewFechar = document.getElementById('overview-fechar');
+  var overviewGrid = document.getElementById('overview-grid');
+
+  function construirOverview() {
+    overviewGrid.innerHTML = '';
+    slides.forEach(function(sl, i) {
+      var n = i + 1;
+      var titulo = sl.dataset.titulo || ('Slide ' + n);
+      var cell = document.createElement('div');
+      cell.className = 'overview-cell';
+      cell.dataset.n = n;
+      cell.innerHTML = '<div class="ov-num">SLIDE ' + (n < 10 ? '0' + n : n) + '</div>' +
+                       '<div class="ov-tit">' + titulo + '</div>';
+      cell.addEventListener('click', function() { irPara(n); });
+      overviewGrid.appendChild(cell);
+    });
+  }
+  construirOverview();
+
+  function toggleOverview() {
+    if (overview.classList.contains('aberto')) fecharOverview();
+    else abrirOverview();
+  }
+  function abrirOverview() {
+    overview.classList.add('aberto');
+    overviewFechar.style.display = 'inline-block';
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+  }
+  function fecharOverview() {
+    overview.classList.remove('aberto');
+    overviewFechar.style.display = 'none';
+  }
+  overviewFechar.addEventListener('click', fecharOverview);
+
+  // ─── KEYBOARD ───
+  document.addEventListener('keydown', function(e) {
+    // ignora teclas com modificador (evita conflito com atalhos do browser)
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown') { e.preventDefault(); irPara(atual + 1); return; }
+    if (k === 'ArrowLeft'  || k === 'PageUp')                { e.preventDefault(); irPara(atual - 1); return; }
+    if (k === 'Home')  { e.preventDefault(); irPara(1); return; }
+    if (k === 'End')   { e.preventDefault(); irPara(total); return; }
+    if (k === 'f' || k === 'F') { e.preventDefault(); toggleFullscreen(); return; }
+    if (k === 't' || k === 'T') { e.preventDefault(); toggleTema(); return; }
+    if (k === 'o' || k === 'O') { e.preventDefault(); toggleOverview(); return; }
+    if (k === 'Escape') {
+      if (overview.classList.contains('aberto')) { fecharOverview(); return; }
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      return;
+    }
+    // 1-9 salto direto
+    if (k >= '1' && k <= '9') {
+      var n = parseInt(k, 10);
+      if (n <= total) { e.preventDefault(); irPara(n); }
+    }
+  });
+
+  // ─── TOUCH SWIPE ───
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 60) { irPara(atual + (diff < 0 ? 1 : -1)); }
+  });
+
+  // ─── ÍCONES C5 (8 SVGs inline) + ocultar solução por clique ───
+  var ICONS_C5 = {
+    1: '<svg class="c5-icon" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20" stroke-linecap="round"/><text x="10" y="13.5" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">?</text></svg>',
+    2: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>',
+    3: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M8 10 A 4 4 0 0 1 16 10 C 16 12 14 14 14 15 L 10 15 C 10 14 8 12 8 10 Z"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/><line x1="11" y1="20.5" x2="13" y2="20.5" stroke-linecap="round"/></svg>',
+    4: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="20" x2="21" y2="20"/><line x1="3" y1="20" x2="21" y2="6" stroke-linecap="round"/><rect x="10" y="9" width="5" height="5" transform="rotate(-38 12.5 11.5)"/></svg>',
+    5: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M14 4 C 12 4, 11 5, 11 7 L 11 17 C 11 19, 10 20, 8 20" stroke-width="2" stroke-linecap="round"/></svg>',
+    6: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18"/><rect x="7" y="5.5" width="10" height="3.5"/><circle cx="9" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="1" fill="currentColor" stroke="none"/></svg>',
+    7: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="21" x2="21" y2="21"/><rect x="5" y="14" width="3" height="7" fill="currentColor" stroke="none"/><rect x="10" y="10" width="3" height="11" fill="currentColor" stroke="none"/><rect x="15" y="5" width="3" height="16" fill="currentColor" stroke="none"/><path d="M4 14 L10 10 L15 6 L20 3" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3 L20 3 L20 6" stroke-linecap="round"/></svg>',
+    8: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7"/><path d="M4 7.5 L6 9.5 L9 5.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="6" x2="21" y2="6"/><line x1="12" y1="9.5" x2="19" y2="9.5"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="18" x2="18" y2="18"/></svg>'
+  };
+
+  // Injeta ícone antes do número em cada .c5-ap-etapa (1..7)
+  document.querySelectorAll('.c5-ap-etapa').forEach(function(el) {
+    var n = parseInt(el.textContent.trim(), 10);
+    if (n >= 1 && n <= 8 && ICONS_C5[n]) {
+      el.insertAdjacentHTML('afterbegin', ICONS_C5[n]);
+    }
+  });
+
+  // Injeta badge (ícone + "8") no .c5-resposta
+  document.querySelectorAll('.c5-resposta').forEach(function(el) {
+    var badge = document.createElement('span');
+    badge.className = 'c5-resp-etapa';
+    badge.innerHTML = ICONS_C5[8] + '<span>8</span>';
+    el.insertBefore(badge, el.firstChild);
+  });
+
+  // Envolve .ca-provinha (slide 16) em .c5-solucao[hidden] + botão "Próximo passo"
+  document.querySelectorAll('.ca-provinha').forEach(function(prov) {
+    var parent = prov.parentNode;
+    var wrap = document.createElement('div');
+    wrap.className = 'c5-solucao';
+    wrap.setAttribute('hidden', '');
+    parent.insertBefore(wrap, prov);
+    wrap.appendChild(prov);
+    var btn = document.createElement('button');
+    btn.className = 'btn-solucao';
+    btn.type = 'button';
+    btn.textContent = '▼ Mostrar próximo passo';
+    btn.addEventListener('click', function() {
+      var hidden = wrap.hasAttribute('hidden');
+      if (hidden) {
+        wrap.removeAttribute('hidden');
+        btn.textContent = '▲ Ocultar próximo passo';
+      } else {
+        wrap.setAttribute('hidden', '');
+        btn.textContent = '▼ Mostrar próximo passo';
+      }
+    });
+    parent.insertBefore(btn, wrap);
+  });
+
+  // Envolve .c5-ap + .c5-resposta em .c5-solucao[hidden] + botão de revelação
+  document.querySelectorAll('.c5-ap').forEach(function(c5) {
+    var resp = c5.nextElementSibling;
+    var parent = c5.parentNode;
+    var wrap = document.createElement('div');
+    wrap.className = 'c5-solucao';
+    wrap.setAttribute('hidden', '');
+    parent.insertBefore(wrap, c5);
+    wrap.appendChild(c5);
+    if (resp && resp.classList && resp.classList.contains('c5-resposta')) {
+      wrap.appendChild(resp);
+    }
+    var btn = document.createElement('button');
+    btn.className = 'btn-solucao';
+    btn.type = 'button';
+    btn.textContent = '▼ Mostrar solução (C5)';
+    btn.addEventListener('click', function() {
+      var hidden = wrap.hasAttribute('hidden');
+      if (hidden) {
+        wrap.removeAttribute('hidden');
+        btn.textContent = '▲ Ocultar solução (C5)';
+      } else {
+        wrap.setAttribute('hidden', '');
+        btn.textContent = '▼ Mostrar solução (C5)';
+      }
+    });
+    parent.insertBefore(btn, wrap);
+  });
+
+  // ─── RESTAURAR ESTADO ───
+  try {
+    var savedTheme = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    var savedSlide = parseInt(localStorage.getItem(STORAGE_KEY + '-slide'), 10);
+    if (savedSlide && savedSlide >= 1 && savedSlide <= total) irPara(savedSlide);
+    else irPara(1);
+  } catch(e) { irPara(1); }
+})();
+
+/* == REFINO-AP v1 - salto Conceito<->Aplicacao == */
+/* Delegado no documento e reaproveitando o clique do Sumario: assim o salto
+   funciona sem depender do escopo onde irPara() foi declarada em cada deck. */
+document.addEventListener('click', function (ev) {
+  var alvo = ev.target.closest && ev.target.closest('.salto[data-goto]');
+  if (!alvo) return;
+  ev.preventDefault();
+  var item = document.querySelector('#toc-lista .toc-item[data-goto="' + alvo.dataset.goto + '"]');
+  if (item) item.click();
+});
+
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t05">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>
