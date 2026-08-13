@@ -7,7 +7,8 @@
 Executiva v12</title>
 <meta name="description" content="Versão executiva do projeto Trilhas de Aprendizagem de Física Conceitual 1 aplicada à Mineração — IFMG campus Ouro Preto.">
 <style>
-:root { --ouro: #C8A84B; --verde: #4CAF7D; --fundo: #0d0d0d; --texto: #e8e8e8; --cinza: #999; --linha: #444; }
+:root { --cor: #C8A84B; --acento: #4CAF7D;
+--fundo: #0d0d0d; --texto: #e8e8e8; --cinza: #999; --linha: #444; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--fundo); color: var(--texto); font-family: Georgia, 'Times New Roman', serif; line-height: 1.65; }
 .wrap { max-width: 820px; margin: 0 auto; padding: 40px 20px 64px; }
@@ -16,38 +17,38 @@ body { background: var(--fundo); color: var(--texto); font-family: Georgia, 'Tim
 .capa img { width: 100%; max-width: 620px; height: auto; display: block; margin: 0 auto 26px; border: 1px solid var(--linha); }
 .capa p { margin: 0 0 10px; color: #c4c4c4; font-size: .95rem; }
 
-.capa p:nth-of-type(2) strong { display: block; font-family: 'Courier New', monospace; font-size: .9rem; letter-spacing: .18em; color: var(--verde); text-transform: uppercase; font-weight: normal; }
-.capa p:nth-of-type(3) strong { display: block; font-family: 'Courier New', monospace; font-size: 1.5rem; letter-spacing: .04em; color: var(--ouro); text-transform: uppercase; margin: 6px 0 4px; }
+.capa p:nth-of-type(2) strong { display: block; font-family: 'Courier New', monospace; font-size: .9rem; letter-spacing: .18em; color: var(--acento); text-transform: uppercase; font-weight: normal; }
+.capa p:nth-of-type(3) strong { display: block; font-family: 'Courier New', monospace; font-size: 1.5rem; letter-spacing: .04em; color: var(--cor); text-transform: uppercase; margin: 6px 0 4px; }
 .capa p:nth-of-type(4) strong { display: block; font-family: 'Courier New', monospace; font-size: .82rem; letter-spacing: .1em; color: #c4c4c4; text-transform: uppercase; font-weight: normal; margin-bottom: 18px; }
 
 .acoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 38px; }
 .acoes a { flex: 1 1 220px; display: block; padding: 13px 16px; border: 1px solid var(--linha); color: var(--texto); text-decoration: none; font-family: 'Courier New', monospace; font-size: .86rem; text-align: center; }
-.acoes a:hover { border-color: var(--ouro); color: var(--ouro); }
+.acoes a:hover { border-color: var(--cor); color: var(--cor); }
 .acoes a.destaque { border-style: dashed; }
 
-h1 { font-family: 'Courier New', monospace; font-size: 1.35rem; color: var(--ouro); text-transform: uppercase; letter-spacing: .03em; border-bottom: 2px solid var(--ouro); padding-bottom: 10px; margin: 48px 0 18px; scroll-margin-top: 20px; }
-h2 { font-family: 'Courier New', monospace; font-size: 1.02rem; color: var(--verde); margin: 32px 0 12px; letter-spacing: .02em; }
+h1 { font-family: 'Courier New', monospace; font-size: 1.35rem; color: var(--cor); text-transform: uppercase; letter-spacing: .03em; border-bottom: 2px solid var(--cor); padding-bottom: 10px; margin: 48px 0 18px; scroll-margin-top: 20px; }
+h2 { font-family: 'Courier New', monospace; font-size: 1.02rem; color: var(--acento); margin: 32px 0 12px; letter-spacing: .02em; }
 h3 { font-family: 'Courier New', monospace; font-size: .92rem; color: #fff; margin: 24px 0 10px; }
 p { margin-bottom: 13px; }
 strong { color: #fff; }
 em { color: #ddd; }
-a { color: var(--ouro); }
+a { color: var(--cor); }
 ul, ol { margin: 0 0 14px 22px; }
 li { margin-bottom: 7px; }
 hr { border: none; border-top: 1px solid var(--linha); margin: 34px 0; }
-blockquote { border-left: 3px solid var(--ouro); padding-left: 16px; margin: 0 0 14px; color: #c4c4c4; }
+blockquote { border-left: 3px solid var(--cor); padding-left: 16px; margin: 0 0 14px; color: #c4c4c4; }
 
 #TOC { border: 1px solid var(--linha); padding: 20px 24px; margin-bottom: 40px; }
-#TOC::before { content: 'Sumário'; display: block; font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .18em; color: var(--ouro); border-bottom: 1px solid var(--linha); padding-bottom: 8px; margin-bottom: 14px; }
+#TOC::before { content: 'Sumário'; display: block; font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .18em; color: var(--cor); border-bottom: 1px solid var(--linha); padding-bottom: 8px; margin-bottom: 14px; }
 #TOC ul { list-style: none; margin: 0; }
 #TOC li { margin-bottom: 8px; }
 #TOC a { color: var(--texto); text-decoration: none; font-family: 'Courier New', monospace; font-size: .84rem; }
-#TOC a:hover { color: var(--ouro); }
+#TOC a:hover { color: var(--cor); }
 
 .tabela-rolagem { overflow-x: auto; margin-bottom: 20px; }
 table { border-collapse: collapse; width: 100%; font-size: .88rem; }
 th, td { border: 1px solid var(--linha); padding: 9px 11px; text-align: left; vertical-align: top; }
-th { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ouro); background: #17171a; font-weight: normal; }
+th { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--cor); background: #17171a; font-weight: normal; }
 tbody tr:nth-child(even) { background: #131316; }
 caption { caption-side: bottom; font-size: .78rem; color: var(--cinza); padding-top: 6px; }
 
@@ -58,7 +59,7 @@ table.cip tbody tr { background: none; }
 
 pre { background: #131316; border: 1px solid var(--linha); padding: 14px 16px; overflow-x: auto; margin-bottom: 20px; }
 code { font-family: 'Courier New', Consolas, monospace; font-size: .78rem; color: #c4c4c4; }
-p code, li code, td code { background: #17171a; padding: 1px 5px; font-size: .84rem; color: var(--verde); }
+p code, li code, td code { background: #17171a; padding: 1px 5px; font-size: .84rem; color: var(--acento); }
 
 .rodape { margin-top: 56px; padding-top: 16px; border-top: 1px solid #333; font-size: .76rem; color: #888; font-family: 'Courier New', monospace; text-align: center; line-height: 1.7; }
 @media (max-width: 560px) {
