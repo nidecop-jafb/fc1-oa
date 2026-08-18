@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T10 · O Movimento Uniforme (MU) — Apresentação de Aula (AP) v1</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO — MODO PALCO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.72 0.16 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.65 0.24 25);
+  --cinza: oklch(0.60 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.40 0.02 260);
+  --texto: oklch(0.96 0 0);
+  --branco: oklch(0.98 0 0);
+  --superficie: oklch(0.20 0.02 260);
+  --fundo: oklch(0.09 0.02 260);
+  --input-bg: oklch(0.18 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-palco: 1.5rem;   /* base do "modo palco" — maior que TT (1.15) */
+}
+
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.45 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.72 0.02 260);
+  --texto: oklch(0.15 0 0);
+  --branco: oklch(0.10 0 0);
+  --superficie: oklch(0.96 0.01 260);
+  --fundo: oklch(0.99 0.005 260);
+  --input-bg: oklch(0.94 0.01 260);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--font);
+  font-size: var(--fs-palco);
+  line-height: 1.5;
+  border-radius: 0;
+}
+
+/* ═══ BARRA DE PROGRESSO ═══ */
+.progress-top {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 4px; z-index: 1000;
+  background: var(--cinza-claro);
+}
+.progress-top .bar {
+  height: 100%; background: var(--ouro);
+  width: 0%; transition: width 0.3s ease;
+}
+
+/* ═══ TOOLBAR (topo-direita) ═══ */
+.toolbar {
+  position: fixed; top: 4px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--cinza-borda);
+  border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--font);
+  font-size: 0.75rem; padding: 6px 10px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ SIDEBARS (6 abas laterais — flex container) ═══ */
+.sb-toggles {
+  position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+  z-index: 998; display: flex; flex-direction: column; gap: 2px;
+}
+.sb-toggle {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem;
+  padding: 6px 8px; cursor: pointer;
+  font-family: var(--font);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+  border-radius: 0; transition: color 0.15s;
+}
+.sb-toggle:hover { color: var(--ouro); }
+@media (max-height: 780px) {
+  .sb-toggle { font-size: 0.65rem; padding: 5px 6px; }
+}
+
+/* Blocos internos de créditos e imagens */
+.cred-grupo { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--cinza-borda); }
+.cred-grupo:last-child { border-bottom: none; margin-bottom: 8px; }
+.cred-instituicao { color: var(--ouro); font-size: 0.88rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
+.cred-cargo { color: var(--cinza); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.cred-nome { color: var(--branco); font-weight: 700; font-size: 0.9rem; }
+.cred-bio { font-size: 0.82rem; color: oklch(0.78 0 0); line-height: 1.5; margin-top: 4px; }
+[data-theme="light"] .cred-bio { color: oklch(0.28 0 0); }
+.cred-footer { font-size: 0.7rem; color: var(--cinza); font-style: italic; text-align: center; margin-top: 12px; letter-spacing: 0.5px; }
+.imagens-nota { font-size: 0.8rem; color: var(--cinza); font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--cinza-borda); line-height: 1.5; }
+.figura-num { font-weight: 700; color: var(--azul); }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie);
+  border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 46px;
+  transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem;
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar h3 {
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda);
+  padding-bottom: 8px;
+}
+.sidebar .toc-item {
+  display: block; padding: 8px 0; font-size: 0.85rem;
+  color: oklch(0.75 0 0); text-decoration: none;
+  border-bottom: 1px solid var(--cinza-claro);
+  transition: color 0.15s; cursor: pointer;
+}
+[data-theme="light"] .sidebar .toc-item { color: oklch(0.28 0 0); }
+.sidebar .toc-item:hover { color: var(--ouro); }
+.sidebar .toc-item .toc-num {
+  font-family: var(--mono); color: var(--azul);
+  font-size: 0.75rem; margin-right: 10px; min-width: 30px; display: inline-block;
+}
+.sidebar .toc-item.ativo .toc-num { color: var(--ouro); font-weight: 700; }
+.sidebar .toc-item.ato-titulo {
+  color: var(--azul); font-weight: 700;
+  border-bottom: 2px solid var(--azul);
+  margin-top: 12px; padding-top: 12px;
+}
+.sidebar p { font-size: 0.9rem; margin-bottom: 12px; color: oklch(0.80 0 0); line-height: 1.6; }
+[data-theme="light"] .sidebar p { color: oklch(0.25 0 0); }
+.sidebar .link-yt {
+  display: inline-block; margin-top: 8px; padding: 8px 14px;
+  background: var(--erro); color: white; text-decoration: none;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sidebar .link-yt:hover { background: oklch(0.72 0.24 25); }
+.sidebar .refs-grupo { margin-bottom: 18px; }
+.sidebar .refs-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 6px;
+}
+.sidebar .refs-item {
+  font-size: 0.8rem; color: oklch(0.78 0 0);
+  margin-bottom: 4px; line-height: 1.4;
+}
+[data-theme="light"] .sidebar .refs-item { color: oklch(0.28 0 0); }
+
+/* ═══ DECK / SLIDES ═══ */
+.deck { width: 100%; height: 100%; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  /* padding-bottom = altura do rodape fixo (45px) + folga: nada passa por baixo dele */
+  padding: 5vh 6vw 68px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  display: flex; flex-direction: column;
+  /* Rolagem em TODOS os slides: com overflow hidden, o que passava da dobra
+     ficava inalcancavel por qualquer gesto e so aparecia reduzindo o zoom.
+     A barra fica OCULTA de proposito — exibi-la custa 15px de largura, o
+     texto reflui e o transbordo aumenta. Rolagem por roda, arrasto e
+     pelas teclas Cima/Baixo. */
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;              /* Firefox */
+}
+.slide::-webkit-scrollbar { width: 0; height: 0; }   /* Chrome / Edge */
+.slide.ativo { opacity: 1; pointer-events: auto; }
+
+/* Título de slide (sem "linha SLIDE X" — info já está no rodapé/sumário) */
+.slide-titulo {
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--ouro); line-height: 1.15;
+  margin-bottom: 18px;
+}
+.slide-subtitulo { font-size: 1.1rem; color: var(--cinza); margin-top: -18px; margin-bottom: 24px; }
+
+.slide-body {
+  width: 100%; flex: 1;
+  display: flex; flex-direction: column;
+  /* "safe center": centraliza, mas NUNCA corta o topo quando o conteudo excede */
+  justify-content: center;
+  justify-content: safe center;
+  gap: 12px;
+}
+
+/* ── SLIDE 1: CAPA ── */
+.capa-slide {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center;
+  /* NAO redefinir position aqui: o .slide e position:absolute com inset:0.
+     Com position:relative a capa saia do posicionamento absoluto, encolhia
+     para a altura do conteudo e sobrava faixa preta no rodape. */
+  overflow: hidden !important;
+}
+.capa-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  /* Clareada para projecao; a legibilidade fica por conta do text-shadow. */
+  filter: brightness(0.62) saturate(1.05);
+  z-index: 0; min-height: 100%;
+}
+[data-theme="light"] .capa-bg { filter: brightness(0.65) saturate(1.1); }
+.capa-conteudo {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  padding: 5vh 6vw;
+}
+.capa-disciplina {
+  font-size: 3.4rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 4px;
+  color: var(--ouro); text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.capa-curso {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  margin-top: 10px; letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-trilha {
+  font-size: 1.15rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 3px;
+  margin-top: 32px; font-weight: 700;
+}
+.capa-titulo {
+  font-size: 3rem; font-weight: 700; color: var(--branco);
+  margin-top: 14px; line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  max-width: 900px;
+}
+.capa-epigrafe {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  max-width: 640px; text-align: center; line-height: 1.4;
+  margin-top: 32px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.capa-epigrafe-autor {
+  font-size: 1rem; color: var(--ouro); margin-top: 8px; font-weight: 600;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-autores {
+  font-size: 1.15rem; color: oklch(0.85 0 0);
+  margin-top: 40px; font-weight: 500;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.capa-inst {
+  font-size: 0.9rem; color: oklch(0.70 0 0);
+  margin-top: 6px; letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+[data-theme="light"] .capa-disciplina,
+[data-theme="light"] .capa-curso,
+[data-theme="light"] .capa-titulo,
+[data-theme="light"] .capa-epigrafe,
+[data-theme="light"] .capa-autores,
+[data-theme="light"] .capa-inst {
+  text-shadow: 0 2px 12px rgba(255,255,255,0.7);
+}
+
+/* ── CONTEÚDO GENÉRICO ── */
+.cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: start; width: 100%;
+}
+.cols.img-r { grid-template-columns: 1.15fr 0.85fr; }
+.cols.img-l { grid-template-columns: 0.85fr 1.15fr; }
+
+.col-text { display: flex; flex-direction: column; gap: 10px; }
+.col-text p { font-size: 1.35rem; line-height: 1.55; color: oklch(0.90 0 0); }
+[data-theme="light"] .col-text p { color: oklch(0.18 0 0); }
+.hi { color: var(--ouro); font-weight: 700; }
+.hv { color: var(--verde); font-weight: 700; }
+.he { color: var(--erro); font-weight: 700; }
+
+/* Figura = imagem + legenda EMPILHADAS (flex column): a legenda nunca sobe sobre a foto */
+.col-img {
+  width: 100%; border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  overflow: hidden;
+  align-self: center;
+  display: flex; flex-direction: column;
+  min-height: 0;
+}
+.col-img img {
+  width: 100%; display: block; height: auto;
+  max-height: 48vh; object-fit: cover;
+  flex: 0 1 auto; min-height: 0;
+}
+.col-img-legenda {
+  flex: 0 0 auto;                     /* legenda nunca encolhe nem e engolida pela imagem */
+  position: relative; z-index: 1;
+  font-size: 0.85rem; color: var(--cinza);
+  text-align: center; padding: 10px 14px; font-style: italic;
+  border-top: 2px solid var(--cinza-borda);
+  background: var(--input-bg);        /* faixa propria — distingue legenda da foto */
+  line-height: 1.35;
+}
+.col-img-legenda .fig-num {
+  display: block; font-family: var(--mono); font-style: normal;
+  font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--azul); font-weight: 700; margin-bottom: 3px;
+}
+
+/* ── TIMELINE ROTEIRO ── */
+.tl {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 12px 16px; background: var(--superficie);
+  border-left: 4px solid var(--ouro);
+}
+.tl-t {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--azul); min-width: 100px; flex-shrink: 0;
+  font-weight: 700;
+}
+.tl-d { font-size: 1.2rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .tl-d { color: oklch(0.22 0 0); }
+.tl-d strong { color: var(--ouro); }
+
+/* ── DEFINIÇÃO / CONCEITO ── */
+.def {
+  background: var(--superficie);
+  padding: 16px 22px;
+  border-left: 4px solid var(--ouro);
+}
+.def .termo {
+  font-weight: 700; color: var(--ouro);
+  text-transform: uppercase; font-size: 0.95rem;
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.def p { font-size: 1.25rem; color: oklch(0.90 0 0); line-height: 1.5; }
+[data-theme="light"] .def p { color: oklch(0.18 0 0); }
+
+/* ── EQUAÇÃO ── */
+.eq {
+  background: var(--input-bg);
+  padding: 10px 22px; text-align: center;
+  font-family: var(--serif); font-size: 1.9rem;
+  color: var(--branco); border: 1px solid var(--cinza-borda);
+}
+
+/* ── PASSOS NUMERADOS ── */
+.passos { display: flex; flex-direction: column; gap: 8px; }
+.passo {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 14px; background: var(--superficie);
+}
+.passo-n {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 1.3rem; min-width: 28px;
+}
+.passo-t { font-size: 1.1rem; color: oklch(0.88 0 0); line-height: 1.4; }
+[data-theme="light"] .passo-t { color: oklch(0.22 0 0); }
+
+/* ── TIMELINE ERAS ── */
+.era {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 7px 16px; background: var(--superficie);
+  border-left: 4px solid var(--azul);
+}
+.era-p {
+  font-family: var(--mono); font-size: 0.95rem;
+  color: var(--azul); min-width: 130px; flex-shrink: 0;
+  padding-top: 3px; font-weight: 700;
+}
+.era-c { font-size: 1.15rem; color: oklch(0.88 0 0); line-height: 1.5; }
+[data-theme="light"] .era-c { color: oklch(0.22 0 0); }
+.era-c strong { color: var(--ouro); }
+
+/* ── TABELA ── */
+.tbl {
+  width: 100%; border-collapse: collapse;
+  font-size: 1.15rem;
+}
+.tbl th {
+  padding: 12px 14px; text-align: left; font-weight: 700;
+  color: var(--ouro); border-bottom: 2px solid var(--cinza-borda);
+  text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+}
+.tbl td {
+  padding: 12px 14px; border-bottom: 1px solid var(--cinza-claro);
+  color: oklch(0.88 0 0); vertical-align: middle;
+}
+[data-theme="light"] .tbl td { color: oklch(0.20 0 0); }
+.tbl td.eq-cell { font-family: var(--serif); font-size: 1.2rem; }
+
+/* ── EXERCÍCIOS / APLICAÇÕES ── */
+.exercicio {
+  background: var(--superficie);
+  padding: 14px 22px;
+  border-left: 4px solid var(--azul);
+}
+.exercicio-label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--azul); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px; font-weight: 700;
+}
+.exercicio-enunciado {
+  font-size: 1.2rem; color: oklch(0.90 0 0);
+  line-height: 1.5; margin-bottom: 12px;
+}
+[data-theme="light"] .exercicio-enunciado { color: oklch(0.18 0 0); }
+.exercicio-resposta {
+  font-size: 1.25rem; color: var(--verde);
+  font-weight: 600; line-height: 1.5;
+  padding: 12px 16px; background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+}
+[data-theme="light"] .exercicio-resposta {
+  color: oklch(0.28 0.14 150);
+}
+
+/* ── PROTOCOLO C5 (8 etapas) — aplicado a cada exercício ── */
+.c5-ap {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px minmax(0, 1fr);
+  column-gap: 30px;
+  row-gap: 0;
+  margin-top: 10px;
+  font-family: var(--font);
+}
+/* Etapas 1-4 na coluna esquerda, 5-8 na direita: a mesma informacao na metade
+   da altura, sem reduzir corpo de fonte nenhum. O botao de revelacao e IRMAO
+   do .c5-ap (parent.insertBefore(btn, c5)), nao filho — por isso os nth-child
+   abaixo sao estaveis mesmo com as etapas ocultas. */
+.c5-ap > :nth-child(-n+8):nth-child(odd)  { grid-column: 1; }
+.c5-ap > :nth-child(-n+8):nth-child(even) { grid-column: 2; }
+.c5-ap > :nth-child(n+9):nth-child(odd)   { grid-column: 3; }
+.c5-ap > :nth-child(n+9):nth-child(even)  { grid-column: 4; }
+.c5-ap > :nth-child(1),  .c5-ap > :nth-child(2),
+.c5-ap > :nth-child(9),  .c5-ap > :nth-child(10) { grid-row: 1; }
+.c5-ap > :nth-child(3),  .c5-ap > :nth-child(4),
+.c5-ap > :nth-child(11), .c5-ap > :nth-child(12) { grid-row: 2; }
+.c5-ap > :nth-child(5),  .c5-ap > :nth-child(6),
+.c5-ap > :nth-child(13), .c5-ap > :nth-child(14) { grid-row: 3; }
+.c5-ap > :nth-child(7),  .c5-ap > :nth-child(8),
+.c5-ap > :nth-child(15), .c5-ap > :nth-child(16) { grid-row: 4; }
+/* Tela estreita: volta a coluna unica, senao cada etapa fica espremida. */
+/* Slide 7: a tabela do ciclo foi para a coluna da imagem; a foto cede
+   altura para as duas colunas caberem sem reduzir fonte. */
+/* Slides 3, 5 e 7: um bloco de cada um foi para a coluna da imagem, que por
+   isso deixa de ser estreita — 1.15fr/0.85fr equilibra as duas alturas. A foto
+   cede espaco ao bloco recebido. Nenhum corpo de fonte foi alterado. */
+.slide[data-slide="3"] .cols,
+.slide[data-slide="5"] .cols,
+.slide[data-slide="7"] .cols { grid-template-columns: 1.15fr 0.85fr; }
+.slide[data-slide="3"] .col-img img { max-height: 30vh; }
+/* Conceito (texto dentro do .eq) menor nos slides 5 e 7: a 1.9rem uma frase
+   inteira ocupava 296px (s5) e 369px (s7). O espaco liberado no slide 7 vai
+   para a foto, que estava com 57% da altura cortada pelo object-fit: cover. */
+.slide[data-slide="5"] .eq,
+.slide[data-slide="6"] .eq,
+.slide[data-slide="7"] .eq { font-size: 1.45rem; }
+/* Slide 5: o paragrafo-conceito, que mora na coluna da imagem desde que foi
+   movido para la, vinha em 1.5rem e ocupava 324px — mais que a propria foto.
+   Reduzido, ele libera altura para a imagem, que estava 35% cortada. */
+.slide[data-slide="5"] .col-img p { font-size: 1.15rem; line-height: 1.45; }
+.slide[data-slide="5"] .col-img img { max-height: 52vh; }
+/* Slide 7: a conclusao tambem mora na coluna da imagem — mesma reducao do
+   slide 5, para nao competir com a foto. */
+.slide[data-slide="7"] .col-img p { font-size: 1.15rem; line-height: 1.45; }
+.slide[data-slide="7"] .col-img img { max-height: 52vh; }
+.slide[data-slide="7"] .tbl th,
+.slide[data-slide="7"] .tbl td { padding: 5px 9px; }
+.slide[data-slide="7"] .eq  { padding: 6px 18px; }
+.slide[data-slide="7"] .def { padding: 7px 14px; }
+.slide[data-slide="15"] .ca-analise { margin-top: 8px; }
+@media (max-width: 1100px) {
+  .c5-ap { grid-template-columns: 44px minmax(0, 1fr); column-gap: 0; }
+  .c5-ap > * { grid-column: auto !important; grid-row: auto !important; }
+}
+.c5-ap-etapa {
+  font-family: var(--mono); font-weight: 700;
+  color: var(--azul); font-size: 0.9rem;
+  padding: 6px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 3px;
+}
+.c5-icon {
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  color: var(--azul);
+  flex-shrink: 0; display: block;
+}
+.c5-ap-conteudo {
+  font-size: 1rem;
+  color: oklch(0.88 0 0);
+  padding: 6px 0 6px 4px;
+  border-top: 1px solid var(--cinza-borda);
+  line-height: 1.45;
+}
+[data-theme="light"] .c5-ap-conteudo { color: oklch(0.22 0 0); }
+.c5-ap-conteudo strong { color: var(--ouro); }
+.c5-ap-conteudo .eq-inline {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--branco);
+  padding: 0 4px;
+}
+[data-theme="light"] .c5-ap-conteudo .eq-inline { color: oklch(0.15 0 0); }
+.c5-ap-etapa:first-child,
+.c5-ap > *:nth-child(2) { border-top: none; padding-top: 4px; }
+
+/* Etapa 8 — resposta como última linha da tabela C5 (ícone + número injetados via JS) */
+.c5-resposta {
+  position: relative;
+  margin-top: -1px;
+  padding: 10px 12px 12px 56px;
+  background: none;
+  border-top: 2px solid var(--verde);
+  color: var(--verde);
+  font-family: var(--font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.c5-resposta .c5-resp-etapa {
+  position: absolute; left: 4px; top: 8px;
+  width: 44px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  font-family: var(--mono); font-weight: 700;
+  color: var(--verde); font-size: 0.95rem;
+}
+.c5-resposta .c5-icon { color: var(--verde); }
+.c5-resposta strong { color: var(--verde); }
+[data-theme="light"] .c5-resposta,
+[data-theme="light"] .c5-resposta strong,
+[data-theme="light"] .c5-resposta .c5-resp-etapa,
+[data-theme="light"] .c5-resposta .c5-icon { color: oklch(0.28 0.14 150); }
+
+/* Botão de revelação da solução — foco no enunciado por padrão */
+.btn-solucao {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  background: var(--azul); color: white; border: none;
+  font-family: var(--font); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 12px 22px; cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0;
+}
+.btn-solucao:hover { background: var(--azul-claro); }
+[data-theme="light"] .btn-solucao { color: white; }
+.c5-solucao { margin-top: 14px; }
+.c5-solucao[hidden] { display: none !important; }
+
+/* Slides de exercício: IT-11 (símbolo) à direita, texto ocupa o restante */
+.slide-body.com-simbolo { position: relative; }
+.img-simbolo {
+  position: absolute; top: 0; right: 0;
+  width: 220px; height: auto;
+  border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  z-index: 1;
+}
+.slide-body.com-simbolo > .exercicio,
+.slide-body.com-simbolo > .qi {
+  padding-right: 250px;
+}
+@media (max-width: 1100px) {
+  .img-simbolo { width: 180px; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 200px; }
+}
+@media (max-width: 900px) {
+  .img-simbolo { position: static; width: 140px; margin: 0 auto 14px; display: block; }
+  .slide-body.com-simbolo > .exercicio,
+  .slide-body.com-simbolo > .qi { padding-right: 0; }
+}
+
+/* Slides 8-13 (Aplicações + Integradora) — fluxograma C5 valorizado */
+.img-c5 {
+  width: 360px !important;
+  height: auto !important;
+  max-height: 560px;
+  object-fit: contain;
+  border: none !important;
+  background: transparent !important;
+}
+.slide-body.com-c5 > .qi,
+.slide-body.com-c5 > .exercicio { padding-right: 390px; }
+@media (max-width: 1100px) {
+  .img-c5 { width: 300px !important; max-height: 460px; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 330px; }
+}
+@media (max-width: 900px) {
+  .img-c5 { position: static; width: 90vw !important; max-height: none; margin: 0 auto 14px; display: block; }
+  .slide-body.com-c5 > .qi,
+  .slide-body.com-c5 > .exercicio { padding-right: 0; }
+}
+
+/* ── QUESTÃO INTEGRADORA ── */
+.qi {
+  border: 3px solid var(--ouro);
+  padding: 16px 26px;
+  background: oklch(0.13 0.04 95);
+}
+[data-theme="light"] .qi { background: oklch(0.96 0.03 95); }
+.qi-label {
+  font-family: var(--mono); font-size: 1rem;
+  color: var(--ouro); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 12px; font-weight: 700;
+}
+.qi-enunciado {
+  font-size: 1.2rem; color: oklch(0.92 0 0);
+  line-height: 1.55; margin-bottom: 14px;
+}
+[data-theme="light"] .qi-enunciado { color: oklch(0.15 0 0); }
+.qi-item {
+  font-size: 1.15rem; color: var(--verde);
+  line-height: 1.5; margin-bottom: 6px;
+}
+
+/* ── CIÊNCIA E ARTE ── */
+.ca-obra {
+  text-align: left; font-family: var(--serif);
+  font-size: 1.2rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.ca-obra em { font-style: italic; color: var(--ouro); }
+.ca-versos {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.15rem; color: oklch(0.88 0 0);
+  text-align: left; line-height: 1.5;
+  margin: 12px 0; max-width: 700px;
+}
+[data-theme="light"] .ca-versos { color: oklch(0.20 0 0); }
+.ca-analise {
+  font-size: 1.4rem; color: oklch(0.88 0 0);
+  line-height: 1.42; max-width: 900px; margin: 0 auto;
+}
+[data-theme="light"] .ca-analise { color: oklch(0.18 0 0); }
+.ca-analise strong { color: var(--ouro); }
+.ca-epigrafe-box {
+  border: 2px solid var(--ouro);
+  padding: 26px 30px;
+  background: var(--superficie);
+  max-width: 720px; margin: 0 auto;
+  text-align: center;
+}
+.ca-epigrafe-box p {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.6rem; color: oklch(0.92 0 0);
+  line-height: 1.45;
+}
+[data-theme="light"] .ca-epigrafe-box p { color: oklch(0.15 0 0); }
+.ca-epigrafe-box .autor {
+  font-family: var(--font); font-style: normal;
+  font-size: 1rem; color: var(--ouro);
+  margin-top: 16px; font-weight: 700; letter-spacing: 1px;
+}
+
+.ca-provinha {
+  background: var(--verde-claro);
+  border-left: 4px solid var(--verde);
+  padding: 18px 22px; margin-top: 24px;
+  max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.ca-provinha .label {
+  font-family: var(--mono); font-size: 0.9rem;
+  color: var(--verde); text-transform: uppercase;
+  letter-spacing: 1px; font-weight: 700; margin-bottom: 6px;
+}
+.ca-provinha p {
+  font-size: 1.2rem; color: oklch(0.90 0 0); line-height: 1.5;
+}
+[data-theme="light"] .ca-provinha p { color: oklch(0.18 0 0); }
+
+/* ── DESPEDIDA ── */
+.despedida {
+  padding: 0; justify-content: center; align-items: center;
+  text-align: center;
+}
+/* ── Slide 16 em duas colunas, sobre imagem de fundo ──
+   O grid vai no proprio .desp-body: nenhum wrapper novo, porque a revelacao
+   progressiva e montada a partir dos blocos do corpo. Cada bloco tem posicao
+   explicita, entao some ou aparece sem deslocar os vizinhos (tecnica do C5).
+   NAO redefinir position no .despedida: ver comentario da .capa-slide. */
+.desp-bg {
+  position: absolute; inset: 0; min-height: 100%;
+  background-size: cover; background-position: center;
+  filter: brightness(0.80) saturate(0.95);
+  z-index: 0;
+}
+/* Veu que protege o lado do texto sem apagar a cena do lado direito. */
+.desp-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0.48) 52%, rgba(0,0,0,0.20) 100%);
+}
+.despedida .desp-body {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  column-gap: 56px; row-gap: 20px;
+  align-items: start;
+  max-width: 1180px;
+  text-align: left;
+  padding: 0 6vw;
+}
+.despedida .desp-sofia   { grid-column: 1; grid-row: 1; margin-top: 0; }
+.despedida .desp-frase   { grid-column: 1; grid-row: 2 / 6; align-self: start; }
+/* A coluna 2 espelha, de cima para baixo, a ordem de revelacao:
+   1) Sucesso na Provinha  2) Tarefa Minima  3) Terminamos (coluna 1). */
+.despedida .ca-provinha  {
+  grid-column: 2; grid-row: 2;
+  background: none; border-left: none; padding: 0;
+  margin: 0 !important; max-width: none;
+  font-size: 1.5rem; font-weight: 700; color: var(--branco);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+}
+.despedida .ca-provinha .label { display: none; }   /* rotulo "Proximo passo" sai */
+.despedida .ca-provinha p { margin: 0; }
+.despedida .desp-acao    { grid-column: 2; grid-row: 3; align-self: end; }
+.despedida .desp-tarefa  {
+  grid-column: 2; grid-row: 4; justify-self: start;
+  background: none; padding: 0; color: var(--branco);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+}
+.despedida .desp-inst    { grid-column: 1 / -1; grid-row: 6; margin-top: 4px;
+                           color: oklch(0.86 0 0); text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+.despedida .btn-reveal-icon { grid-column: 2; grid-row: 1; justify-self: start; align-self: center; }
+@media (max-width: 1100px) {
+  .despedida .desp-body { grid-template-columns: 1fr; row-gap: 16px; }
+  .despedida .desp-body > * { grid-column: 1 !important; grid-row: auto !important; }
+}
+.desp-body {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 32px; max-width: 800px;
+}
+.desp-frase {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 2.6rem; color: var(--branco); line-height: 1.35;
+}
+.desp-acao {
+  font-size: 1.4rem; color: oklch(0.85 0 0);
+  line-height: 1.5;
+}
+[data-theme="light"] .desp-acao { color: oklch(0.20 0 0); }
+.desp-tarefa {
+  background: var(--erro);
+  color: white; font-weight: 800;
+  padding: 18px 32px; letter-spacing: 2px;
+  text-transform: uppercase; font-size: 1.25rem;
+}
+.desp-sofia {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.4rem; color: oklch(0.80 0 0);
+  line-height: 1.5; margin-top: 12px;
+}
+[data-theme="light"] .desp-sofia { color: oklch(0.28 0 0); }
+.desp-proximo {
+  font-size: 1rem; color: var(--azul-claro);
+  text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+  padding-top: 20px; border-top: 1px solid var(--cinza-borda); width: 100%;
+}
+.desp-inst {
+  font-size: 0.9rem; color: var(--cinza);
+  margin-top: 16px; letter-spacing: 1px;
+}
+
+/* ═══ RODAPÉ FIXO ═══ */
+.rodape {
+  position: fixed; bottom: 0; left: 0;
+  width: 100%; z-index: 200;
+  background: var(--fundo);
+  border-top: 1px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 20px;
+}
+.rodape-info {
+  font-size: 0.75rem; color: var(--cinza);
+  display: flex; gap: 14px; align-items: center;
+}
+.rodape-info em { color: var(--ouro); font-style: normal; font-weight: 600; }
+.rodape-info .tag {
+  border: 1px solid var(--cinza-borda);
+  padding: 2px 8px; font-size: 0.7rem;
+  color: var(--cinza); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rodape-nav {
+  display: flex; gap: 6px; align-items: center;
+}
+.rodape-nav button {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  color: var(--cinza); width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.9rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+.rodape-nav button:hover { color: var(--ouro); border-color: var(--ouro); }
+.rodape-nav .contador {
+  font-family: var(--mono); font-size: 0.85rem;
+  color: var(--cinza); min-width: 60px; text-align: center; font-weight: 700;
+}
+
+/* ═══ OVERVIEW GRID (tecla O) ═══ */
+.overview {
+  position: fixed; inset: 0; z-index: 1500;
+  background: var(--fundo);
+  padding: 60px 40px 40px;
+  overflow-y: auto;
+  display: none;
+}
+.overview.aberto { display: block; }
+.overview-titulo {
+  font-size: 1.2rem; color: var(--ouro);
+  text-transform: uppercase; letter-spacing: 3px;
+  font-weight: 700; margin-bottom: 24px;
+}
+.overview-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.overview-cell {
+  aspect-ratio: 16/9;
+  background: var(--superficie);
+  border: 2px solid var(--cinza-borda);
+  padding: 14px 16px; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+}
+.overview-cell:hover {
+  border-color: var(--ouro);
+  transform: translateY(-2px);
+}
+.overview-cell .ov-num {
+  font-family: var(--mono); font-size: 0.75rem;
+  color: var(--azul); font-weight: 700;
+  letter-spacing: 1px;
+}
+.overview-cell .ov-tit {
+  font-size: 0.95rem; color: var(--texto);
+  font-weight: 600; line-height: 1.3;
+}
+.overview-cell.ativo { border-color: var(--ouro); }
+.overview-cell.ativo .ov-num { color: var(--ouro); }
+.overview-fechar {
+  position: fixed; top: 16px; right: 24px; z-index: 1600;
+  background: var(--erro); color: white;
+  border: none; padding: 8px 16px;
+  font-family: var(--font); font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  text-transform: uppercase; font-size: 0.8rem;
+}
+
+/* ═══ ALTURA CURTA (projetor 4:3, notebook 768px) — o conteudo cabe sem cortar ═══ */
+@media (max-height: 820px) {
+  :root { --fs-palco: 1.22rem; }
+  /* Com a capa de volta ao posicionamento absoluto, o conteudo dela
+     passava alguns px em 768px de altura — e a capa e overflow:hidden. */
+  .capa-conteudo { padding: 3vh 6vw; }
+  .slide { padding: 3.2vh 5vw 68px; }
+  .slide-titulo { font-size: 1.85rem; margin-bottom: 8px; }
+  .slide-body { gap: 10px; }
+  .cols { gap: 24px; }
+  .col-text { gap: 10px; }
+  .col-text p { font-size: 1.08rem; line-height: 1.45; }
+  .def { padding: 10px 16px; }
+  .def .termo { font-size: 0.85rem; margin-bottom: 4px; }
+  .def p { font-size: 1.02rem; }
+  .eq { font-size: 1.35rem; padding: 10px 16px; }
+  .col-img img { max-height: 36vh; }
+  .col-img-legenda { font-size: 0.8rem; padding: 8px 12px; }
+  .tbl { font-size: 0.95rem; }
+  .tbl th, .tbl td { padding: 7px 9px; }
+  .passo { padding: 7px 12px; }
+  .passo-t, .era-c { font-size: 0.98rem; }
+  .era { padding: 9px 14px; }
+  /* Ajuste fino da camada 3 (ver T07): fecha os residuos em 1366x768.
+     A T09 precisa de um pouco mais que a T07 — os topicos tem mais conteudo. */
+  .exercicio, .qi { padding: 9px 16px; }
+  .qi-enunciado, .exercicio-enunciado { margin-bottom: 4px; }
+  .c5-ap-conteudo { padding: 4px 0 4px 4px; }
+  /* Slide 13 (integradora) e o mais denso: enunciado longo + C5 + resposta. */
+  .slide[data-slide="13"] .c5-ap { margin-top: 4px; }
+  .slide[data-slide="13"] .c5-ap-etapa { padding: 2px 4px; }
+  .slide[data-slide="13"] .c5-ap-conteudo { padding: 2px 0 2px 4px; line-height: 1.32; }
+  .slide[data-slide="13"] .qi-enunciado { line-height: 1.35; }
+  /* Em tela baixa o .eq ja cai para 1.35rem; os slides 5 e 7 descem mais. */
+  .slide[data-slide="5"] .eq,
+  .slide[data-slide="6"] .eq,
+  .slide[data-slide="7"] .eq { font-size: 1.15rem; }
+  .slide[data-slide="5"] .col-img p,
+  .slide[data-slide="7"] .col-img p { font-size: 0.98rem; }
+  .c5-ap { margin-top: 8px; }
+  .c5-ap-etapa { padding: 4px 4px; }
+  .c5-resposta { padding: 5px 12px 5px 56px; }
+  .exercicio-enunciado { line-height: 1.38; }
+  .exercicio-enunciado, .qi-enunciado { font-size: 1.08rem; margin-bottom: 6px; }
+  .c5-ap-conteudo { font-size: 0.95rem; padding: 5px 0 5px 4px; }
+  .c5-resposta { font-size: 1rem; }
+  .ca-obra { font-size: 1.05rem; margin-bottom: 8px; }
+  .ca-analise { font-size: 1.15rem; }
+  .ca-versos { font-size: 1rem; margin: 8px 0; }
+  .desp-frase { font-size: 2rem; }
+  .desp-body { gap: 20px; }
+}
+/* 4:3 estreito (projetor 1024x768): texto ganha largura e a figura encolhe */
+@media (max-height: 820px) and (max-width: 1150px) {
+  :root { --fs-palco: 1.05rem; }
+  .cols.img-r { grid-template-columns: 1.5fr 0.5fr; }
+  .cols.img-l { grid-template-columns: 0.5fr 1.5fr; }
+  .slide-titulo { font-size: 1.55rem; }
+  .col-text p { font-size: 0.98rem; }
+  .def p { font-size: 0.95rem; }
+  .eq { font-size: 1.15rem; padding: 8px 14px; }
+  .col-img img { max-height: 30vh; }
+  .tbl { font-size: 0.86rem; }
+  .tbl th, .tbl td { padding: 5px 7px; }
+  .passo-t, .era-c { font-size: 0.92rem; }
+  .ca-analise { font-size: 1rem; }
+}
+@media (max-height: 700px) {
+  :root { --fs-palco: 1.05rem; }
+  .slide-titulo { font-size: 1.55rem; margin-bottom: 10px; }
+  .col-text p { font-size: 0.98rem; }
+  .col-img img { max-height: 30vh; }
+  .eq { font-size: 1.2rem; }
+  .ca-analise { font-size: 1rem; }
+  .desp-frase { font-size: 1.7rem; }
+}
+
+/* ═══ RESPONSIVO ═══ */
+@media (max-width: 900px) {
+  html, body { font-size: 1.05rem; }
+  .slide { padding: 3vh 4vw 60px; }
+  .capa-disciplina { font-size: 2rem; }
+  .capa-titulo { font-size: 1.6rem; }
+  .slide-titulo { font-size: 1.4rem; }
+  .cols { grid-template-columns: 1fr !important; gap: 20px; }
+  .eq { font-size: 1.3rem; padding: 12px 16px; }
+  .tbl { font-size: 0.95rem; }
+  .desp-frase { font-size: 1.6rem; }
+  .rodape { padding: 4px 10px; }
+  .sidebar { width: 90vw; }
+  .toolbar button { padding: 4px 8px; font-size: 0.68rem; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  .progress-top, .toolbar, .sb-toggles, .sidebar,
+  .rodape, .overview, .overview-fechar { display: none !important; }
+  .slide {
+    position: relative !important; opacity: 1 !important;
+    pointer-events: auto !important; page-break-after: always;
+    min-height: 100vh; padding: 20mm 15mm;
+    overflow: visible !important;
+  }
+  html, body { overflow: visible !important; background: white !important; color: #1A1A1A !important; }
+  .capa-bg { display: none !important; }
+  .capa-slide { background: white !important; }
+  .capa-disciplina, .capa-titulo, .capa-epigrafe, .capa-autores, .capa-inst { text-shadow: none !important; color: #1A1A1A !important; }
+  .capa-trilha { color: #005599 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-top"><div class="bar" id="barraProgresso"></div></div>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="toolbar">
+  <button id="btn-overview" title="Overview grid (tecla O)">&#9638; O</button>
+  <button id="btn-tema" title="Alternar tema (T)">Tema</button>
+  <button id="btn-fullscreen" title="Tela cheia (F)">&#9974; F</button>
+  <button id="btn-config" title="Configurar tempos (G)">&#9881; G</button>
+</div>
+
+<!-- ═══ SIDEBAR TOGGLES ═══ -->
+<div class="sb-toggles">
+<button class="sb-toggle toc-toggle"        data-sb="sb-toc">Sum&aacute;rio</button>
+<button class="sb-toggle musica-toggle"     data-sb="sb-musica">M&uacute;sica</button>
+<button class="sb-toggle ineditismo-toggle" data-sb="sb-ineditismo">Ineditismo</button>
+<button class="sb-toggle imagens-toggle"    data-sb="sb-imagens">Imagens</button>
+<button class="sb-toggle creditos-toggle"   data-sb="sb-creditos">Cr&eacute;ditos</button>
+<button class="sb-toggle refs-toggle"       data-sb="sb-refs">Refer&ecirc;ncias</button>
+</div>
+
+<!-- ═══ SIDEBAR: SUMÁRIO ═══ -->
+<aside class="sidebar" id="sb-toc">
+  <h3>Sum&aacute;rio &mdash; 17 slides</h3>
+  <div class="toc-lista" id="toc-lista">
+    <a class="toc-item ato-titulo" data-goto="1"><span class="toc-num">01</span>Capa</a>
+    <a class="toc-item ato-titulo" data-goto="2"><span class="toc-num">02</span>Ato I &mdash; O Gancho</a>
+    <a class="toc-item ato-titulo" data-goto="3"><span class="toc-num">03</span>Ato II &mdash; T&oacute;picos 1-5</a>
+    <a class="toc-item" data-goto="3"><span class="toc-num">03</span>T&oacute;pico 1: Caracter&iacute;sticas do MU</a>
+    <a class="toc-item" data-goto="4"><span class="toc-num">04</span>T&oacute;pico 2: Equa&ccedil;&atilde;o hor&aacute;ria</a>
+    <a class="toc-item" data-goto="5"><span class="toc-num">05</span>T&oacute;pico 3: Gr&aacute;ficos do MU</a>
+    <a class="toc-item" data-goto="6"><span class="toc-num">06</span>T&oacute;pico 4: Encontro de m&oacute;veis</a>
+    <a class="toc-item" data-goto="7"><span class="toc-num">07</span>T&oacute;pico 5: MU em fluxo cont&iacute;nuo</a>
+    <a class="toc-item ato-titulo" data-goto="8"><span class="toc-num">08</span>Ato III &mdash; Exerc&iacute;cios (C5)</a>
+    <a class="toc-item" data-goto="8"><span class="toc-num">08</span>Ex. T1 &mdash; Verificando o MU</a>
+    <a class="toc-item" data-goto="9"><span class="toc-num">09</span>Ex. T2 &mdash; Onde estar&aacute; o avi&atilde;o</a>
+    <a class="toc-item" data-goto="10"><span class="toc-num">10</span>Ex. T3 &mdash; A &aacute;rea conta a hist&oacute;ria</a>
+    <a class="toc-item" data-goto="11"><span class="toc-num">11</span>Ex. T4 &mdash; Encontro na galeria</a>
+    <a class="toc-item" data-goto="12"><span class="toc-num">12</span>Ex. T5 &mdash; Tempo de resid&ecirc;ncia</a>
+    <a class="toc-item" data-goto="13"><span class="toc-num">13</span>&#9733; Ex. T6 &mdash; Integradora (NR-22)</a>
+    <a class="toc-item ato-titulo" data-goto="14"><span class="toc-num">14</span>Ci&ecirc;ncia e Arte</a>
+    <a class="toc-item" data-goto="14"><span class="toc-num">14</span>Ravel: Bol&eacute;ro</a>
+    <a class="toc-item" data-goto="15"><span class="toc-num">15</span>Reflex&atilde;o</a>
+    <a class="toc-item ato-titulo" data-goto="16"><span class="toc-num">16</span>Despedida</a>
+  </div>
+</aside>
+
+<!-- ═══ SIDEBAR: MÚSICA ═══ -->
+<aside class="sidebar" id="sb-musica">
+  <h3>Trilha sonora sugerida</h3>
+  <p><strong>Recomenda&ccedil;&atilde;o Piazzi:</strong> aula com m&uacute;sica instrumental ao fundo, em volume baixo, para favorecer a concentra&ccedil;&atilde;o.</p>
+  <p style="font-size:0.75rem; color:var(--cinza); text-transform:uppercase; letter-spacing:1px; margin-top:14px;">Ler &middot; Escrever &middot; Medir</p>
+  <p style="color: var(--branco); font-weight:600; font-size:1.1rem; margin-top:8px;">Yamandu Costa</p>
+  <p><em>Sele&ccedil;&atilde;o instrumental</em><br>viol&atilde;o de 7 cordas</p>
+  <a class="link-yt" href="https://music.youtube.com/playlist?list=PLXyZd3QdGENs" target="_blank" rel="noopener">&#9654; Ouvir no YouTube Music</a>
+</aside>
+
+<!-- ═══ SIDEBAR: INEDITISMO ═══ -->
+<aside class="sidebar" id="sb-ineditismo">
+  <h3>Ineditismo</h3>
+  <p>Trilhas de Aprendizagem &eacute; uma metodologia que faz parte do esfor&ccedil;o do projeto <strong>F&iacute;sica Conceitual 1 + F&iacute;sica Experimental 1</strong>, aprovados pela Coordenadoria da &Aacute;rea de F&iacute;sica, em inovar na publica&ccedil;&atilde;o did&aacute;tica da f&iacute;sica aplicada aos cursos t&eacute;cnicos ofertados gratuitamente pelo IFMG Campus Ouro Preto &mdash; fazendo dialogar narrativa, contextualiza&ccedil;&atilde;o tripla (t&eacute;cnica, hist&oacute;rico-cultural, cotidiana), metodologia experimental rigorosa e modelagem cient&iacute;fica.</p>
+  <p>At&eacute; onde a pesquisa dos autores alcan&ccedil;ou, esta &eacute; uma apresenta&ccedil;&atilde;o ancorada no primeiro Texto Tem&aacute;tico de F&iacute;sica aplicada ao ensino t&eacute;cnico em minera&ccedil;&atilde;o integrado ao ensino m&eacute;dio estruturado em Trilhas de Aprendizagem publicado no Brasil.</p>
+  <p>Esta <strong>APRESENTA&Ccedil;&Atilde;O</strong> foi elaborada com aux&iacute;lio de intelig&ecirc;ncia artificial (Claude Sonnet 4.6, Anthropic, 2026; Claude Cowork, Anthropic, 2026).</p>
+</aside>
+
+<!-- ═══ SIDEBAR: IMAGENS ═══ -->
+<aside class="sidebar" id="sb-imagens">
+  <h3>&Iacute;ndice de Imagens</h3>
+  <p><span class="figura-num">Capa</span> &mdash; O p&aacute;tio do Aeroporto de Confins ao amanhecer: uma aeronave parada no port&atilde;o de embarque, a pista molhada refletindo a primeira luz e a serra do Cip&oacute; ao fundo. <em>(Slide 1)</em></p>
+  <p><span class="figura-num">Figura 1</span> &mdash; S&iacute;mbolo: uma reta inclinada atravessando um quadriculado de gr&aacute;fico, com um pequeno avi&atilde;o no lugar do ponto m&oacute;vel &mdash; a assinatura visual da trilha em que nada muda e, por isso, tudo se prev&ecirc;.</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; O embarque: o trio de costas atravessando a ponte de embarque em Confins, com a aeronave &agrave; frente e a manh&atilde; se abrindo nas janelas da conex&atilde;o. <em>(Slide 2)</em></p>
+  <p><span class="figura-num">Figura 3</span> &mdash; O mapa da viagem em tra&ccedil;o de desenho: a linha reta de 360 km ligando Confins ao Santos Dumont, sobrevoando a serra da Mantiqueira, com o pequeno avi&atilde;o no meio do caminho.</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; A tela do mapa de bordo em tr&ecirc;s momentos diferentes do voo: o avioncinho avan&ccedil;a sobre o mapa, o rel&oacute;gio muda, e a velocidade marca os mesmos 720 km/h nas tr&ecirc;s. <em>(Slide 3)</em></p>
+  <p><span class="figura-num">Figura 5</span> &mdash; A r&eacute;gua do trajeto: a linha Confins&mdash;Santos Dumont graduada em quil&ocirc;metros, com rel&oacute;gios marcando 8h45, 9h00 e 9h05 pendurados sobre as posi&ccedil;&otilde;es correspondentes do avi&atilde;o. <em>(Slide 4)</em></p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Dois gr&aacute;ficos lado a lado na mesma folha quadriculada: &agrave; esquerda a reta inclinada de s&times;t subindo como uma rampa; &agrave; direita a reta horizontal de v&times;t com a &aacute;rea retangular sombreada embaixo. <em>(Slide 5)</em></p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Dois avi&otilde;es em rotas opostas sobre o mesmo corredor a&eacute;reo Confins&mdash;Santos Dumont, vistos de cima no mapa, com as duas equa&ccedil;&otilde;es hor&aacute;rias escritas como rastros atr&aacute;s de cada um. <em>(Slide 6)</em></p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Painel duplo da usina: &agrave; esquerda a correia transportadora carregada correndo em regime permanente sob o c&eacute;u do Quadril&aacute;tero; &agrave; direita o duto de polpa serpenteando a serra com a seta de vaz&atilde;o constante. <em>(Slide 7)</em></p>
+  <p><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio de costas no corredor de desembarque de Confins, ao anoitecer, com o painel de chegadas aceso indicando o voo do Rio pontualmente cumprido. <em>(Slide 16)</em></p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas em &oacute;rbita de uma &uacute;nica reta inclinada s&times;t &mdash; e o pequeno avi&atilde;o de Confins cruzando o fundo do quadro.</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O m&eacute;todo em cena: as oito etapas que transformam um enunciado dif&iacute;cil numa resposta com sentido, sob o rastro retil&iacute;neo do avi&atilde;o no c&eacute;u.</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Ravel e a F&iacute;sica: a baqueta suspensa sobre a tarola e, ao fundo, a reta inclinada de s&times;t subindo como um crescendo &mdash; o ritmo que n&atilde;o muda sustentando tudo o que muda. <em>(Slide 14)</em></p>
+  <p class="imagens-nota">Numera&ccedil;&atilde;o id&ecirc;ntica &agrave; do Texto Tem&aacute;tico (TT v2). Imagens Tem&aacute;ticas (IT) geradas por Google Imagen (Gemini) sob dire&ccedil;&atilde;o autoral. Protocolo IT v8.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: CRÉDITOS ═══ -->
+<aside class="sidebar" id="sb-creditos">
+  <h3>Cr&eacute;ditos</h3>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Instituto Federal de Minas Gerais</p>
+    <p><span class="cred-cargo">Reitor</span><br><span class="cred-nome">Rafael Bastos Teixeira</span></p>
+    <p><span class="cred-cargo">Pr&oacute;-Reitor de Ensino</span><br><span class="cred-nome">M&aacute;rio Luiz Viana Alvarenga</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Campus Ouro Preto</p>
+    <p><span class="cred-cargo">Diretor-Geral</span><br><span class="cred-nome">Reginato Fernandes dos Santos</span></p>
+    <p><span class="cred-cargo">Diretora de Ensino</span><br><span class="cred-nome">Talita Valadares</span></p>
+    <p><span class="cred-cargo">Coordenadora do Curso T&eacute;cnico em Minera&ccedil;&atilde;o Integrado ao Ensino M&eacute;dio</span><br><span class="cred-nome">Ariana Cristina Santos Almeida</span></p>
+    <p><span class="cred-cargo">Coordenador da &Aacute;rea de F&iacute;sica (CODAFIS)</span><br><span class="cred-nome">L&aacute;zaro Souza Lima</span></p>
+  </div>
+
+  <div class="cred-grupo">
+    <p class="cred-instituicao">Autores da Trilha</p>
+    <p><span class="cred-nome">Julio Azevedo</span></p>
+    <p class="cred-bio">Professor do Ensino T&eacute;cnico e Tecnol&oacute;gico do IFMG, atuando na &Aacute;rea de F&iacute;sica do Campus Ouro Preto desde 1985. Criador do N&uacute;cleo de Inova&ccedil;&atilde;o de Desenvolvimento de Experimentos Cient&iacute;ficos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de F&iacute;sica, ambos da UFOP.</p>
+    <p style="margin-top:12px;"><span class="cred-nome">Felipe Beato</span></p>
+    <p class="cred-bio">Professor, pesquisador e colaborador do N&uacute;cleo de Inova&ccedil;&atilde;o de Desenvolvimento de Experimentos Cient&iacute;ficos do IFMG Campus Ouro Preto. Licenciado em F&iacute;sica; Mestre em F&iacute;sica dos Materiais.</p>
+  </div>
+
+  <div class="cred-grupo">
+    <p><span class="cred-cargo">Edi&ccedil;&atilde;o</span><br>1.&ordf; edi&ccedil;&atilde;o &mdash; Ouro Preto, 2026</p>
+    <p><span class="cred-cargo">Ilustra&ccedil;&otilde;es</span><br><span class="cred-bio" style="margin-top:2px;">Imagens Tem&aacute;ticas (IT) geradas por Google Imagen (Gemini) sob dire&ccedil;&atilde;o autoral. Protocolo IT v8.</span></p>
+    <p><span class="cred-cargo">Design digital</span><br><span class="cred-bio" style="margin-top:2px;">Sistema Brutalismo Cient&iacute;fico &mdash; modo palco (AP v1 + cronometro, dark-first, oklch, self-contained).</span></p>
+  </div>
+
+  <p class="cred-footer">IFMG &mdash; Campus Ouro Preto &middot; Curso T&eacute;cnico em Minera&ccedil;&atilde;o Integrado ao Ensino M&eacute;dio &middot; NIDEC-CODAFIS &middot; 1&ordf; edi&ccedil;&atilde;o, 2026.</p>
+</aside>
+
+<!-- ═══ SIDEBAR: REFERÊNCIAS ═══ -->
+<aside class="sidebar" id="sb-refs">
+  <h3>Bibliografia</h3>
+  <div class="refs-grupo">
+    <div class="refs-label">Ep&iacute;grafe da Trilha</div>
+    <p class="refs-item">HUYGENS, Christiaan. <em>Horologium Oscillatorium</em> (O Rel&oacute;gio de P&ecirc;ndulo). Paris, 1673.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Ci&ecirc;ncia e Arte</div>
+    <p class="refs-item">RAVEL, Maurice. <em>Bol&eacute;ro</em> (obra orquestral). Paris: Ballets Ida Rubinstein, 1928.</p>
+    <p class="refs-item">BERGSON, Henri. <em>A Evolu&ccedil;&atilde;o Criadora</em>. Paris: F&eacute;lix Alcan, 1907.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia B&aacute;sica de F&iacute;sica</div>
+    <p class="refs-item">BONJORNO, J. R. <em>Identidade Saraiva: F&iacute;sica</em>. S&atilde;o Paulo: Saraiva, 2024.</p>
+    <p class="refs-item">HEWITT, Paul G. <em>F&iacute;sica conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  </div>
+  <div class="refs-grupo">
+    <div class="refs-label">Bibliografia Pedag&oacute;gica Cient&iacute;fica</div>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Aprendendo intelig&ecirc;ncia</em>. S&atilde;o Paulo: Aleph, 2008.</p>
+    <p class="refs-item">PIAZZI, Pierluigi. <em>Intelig&ecirc;ncia em concursos</em>. S&atilde;o Paulo: Aleph, 2013.</p>
+  </div>
+</aside>
+
+<!-- ═══ DECK ═══ -->
+<div class="deck" id="deck">
+
+    <!-- SLIDE 1 - CAPA -->
+  <section class="slide capa-slide ativo" data-slide="1" data-titulo="Capa">
+    <div class="capa-bg" style="background-image: url('../_imagens/_web/T10-IT-00-v1.jpg');"></div>
+    <div class="capa-conteudo">
+      <div class="capa-disciplina">F&iacute;sica Conceitual 1</div>
+      <div class="capa-curso">T&eacute;cnico em Minera&ccedil;&atilde;o Integrado ao Ensino M&eacute;dio</div>
+      <div class="capa-trilha">Trilha T10</div>
+      <div class="capa-titulo">O Movimento Uniforme<br>(MU)</div>
+      <div class="capa-epigrafe">&ldquo;O movimento, uma vez impresso num corpo, persiste por si mesmo &mdash; cessa apenas quando outra causa o interrompe.&rdquo;</div>
+      <div class="capa-epigrafe-autor">&mdash; Christiaan Huygens (1629&ndash;1695)</div>
+      <div class="capa-inst" style="margin-top:40px;">IFMG &mdash; Campus Ouro Preto &middot; 2026</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide" data-slide="2" data-titulo="Ato I: O Gancho">
+    <div class="slide-titulo">Ato I &mdash; O Gancho</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <p class="pergunta-investigativa" style="font-size:1.4em; font-weight:bold; line-height:1.6; margin-top:2em; color: #fff;">&ldquo;Se a velocidade n&atilde;o muda nunca, basta saber a hora para saber o lugar &mdash; ou isso &eacute; bom demais para ser verdade?&rdquo;</p>
+          <p class="resposta-investigativa" style="font-size:1.2em; font-weight:bold; line-height:1.5; margin-top:1em; color: var(--ouro);">&Eacute; verdade &mdash; desde que a velocidade realmente n&atilde;o mude. Essa &eacute; a trilha inteira: quando o mundo promete const&acirc;ncia, o rel&oacute;gio vira mapa.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-02-v1.jpg" alt="O trio de costas atravessando a ponte de embarque em Confins">
+          <div class="col-img-legenda"><span class="fig-num">Figura 2</span>O embarque: o trio de costas atravessando a ponte de embarque em Confins, com a aeronave &agrave; frente e a manh&atilde; se abrindo nas janelas da conex&atilde;o</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide" data-slide="3" data-titulo="Tópico 1: Características do MU">
+    <div class="slide-titulo">T&oacute;pico 1 &mdash; Caracter&iacute;sticas do MU: velocidade constante, acelera&ccedil;&atilde;o nula</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="eq"><strong>Equa&ccedil;&atilde;o 1 &mdash; Defini&ccedil;&atilde;o do MU:</strong> <span class="eq-inline">v = &Delta;s/&Delta;t = constante &ne; 0</span></div>
+          <div class="eq"><strong>Consequ&ecirc;ncia direta:</strong> <span class="eq-inline">a = 0</span></div>
+          <p><strong>Exemplo &mdash; o cruzeiro:</strong> 360 km em 0,5 h &rarr; 720 km/h; 12 km em 1 min &rarr; 720 km/h; 200 m em 1 s &rarr; 720 km/h. Tr&ecirc;s escalas de tempo, uma s&oacute; velocidade.</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: para a velocidade n&atilde;o mudar, nada pode sobrar &mdash; todas as influ&ecirc;ncias sobre o corpo precisam se cancelar. &Eacute; o empate das for&ccedil;as que produz a const&acirc;ncia.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-04-v1.jpg" alt="A tela do mapa de bordo em tres momentos do voo, com a velocidade sempre em 720 km/h">
+          <div class="col-img-legenda"><span class="fig-num">Figura 4</span>A tela do mapa de bordo em tr&ecirc;s momentos diferentes do voo: o avioncinho avan&ccedil;a sobre o mapa, o rel&oacute;gio muda, e a velocidade marca os mesmos 720 km/h nas tr&ecirc;s</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="8">Aplica&ccedil;&atilde;o 1 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 -->
+  <section class="slide" data-slide="4" data-titulo="Tópico 2: Equação horária">
+    <div class="slide-titulo">T&oacute;pico 2 &mdash; Equa&ccedil;&atilde;o hor&aacute;ria da posi&ccedil;&atilde;o no MU</div>
+    <div class="slide-body">
+      <div class="cols img-l">
+        <div class="col-img">
+          <img class="fig-inteira" src="../_imagens/_web/T10-IT-05-v1.jpg" alt="A regua do trajeto graduada em quilometros, com relogios sobre as posicoes do aviao">
+          <div class="col-img-legenda"><span class="fig-num">Figura 5</span>A r&eacute;gua do trajeto: a linha Confins&mdash;Santos Dumont graduada em quil&ocirc;metros, com rel&oacute;gios marcando 8h45, 9h00 e 9h05 pendurados sobre as posi&ccedil;&otilde;es correspondentes do avi&atilde;o</div>
+        </div>
+        <div class="col-text">
+          <div class="eq"><strong>As quatro conven&ccedil;&otilde;es:</strong> origem &middot; sentido &middot; s&#8320; &middot; t&#8320;=0</div>
+          <div class="eq"><strong>Equa&ccedil;&atilde;o 2:</strong> <span class="eq-inline">s = s&#8320; + v&middot;t</span></div>
+          <p><strong>Exemplo &mdash; o cruzeiro:</strong> s&#8320; = 60 km, v = 12 km/min. Aos 10 min: s = 60 + 12&times;10 = 180 km. Aos 25 min: s = 360 km &mdash; o Santos Dumont &agrave; vista.</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: s&#8320; n&atilde;o &eacute; o come&ccedil;o do mundo &mdash; &eacute; s&oacute; onde o objeto estava quando voc&ecirc; zerou o cron&ocirc;metro. A equa&ccedil;&atilde;o funciona at&eacute; para tr&aacute;s no tempo.</p>
+          <div class="simule-strip">
+            <img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADFklEQVR4nO1cW26sMAy1AamfYQd3KcwOuqS7prsDspQuYKTyORLIV3bsMFW/UEedR875oBCwNJgjP06SstBh5O64DRGMHHCEA45wwBEOOMIBRzjgiGdyBDsGIloGojz6GOVxY6IlHjjd5ecdBIxu4IhJFJ92vjGfFmaZkwjR8iZ8ot7uRxUKl7+wIwb/u4xE0z8ipiR6OA+sF0LpzEKLnlO//vrP62B0L0bsWJQHGhmmeRt4+nj73p/iOzXFiKS5I11YMvdC+c+F5cneqYPRDRiR9LMvWlHM22AUYOUGU+oLIa5pAZe/viOydRKjnlopubwJTR8D2YFPWm1a63Gnn3cMMPp5jJB9II9aRNKmuWIlyWMfEWQHXP7CjqDSVU6l8bQmcyWZ9cZMfbkRbam3oDI/+Dt1MPo5IyitKkqs+vVDe9DLnRFOEDCilRghrjWU8CDBDZr0QKpVFW6AEa3ECPIAEF/fLiN/VLkSjGiFEWLxwGjh3Kj5Q0sIp4qOIUa0wgipqUMrioJUefCFG6gsW8kasn9zo8AcQaE8V/MHGNGAkczpwh4UbOZbZ8P/ftqU+K5zu3r5JO90EDAK7AlDShSwQLHHiNJrWG9qzyFGvDiN6Grdw2S0SDVrxFh5zi/BiDYqyzlSgkkRXl4mv1HGoEc0plCJpokQolzFVmjqKGcKxIh25jX6cgi5MhKGVxTQI1pkhJQYcVU4eDERZQXmNRqb1xBXIWzEw8OeTnZ5AnpEKytvWdfSlXnx/H4mXx/B/cpEgx7qissHf6cORrdZHyEuVlchKvrQclXETMSIhuY1DF/IEM1oEaf2JPLg79TB6IZ7usQ1S93GQ73E2ktLLht7HwqXO15dj5CIAuVOVbZjDDGiJaOlbuok3ehpzYVFBu1IdaW27eG42887BBjd1BFZU8dsmz+T6JZPzRVlUrTOgsLlbe3pOg/aemia2AbJ77blk0nyCfs+W6wjpMSDWJgfS2l2jRu9RkOz4UR1LUSoELFVwxbVQLNswYjxn8me4jt1MCqAIxxwhAOOcMARDjjC8XuO+A/xV8MRNQHQ4wAAAABJRU5ErkJggg==" alt="QR da simulacao Vascak">
+            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa</span>
+          </div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="9">Aplica&ccedil;&atilde;o 2 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 -->
+  <section class="slide" data-slide="5" data-titulo="Tópico 3: Gráficos do MU">
+    <div class="slide-titulo">T&oacute;pico 3 &mdash; Gr&aacute;ficos do MU: posi&ccedil;&atilde;o &times; tempo e velocidade &times; tempo</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="eq"><strong>Gr&aacute;fico s&times;t:</strong> reta inclinada (inclina&ccedil;&atilde;o = v)</div>
+          <div class="eq"><strong>Equa&ccedil;&atilde;o 3:</strong> <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> (&aacute;rea sob v&times;t)</div>
+          <p><strong>Exemplo &mdash; o cruzeiro:</strong> 30 min a 720 km/h &rarr; &Delta;s = 720 &times; 0,5 = 360 km &mdash; a &aacute;rea que Sofia sombreou de cabe&ccedil;a.</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: o gr&aacute;fico s&times;t <strong>n&atilde;o &eacute; a trajet&oacute;ria</strong> &mdash; &eacute; a posi&ccedil;&atilde;o crescendo no papel enquanto o tempo passa.</p>
+          <div class="simule-strip">
+            <img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADFklEQVR4nO1cW26sMAy1AamfYQd3KcwOuqS7prsDspQuYKTyORLIV3bsMFW/UEedR875oBCwNJgjP06SstBh5O64DRGMHHCEA45wwBEOOMIBRzjgiGdyBDsGIloGojz6GOVxY6IlHjjd5ecdBIxu4IhJFJ92vjGfFmaZkwjR8iZ8ot7uRxUKl7+wIwb/u4xE0z8ipiR6OA+sF0LpzEKLnlO//vrP62B0L0bsWJQHGhmmeRt4+nj73p/iOzXFiKS5I11YMvdC+c+F5cneqYPRDRiR9LMvWlHM22AUYOUGU+oLIa5pAZe/viOydRKjnlopubwJTR8D2YFPWm1a63Gnn3cMMPp5jJB9II9aRNKmuWIlyWMfEWQHXP7CjqDSVU6l8bQmcyWZ9cZMfbkRbam3oDI/+Dt1MPo5IyitKkqs+vVDe9DLnRFOEDCilRghrjWU8CDBDZr0QKpVFW6AEa3ECPIAEF/fLiN/VLkSjGiFEWLxwGjh3Kj5Q0sIp4qOIUa0wgipqUMrioJUefCFG6gsW8kasn9zo8AcQaE8V/MHGNGAkczpwh4UbOZbZ8P/ftqU+K5zu3r5JO90EDAK7AlDShSwQLHHiNJrWG9qzyFGvDiN6Grdw2S0SDVrxFh5zi/BiDYqyzlSgkkRXl4mv1HGoEc0plCJpokQolzFVmjqKGcKxIh25jX6cgi5MhKGVxTQI1pkhJQYcVU4eDERZQXmNRqb1xBXIWzEw8OeTnZ5AnpEKytvWdfSlXnx/H4mXx/B/cpEgx7qissHf6cORrdZHyEuVlchKvrQclXETMSIhuY1DF/IEM1oEaf2JPLg79TB6IZ7usQ1S93GQ73E2ktLLht7HwqXO15dj5CIAuVOVbZjDDGiJaOlbuok3ehpzYVFBu1IdaW27eG42887BBjd1BFZU8dsmz+T6JZPzRVlUrTOgsLlbe3pOg/aemia2AbJ77blk0nyCfs+W6wjpMSDWJgfS2l2jRu9RkOz4UR1LUSoELFVwxbVQLNswYjxn8me4jt1MCqAIxxwhAOOcMARDjjC8XuO+A/xV8MRNQHQ4wAAAABJRU5ErkJggg==" alt="QR da simulacao Vascak">
+            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa</span>
+          </div>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-06-v1.jpg" alt="Dois graficos lado a lado: reta inclinada de s por t e reta horizontal de v por t com area sombreada">
+          <div class="col-img-legenda"><span class="fig-num">Figura 6</span>Dois gr&aacute;ficos lado a lado na mesma folha quadriculada: &agrave; esquerda a reta inclinada de s&times;t subindo como uma rampa; &agrave; direita a reta horizontal de v&times;t com a &aacute;rea retangular sombreada embaixo</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="10">Aplica&ccedil;&atilde;o 3 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 -->
+  <section class="slide" data-slide="6" data-titulo="Tópico 4: Encontro de móveis">
+    <div class="slide-titulo">T&oacute;pico 4 &mdash; Encontro de m&oacute;veis no MU</div>
+    <div class="slide-body">
+      <div class="cols img-l">
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-07-v1.jpg" alt="Dois avioes em rotas opostas com as equacoes horarias escritas como rastros">
+          <div class="col-img-legenda"><span class="fig-num">Figura 7</span>Dois avi&otilde;es em rotas opostas sobre o mesmo corredor a&eacute;reo Confins&mdash;Santos Dumont, com as duas equa&ccedil;&otilde;es hor&aacute;rias escritas como rastros atr&aacute;s de cada um</div>
+        </div>
+        <div class="col-text">
+          <div class="eq"><strong>Equa&ccedil;&atilde;o 4 &mdash; Encontro:</strong> <span class="eq-inline">s<sub>A</sub> = s<sub>B</sub></span></div>
+          <div class="eq"><strong>No gr&aacute;fico:</strong> retas que se cruzam &rarr; h&aacute; encontro; paralelas &rarr; nunca</div>
+          <p><strong>Exemplo &mdash; dois avi&otilde;es:</strong> partindo dos extremos dos 360 km a 720 km/h um contra o outro, o encontro &eacute; em t = 15 min, exatamente no meio (180 km).</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: retas paralelas em s&times;t nunca se cruzam &mdash; ou s&atilde;o o mesmo movimento, com a mesma dist&acirc;ncia de sempre entre si.</p>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="11">Aplica&ccedil;&atilde;o 4 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 -->
+  <section class="slide" data-slide="7" data-titulo="Tópico 5: MU em fluxo contínuo">
+    <div class="slide-titulo">T&oacute;pico 5 &mdash; MU em sistemas de fluxo cont&iacute;nuo da minera&ccedil;&atilde;o</div>
+    <div class="slide-body">
+      <div class="cols img-r">
+        <div class="col-text">
+          <div class="eq"><strong>Equa&ccedil;&atilde;o 5:</strong> <span class="eq-inline">t<sub>res</sub> = L/v</span></div>
+          <div class="eq"><strong>Regime permanente:</strong> v constante = vaz&atilde;o constante</div>
+          <p><strong>Exemplo &mdash; correia e duto:</strong> correia de 400 m a 3,5 m/s &rarr; t<sub>res</sub> &asymp; 114 s; duto de 12 km a 1,8 m/s &rarr; t<sub>res</sub> &asymp; 1 h 51 min.</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: quando um sistema opera em MU, o futuro dele est&aacute; escrito numa equa&ccedil;&atilde;o de primeiro grau &mdash; e quem sabe l&ecirc;-la controla o sistema.</p>
+        </div>
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-08-v1.jpg" alt="Painel duplo da usina: correia transportadora em regime permanente e duto de polpa">
+          <div class="col-img-legenda"><span class="fig-num">Figura 8</span>Painel duplo da usina: &agrave; esquerda a correia transportadora carregada correndo em regime permanente; &agrave; direita o duto de polpa serpenteando a serra com a seta de vaz&atilde;o constante</div>
+        </div>
+      </div>
+          <div class="salto-bar"><a class="salto" data-goto="12">Aplica&ccedil;&atilde;o 5 &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 -->
+  <section class="slide" data-slide="8" data-titulo="Exercício T1 — Verificando o MU">
+    <div class="slide-titulo">Exerc&iacute;cio T1 &mdash; Verificando o MU: tr&ecirc;s medi&ccedil;&otilde;es, uma s&oacute; velocidade (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          No cruzeiro do voo Confins&rarr;Santos Dumont, a tela de bordo indicou <strong>720 km/h</strong>. Um estudante quer verificar, sem confiar cegamente na tela, se o movimento &eacute; realmente uniforme. Ele anota tr&ecirc;s medi&ccedil;&otilde;es independentes: 360 km em 0,5 h; 12 km em 1 min; 200 m em 1 s. (a) Calcule v em cada trecho. (b) O movimento &eacute; uniforme? Justifique.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> Verificar se os tr&ecirc;s trechos medidos correspondem &agrave; mesma velocidade constante, confirmando (ou n&atilde;o) o MU.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> Trecho 1: &Delta;s=360km, &Delta;t=0,5h. Trecho 2: &Delta;s=12km, &Delta;t=1min. Trecho 3: &Delta;s=200m, &Delta;t=1s.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Medi&ccedil;&otilde;es feitas durante o mesmo cruzeiro; trajet&oacute;ria retil&iacute;nea (aproxima&ccedil;&atilde;o).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [360km/0,5h] &middot; [12km/1min] &middot; [200m/1s] &mdash; tr&ecirc;s janelas de tempo diferentes no mesmo voo.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 1: <span class="eq-inline">v = &Delta;s/&Delta;t</span> (defini&ccedil;&atilde;o do MU).</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> v&#8321;=360/0,5=720km/h. v&#8322;=12&times;60=720km/h. v&#8323;=200m/s&times;3,6=<strong>720km/h</strong> nos tr&ecirc;s.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> As tr&ecirc;s medi&ccedil;&otilde;es, em escalas de tempo bem diferentes, resultam exatamente no mesmo valor &mdash; n&atilde;o &eacute; coincid&ecirc;ncia, &eacute; a pr&oacute;pria defini&ccedil;&atilde;o do MU sendo satisfeita.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> Os tr&ecirc;s trechos d&atilde;o v=720km/h. Como a velocidade n&atilde;o muda em nenhuma escala de tempo testada, o movimento &eacute; confirmado como MU.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="4">&larr; T&oacute;pico 2</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 -->
+  <section class="slide" data-slide="9" data-titulo="Exercício T2 — Onde estará o avião">
+    <div class="slide-titulo">Exerc&iacute;cio T2 &mdash; Onde estar&aacute; o avi&atilde;o aos 20 minutos? (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Com <strong>s&#8320; = 60 km</strong> e <strong>v = 12 km/min</strong> (mesmos dados do cruzeiro), calcule a posi&ccedil;&atilde;o do avi&atilde;o aos <strong>20 min</strong> de voo e diga se, nesse instante, ele j&aacute; alcan&ccedil;ou o Rio de Janeiro (360 km).
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A posi&ccedil;&atilde;o do avi&atilde;o aos 20 min e a compara&ccedil;&atilde;o com a dist&acirc;ncia total (360 km).</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> s&#8320; = 60 km &middot; v = 12 km/min &middot; t = 20 min.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU durante todo o cruzeiro; mesmo referencial (origem em Confins, sentido para o Rio).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [Confins s=0] &mdash;60km&mdash; [s&#8320;] &mdash;12km/min&mdash; [s(20min)=?] &middot;&middot;&middot; [Rio, 360km]</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 2: <span class="eq-inline">s = s&#8320; + v&middot;t</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> s = 60 + 12&times;20 = 60 + 240 = <strong>300 km</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> 300 km &eacute; menor que 360 km &mdash; o avi&atilde;o ainda est&aacute; a caminho, faltam 60 km.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> Aos 20 min, s = 300 km. O avi&atilde;o ainda n&atilde;o chegou ao Rio &mdash; faltam 60 km, cerca de 5 min a mais de voo.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="5">&larr; T&oacute;pico 3</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 -->
+  <section class="slide" data-slide="10" data-titulo="Exercício T3 — A área conta a história">
+    <div class="slide-titulo">Exerc&iacute;cio T3 &mdash; A &aacute;rea conta a hist&oacute;ria (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          No gr&aacute;fico v&times;t do cruzeiro, a velocidade &eacute; constante em 720 km/h. Calcule a &aacute;rea sob a reta entre <strong>t = 10 min</strong> e <strong>t = 25 min</strong> (&Delta;t = 15 min) e confira que ela corresponde ao deslocamento previsto pela equa&ccedil;&atilde;o hor&aacute;ria.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A &aacute;rea do ret&acirc;ngulo v&times;t entre 10 e 25 min, e conferir que ela bate com &Delta;s pela equa&ccedil;&atilde;o hor&aacute;ria.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> v = 720 km/h = 12 km/min (constante) &middot; &Delta;t = 15 min (de 10 a 25 min).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU no intervalo; mesmo referencial da Equa&ccedil;&atilde;o 2 (s&#8320; = 60 km).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> gr&aacute;fico v&times;t: reta horizontal em 12 km/min; &aacute;rea hachurada entre t=10 e t=25 min.</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 3: <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> &middot; confer&ecirc;ncia: s(25)&minus;s(10).</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> &Delta;s = 12&times;15 = <strong>180 km</strong>. Confer&ecirc;ncia: s(25)=360, s(10)=180, diferen&ccedil;a=<strong>180 km</strong>. &#10003;</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> As duas contas &mdash; &aacute;rea do ret&acirc;ngulo e diferen&ccedil;a das posi&ccedil;&otilde;es &mdash; d&atilde;o exatamente o mesmo resultado.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> A &aacute;rea (e o deslocamento) entre 10 e 25 min &eacute; 180 km, confirmada pelas duas equa&ccedil;&otilde;es &mdash; &aacute;rea sob v&times;t &eacute; deslocamento porque v &eacute; constante.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="6">&larr; T&oacute;pico 4</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 -->
+  <section class="slide" data-slide="11" data-titulo="Exercício T4 — Encontro na galeria">
+    <div class="slide-titulo">Exerc&iacute;cio T4 &mdash; O encontro na galeria da Mina da Passagem (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Dois troles partem das extremidades opostas da galeria de <strong>315 m</strong> da Mina da Passagem, no mesmo instante, um a <strong>2,0 m/s</strong> e outro a <strong>1,5 m/s</strong>, em sentidos opostos. Determine o instante e o local do encontro.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> O instante e o local (posi&ccedil;&atilde;o) do encontro dos dois troles.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 315 m &middot; v<sub>A</sub> = 2,0 m/s (extremidade A) &middot; v<sub>B</sub> = 1,5 m/s (extremidade B, sentido oposto).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU para ambos; mesmo referencial, origem em A, orienta&ccedil;&atilde;o de A para B; partida simult&acirc;nea.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [A, s=0] &mdash;2,0m/s&rarr; &nbsp;&middot;&middot;&middot;&nbsp; &larr;1,5m/s&mdash; [B, s=315m]</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> s<sub>A</sub>=2t &middot; s<sub>B</sub>=315&minus;1,5t &middot; condi&ccedil;&atilde;o de encontro (Equa&ccedil;&atilde;o 4): s<sub>A</sub>=s<sub>B</sub>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> 2t=315&minus;1,5t &rarr; 3,5t=315 &rarr; <strong>t=90s</strong>. s=2&times;90=<strong>180m</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> O encontro ocorre mais perto da extremidade do trole mais lento (B) &mdash; quem anda mais r&aacute;pido percorre mais dist&acirc;ncia no mesmo tempo.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> Os troles se encontram em t = 90 s, a 180 m da extremidade de A (135 m da extremidade de B).</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="7">&larr; T&oacute;pico 5</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 -->
+  <section class="slide" data-slide="12" data-titulo="Exercício T5 — Tempo de residência">
+    <div class="slide-titulo">Exerc&iacute;cio T5 &mdash; O tempo de resid&ecirc;ncia na correia (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Uma correia de <strong>400 m</strong> opera a <strong>3,5 m/s</strong> em regime permanente. Calcule o tempo de resid&ecirc;ncia do min&eacute;rio nessa correia.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> O tempo que o min&eacute;rio leva para atravessar a correia (tempo de resid&ecirc;ncia).</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 400 m &middot; v = 3,5 m/s (constante, regime permanente).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU ao longo de toda a correia; velocidade uniforme em toda a extens&atilde;o.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [entrada] &mdash;400m, v=3,5m/s&rarr; [pilha]</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 5: <span class="eq-inline">t<sub>res</sub> = L/v</span>.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> t<sub>res</sub> = 400 &divide; 3,5 &asymp; <strong>114 s</strong> (&asymp; 1 min 54 s).</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> Menos de 2 minutos &mdash; coerente com correias industriais de m&eacute;dio porte; esse n&uacute;mero &eacute; o que a usina usa para prever a chegada do material.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> t<sub>res</sub> &asymp; 114 s (cerca de 1 min 54 s). &Eacute; esse n&uacute;mero que diz &agrave; sala de controle quando o min&eacute;rio que entrou agora vai aparecer na sa&iacute;da.</div>
+      </div>
+          <div class="salto-bar"><a class="salto volta" data-goto="13">&larr; &#9733; Integradora</a></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 13 -->
+  <section class="slide" data-slide="13" data-titulo="★ Exercício T6 — Integradora (NR-22)">
+    <div class="slide-titulo">&#9733; Exerc&iacute;cio T6 &mdash; Integradora: dist&acirc;ncia m&iacute;nima e NR-22 na galeria (C5)</div>
+    <div class="slide-body">
+      <div class="exercicio">
+        <div class="exercicio-label">Enunciado</div>
+        <div class="exercicio-enunciado">
+          Numa galeria retil&iacute;nea de <strong>315 m</strong>, o plano de tr&aacute;fego permite dois troles simult&acirc;neos em sentidos opostos, desde que a parada programada ocorra a pelo menos <strong>30 m</strong> de dist&acirc;ncia entre eles. Os troles partem simultaneamente das extremidades a <strong>2,0 m/s</strong> e <strong>1,5 m/s</strong>, e o protocolo manda ambos pararem <strong>60 s</strong> ap&oacute;s a partida. Verifique se o protocolo cumpre a dist&acirc;ncia m&iacute;nima e determine o tempo m&aacute;ximo de viagem que ainda a cumpriria.
+        </div>
+        <div class="c5-ap">
+          <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A dist&acirc;ncia entre os troles na parada programada, a compara&ccedil;&atilde;o com o m&iacute;nimo de 30 m e o tempo-limite de viagem.</div>
+          <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 315 m &middot; v<sub>A</sub> = 2,0 m/s &middot; v<sub>B</sub> = 1,5 m/s (sentidos opostos) &middot; t<sub>p</sub> = 60 s &middot; d<sub>m&iacute;n</sub> = 30 m.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU para os dois troles do in&iacute;cio &agrave; parada; partida simult&acirc;nea; mesmo referencial com origem na extremidade de A.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [A] &mdash;2,0m/s&rarr; &nbsp; &larr;1,5m/s&mdash; [B] &middot; 0 &mdash;&mdash;&mdash;&mdash;&mdash; 315 m</div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> s<sub>A</sub>=2,0t &middot; s<sub>B</sub>=315&minus;1,5t &middot; dist&acirc;ncia entre eles: d(t)=s<sub>B</sub>&minus;s<sub>A</sub>=315&minus;3,5t.</div>
+          <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> Em t=60s: d=315&minus;3,5&times;60=<strong>105 m</strong> &#10003; (&ge;30m). Limite: 315&minus;3,5t=30 &rarr; <strong>t=81s</strong>.</div>
+          <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> Com a parada aos 60 s, os troles ficam a 105 m um do outro &mdash; folga confort&aacute;vel. O limite de 81 s mostra a margem real: 21 s.</div>
+        </div>
+        <div class="c5-resposta"><strong>Responda o que foi pedido:</strong> O protocolo cumpre o requisito: na parada programada os troles est&atilde;o a 105 m, bem acima dos 30 m. O tempo m&aacute;ximo de viagem que ainda cumpre a dist&acirc;ncia m&iacute;nima &eacute; 81 s. A NR-22 existe porque, no subsolo, a dist&acirc;ncia entre dois ve&iacute;culos nunca deve depender de ningu&eacute;m acertar o cron&ocirc;metro no limite.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 14 -->
+  <section class="slide" data-slide="14" data-titulo="Ciência e Arte: Ravel">
+    <div class="slide-titulo">Ci&ecirc;ncia e Arte &mdash; Bol&eacute;ro (Maurice Ravel, 1928)</div>
+    <div class="slide-body">
+      <div class="cols img-l">
+        <div class="col-img">
+          <img src="../_imagens/_web/T10-IT-12-v1.jpg" alt="A baqueta suspensa sobre a tarola e a reta inclinada de s por t subindo como um crescendo">
+          <div class="col-img-legenda"><span class="fig-num">Figura 12</span>Ravel e a F&iacute;sica: a baqueta suspensa sobre a tarola e, ao fundo, a reta inclinada de s&times;t subindo como um crescendo</div>
+        </div>
+        <div class="col-text">
+          <div class="ca-obra"><strong>M&uacute;sica:</strong> <em>Bol&eacute;ro</em><br>Maurice Ravel &middot; obra orquestral (1928)</div>
+          <div class="ca-versos">
+            Em 1928, Ravel comp&ocirc;s quinze minutos de m&uacute;sica sobre <strong>um &uacute;nico ritmo que n&atilde;o muda nunca</strong> &mdash; mais de quatro mil batidas id&ecirc;nticas, num andamento que ele proibiu de acelerar.
+          </div>
+          <div class="ca-versos">
+            O <em>Bol&eacute;ro</em> &eacute; o Movimento Uniforme feito som: previs&iacute;vel a ponto de o ouvinte saber onde cada batida vai cair &mdash; como Sofia sabendo a posi&ccedil;&atilde;o do avi&atilde;o sem olhar a tela.
+          </div>
+          <div class="ca-versos">
+            Sobre uma base que n&atilde;o muda, tudo o mais pode acontecer &mdash; &eacute; por isso que a correia corre a velocidade fixa: para a usina variar, com seguran&ccedil;a, tudo o que corre sobre ela.
+          </div>
+          <div class="ca-versos" style="font-family: var(--serif); font-style: italic; margin-top: 10px; font-size: 1rem;">
+            &ldquo;A dura&ccedil;&atilde;o &eacute; o progresso cont&iacute;nuo do passado que incha ao avan&ccedil;ar.&rdquo; &mdash; Henri Bergson (1859&ndash;1941)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 15 -->
+  <section class="slide" data-slide="15" data-titulo="Reflexão">
+    <div class="slide-titulo">Reflex&atilde;o</div>
+    <div class="slide-body">
+      <p class="ca-analise">
+        <strong>An&aacute;lise:</strong> toda a for&ccedil;a do Movimento Uniforme est&aacute; numa &uacute;nica condi&ccedil;&atilde;o &mdash; <strong>enquanto a velocidade n&atilde;o mudar</strong>, o rel&oacute;gio basta para saber o lugar. E toda a fragilidade dele mora exatamente a&iacute;: nenhum objeto real mant&eacute;m a velocidade constante para sempre.
+      </p>
+      <p class="ca-analise" style="margin-top:14px; color: var(--ouro);">
+        Na pr&oacute;xima trilha, o movimento que muda de velocidade em ritmo constante ganha nome, equa&ccedil;&otilde;es e gr&aacute;ficos pr&oacute;prios: o <strong>Movimento Uniformemente Variado</strong>. O que hoje foi r&eacute;gua, amanh&atilde; ser&aacute; rampa.
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 16 - DESPEDIDA -->
+  <section class="slide despedida" data-slide="16" data-titulo="Despedida">
+    <div class="desp-bg" style="background-image: url('../_imagens/_web/T10-IT-09-v1.jpg');"></div>
+    <div class="desp-body">
+      <div class="desp-sofia" style="color: var(--ouro);">&ldquo;Se essa velocidade n&atilde;o muda nunca, eu sei onde a gente est&aacute;.&rdquo; &mdash; Sofia</div>
+      <div class="desp-acao">N&atilde;o esque&ccedil;a de fazer a</div>
+      <div class="desp-tarefa">Tarefa M&iacute;nima &middot; HOJE</div>
+      <div class="ca-provinha" style="margin-top:24px;">
+        <div class="label" style="color: var(--verde);">&#9654; Pr&oacute;ximo passo</div>
+        <p><strong>Sucesso na Provinha!</strong></p>
+      </div>
+      <div class="desp-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+      <div class="desp-inst">IFMG &mdash; Campus Ouro Preto &middot; NIDEC-CODAFIS &middot; FC1 &middot; T10 &middot; 1&ordf; edi&ccedil;&atilde;o 2026</div>
+    </div>
+  </section>
+
+<!-- ─── SLIDE 17 · CONFIGURAÇÃO DE TEMPOS (oculto por padrão) ─── -->
+  <section class="slide" data-slide="17" data-titulo="⚙ Tempos e visibilidade" data-oculto-padrao="true" style="overflow-y:auto;">
+    <div class="slide-titulo">&#9881; Tempos e visibilidade dos slides</div>
+    <div class="slide-body" style="justify-content:flex-start; overflow-y:auto;">
+      <div class="config-wrap">
+        <table class="tbl" id="config-tbl">
+          <thead><tr><th>#</th><th>Slide</th><th>Tempo (m:ss)</th></tr></thead>
+          <tbody id="config-tbody"></tbody>
+        </table>
+        <div class="config-acoes">
+          <button class="config-btn" id="cfg-aplicar" type="button">&#10003; Aplicar</button>
+          <button class="config-btn config-reset" id="cfg-reset" type="button">&#8634; Restaurar padr&atilde;o</button>
+        </div>
+        <p class="config-nota">Altera&ccedil;&otilde;es ficam salvas no navegador (localStorage). Este slide &eacute; oculto por padr&atilde;o &mdash; acesse pelo bot&atilde;o &#9881; G ou pelo Overview (O).</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+<!-- ═══ OVERVIEW GRID ═══ -->
+<div class="overview" id="overview">
+  <div class="overview-titulo">Overview &mdash; 17 slides &middot; clique para navegar</div>
+  <div class="overview-grid" id="overview-grid"></div>
+</div>
+<button class="overview-fechar" id="overview-fechar" style="display:none;">&#10005; Fechar (O)</button>
+
+<!-- ═══ RODAPÉ ═══ -->
+<div class="rodape">
+  <div class="rodape-info">
+    <em>FC1 &middot; T10</em>
+    <span>O Movimento Uniforme (MU)</span>
+    <span class="tag">45 min</span>
+  </div>
+  <div class="rodape-nav">
+    <button id="btn-anterior" title="Slide anterior (←)">&#9664;</button>
+    <div class="contador"><span id="num-atual">1</span> / <span id="num-total">18</span></div>
+    <button id="btn-proximo" title="Próximo slide (→)">&#9654;</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = 'T10-AP-v1';
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var atual = 1;
+  var ocultos = {};
+  function salvarOcultos() { try { localStorage.setItem(STORAGE_KEY + '-ocultos', JSON.stringify(ocultos)); } catch(e) {} }
+  try {
+    var rawOc = localStorage.getItem(STORAGE_KEY + '-ocultos');
+    if (rawOc) { ocultos = JSON.parse(rawOc); }
+    else {
+      slides.forEach(function(sl, i) { if (sl.dataset.ocultoPadrao === 'true') ocultos[i + 1] = true; });
+      if (Object.keys(ocultos).length) salvarOcultos();
+    }
+  } catch(e) {}
+  function proximoVisivel(de, dir) {
+    var n = de + dir;
+    while (n >= 1 && n <= total) { if (!ocultos[n]) return n; n += dir; }
+    return de;
+  }
+
+  document.getElementById('num-total').textContent = total;
+
+  function irPara(n, opts) {
+    if (n < 1 || n > total) return;
+    slides.forEach(function(s) { s.classList.remove('ativo'); });
+    slides[n - 1].classList.add('ativo');
+    atual = n;
+    document.getElementById('num-atual').textContent = atual;
+    document.getElementById('barraProgresso').style.width = ((atual / total) * 100) + '%';
+    document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+      a.classList.toggle('ativo', parseInt(a.dataset.goto, 10) === atual);
+    });
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+    var rodape = document.querySelector('.rodape');
+    if (rodape) {
+      rodape.style.background = (n === 1) ? 'transparent' : '';
+      rodape.style.borderTop = (n === 1) ? 'none' : '';
+    }
+    try { localStorage.setItem(STORAGE_KEY + '-slide', atual); } catch(e) {}
+    fecharOverview();
+    slides[n - 1].scrollTop = 0;
+  }
+
+  document.getElementById('btn-anterior').addEventListener('click', function() { irPara(proximoVisivel(atual, -1)); });
+  document.getElementById('btn-proximo').addEventListener('click',  function() { irPara(proximoVisivel(atual, 1)); });
+
+  document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+  document.getElementById('btn-tema').addEventListener('click', toggleTema);
+  document.getElementById('btn-overview').addEventListener('click', toggleOverview);
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen || function() {}).call(document.documentElement);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  function toggleTema() {
+    var atual = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', atual);
+    try { localStorage.setItem(STORAGE_KEY + '-theme', atual); } catch(e) {}
+  }
+
+  var toggles = document.querySelectorAll('.sb-toggle');
+  var sidebars = document.querySelectorAll('.sidebar');
+  toggles.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var alvoId = btn.dataset.sb;
+      var alvo = document.getElementById(alvoId);
+      var estaAberta = alvo.classList.contains('open');
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      if (!estaAberta) alvo.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    var dentroSb = e.target.closest('.sidebar');
+    var noToggle = e.target.closest('.sb-toggle');
+    if (!dentroSb && !noToggle) {
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+    }
+  });
+
+  document.querySelectorAll('#toc-lista .toc-item').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var n = parseInt(a.dataset.goto, 10);
+      if (n) {
+        irPara(n);
+        sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      }
+    });
+  });
+
+  var overview = document.getElementById('overview');
+  var overviewFechar = document.getElementById('overview-fechar');
+  var overviewGrid = document.getElementById('overview-grid');
+
+  function construirOverview() {
+    overviewGrid.innerHTML = '';
+    slides.forEach(function(sl, i) {
+      var n = i + 1;
+      var titulo = sl.dataset.titulo || ('Slide ' + n);
+      var cell = document.createElement('div');
+      cell.className = 'overview-cell' + (ocultos[n] ? ' oculto' : '');
+      cell.dataset.n = n;
+      cell.innerHTML = '<div class="ov-num">SLIDE ' + (n < 10 ? '0' + n : n) + '</div>' +
+                       '<div class="ov-tit">' + titulo + '</div>';
+      var eyeBtn = document.createElement('button');
+      eyeBtn.className = 'ov-eye';
+      eyeBtn.title = 'Ocultar/mostrar slide';
+      eyeBtn.textContent = ocultos[n] ? '○' : '●';
+      (function(slideN, btn, c) {
+        btn.addEventListener('click', function(ev) {
+          ev.stopPropagation();
+          if (ocultos[slideN]) { delete ocultos[slideN]; }
+          else { ocultos[slideN] = true; }
+          c.classList.toggle('oculto', !!ocultos[slideN]);
+          btn.textContent = ocultos[slideN] ? '○' : '●';
+          salvarOcultos();
+        });
+      })(n, eyeBtn, cell);
+      cell.appendChild(eyeBtn);
+      cell.addEventListener('click', function() { irPara(n); });
+      overviewGrid.appendChild(cell);
+    });
+  }
+  construirOverview();
+
+  function toggleOverview() {
+    if (overview.classList.contains('aberto')) fecharOverview();
+    else abrirOverview();
+  }
+  function abrirOverview() {
+    overview.classList.add('aberto');
+    overviewFechar.style.display = 'inline-block';
+    document.querySelectorAll('.overview-cell').forEach(function(c) {
+      c.classList.toggle('ativo', parseInt(c.dataset.n, 10) === atual);
+    });
+  }
+  function fecharOverview() {
+    overview.classList.remove('aberto');
+    overviewFechar.style.display = 'none';
+  }
+  overviewFechar.addEventListener('click', fecharOverview);
+
+  document.addEventListener('keydown', function(e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown') { e.preventDefault(); irPara(proximoVisivel(atual, 1)); return; }
+    if (k === 'ArrowLeft'  || k === 'PageUp')                { e.preventDefault(); irPara(proximoVisivel(atual, -1)); return; }
+    if (k === 'ArrowDown' || k === 'ArrowUp') {
+      /* Rola o slide ativo. Sem barra visivel, e o caminho deterministico
+         para alcancar o rodape de um slide que transbordou. */
+      var alvo = slides[atual - 1];
+      if (alvo && alvo.scrollHeight > alvo.clientHeight) {
+        e.preventDefault();
+        alvo.scrollTop += (k === 'ArrowDown' ? 80 : -80);
+        return;
+      }
+    }
+    if (k === 'Home')  { e.preventDefault(); irPara(1); return; }
+    if (k === 'End')   { e.preventDefault(); irPara(total); return; }
+    if (k === 'f' || k === 'F') { e.preventDefault(); toggleFullscreen(); return; }
+    if (k === 't' || k === 'T') { e.preventDefault(); toggleTema(); return; }
+    if (k === 'o' || k === 'O') { e.preventDefault(); toggleOverview(); return; }
+    if (k === 'Escape') {
+      if (overview.classList.contains('aberto')) { fecharOverview(); return; }
+      sidebars.forEach(function(sb) { sb.classList.remove('open'); });
+      return;
+    }
+    if (k >= '1' && k <= '9') {
+      var n = parseInt(k, 10);
+      if (n <= total) { e.preventDefault(); irPara(n); }
+    }
+  });
+
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 60) { irPara(atual + (diff < 0 ? 1 : -1)); }
+  });
+
+  var ICONS_C5 = {
+    1: '<svg class="c5-icon" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20" stroke-linecap="round"/><text x="10" y="13.5" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">?</text></svg>',
+    2: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>',
+    3: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M8 10 A 4 4 0 0 1 16 10 C 16 12 14 14 14 15 L 10 15 C 10 14 8 12 8 10 Z"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/><line x1="11" y1="20.5" x2="13" y2="20.5" stroke-linecap="round"/></svg>',
+    4: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="20" x2="21" y2="20"/><line x1="3" y1="20" x2="21" y2="6" stroke-linecap="round"/><rect x="10" y="9" width="5" height="5" transform="rotate(-38 12.5 11.5)"/></svg>',
+    5: '<svg class="c5-icon" viewBox="0 0 24 24"><path d="M14 4 C 12 4, 11 5, 11 7 L 11 17 C 11 19, 10 20, 8 20" stroke-width="2" stroke-linecap="round"/></svg>',
+    6: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18"/><rect x="7" y="5.5" width="10" height="3.5"/><circle cx="9" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="1" fill="currentColor" stroke="none"/></svg>',
+    7: '<svg class="c5-icon" viewBox="0 0 24 24"><line x1="3" y1="21" x2="21" y2="21"/><rect x="5" y="14" width="3" height="7" fill="currentColor" stroke="none"/><rect x="10" y="10" width="3" height="11" fill="currentColor" stroke="none"/><rect x="15" y="5" width="3" height="16" fill="currentColor" stroke="none"/><path d="M4 14 L10 10 L15 6 L20 3" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 3 L20 3 L20 6" stroke-linecap="round"/></svg>',
+    8: '<svg class="c5-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7"/><path d="M4 7.5 L6 9.5 L9 5.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="6" x2="21" y2="6"/><line x1="12" y1="9.5" x2="19" y2="9.5"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="18" x2="18" y2="18"/></svg>'
+  };
+
+  document.querySelectorAll('.c5-ap-etapa').forEach(function(el) {
+    var n = parseInt(el.textContent.trim(), 10);
+    if (n >= 1 && n <= 8 && ICONS_C5[n]) {
+      el.insertAdjacentHTML('afterbegin', ICONS_C5[n]);
+    }
+  });
+
+  document.querySelectorAll('.c5-resposta').forEach(function(el) {
+    var badge = document.createElement('span');
+    badge.className = 'c5-resp-etapa';
+    badge.innerHTML = ICONS_C5[8] + '<span>8</span>';
+    el.insertBefore(badge, el.firstChild);
+  });
+
+  document.querySelectorAll('.ca-provinha').forEach(function(prov) {
+    var parent = prov.parentNode;
+    var inDesp = !!prov.closest('.despedida');
+    /* Na despedida a Provinha e o 1o passo da revelacao do proprio slide:
+       nao leva wrapper nem botao "Proximo Passo" (decisao do autor). */
+    if (inDesp) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'c5-solucao';
+    wrap.setAttribute('hidden', '');
+    parent.insertBefore(wrap, prov);
+    wrap.appendChild(prov);
+    var btn = document.createElement('button');
+    btn.className = 'btn-solucao';
+    btn.type = 'button';
+    var labelA = inDesp ? '▶ Próximo Passo' : '▼';
+    var labelB = inDesp ? '▲ Próximo Passo' : '▲';
+    btn.textContent = labelA;
+    if (inDesp) btn.style.background = 'var(--verde)';
+    btn.addEventListener('click', function() {
+      var hidden = wrap.hasAttribute('hidden');
+      if (hidden) {
+        wrap.removeAttribute('hidden');
+        btn.textContent = labelB;
+      } else {
+        wrap.setAttribute('hidden', '');
+        btn.textContent = labelA;
+      }
+    });
+    parent.insertBefore(btn, wrap);
+  });
+
+  document.querySelectorAll('.c5-ap').forEach(function(c5) {
+    var resp = c5.nextElementSibling;
+    var parent = c5.parentNode;
+    var etapas = c5.querySelectorAll('.c5-ap-etapa');
+    var conteudos = c5.querySelectorAll('.c5-ap-conteudo');
+    var items = [];
+    for (var i = 0; i < etapas.length; i++) {
+      etapas[i].setAttribute('hidden', '');
+      conteudos[i].setAttribute('hidden', '');
+      items.push([etapas[i], conteudos[i]]);
+    }
+    if (resp && resp.classList && resp.classList.contains('c5-resposta')) {
+      resp.setAttribute('hidden', '');
+      items.push([resp]);
+    }
+    var idx = 0;
+    var btn = document.createElement('button');
+    btn.className = 'btn-reveal-icon';
+    btn.type = 'button';
+    btn.textContent = '▼';
+    btn.addEventListener('click', function() {
+      if (idx < items.length) {
+        items[idx].forEach(function(el) { el.removeAttribute('hidden'); });
+        idx++;
+        if (idx >= items.length) { btn.textContent = '▲'; btn.classList.add('aberto'); }
+      } else {
+        items.forEach(function(pair) { pair.forEach(function(el) { el.setAttribute('hidden', ''); }); });
+        idx = 0;
+        btn.textContent = '▼';
+        btn.classList.remove('aberto');
+      }
+    });
+    parent.insertBefore(btn, c5);
+  });
+
+  try {
+    var savedTheme = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    var savedSlide = parseInt(localStorage.getItem(STORAGE_KEY + '-slide'), 10);
+    if (savedSlide && savedSlide >= 1 && savedSlide <= total) irPara(savedSlide);
+    else irPara(1);
+  } catch(e) { irPara(1); }
+
+  window.__AP = {
+    irPara: irPara,
+    ocultos: ocultos,
+    salvarOcultos: salvarOcultos,
+    reconstruirOverview: construirOverview,
+    getTotal: function() { return total; }
+  };
+})();
+</script>
+<!-- ═══ CRONÔMETRO POR SLIDE — add-on v1 (Protocolo AP-v2) ═══ -->
+<style>
+/* ═══ CRONÔMETRO POR SLIDE ═══ */
+.crono-chip {
+  display: none;
+  align-items: center; gap: 12px;
+  font-family: var(--mono);
+  padding: 2px 12px;
+  border-left: 1px solid var(--cinza-borda);
+  border-right: 1px solid var(--cinza-borda);
+  cursor: pointer;
+  user-select: none;
+}
+.crono-chip.on { display: flex; }
+.crono-chip:hover { background: var(--superficie); }
+
+.crono-restante {
+  font-size: 1.15rem; font-weight: 700; line-height: 1;
+  color: var(--verde);
+  font-variant-numeric: tabular-nums;
+  min-width: 74px; text-align: right;
+}
+.crono-prev {
+  font-size: 0.7rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.crono-total {
+  font-size: 0.7rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 1px;
+  padding-left: 12px; border-left: 1px solid var(--cinza-borda);
+}
+
+.crono-chip.alerta .crono-restante { color: var(--ouro); }
+.crono-chip.estouro .crono-restante { color: var(--erro); animation: crono-pulso 1s steps(2, end) infinite; }
+.crono-chip.pausado .crono-restante { color: var(--cinza); }
+.crono-chip.pausado .crono-prev::after { content: ' \00B7 pausado'; color: var(--ouro); }
+.crono-chip.sem-tempo .crono-restante { color: var(--cinza); }
+
+@keyframes crono-pulso { 0% { opacity: 1; } 50% { opacity: 0.35; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .crono-chip.estouro .crono-restante { animation: none; }
+}
+
+.crono-barra {
+  position: fixed; bottom: 45px; left: 0;
+  width: 100%; height: 2px; z-index: 201;
+  background: transparent; display: none;
+}
+.crono-barra.on { display: block; }
+.crono-barra .fill {
+  height: 100%; width: 0%;
+  background: var(--verde);
+  transition: width 0.3s linear, background 0.3s;
+}
+.crono-barra.alerta .fill { background: var(--ouro); }
+.crono-barra.estouro .fill { background: var(--erro); }
+
+@media (max-width: 900px) {
+  .crono-total { display: none; }
+  .crono-chip { padding: 2px 8px; gap: 8px; }
+}
+@media print {
+  .crono-chip, .crono-barra, #btn-crono { display: none !important; }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'T10-AP-v1-crono';
+
+  var MAPA = [
+    { linha: 0, de: 1,  ate: 2  },  /* 0-3   Abertura     -> Capa + Ato I       */
+    { linha: 1, de: 3,  ate: 3  },  /* 3-8   Topico 1     -> slide 3            */
+    { linha: 2, de: 4,  ate: 4  },  /* 8-13  Topico 2     -> slide 4            */
+    { linha: 3, de: 5,  ate: 5  },  /* 13-18 Topico 3     -> slide 5            */
+    { linha: 4, de: 6,  ate: 6  },  /* 18-23 Topico 4     -> slide 6            */
+    { linha: 5, de: 7,  ate: 7  },  /* 23-28 Topico 5     -> slide 7            */
+    { linha: 6, de: 8,  ate: 13 },  /* 28-35 Aplicacoes   -> T1..T6 (6 slides)  */
+    { linha: 7, de: 14, ate: 15 },  /* 35-40 C&A+Reflexao -> slides 14-15       */
+    { linha: 8, de: 16, ate: 16 }   /* 40-45 Encerramento -> Despedida          */
+  ];
+
+  var slides = document.querySelectorAll('.slide');
+  if (!slides.length) return;
+
+  /* ─── TEMPOS PADRÃO (padronizados para todas as trilhas) ─── */
+  var previsto = {
+    1: 60, 2: 60,
+    3: 180, 4: 180, 5: 180, 6: 180, 7: 180,
+    8: 180, 9: 180, 10: 180, 11: 180, 12: 180,
+    13: 240,
+    14: 120, 15: 120,
+    16: 300
+  };
+
+  var previstoOriginal = {};
+  for (var k in previsto) { if (previsto.hasOwnProperty(k)) previstoOriginal[k] = previsto[k]; }
+  window.__AP_PREVISTO = previsto;
+  window.__AP_PREVISTO_ORIGINAL = previstoOriginal;
+
+  try {
+    var tcust = JSON.parse(localStorage.getItem('T10-AP-v1-tempos-custom') || '{}');
+    for (var kc in tcust) { if (tcust.hasOwnProperty(kc)) previsto[parseInt(kc, 10)] = tcust[kc]; }
+  } catch(e) {}
+
+  var toolbar = document.querySelector('.toolbar');
+  var rodape = document.querySelector('.rodape');
+  var rodapeNav = document.querySelector('.rodape-nav');
+  if (!toolbar || !rodape) return;
+
+  var btn = document.createElement('button');
+  btn.id = 'btn-crono';
+  btn.type = 'button';
+  btn.title = 'Cronometro por slide (C)';
+  btn.textContent = '⏱ C';
+  toolbar.appendChild(btn);
+
+  var chip = document.createElement('div');
+  chip.className = 'crono-chip';
+  chip.title = 'Clique para pausar ou retomar';
+  chip.innerHTML =
+    '<span class="crono-restante">--:--</span>' +
+    '<span class="crono-prev">prev 00:00</span>' +
+    '<span class="crono-total">aula 00:00</span>';
+  rodape.insertBefore(chip, rodapeNav);
+
+  var barra = document.createElement('div');
+  barra.className = 'crono-barra';
+  barra.innerHTML = '<div class="fill"></div>';
+  document.body.appendChild(barra);
+
+  var elRestante = chip.querySelector('.crono-restante');
+  var elPrev = chip.querySelector('.crono-prev');
+  var elTotal = chip.querySelector('.crono-total');
+  var elFill = barra.querySelector('.fill');
+
+  var ligado = false, pausado = false;
+  var ref = 0, gastoSlide = 0, gastoAula = 0, tique = null;
+  var atual = slideAtivo();
+
+  function slideAtivo() {
+    var s = document.querySelector('.slide.ativo');
+    return s ? parseInt(s.dataset.slide, 10) || 1 : 1;
+  }
+
+  function acumular() {
+    var t = Date.now();
+    if (ligado && !pausado) {
+      var d = (t - ref) / 1000;
+      gastoSlide += d;
+      gastoAula += d;
+    }
+    ref = t;
+  }
+
+  function fmt(seg) {
+    seg = Math.max(0, Math.round(seg));
+    var m = Math.floor(seg / 60), s = seg % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function pintar() {
+    if (!ligado) return;
+    var prev = previsto[atual];
+    chip.classList.remove('alerta', 'estouro', 'sem-tempo');
+    barra.classList.remove('alerta', 'estouro');
+    chip.classList.toggle('pausado', pausado);
+    elTotal.textContent = 'aula ' + fmt(gastoAula);
+
+    if (!prev) {
+      chip.classList.add('sem-tempo');
+      elRestante.textContent = '--:--';
+      elPrev.textContent = 'sem tempo no roteiro';
+      elFill.style.width = '0%';
+      return;
+    }
+
+    var resta = prev - gastoSlide;
+    elPrev.textContent = 'prev ' + fmt(prev);
+    elRestante.textContent = (resta < 0 ? '+' : '') + fmt(Math.abs(resta));
+    elFill.style.width = Math.min(100, (gastoSlide / prev) * 100) + '%';
+
+    if (resta < 0) { chip.classList.add('estouro'); barra.classList.add('estouro'); }
+    else if (resta <= prev * 0.2) { chip.classList.add('alerta'); barra.classList.add('alerta'); }
+  }
+
+  function tick() { acumular(); pintar(); }
+
+  function ligar() {
+    ligado = true; pausado = false;
+    gastoSlide = 0; gastoAula = 0;
+    atual = slideAtivo();
+    ref = Date.now();
+    chip.classList.add('on');
+    barra.classList.add('on');
+    btn.classList.add('active');
+    pintar();
+    tique = setInterval(tick, 250);
+    guardar();
+  }
+
+  function desligar() {
+    ligado = false; pausado = false;
+    clearInterval(tique); tique = null;
+    chip.classList.remove('on', 'pausado', 'alerta', 'estouro', 'sem-tempo');
+    barra.classList.remove('on', 'alerta', 'estouro');
+    btn.classList.remove('active');
+    guardar();
+  }
+
+  function alternar() { ligado ? desligar() : ligar(); }
+
+  function guardar() {
+    try { localStorage.setItem(KEY, ligado ? '1' : '0'); } catch (e) {}
+  }
+
+  btn.addEventListener('click', alternar);
+
+  chip.addEventListener('click', function () {
+    if (!ligado) return;
+    acumular();
+    pausado = !pausado;
+    ref = Date.now();
+    pintar();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); alternar(); }
+  });
+
+  var obs = new MutationObserver(function () {
+    var n = slideAtivo();
+    if (n === atual) return;
+    acumular();
+    atual = n;
+    gastoSlide = 0;
+    pintar();
+  });
+  slides.forEach(function (s) {
+    obs.observe(s, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  try { if (localStorage.getItem(KEY) === '1') ligar(); } catch (e) {}
+})();
+</script>
+
+<!-- ═══ OCULTAR SLIDES + CONFIGURAÇÃO DE TEMPOS — add-on v1 ═══ -->
+<style>
+/* ── Overview: eye toggle + estado oculto ── */
+.ov-eye {
+  position: absolute; top: 6px; right: 6px;
+  background: none; border: 1px solid var(--cinza-borda);
+  color: var(--cinza); width: 24px; height: 24px;
+  font-size: 0.85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0; z-index: 2;
+  transition: color 0.15s, border-color 0.15s;
+}
+.ov-eye:hover { color: var(--ouro); border-color: var(--ouro); }
+.overview-cell.oculto { opacity: 0.35; border-style: dashed; }
+.overview-cell.oculto .ov-tit { text-decoration: line-through; }
+
+/* ── Slide de configuração ── */
+.config-wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.config-wrap .tbl td { padding: 8px 14px; }
+.config-wrap input[type="text"] {
+  width: 80px; background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto); font-family: var(--mono);
+  padding: 5px 8px; font-size: 0.9rem; text-align: center;
+  transition: border-color 0.15s;
+}
+.config-wrap input[type="text"]:focus {
+  outline: none; border-color: var(--ouro);
+}
+.config-acoes { display: flex; gap: 12px; margin-top: 20px; }
+.config-btn {
+  background: var(--azul); color: white; border: none;
+  font-family: var(--font); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 20px; cursor: pointer;
+  transition: background 0.15s;
+}
+.config-btn:hover { background: var(--azul-claro); }
+.config-btn.config-reset {
+  background: var(--superficie);
+  color: var(--cinza);
+  border: 1px solid var(--cinza-borda);
+}
+.config-btn.config-reset:hover { color: var(--texto); border-color: var(--texto); }
+.config-nota {
+  font-size: 0.8rem; color: var(--cinza);
+  margin-top: 16px; font-style: italic; line-height: 1.5;
+}
+@media print {
+  .ov-eye, .config-wrap, #btn-config { display: none !important; }
+}
+
+/* ── BOTÃO REVEAL ICON-ONLY (sem texto) ── */
+.btn-reveal-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; margin-top: 12px;
+  background: var(--azul); color: white; border: none;
+  font-size: 1.1rem; cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  border-radius: 0; padding: 0;
+}
+.btn-reveal-icon:hover { background: var(--azul-claro); }
+.btn-reveal-icon.aberto { transform: rotate(180deg); }
+[data-theme="light"] .btn-reveal-icon { color: white; }
+
+/* Forçar hidden em elementos com display explícito no CSS */
+[hidden] { display: none !important; }
+
+/* == REFINO-AP v1 == padrao de todas as APs == */
+/* 1. O paragrafo sob a legenda encostava na borda da caixa da figura. */
+.col-img p { margin: 0; padding: 12px 18px 14px; }
+.col-img p + p { padding-top: 0; }
+
+/* 2. Salto Conceito <-> Aplicacao (dinamica do professor em aula). */
+.salto-bar {
+  flex: 0 0 auto; display: flex; gap: 12px;
+  justify-content: flex-end; align-items: center;
+  margin-top: 6px;
+}
+.salto {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 1px;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--ouro); border: 1px solid var(--ouro);
+  padding: 7px 14px; cursor: pointer; text-decoration: none;
+  background: transparent; transition: background .15s, color .15s;
+}
+.salto:hover { background: var(--ouro); color: #000; }
+.salto.volta { color: var(--verde); border-color: var(--verde); }
+.salto.volta:hover { background: var(--verde); color: #000; }
+
+/* 3. Figura: recortar so quando o texto fala de um trecho especifico. */
+.col-img img.fig-inteira { max-height: none; object-fit: contain; }
+.col-img img.fig-trecho-inferior {
+  aspect-ratio: var(--rec-ar, 1000 / 340);
+  max-height: 34vh; object-fit: cover; object-position: 50% 100%;
+}
+
+@media (max-height: 800px) {
+  .salto { font-size: 0.72rem; padding: 5px 11px; }
+  .salto-bar { margin-top: 2px; }
+  .col-img p { padding: 9px 14px 10px; }
+}
+
+/* == Ajuste fino T10: fecha residuos de 24-37px medidos em 1920x1080 nos
+   exercicios T1 e Integradora (enunciados mais longos) == */
+.exercicio { padding: 10px 20px; }
+.c5-ap-conteudo { line-height: 1.36; }
+.exercicio-enunciado { line-height: 1.4; margin-bottom: 8px; }
+
+/* == Faixa SIMULE (Protocolo SIM-v1, Fase 3) == */
+.simule-strip {
+  display: flex; align-items: center; gap: 12px;
+  max-height: 64px; margin-top: 10px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  border-left: 4px solid var(--verde);
+  padding: 6px 14px;
+}
+.simule-qr { width: 56px; height: 56px; flex-shrink: 0; background: #fff; }
+.simule-strip span { font-size: 0.95rem; color: oklch(0.90 0 0); line-height: 1.35; }
+[data-theme="light"] .simule-strip span { color: oklch(0.18 0 0); }
+.simule-strip strong { color: var(--verde); }
+@media (max-height: 800px) {
+  .simule-strip { max-height: 52px; padding: 4px 10px; gap: 8px; }
+  .simule-qr { width: 44px; height: 44px; }
+  .simule-strip span { font-size: 0.82rem; }
+}
+
+</style>
+
+<script>
+(function() {
+  'use strict';
+  var STORAGE_KEY = 'T10-AP-v1';
+  var KEY_TEMPOS = STORAGE_KEY + '-tempos-custom';
+  var allSlides = document.querySelectorAll('.slide');
+  var configSlideNum = allSlides.length;
+  var tbody = document.getElementById('config-tbody');
+  var previsto = window.__AP_PREVISTO || {};
+  var original = window.__AP_PREVISTO_ORIGINAL || {};
+  var ap = window.__AP || {};
+
+  function fmtInput(seg) {
+    if (!seg && seg !== 0) return '';
+    seg = Math.round(seg);
+    var m = Math.floor(seg / 60), s = seg % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function parseInput(val) {
+    var parts = val.trim().split(':');
+    if (parts.length === 2) {
+      var m = parseInt(parts[0], 10) || 0;
+      var s = parseInt(parts[1], 10) || 0;
+      return m * 60 + s;
+    }
+    if (parts.length === 1 && parts[0] !== '') {
+      return (parseInt(parts[0], 10) || 0) * 60;
+    }
+    return null;
+  }
+
+  function construirTabela() {
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    for (var i = 0; i < allSlides.length; i++) {
+      var n = i + 1;
+      if (n === configSlideNum) continue;
+      var sl = allSlides[i];
+      var titulo = sl.dataset.titulo || ('Slide ' + n);
+      var prev = previsto[n];
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td style="font-family:var(--mono);color:var(--azul);font-weight:700;width:50px;">' +
+          (n < 10 ? '0' + n : n) + '</td>' +
+        '<td>' + titulo + '</td>' +
+        '<td><input type="text" class="cfg-input" data-slide="' + n +
+          '" value="' + fmtInput(prev) + '" placeholder="m:ss"></td>';
+      tbody.appendChild(tr);
+    }
+  }
+  construirTabela();
+
+  var btnAplicar = document.getElementById('cfg-aplicar');
+  var btnReset = document.getElementById('cfg-reset');
+
+  if (btnAplicar) {
+    btnAplicar.addEventListener('click', function() {
+      var inputs = tbody.querySelectorAll('.cfg-input');
+      var newCustom = {};
+      inputs.forEach(function(inp) {
+        var n = parseInt(inp.dataset.slide, 10);
+        var val = parseInput(inp.value);
+        if (val !== null && val > 0) {
+          previsto[n] = val;
+          newCustom[n] = val;
+        }
+      });
+      try { localStorage.setItem(KEY_TEMPOS, JSON.stringify(newCustom)); } catch(e) {}
+      this.textContent = '✓ Aplicado!';
+      var self = this;
+      setTimeout(function() { self.textContent = '✓ Aplicar'; }, 1500);
+    });
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener('click', function() {
+      var k;
+      for (k in original) {
+        if (original.hasOwnProperty(k)) previsto[parseInt(k, 10)] = original[k];
+      }
+      for (k in previsto) {
+        if (previsto.hasOwnProperty(k) && !original.hasOwnProperty(k)) delete previsto[k];
+      }
+      try { localStorage.removeItem(KEY_TEMPOS); } catch(e) {}
+      construirTabela();
+      this.textContent = '↺ Restaurado!';
+      var self = this;
+      setTimeout(function() { self.textContent = '↺ Restaurar padrão'; }, 1500);
+    });
+  }
+
+  var btnConfig = document.getElementById('btn-config');
+  if (btnConfig) {
+    btnConfig.addEventListener('click', function() {
+      if (ap.irPara) ap.irPara(configSlideNum);
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key === 'g' || e.key === 'G') {
+      e.preventDefault();
+      if (ap.irPara) ap.irPara(configSlideNum);
+    }
+  });
+})();
+</script>
+
+<script>
+(function() {
+  'use strict';
+  function slideN(n) { return document.querySelector('.slide[data-slide="' + n + '"]'); }
+
+  /* A conclusao de cada topico (paragrafo em italico ao pe do slide) tem de
+     nascer OCULTA: ela e a resposta que o professor revela por ultimo. Nos
+     slides 3-5 ela ja entrava na lista; nos slides 6 e 7 ficava visivel desde
+     o inicio. Busca no slide inteiro porque em algumas trilhas a conclusao
+     foi para a coluna da imagem. */
+  function conclusaoDe(sl) {
+    var ps = sl.querySelectorAll('.slide-body p');
+    for (var i = ps.length - 1; i >= 0; i--) {
+      if (getComputedStyle(ps[i]).fontStyle === 'italic') return ps[i];
+    }
+    return null;
+  }
+
+  function progressiveReveal(containerOrParent, items, insertBefore) {
+    var idx = 0;
+    items.forEach(function(it) {
+      if (Array.isArray(it)) { it.forEach(function(el) { el.setAttribute('hidden', ''); }); }
+      else { it.setAttribute('hidden', ''); }
+    });
+    var btn = document.createElement('button');
+    btn.className = 'btn-reveal-icon';
+    btn.type = 'button';
+    btn.textContent = '▼';
+    btn.addEventListener('click', function() {
+      if (idx < items.length) {
+        var item = items[idx];
+        if (Array.isArray(item)) { item.forEach(function(el) { el.removeAttribute('hidden'); }); }
+        else { item.removeAttribute('hidden'); }
+        idx++;
+        if (idx >= items.length) { btn.textContent = '▲'; btn.classList.add('aberto'); }
+      } else {
+        items.forEach(function(it) {
+          if (Array.isArray(it)) { it.forEach(function(el) { el.setAttribute('hidden', ''); }); }
+          else { it.setAttribute('hidden', ''); }
+        });
+        idx = 0;
+        btn.textContent = '▼';
+        btn.classList.remove('aberto');
+      }
+    });
+    containerOrParent.insertBefore(btn, insertBefore || containerOrParent.firstChild);
+    return btn;
+  }
+
+  // ── Slide 2: resposta investigativa oculta ──
+  (function() {
+    var sl = slideN(2);
+    if (!sl) return;
+    var resp = sl.querySelector('.resposta-investigativa');
+    if (resp) {
+      var parent = resp.parentNode;
+      progressiveReveal(parent, [resp], resp);
+    }
+  })();
+
+  // ── Slides 3-7: Tópicos 1-5 — equações + exemplo + conclusão progressivos ──
+  // A conclusão de cada tópico nasce OCULTA (helper conclusaoDe) e, nos
+  // tópicos com simulação registrada (Protocolo SIM-v1 — T10 tópicos 2 e 3),
+  // a faixa SIMULE é revelada JUNTO com a conclusão, no mesmo clique.
+  [3, 4, 5, 6, 7].forEach(function(n) {
+    var sl = slideN(n);
+    if (!sl) return;
+    var colText = sl.querySelector('.col-text');
+    if (!colText) return;
+    var items = [];
+    var concl = null;
+    colText.querySelectorAll('.eq, p').forEach(function(el) {
+      if (el.classList.contains('eq')) { items.push(el); return; }
+      var html = el.innerHTML || '';
+      if (html.indexOf('Exemplo') > -1 && html.indexOf('Exemplo') < 40) { items.push(el); return; }
+      if (el.style.fontStyle === 'italic') { concl = el; }
+    });
+    if (!concl) concl = conclusaoDe(sl);
+    var simule = colText.querySelector('.simule-strip');
+    if (concl && simule) { items.push([concl, simule]); }
+    else if (concl) { items.push(concl); }
+    else if (simule) { items.push(simule); }
+    if (items.length) progressiveReveal(colText, items, items[0]);
+  });
+
+  // ── Slide 14: parágrafos progressivos ──
+  (function() {
+    var sl = slideN(14);
+    if (!sl) return;
+    var colText = sl.querySelector('.col-text');
+    if (!colText) return;
+    var children = colText.querySelectorAll('.ca-obra, .ca-versos');
+    var items = [];
+    for (var i = 1; i < children.length; i++) items.push(children[i]);
+    if (items.length) progressiveReveal(colText, items, items[0]);
+  })();
+
+  // ── Slide 15: parágrafos progressivos ──
+  (function() {
+    var sl = slideN(15);
+    if (!sl) return;
+    var ps = sl.querySelectorAll('.ca-analise');
+    var items = [];
+    for (var i = 1; i < ps.length; i++) items.push(ps[i]);
+    if (items.length) progressiveReveal(ps[0].parentNode, items, items[0]);
+  })();
+
+  // ── Slide 16: itens progressivos ──
+  (function() {
+    var sl = slideN(16);
+    if (!sl) return;
+    var body = sl.querySelector('.desp-body');
+    if (!body) return;
+    /* Ordem definida pelo autor: 1) Sucesso na Provinha  2) Nao esqueca de
+       fazer a Tarefa Minima HOJE  3) Terminamos por aqui. A citacao de
+       abertura e a linha institucional ficam visiveis desde o inicio. */
+    var prov  = body.querySelector('.ca-provinha');
+    var acao  = body.querySelector('.desp-acao');
+    var taref = body.querySelector('.desp-tarefa');
+    var frase = body.querySelector('.desp-frase');
+    var items = [];
+    if (prov) items.push(prov);
+    if (acao && taref) items.push([acao, taref]);
+    else { if (acao) items.push(acao); if (taref) items.push(taref); }
+    if (frase) items.push(frase);
+    if (items.length) progressiveReveal(body, items, items[0]);
+  })();
+})();
+
+/* == REFINO-AP v1 - salto Conceito<->Aplicacao == */
+/* Delegado no documento e reaproveitando o clique do Sumario: assim o salto
+   funciona sem depender do escopo onde irPara() foi declarada em cada deck. */
+document.addEventListener('click', function (ev) {
+  var alvo = ev.target.closest && ev.target.closest('.salto[data-goto]');
+  if (!alvo) return;
+  ev.preventDefault();
+  var item = document.querySelector('#toc-lista .toc-item[data-goto="' + alvo.dataset.goto + '"]');
+  if (item) item.click();
+});
+
+</script>
+
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t10">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

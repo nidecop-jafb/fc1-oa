@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T10 · O Movimento Uniforme (MU) — Estudante</title>
+<style>
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --erro-claro: oklch(0.22 0.05 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --hover-bg: oklch(0.22 0.02 260);
+  --r: 0px;
+  --r-sm: 0px;
+  --shadow: 0 1px 0 oklch(0.3 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: oklch(0.10 0.02 260);
+  color: var(--texto);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* HEADER */
+.header { background: oklch(0.14 0.02 260); border-top: 3px solid var(--ouro); padding: 14px 20px; margin-bottom: 20px; }
+.header-inner { max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.header h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.header h1 .trilha-code { color: var(--azul); }
+.badge {
+  display: inline-block;
+  background: var(--azul); color: var(--branco);
+  padding: 4px 12px; border-radius: var(--r-sm);
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.header-sub {
+  max-width: 800px; margin: 4px auto 0;
+  font-size: 0.88rem;
+  color: var(--cinza);
+}
+
+/* PIAZZI BAR */
+.piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
+.piazzi-bar .piazzi-ref { color:var(--cinza); }
+.piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.piazzi-bar .piazzi-text { color:var(--texto); font-style:italic; font-size:.74rem; }
+.piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
+.piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
+
+/* INTRO */
+.intro-box {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-left: 4px solid var(--azul);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--texto);
+}
+.intro-box strong { color: var(--ouro); }
+
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
+
+/* RESTORATION BANNER */
+.restore-banner {
+  display: none;
+  background: var(--ouro-claro);
+  border: 1px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  color: var(--ouro);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.restore-banner.show { display: flex; }
+.restore-banner button {
+  background: var(--ouro);
+  color: oklch(0.10 0.02 260);
+  border: none;
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.restore-banner .btn-discard {
+  background: transparent;
+  color: var(--ouro);
+  border: 1px solid var(--ouro);
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  margin-bottom: 24px;
+}
+.progress-seg {
+  height: 6px;
+  background: var(--cinza-claro);
+  border-radius: var(--r-sm);
+  transition: background 0.3s;
+}
+.progress-seg.resp { background: var(--azul); }
+.progress-seg.done { background: var(--verde); }
+
+/* STUDENT ID FORM */
+.id-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 16px;
+  margin-bottom: 28px;
+  border-radius: var(--r);
+}
+.id-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.id-form input,
+.id-form select {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  color: var(--texto);
+  padding: 8px 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.id-form input:focus,
+.id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled,
+.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* PHASE SEPARATOR */
+.phase-sep {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 32px 0 16px;
+  padding: 10px 16px;
+  background: oklch(0.14 0.02 260);
+  border-left: 4px solid var(--ouro);
+}
+.phase-sep .phase-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ouro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.phase-sep .phase-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto);
+}
+.phase-sep .phase-range {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--cinza);
+  margin-left: auto;
+  white-space: nowrap;
+}
+.phase-desc {
+  font-size: 0.82rem;
+  color: var(--cinza);
+  margin: -8px 0 16px;
+  padding: 0 16px;
+  line-height: 1.5;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-num {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg);
+  border: 2px solid var(--azul);
+  color: var(--azul-claro);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
+.tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--verde-claro); color: var(--verde); border: 1px solid var(--verde); }
+
+.q-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: var(--texto);
+}
+.q-text strong { color: var(--ouro); font-weight: 700; }
+.q-text em { color: var(--azul-claro); font-style: italic; }
+
+/* TEXTAREA (JUSTIFICATIVA OPCIONAL) */
+.q-textarea-wrap { position: relative; margin-top: 12px; }
+.just-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+.q-textarea {
+  width: 100%;
+  min-height: 64px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  color: var(--texto);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 12px 14px 28px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.q-textarea:focus { border-color: var(--azul); }
+.q-textarea:disabled { opacity: 0.5; cursor: not-allowed; resize: none; }
+.char-counter {
+  position: absolute;
+  bottom: 6px;
+  right: 10px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--cinza);
+  pointer-events: none;
+}
+
+/* ALTERNATIVES (MC / AUTOAVALIACAO) */
+.alt-list { display: flex; flex-direction: column; gap: 6px; }
+.alt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--texto);
+  line-height: 1.5;
+}
+.alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
+.alt-btn.locked { cursor: default; opacity: 0.7; }
+.alt-btn.correta { border-color: var(--verde); background: var(--verde-claro); opacity: 1; }
+.alt-btn.errada { border-color: var(--erro); background: var(--erro-claro); opacity: 1; }
+.alt-letra {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--cinza);
+  min-width: 20px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.alt-btn.selected .alt-letra { color: var(--azul-claro); }
+.alt-btn.correta .alt-letra { color: var(--verde); }
+.alt-btn.errada .alt-letra { color: var(--erro); }
+
+/* FEEDBACK BOX (POS-ENVIO) */
+.fb-box {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--texto);
+}
+.fb-box.show { display: block; }
+.fb-box.ok { border-color: var(--verde); }
+.fb-box.err { border-color: var(--erro); }
+.fb-titulo {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.fb-box.ok .fb-titulo { color: var(--verde); }
+.fb-box.err .fb-titulo { color: var(--erro); }
+
+/* CONFIRMATION BOX */
+.confirm-box {
+  display: none;
+  background: var(--superficie);
+  border: 2px solid var(--verde);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.confirm-box.show { display: block; }
+.confirm-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+.confirm-title {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--verde);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.confirm-text {
+  font-size: 0.88rem;
+  color: var(--cinza);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.confirm-score {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--verde);
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+/* BUTTONS */
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.btn {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--r);
+  transition: opacity 0.2s;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
+.btn-submit:hover:not(:disabled) { background: var(--azul-claro); }
+.btn-export { background: var(--verde); color: oklch(0.10 0.02 260); display: none; }
+.btn-export.show { display: inline-block; }
+.btn-export:hover:not(:disabled) { background: oklch(0.75 0.15 150); }
+.btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
+.btn-reset:hover { background: var(--erro-claro); }
+
+/* TOAST */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  color: var(--texto);
+  border: 1px solid;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+  max-width: 320px;
+}
+.toast-info { background: var(--azul-bg); border-color: var(--azul); }
+.toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.toast-error { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .container { padding: 16px 12px 60px; }
+  .header h1 { font-size: 1.2rem; }
+  .id-form { grid-template-columns: 1fr; }
+  .q-card { padding: 14px; }
+  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+  .restore-banner { flex-direction: column; align-items: stretch; }
+  .phase-sep { flex-wrap: wrap; }
+  .phase-sep .phase-range { margin-left: 0; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #111; }
+  .container { max-width: 100%; padding: 0; }
+  .header h1 { color: #111; }
+  .badge { border-color: #333; color: #333; }
+  .header-sub { color: #555; }
+  .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
+  .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
+  .q-num { border-color: #333; color: #333; background: #eee; }
+  .tag { border-color: #999; color: #555; background: #f5f5f5; }
+  .q-text { color: #111; }
+  .q-text strong { color: #111; }
+  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
+  .alt-letra { color: #333; }
+  .q-textarea { background: #fff; border-color: #ccc; color: #111; }
+  .char-counter { color: #999; }
+  .phase-sep { background: #f5f5f5; border-color: #333; }
+  .phase-sep .phase-label { color: #333; }
+  .phase-sep .phase-range { color: #555; }
+  .phase-desc { color: #555; }
+  .intro-box { background: #f5f5f5; border-color: #ccc; color: #111; }
+  .confirm-box { display: block !important; border-color: #333; background: #fff; }
+  .confirm-title { color: #333; }
+  .confirm-text { color: #555; }
+  .fb-box { border-color: #ccc; color: #111; }
+  .id-form { background: #f5f5f5; border-color: #ccc; }
+  .id-form label { color: #555; }
+  .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
+}
+/* ── Coleta (login RA + envio) ── */
+.coleta-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.coleta-overlay[hidden], .coleta-status[hidden], .coleta-retry[hidden] { display: none !important; }
+.coleta-card { background: #101010; border: 2px solid var(--ouro, #C8A84B); max-width: 440px; width: 100%; padding: 28px 24px; }
+.coleta-titulo { font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 700; color: var(--ouro, #C8A84B); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+.coleta-label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: #ddd; }
+#coletaRA { width: 100%; font-family: var(--mono, monospace); font-size: 1.4rem; letter-spacing: 0.35em; padding: 10px 12px; background: #000; color: #fff; border: 1px solid #555; margin-bottom: 12px; }
+#coletaRA:focus { outline: 2px solid var(--ouro, #C8A84B); }
+.coleta-btn { background: var(--ouro, #C8A84B); color: #000; border: none; font-family: var(--mono, monospace); font-weight: 700; padding: 10px 18px; cursor: pointer; }
+.coleta-btn-sec { background: transparent; color: #ccc; border: 1px solid #555; font-family: var(--mono, monospace); padding: 10px 18px; cursor: pointer; }
+.coleta-erro { font-size: 0.82rem; color: var(--erro, #E05252); margin-top: 10px; }
+.coleta-confirma { font-size: 1rem; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.coleta-botoes { display: flex; gap: 10px; }
+.coleta-nota { font-size: 0.72rem; color: #888; margin-top: 18px; line-height: 1.5; border-top: 1px solid #333; padding-top: 12px; }
+.coleta-status { margin: 14px 0; padding: 12px 16px; border: 1px solid #555; font-family: var(--mono, monospace); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.coleta-status.ok { border-color: var(--verde, #4CAF7D); color: var(--verde, #4CAF7D); }
+.coleta-status.falha { border-color: var(--erro, #E05252); color: var(--erro, #E05252); }
+.coleta-retry { background: transparent; border: 1px solid var(--erro, #E05252); color: var(--erro, #E05252); font-family: var(--mono, monospace); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; }
+@media print { .coleta-overlay, .coleta-status { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
+  <div class="restore-banner" id="restoreBanner">
+    <span id="restoreMsg"></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1><span class="trilha-code">T10</span> &middot; O Movimento Uniforme (MU)</h1>
+      <span class="badge">Ponto de Partida (PP)</span>
+    </div>
+    <div class="header-sub">Parte I &middot; Percep&ccedil;&atilde;o Inicial (5 autoavalia&ccedil;&otilde;es) + Parte II &middot; Conhecimento Pr&eacute;vio (5 MC) &middot; (8 &plusmn; 2) min</div>
+  </header>
+
+  <!-- PIAZZI BAR -->
+  <div class="piazzi-bar">
+    <span class="piazzi-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="piazzi-tag">Ler</span>
+    <span class="piazzi-tag">Escrever</span>
+    <span class="piazzi-tag">Medir</span>
+    <span class="piazzi-text">ouvindo m&uacute;sica instrumental</span>
+    <a class="piazzi-yt" href="https://music.youtube.com/playlist?list=PLMB5arbCorsU" target="_blank" rel="noopener">YouTube Music</a>
+    <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    Ol&aacute;! A nota deste Ponto de Partida &eacute; <strong>garantida pelo simples envio</strong> antes da sua
+    aula presencial, independentemente dos acertos. Na <strong>Parte I</strong>, diga como voc&ecirc; se sente
+    diante de cada assunto da aula (a justificativa &eacute; opcional). Na <strong>Parte II</strong>, responda
+    5 quest&otilde;es de m&uacute;ltipla escolha &mdash; ap&oacute;s o envio, a corre&ccedil;&atilde;o autom&aacute;tica
+    mostra o feedback de cada uma. Sem consulta &middot; Tentativa &uacute;nica.
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- STUDENT ID -->
+  <div class="id-form" id="idForm">
+    <label>
+      Nome
+      <input type="text" id="inputNome" placeholder="Nome completo" autocomplete="off">
+    </label>
+    <label>
+      Turma
+      <select id="inputTurma">
+        <option value="">Selecione</option>
+        <option value="FISI-MIN1-26">MIN1</option><option value="FISI-MIN2-26">MIN2</option><option value="FISI-MIN3-26">MIN3</option>
+      </select>
+    </label>
+    <label>
+      Data
+      <input type="date" id="inputData">
+    </label>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsContainer"></div>
+
+  <!-- CONFIRMATION BOX -->
+  <div class="confirm-box" id="confirmBox">
+    <div class="confirm-icon">&#10003;</div>
+    <div class="confirm-title">Respostas enviadas</div>
+    <div class="confirm-text">Sua participa&ccedil;&atilde;o foi registrada &mdash; a nota &eacute; garantida pelo envio. Veja acima a corre&ccedil;&atilde;o autom&aacute;tica da Parte II: ela mostra o que voc&ecirc; j&aacute; sabe e o que merece aten&ccedil;&atilde;o na aula.</div>
+    <div class="confirm-score" id="confirmScore"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <!-- COLETA STATUS -->
+  <div class="coleta-status" id="coletaStatus" hidden>
+    <span id="coletaStatusMsg"></span>
+    <button class="btn coleta-retry" id="coletaRetry" hidden onclick="enviarColeta(true)">Tentar novamente</button>
+  </div>
+
+  <div class="actions" id="actionsBar">
+    <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitPP()">Enviar Respostas</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetPP()">Recome&ccedil;ar</button>
+  </div>
+
+</div>
+
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.</div>
+  <div class="fecho-acao">Continue a Pr&eacute;-Aula: leia o <strong>Texto Tem&aacute;tico (TT)</strong> e ou&ccedil;a o <strong>Resumo em &Aacute;udio (MD)</strong> da trilha.</div>
+  <div class="fecho-nidec">Trilhas de Aprendizagem em F&iacute;sica &eacute; uma metodologia que faz parte de um esfor&ccedil;o do NIDEC+CODAFIS em inovar no ensino de f&iacute;sica aplicada ao ensino t&eacute;cnico em Minera&ccedil;&atilde;o.</div>
+</div>
+
+<div class="footer-line">
+  IFMG &mdash; Campus Ouro Preto &middot; FC1 &middot; T10 &middot; J. Azevedo &amp; F. Beato &middot; 2026
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- COLETA LOGIN OVERLAY -->
+<div class="coleta-overlay" id="coletaOverlay" hidden>
+  <div class="coleta-card">
+    <div class="coleta-titulo">Identifica&ccedil;&atilde;o do Estudante</div>
+    <div class="coleta-passo" id="coletaPasso1">
+      <label class="coleta-label" for="coletaRA">Digite seu Registro Acad&ecirc;mico (RA) &mdash; 7 d&iacute;gitos</label>
+      <input type="text" id="coletaRA" inputmode="numeric" maxlength="7" placeholder="0000000" autocomplete="off">
+      <button class="btn coleta-btn" id="coletaBuscarBtn" onclick="coletaBuscarRA()">Verificar</button>
+      <div class="coleta-erro" id="coletaErro" hidden></div>
+    </div>
+    <div class="coleta-passo" id="coletaPasso2" hidden>
+      <div class="coleta-confirma" id="coletaConfirmaTexto"></div>
+      <div class="coleta-botoes">
+        <button class="btn coleta-btn" onclick="coletaConfirmar()">Sou eu</button>
+        <button class="btn coleta-btn-sec" onclick="coletaNegar()">N&atilde;o sou eu</button>
+      </div>
+    </div>
+    <div class="coleta-nota">Suas respostas ser&atilde;o registradas para acompanhamento pedag&oacute;gico. Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+  </div>
+</div>
+
+<script src="../../coleta-config.js"></script>
+
+<script>
+/* ---- QUESTION DATA ---- */
+var PARTES = [
+  { id:'P1', label:'Parte I', name:'Percepção Inicial — Autoavaliação', range:'A1–A5',
+    desc:'Sobre cada assunto que será apresentado na aula presencial, o que você pensa? Não há resposta certa — responda com sinceridade. A justificativa é opcional.' },
+  { id:'P2', label:'Parte II', name:'Conhecimento Prévio — Diagnóstico', range:'Q1–Q5',
+    desc:'5 questões de múltipla escolha com correção automática após o envio. Errar aqui não tira nota — mostra ao professor o que a turma já sabe.' }
+];
+
+var AUTO_OPCOES = [
+  {letra:'A', texto:'Domino o tema'},
+  {letra:'B', texto:'Acho que vai ser fácil'},
+  {letra:'C', texto:'Acho que vai ser difícil'}
+];
+
+var BANCO = [
+  {
+    id:'T10-PP-A1', num:'A1', parte:'P1', bloom:'L1', comp:'C1', pts:1,
+    tipo:'AUTO', topico:'Tópico 1',
+    enunciado:'<strong>O Movimento Uniforme: a velocidade que nunca muda</strong> — por que a tela do avião marca sempre 720 km/h durante todo o cruzeiro, por que o trole da Mina da Passagem desce sempre a 2 m/s, e por que "velocidade constante" só é Movimento Uniforme quando ela não é zero. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T10-PP-A2', num:'A2', parte:'P1', bloom:'L1', comp:'C2', pts:1,
+    tipo:'AUTO', topico:'Tópico 2',
+    enunciado:'<strong>Prever o lugar sabendo só a hora</strong> — como a equação s = s₀ + v·t transforma o relógio em localizador, e por que é preciso combinar quatro convenções (onde fica o marco zero, qual é o sentido positivo, onde o móvel estava e quando o cronômetro disparou) antes de fazer qualquer conta. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T10-PP-A3', num:'A3', parte:'P1', bloom:'L1', comp:'C3', pts:1,
+    tipo:'AUTO', topico:'Tópico 3',
+    enunciado:'<strong>Ler o movimento num gráfico</strong> — por que o Movimento Uniforme desenha uma reta inclinada no gráfico posição × tempo e uma reta horizontal no gráfico velocidade × tempo, e por que a área debaixo dessa segunda reta é, ela mesma, a distância percorrida. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T10-PP-A4', num:'A4', parte:'P1', bloom:'L1', comp:'C4', pts:1,
+    tipo:'AUTO', topico:'Tópico 4',
+    enunciado:'<strong>Onde dois móveis se cruzam</strong> — como igualar duas equações horárias (s_A = s_B) revela o instante e o lugar exatos em que dois aviões em rotas opostas, ou dois troles na mesma galeria, se encontram. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T10-PP-A5', num:'A5', parte:'P1', bloom:'L1', comp:'C5', pts:1,
+    tipo:'AUTO', topico:'Tópico 5',
+    enunciado:'<strong>O Movimento Uniforme dentro da usina</strong> — por que uma correia transportadora é projetada para rodar em velocidade constante, e como o tempo de residência (t_res = L/v) diz à sala de controle quando o minério que entra agora vai chegar à pilha. O que você pensa sobre esse assunto?'
+  },
+  {
+    id:'T10-PP-Q1', num:'Q1', parte:'P2', bloom:'L1–L2', comp:'C1', pts:1,
+    tipo:'MC', funcao:'Terminologia', gabarito:'B',
+    enunciado:'A tela de bordo do avião mostrou "velocidade em relação ao solo: 720 km/h", e esse número não mudou em nenhum instante do cruzeiro — nem aos cinco, nem aos dez minutos. Nessas condições, o valor da aceleração do avião nesse trecho é:',
+    alternativas:[
+      {letra:'A', texto:'720 km/h, o mesmo valor da velocidade'},
+      {letra:'B', texto:'Zero, porque a velocidade não varia'},
+      {letra:'C', texto:'Positiva, porque o avião está avançando'},
+      {letra:'D', texto:'Impossível calcular sem saber o tempo total de voo'}
+    ],
+    feedbacks:{
+      A:'Confusão entre grandezas: velocidade se mede em km/h, aceleração em km/h por hora (ou m/s²). Copiar o valor da velocidade para a aceleração troca a unidade sem trocar o raciocínio.',
+      B:'Se a velocidade não muda, Δv = 0 — e a aceleração, que mede a taxa de variação da velocidade, é exatamente essa razão Δv/Δt = 0. É a mesma definição em duas frases: v constante ⟺ a = 0.',
+      C:'"Avançar" descreve o sentido do movimento, não se ele está ganhando velocidade. O avião avança o tempo todo, inclusive quando está em Movimento Uniforme.',
+      D:'A aceleração não depende do tempo total de voo, só de como a velocidade varia dentro do intervalo observado — e ela não varia nada nesse trecho.'
+    }
+  },
+  {
+    id:'T10-PP-Q2', num:'Q2', parte:'P2', bloom:'L2', comp:'C2', pts:1,
+    tipo:'MC', funcao:'Relação', gabarito:'B',
+    enunciado:'No exemplo do voo, o marco zero da trajetória foi colocado no Aeroporto de Confins e o cronômetro foi disparado no instante em que o avião já tinha voado 60 km, exatamente quando começou o trecho de cruzeiro. Nessas condições, a posição inicial s₀ vale:',
+    alternativas:[
+      {letra:'A', texto:'0 km, porque é onde fica o marco zero da trajetória'},
+      {letra:'B', texto:'60 km, porque é onde o avião estava quando o cronômetro disparou'},
+      {letra:'C', texto:'360 km, porque é a distância total do trecho de cruzeiro'},
+      {letra:'D', texto:'720 km, porque é a velocidade do avião'}
+    ],
+    feedbacks:{
+      A:'Confunde a origem do referencial (s = 0, o marco zero em Confins) com s₀ (onde o móvel está quando o relógio começa a contar). São duas convenções diferentes, e aqui elas não coincidem.',
+      B:'s₀ não é "o começo do mundo": é só a posição do móvel no instante em que você zera o cronômetro. Como o avião já tinha voado 60 km quando o cruzeiro começou, s₀ = 60 km.',
+      C:'360 km é o deslocamento durante o cruzeiro (Δs), não a posição inicial — é o quanto o avião ainda andou depois de s₀, não onde ele estava antes de andar.',
+      D:'Troca de grandezas: 720 é a velocidade (km/h); s₀ é uma posição, medida em quilômetros. As unidades já denunciam o erro.'
+    }
+  },
+  {
+    id:'T10-PP-Q3', num:'Q3', parte:'P2', bloom:'L3', comp:'C3', pts:1,
+    tipo:'MC', funcao:'Transferência', gabarito:'B',
+    enunciado:'O tacógrafo de um caminhão registrou, num trecho reto da BR-040, uma reta horizontal no gráfico velocidade × tempo, um pouco acima do eixo do tempo, mantida durante 20 minutos seguidos. Nesse trecho, o caminhão estava em:',
+    alternativas:[
+      {letra:'A', texto:'Repouso, porque a reta não muda de altura'},
+      {letra:'B', texto:'Movimento Uniforme, porque a velocidade é constante e diferente de zero'},
+      {letra:'C', texto:'Movimento acelerado, porque a reta está acima do eixo'},
+      {letra:'D', texto:'Impossível dizer sem consultar também o gráfico posição × tempo'}
+    ],
+    feedbacks:{
+      A:'Repouso apareceria como reta sobre o eixo do tempo (v = 0). Aqui a reta está acima do eixo, ou seja, v ≠ 0 — o caminhão está em movimento, só que sem mudar de velocidade.',
+      B:'Reta horizontal em v×t significa velocidade constante; estar acima do eixo significa que essa constante é diferente de zero. As duas condições juntas são exatamente a definição do MU.',
+      C:'A altura da reta indica o valor da velocidade, não se ela está acelerando. Quem indica aceleração é a inclinação da reta — e aqui ela é zero, porque a reta é horizontal.',
+      D:'O próprio gráfico v×t já é suficiente para classificar o movimento: reta horizontal acima do eixo é MU, sem precisar de nenhuma outra informação.'
+    }
+  },
+  {
+    id:'T10-PP-Q4', num:'Q4', parte:'P2', bloom:'L3', comp:'C4', pts:1,
+    tipo:'MC', funcao:'Teoria × Prática', gabarito:'B',
+    enunciado:'Pela NR-22, o plano de tráfego de uma galeria de mina exige uma distância mínima de segurança entre dois troles que trafegam em sentidos opostos na mesma via. Dois troles partem das extremidades de uma galeria retilínea no mesmo instante, cada um a velocidade constante. Para verificar se o plano de tráfego cumpre a distância mínima num certo instante, o procedimento correto é:',
+    alternativas:[
+      {letra:'A', texto:'Somar as duas velocidades e comparar o resultado com o limite da norma'},
+      {letra:'B', texto:'Escrever a equação horária de cada trole e calcular a distância entre as duas posições no instante desejado'},
+      {letra:'C', texto:'Calcular apenas o instante de encontro, porque antes dele os troles nunca estão próximos'},
+      {letra:'D', texto:'Medir a velocidade média da viagem toda e comparar com a distância mínima'}
+    ],
+    feedbacks:{
+      A:'A soma das velocidades dá a taxa de aproximação (útil, mas insuficiente sozinha) — não diz a que distância os troles estão num instante específico, só a rapidez com que essa distância diminui.',
+      B:'Escrever s_A(t) e s_B(t) pela equação horária e calcular d(t) = |s_B − s_A| é exatamente o procedimento que verifica a distância de segurança da NR-22 no instante desejado.',
+      C:'Os troles podem estar perigosamente próximos bem antes do instante de encontro; a distância de segurança precisa ser verificada continuamente, não só no ponto em que as trajetórias se cruzariam.',
+      D:'A velocidade média de toda a viagem esconde os instantes críticos — o mesmo erro de usar uma média para decidir algo que depende do valor naquele instante.'
+    }
+  },
+  {
+    id:'T10-PP-Q5', num:'Q5', parte:'P2', bloom:'L3', comp:'C5', pts:1,
+    tipo:'MC', funcao:'Formalização', gabarito:'B',
+    enunciado:'Uma correia transportadora de 400 m opera em regime permanente a 3,5 m/s. Usando t_res = L/v, o tempo que o minério leva para percorrer toda a correia é:',
+    alternativas:[
+      {letra:'A', texto:'1.400 s'},
+      {letra:'B', texto:'114 s'},
+      {letra:'C', texto:'3,5 s'},
+      {letra:'D', texto:'0,875 s'}
+    ],
+    feedbacks:{
+      A:'1.400 é o produto L × v (400 × 3,5), não o quociente — inverteu a operação da equação.',
+      B:'t_res = 400 ÷ 3,5 ≈ 114 s. Você reencontrará este mesmo cálculo na resolução modelo C5 do Texto Temático, no Problema Interdisciplinar 3 (Física e Engenharia de Minas).',
+      C:'3,5 é a própria velocidade de operação (m/s), copiada como se fosse o resultado do cálculo — não houve divisão nenhuma.',
+      D:'0,875 sai de calcular v/L (3,5 ÷ 400) em vez de L/v — inverteu numerador e denominador da equação.'
+    }
+  }
+];
+
+/* ---- STATE ---- */
+var PREFIX = 'ifmg_fc1_t10_pp_';
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   PP e de VERSAO UNICA: so `tentativas` se aplica (versao_precarga: n/a). ── */
+var OA_ID = { trilha: 'T10', oa: 'PP' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'livre',  /* n/a no PP (sem versoes A/B/C) */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    var cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema && cache.tentativas) {
+      OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+var tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
+var respostas = {};
+var justifs = {};
+var submitted = false;
+var saveTimer = null;
+var bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', function() {
+  buildProgressBar();
+  buildQuestions();
+  setDefaultDate();
+  checkLocalStorage();
+  setupDebouncedSave();
+});
+
+/* ---- DEFAULT DATE ---- */
+function setDefaultDate() {
+  var d = new Date();
+  var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('inputData').value = iso;
+}
+
+/* ---- PROGRESS BAR ---- */
+function buildProgressBar() {
+  var bar = document.getElementById('progressBar');
+  for (var i = 0; i < 10; i++) {
+    var seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.id = 'prog-' + i;
+    bar.appendChild(seg);
+  }
+}
+
+function updateProgress() {
+  BANCO.forEach(function(q, i) {
+    var seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      if (respostas[q.id]) seg.classList.add('done');
+    } else if (respostas[q.id]) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+/* ---- BUILD QUESTIONS ---- */
+function buildQuestions() {
+  var container = document.getElementById('questionsContainer');
+  var currentParte = '';
+
+  BANCO.forEach(function(q, idx) {
+    // Parte separator
+    if (q.parte !== currentParte) {
+      currentParte = q.parte;
+      var parteData = PARTES.filter(function(p){ return p.id === currentParte; })[0];
+      if (parteData) {
+        var sep = document.createElement('div');
+        sep.className = 'phase-sep';
+        sep.innerHTML = '<span class="phase-label">' + parteData.label + '</span>' +
+          '<span class="phase-name">' + parteData.name + '</span>' +
+          '<span class="phase-range">' + parteData.range + '</span>';
+        container.appendChild(sep);
+        var desc = document.createElement('div');
+        desc.className = 'phase-desc';
+        desc.textContent = parteData.desc;
+        container.appendChild(desc);
+      }
+    }
+
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    var tagsHTML = '';
+    if (q.tipo === 'AUTO') {
+      tagsHTML = '<span class="tag tag-bloom">' + q.topico + '</span>' +
+        '<span class="tag tag-tipo">Autoavaliação</span>' +
+        '<span class="tag tag-pts">' + q.pts + ' pt pelo envio</span>';
+    } else {
+      tagsHTML = '<span class="tag tag-bloom">Bloom ' + q.bloom + '</span>' +
+        '<span class="tag tag-tipo">' + q.funcao + '</span>' +
+        '<span class="tag tag-pts">' + q.pts + ' pt</span>';
+    }
+
+    var headerHTML = '<div class="q-header">' +
+      '<div class="q-num">' + q.num + '</div>' +
+      '<div class="q-tags">' + tagsHTML + '</div>' +
+    '</div>';
+
+    var textHTML = '<div class="q-text">' + q.enunciado + '</div>';
+
+    var inputHTML = '';
+
+    if (q.tipo === 'AUTO') {
+      inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
+      AUTO_OPCOES.forEach(function(a) {
+        inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+          '<span class="alt-letra">' + a.letra + '.</span>' +
+          '<span>' + a.texto + '</span>' +
+        '</button>';
+      });
+      inputHTML += '</div>';
+      inputHTML += '<div class="q-textarea-wrap">' +
+        '<span class="just-label">Justificativa (opcional) — por que você pensa isso?</span>' +
+        '<textarea class="q-textarea" id="ta-' + q.id + '" data-qid="' + q.id + '" placeholder="Escreva aqui, se quiser..." oninput="onJustInput(this)"></textarea>' +
+        '<span class="char-counter" id="cc-' + q.id + '">0 caracteres</span>' +
+      '</div>';
+    } else if (q.tipo === 'MC') {
+      inputHTML = '<div class="alt-list" id="alts-' + q.id + '">';
+      q.alternativas.forEach(function(a) {
+        inputHTML += '<button class="alt-btn" data-qid="' + q.id + '" data-letra="' + a.letra + '" onclick="selectAlt(\'' + q.id + '\',\'' + a.letra + '\')">' +
+          '<span class="alt-letra">' + a.letra + '.</span>' +
+          '<span>' + a.texto + '</span>' +
+        '</button>';
+      });
+      inputHTML += '</div>';
+      inputHTML += '<div class="fb-box" id="fb-' + q.id + '"></div>';
+    }
+
+    card.innerHTML = headerHTML + textHTML + inputHTML;
+    container.appendChild(card);
+  });
+}
+
+/* ---- JUSTIFICATIVA INPUT HANDLER (opcional — nao trava envio) ---- */
+function onJustInput(el) {
+  var qid = el.dataset.qid;
+  var val = el.value.trim();
+  if (val.length > 0) {
+    justifs[qid] = val;
+  } else {
+    delete justifs[qid];
+  }
+  var cc = document.getElementById('cc-' + qid);
+  if (cc) cc.textContent = el.value.length + ' caracteres';
+  debouncedSave();
+}
+
+/* ---- SELECT ALTERNATIVE (MC / AUTO) ---- */
+function selectAlt(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress();
+  checkSubmitReady();
+  debouncedSave();
+}
+
+/* ---- SCORE (Parte II — correcao automatica) ---- */
+function computeScore() {
+  return BANCO.filter(function(q) {
+    return q.tipo === 'MC' && respostas[q.id] === q.gabarito;
+  }).length;
+}
+
+function rotuloAuto(letra) {
+  var o = AUTO_OPCOES.filter(function(a) { return a.letra === letra; })[0];
+  return o ? o.texto : null;
+}
+
+/* ---- SUBMIT CHECK ---- */
+function checkSubmitReady() {
+  var nome = document.getElementById('inputNome').value.trim();
+  var turma = document.getElementById('inputTurma').value;
+  var allAnswered = BANCO.every(function(q) { return !!respostas[q.id]; });
+  document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
+}
+
+/* ---- CORRECTION DISPLAY (pos-envio) ---- */
+function mostrarCorrecao() {
+  BANCO.forEach(function(q) {
+    if (q.tipo !== 'MC') return;
+    var marcada = respostas[q.id];
+    var acertou = marcada === q.gabarito;
+    var btns = document.querySelectorAll('[data-qid="' + q.id + '"].alt-btn');
+    btns.forEach(function(b) {
+      if (b.dataset.letra === q.gabarito) b.classList.add('correta');
+      else if (b.dataset.letra === marcada) b.classList.add('errada');
+    });
+    var fb = document.getElementById('fb-' + q.id);
+    if (fb) {
+      var titulo = acertou ? '&#10003; Voc&ecirc; acertou' : '&#10007; Voc&ecirc; marcou ' + marcada + ' &mdash; a correta &eacute; ' + q.gabarito;
+      var texto = acertou ? q.feedbacks[q.gabarito]
+        : q.feedbacks[marcada] + ' <br><em>Correta (' + q.gabarito + '):</em> ' + q.feedbacks[q.gabarito];
+      fb.className = 'fb-box show ' + (acertou ? 'ok' : 'err');
+      fb.innerHTML = '<div class="fb-titulo">' + titulo + '</div>' + texto;
+    }
+  });
+  var score = computeScore();
+  document.getElementById('confirmScore').innerHTML =
+    'Diagn&oacute;stico (Parte II): ' + score + ' de 5 &mdash; ' +
+    (score >= 4 ? 'excelente ponto de partida!' : score >= 2 ? 'bom come&ccedil;o &mdash; a aula vai completar o resto.' : 'sem problema: &eacute; exatamente para isso que serve a aula.');
+}
+
+/* ---- EXPORT JSON: visivel apenas como plano B ----
+   Com o coletor ativo (site), o envio a planilha e automatico — o botao fica
+   oculto para o estudante e so aparece se o envio falhar. Sem coletor
+   (arquivo aberto offline / uso do professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  var btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  var temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  var st = document.getElementById('coletaStatus');
+  var falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+
+/* ---- SUBMIT ---- */
+function submitPP() {
+  if (submitted) return;
+  submitted = true;
+  esconderBanner();
+
+  // Lock inputs
+  document.getElementById('inputNome').disabled = true;
+  document.getElementById('inputTurma').disabled = true;
+  document.getElementById('inputData').disabled = true;
+
+  // Lock all textareas
+  var tas = document.querySelectorAll('.q-textarea');
+  tas.forEach(function(ta) { ta.disabled = true; });
+
+  // Lock all alt buttons
+  var altBtns = document.querySelectorAll('.alt-btn');
+  altBtns.forEach(function(b) { b.classList.add('locked'); });
+
+  // Correcao automatica da Parte II
+  mostrarCorrecao();
+
+  // Show confirmation — logo abaixo do status de coleta ("Respostas registradas"),
+  // imediatamente antes da barra de acoes
+  var confirmBox = document.getElementById('confirmBox');
+  var actionsBar = document.getElementById('actionsBar');
+  actionsBar.parentNode.insertBefore(confirmBox, actionsBar);
+  confirmBox.classList.add('show');
+
+  // Update progress
+  updateProgress();
+
+  // Update buttons — CFG-OA: apos o envio nao ha Recomecar/Descartar
+  document.getElementById('btnSubmit').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'none';
+  atualizarExportVisivel();
+  var st = document.getElementById('coletaStatus');
+  if (st && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(st, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // Save state
+  saveToLocalStorage();
+  avaliarSegundaTentativa();
+
+  toast('success', 'Respostas enviadas com sucesso!');
+  enviarColeta();
+}
+
+/* ---- EXPORT JSON ---- */
+function montarPacote() {
+  var now = new Date();
+  var score = computeScore();
+  return {
+    schema: 'ifmg-fc1-ponto-de-partida-v2',
+    trilha: 'T10',
+    tipo: 'PP',
+    versao: 'v2',
+    tentativa: tentativaAtual,
+    timestamp: now.toISOString(),
+    estudante: {
+      nome: document.getElementById('inputNome').value.trim(),
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value || null
+    },
+    questoes: BANCO.map(function(q) {
+      var item = {
+        id: q.id,
+        num: q.num,
+        parte: q.parte === 'P1' ? 'I' : 'II',
+        funcao: q.funcao || 'Autoavaliação',
+        bloom: q.bloom,
+        comp: q.comp,
+        tipo: q.tipo,
+        pts: q.pts,
+        resposta: respostas[q.id] || null
+      };
+      if (q.tipo === 'AUTO') {
+        item.rotulo = rotuloAuto(respostas[q.id]);
+        item.justificativa = justifs[q.id] || null;
+        item.pts_max = q.pts;
+        item.pts_obtidos = respostas[q.id] ? q.pts : 0;
+      } else {
+        item.gabarito = q.gabarito;
+        item.acertou = respostas[q.id] ? (respostas[q.id] === q.gabarito) : null;
+      }
+      return item;
+    }),
+    score_diagnostico: score,
+    total_mc: 5,
+    total_respondidas: BANCO.filter(function(q) { return !!respostas[q.id]; }).length,
+    total_questoes: 10
+  };
+}
+
+function exportJSON() {
+  var now = new Date();
+  var ts = now.toISOString().replace(/[:.]/g, '-');
+  var data = montarPacote();
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'T10-PP-' + (data.estudante.turma || 'SEM') + '-' + data.estudante.nome.replace(/\s+/g, '_').substring(0,30) + '-' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('success', 'Comprovante exportado com sucesso');
+}
+
+/* ---- RESET ---- */
+function resetPP() {
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+/* ---- LOCAL STORAGE ---- */
+function saveToLocalStorage() {
+  try {
+    var state = {
+      nome: document.getElementById('inputNome').value,
+      turma: document.getElementById('inputTurma').value,
+      data: document.getElementById('inputData').value,
+      respostas: respostas,
+      justifs: justifs,
+      submitted: submitted,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+  } catch(e) { /* quota exceeded or private mode */ }
+}
+
+function clearLocalStorage() {
+  localStorage.removeItem(PREFIX + 'state');
+}
+
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, RESTAURAR/DESCARTAR
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function aplicarEstado(state) {
+  document.getElementById('inputNome').value = state.nome || '';
+  document.getElementById('inputTurma').value = state.turma || '';
+  document.getElementById('inputData').value = state.data || '';
+  respostas = state.respostas || {};
+  justifs = state.justifs || {};
+
+  // Restore justificativas (textareas)
+  BANCO.forEach(function(q) {
+    if (q.tipo === 'AUTO' && justifs[q.id]) {
+      var ta = document.getElementById('ta-' + q.id);
+      if (ta) {
+        ta.value = justifs[q.id];
+        var cc = document.getElementById('cc-' + q.id);
+        if (cc) cc.textContent = ta.value.length + ' caracteres';
+      }
+    }
+  });
+
+  // Restore selections (MC + AUTO)
+  Object.keys(respostas).forEach(function(qid) {
+    var q = BANCO.filter(function(b){ return b.id === qid; })[0];
+    if (!q) return;
+    var btns = document.querySelectorAll('[data-qid="' + qid + '"].alt-btn');
+    btns.forEach(function(b) { b.classList.toggle('selected', b.dataset.letra === respostas[qid]); });
+  });
+
+  if (state.submitted) {
+    submitPP();
+  } else {
+    updateProgress();
+    checkSubmitReady();
+  }
+}
+
+function checkLocalStorage() {
+  try {
+    var raw = localStorage.getItem(PREFIX + 'state');
+    if (!raw) return;
+    var state = JSON.parse(raw);
+    if (state.submitted) {
+      /* Envio ja realizado: restaura a visao enviada; avaliarSegundaTentativa
+         decide se o banner com Restaurar aparece (so com 2 envios) */
+      aplicarEstado(state);
+    } else {
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      aplicarEstado(state);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas');
+    }
+  } catch(e) {}
+}
+
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  var msg = document.getElementById('restoreMsg');
+  var btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
+  }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
+  document.getElementById('restoreBanner').classList.remove('show');
+}
+
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
+}
+
+function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
+  clearLocalStorage();
+  location.reload();
+}
+
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    var state = JSON.parse(localStorage.getItem(PREFIX + 'state')) || {};
+    state.submitted = false;
+    if (!comRespostas) { state.respostas = {}; state.justifs = {}; }
+    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  avaliarSegundaTentativa();
+}
+
+/* ---- DEBOUNCED SAVE ---- */
+function setupDebouncedSave() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(function(id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+    el.addEventListener('change', function() {
+      checkSubmitReady();
+      debouncedSave();
+    });
+  });
+}
+
+function debouncedSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function() { saveToLocalStorage(); }, 1500);
+}
+
+/* ---- TOAST ---- */
+function toast(type, msg) {
+  var container = document.getElementById('toastContainer');
+  var el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+/* ============================================================
+   COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
+   Arquivo fonte: T10-PP-v2-estudante.html
+   Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
+   ============================================================ */
+var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
+var ARQUIVO_FONTE = 'T10-PP-v2-estudante.html';
+var ALUNO_KEY = PREFIX + 'aluno';
+var aluno = null;
+var alunoPendente = null;
+var coletaEnviando = false;
+
+/* CFG-OA v1: comprovante por tentativa (t1 = chave legada; t2 = sufixo _t2).
+   OAs legados sem oaTentativaAtual() continuam na chave unica. */
+function comprovanteKey_() {
+  var t = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  return PREFIX + 'comprovante' + (t > 1 ? '_t' + t : '');
+}
+
+/* CFG-OA v1: override remoto da Equipe de Professores (aba `config` da planilha).
+   So roda em OAs que expoem OA_ID + aplicarConfigOA; falha de rede e ignorada. */
+function buscarConfigOA() {
+  if (!COLETA_URL || typeof OA_ID === 'undefined' || typeof aplicarConfigOA !== 'function') return;
+  fetch(COLETA_URL + '?cfg=1&trilha=' + encodeURIComponent(OA_ID.trilha) + '&oa=' + encodeURIComponent(OA_ID.oa))
+    .then(function (r) { return r.json(); })
+    .then(function (res) { if (res && res.ok && res.cfg) aplicarConfigOA(res.cfg); })
+    .catch(function () {});
+}
+
+function initColeta() {
+  if (!COLETA_URL) return;
+  buscarConfigOA();
+  try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
+  if (aluno && aluno.ra) { aplicarAluno(); restaurarComprovante(); return; }
+  document.getElementById('coletaOverlay').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+document.addEventListener('DOMContentLoaded', initColeta);
+
+function coletaMostrarErro(msg) {
+  var el = document.getElementById('coletaErro');
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function coletaBuscarRA() {
+  var raw = document.getElementById('coletaRA').value.trim();
+  var ra = raw.replace(/\D/g, '').replace(/^/, '0000000').slice(-7);
+  if (raw.length === 0 || raw.replace(/\D/g, '').length < 5) { coletaMostrarErro('Digite os 7 digitos do seu RA.'); return; }
+  var btn = document.getElementById('coletaBuscarBtn');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  document.getElementById('coletaErro').hidden = true;
+
+  fetch(COLETA_URL + '?ra=' + encodeURIComponent(ra))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) { coletaMostrarErro(res.erro || 'RA n\u00e3o encontrado. Confira os d\u00edgitos ou fale com o professor.'); return; }
+      alunoPendente = { ra: ra, nome: res.nome, turma: res.turma };
+      document.getElementById('coletaConfirmaTexto').innerHTML =
+        'Voc\u00ea \u00e9 <strong>' + res.nome + '</strong> \u2014 turma <strong>' + res.turma + '</strong>?';
+      document.getElementById('coletaPasso1').hidden = true;
+      document.getElementById('coletaPasso2').hidden = false;
+    })
+    .catch(function () { coletaMostrarErro('Falha de conex\u00e3o. Verifique sua internet e tente de novo.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Verificar'; });
+}
+
+function coletaConfirmar() {
+  aluno = alunoPendente;
+  alunoPendente = null;
+  try { localStorage.setItem(ALUNO_KEY, JSON.stringify(aluno)); } catch (e) {}
+  document.getElementById('coletaOverlay').hidden = true;
+  aplicarAluno();
+}
+
+function coletaNegar() {
+  alunoPendente = null;
+  document.getElementById('coletaRA').value = '';
+  document.getElementById('coletaPasso2').hidden = true;
+  document.getElementById('coletaPasso1').hidden = false;
+  setTimeout(function () { document.getElementById('coletaRA').focus(); }, 50);
+}
+
+function aplicarAluno() {
+  var n = document.getElementById('inputNome');
+  if (n) { n.value = aluno.nome; n.disabled = true; }
+  var t = document.getElementById('inputTurma');
+  if (t) {
+    var tem = false;
+    for (var i = 0; i < t.options.length; i++) if (t.options[i].value === aluno.turma) tem = true;
+    if (!tem) { var o = document.createElement('option'); o.value = aluno.turma; o.textContent = aluno.turma; t.appendChild(o); }
+    t.value = aluno.turma; t.disabled = true;
+  }
+  var d = document.getElementById('inputData');
+  if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  [n, t].forEach(function (el) {
+    if (!el) return;
+    try { el.dispatchEvent(new Event('input')); el.dispatchEvent(new Event('change')); } catch (e) {}
+  });
+  /* CFG-OA v1: pre-carga da versao A/B/C apos identificar o RA */
+  if (typeof aplicarPrecargaOA === 'function') { try { aplicarPrecargaOA(aluno); } catch (e) {} }
+}
+
+function coletaStatusUI(estado, msg) {
+  var box = document.getElementById('coletaStatus');
+  box.hidden = false;
+  box.classList.remove('ok', 'falha');
+  if (estado) box.classList.add(estado);
+  document.getElementById('coletaStatusMsg').textContent = msg;
+  document.getElementById('coletaRetry').hidden = (estado !== 'falha');
+}
+
+function restaurarComprovante() {
+  if (!COLETA_URL) return;
+  var c = localStorage.getItem(comprovanteKey_());
+  if (c) coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + c);
+}
+
+function enviarColeta(isRetry) {
+  if (!COLETA_URL || coletaEnviando) return;
+  if (localStorage.getItem(comprovanteKey_())) { restaurarComprovante(); return; }
+  coletaEnviando = true;
+  coletaStatusUI(null, 'Enviando respostas ao professor...');
+
+  var payload = montarPacote();
+  payload.ra = aluno ? aluno.ra : null;
+  payload.turma_suap = aluno ? aluno.turma : null;
+  payload.tentativa = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  if (!payload.arquivo) payload.arquivo = ARQUIVO_FONTE;
+  payload.questoes = (payload.questoes || []).map(function (q) {
+    var pmax = (q.pts_max != null) ? q.pts_max : q.pts;
+    var pobt = (q.pts_obtidos != null) ? q.pts_obtidos
+      : (q.pontos_obtidos != null) ? q.pontos_obtidos
+      : (q.acertou === true) ? pmax
+      : (q.acertou === false) ? 0 : null;
+    var novo = {};
+    for (var k in q) novo[k] = q[k];
+    novo.pts_max = pmax;
+    novo.pts_obtidos = pobt;
+    return novo;
+  });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      try { localStorage.setItem(comprovanteKey_(), res.comprovante); } catch (e) {}
+      coletaStatusUI('ok', '\u2713 Respostas registradas \u2014 comprovante ' + res.comprovante);
+    })
+    .catch(function () {
+      coletaStatusUI('falha', 'N\u00e3o foi poss\u00edvel enviar. Suas respostas est\u00e3o salvas neste aparelho \u2014 tente novamente ou use "Exportar JSON".');
+    })
+    .finally(function () { coletaEnviando = false; });
+}
+
+
+/* ============================================================
+   MODO CEGO DE VERSAO (anti-cola) — injetado pelo injetar_coletor.py
+   A versao A/B/C continua no payload (planilha); some apenas da tela
+   quando a pre-carga CFG-OA define o caderno do estudante.
+   ============================================================ */
+(function () {
+  function ocultarSeletorVersao() {
+    var sel = document.getElementById('versionSelector');
+    var lbl = document.getElementById('versionLabel');
+    if (sel) sel.style.display = 'none';
+    if (lbl) lbl.style.display = 'none';
+  }
+  function precargaDefiniu() {
+    return typeof precargaAtiva !== 'undefined' && precargaAtiva &&
+           typeof currentVersion !== 'undefined' && currentVersion;
+  }
+  if (typeof toast === 'function') {
+    var _toastOrig = toast;
+    toast = function (tipo, msg) {
+      if (typeof msg === 'string') {
+        msg = msg
+          .replace(/Vers[a\u00e3]o\s+[ABC]\s+carregada automaticamente para voc[e\u00ea]/i,
+                   'Seu caderno foi carregado automaticamente')
+          .replace(/\s*[\u2014-]\s*Vers[a\u00e3]o\s+[ABC]\b/gi, '')
+          .replace(/Vers[a\u00e3]o\s+[ABC]\b/gi, 'seu caderno');
+      }
+      _toastOrig(tipo, msg);
+    };
+  }
+  if (typeof travarSeletorVersao === 'function') {
+    var _travarOrig = travarSeletorVersao;
+    travarSeletorVersao = function () {
+      _travarOrig();
+      if (precargaDefiniu()) ocultarSeletorVersao();
+    };
+    if (precargaDefiniu()) ocultarSeletorVersao();
+  }
+})();
+
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t10">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>

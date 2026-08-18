@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T10 · O Movimento Uniforme (MU) — Texto Temático v2</title>
+<style>
+/* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO ═══ */
+:root {
+  --azul: oklch(0.65 0.22 45);
+  --azul-claro: oklch(0.72 0.19 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-claro: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --verde-claro: oklch(0.25 0.04 150);
+  --erro: oklch(0.6 0.22 25);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.2 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --fs-base: 1.15rem;
+}
+
+/* ═══ LIGHT THEME ═══ */
+[data-theme="light"] {
+  --azul: oklch(0.50 0.22 45);
+  --azul-claro: oklch(0.55 0.19 45);
+  --azul-bg: oklch(0.90 0.03 45);
+  --ouro: oklch(0.55 0.18 95);
+  --ouro-claro: oklch(0.90 0.04 95);
+  --verde: oklch(0.45 0.15 150);
+  --verde-claro: oklch(0.92 0.03 150);
+  --erro: oklch(0.50 0.22 25);
+  --cinza: oklch(0.50 0.02 260);
+  --cinza-claro: oklch(0.92 0.02 260);
+  --cinza-borda: oklch(0.75 0.02 260);
+  --texto: oklch(0.20 0 0);
+  --branco: oklch(0.20 0 0);
+  --superficie: oklch(0.95 0.01 260);
+  --fundo: oklch(0.98 0.005 260);
+  --input-bg: oklch(0.93 0.01 260);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  border-radius: 0;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-top { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: oklch(0.2 0.02 260); }
+[data-theme="light"] .progress-top { background: oklch(0.88 0.02 260); }
+.progress-top .bar { height: 100%; background: var(--ouro); width: 0%; transition: width 0.1s; }
+
+/* ═══ TOOLBAR (font size + theme) ═══ */
+.toolbar {
+  position: fixed; top: 3px; right: 0; z-index: 999;
+  display: flex; gap: 2px; padding: 6px 10px;
+  background: var(--superficie); border-bottom: 1px solid var(--cinza-borda); border-left: 1px solid var(--cinza-borda);
+}
+.toolbar button {
+  background: none; border: 1px solid var(--cinza-borda); color: var(--cinza);
+  font-family: var(--font); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+  border-radius: 0; transition: color 0.15s, border-color 0.15s;
+}
+.toolbar button:hover { color: var(--texto); border-color: var(--texto); }
+.toolbar button.active { color: var(--ouro); border-color: var(--ouro); }
+
+/* ═══ TOC SIDEBAR ═══ */
+.toc-toggle {
+  position: fixed; top: 275px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.toc-toggle:hover { color: var(--ouro); }
+
+.toc-sidebar {
+  position: fixed; top: 60px; left: 0; z-index: 997;
+  width: 280px; max-height: calc(100vh - 80px); overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px 20px 40px; transform: translateX(-100%); transition: transform 0.25s;
+}
+.toc-sidebar.open { transform: translateX(0); }
+.toc-sidebar h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--cinza); margin-bottom: 12px;
+}
+.toc-sidebar a {
+  display: block; padding: 6px 0; font-size: 0.85rem; color: oklch(0.75 0 0);
+  text-decoration: none; border-bottom: 1px solid oklch(0.22 0.02 260);
+  transition: color 0.15s;
+}
+[data-theme="light"] .toc-sidebar a { border-bottom-color: oklch(0.90 0.02 260); }
+.toc-sidebar a:hover { color: var(--ouro); }
+.toc-sidebar a.toc-ato { font-weight: 700; color: var(--azul); font-size: 0.9rem; }
+.toc-sidebar a.toc-topico { padding-left: 16px; font-size: 0.8rem; }
+.toc-sidebar a.toc-extra { font-style: italic; color: var(--cinza); font-size: 0.8rem; }
+
+/* ═══ HEADER ═══ */
+.header {
+  background: linear-gradient(180deg, oklch(0.14 0.03 45) 0%, var(--fundo) 100%);
+  padding: 48px 20px 24px; text-align: center;
+}
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, oklch(0.95 0.02 45) 0%, var(--fundo) 100%);
+}
+.header-inner { max-width: 720px; margin: 0 auto; }
+.header h1 {
+  font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 10px;
+}
+.trilha-code {
+  font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+  color: var(--ouro); letter-spacing: 2px;
+}
+.badge {
+  display: inline-block; padding: 4px 14px; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--ouro); border: 1px solid var(--ouro); margin-top: 4px;
+}
+.header-sub {
+  max-width: 720px; margin: 12px auto 0; font-size: 0.85rem;
+  color: var(--cinza); letter-spacing: 0.5px;
+}
+
+/* ═══ CONTENT ═══ */
+.conteudo { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* ═══ EPIGRAFE ═══ */
+.epigrafe {
+  padding: 40px 0; text-align: center;
+  border-bottom: 1px solid var(--cinza-borda); margin-bottom: 40px;
+}
+.epigrafe blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.4rem;
+  line-height: 1.7; color: oklch(0.78 0 0); max-width: 540px; margin: 0 auto;
+}
+[data-theme="light"] .epigrafe blockquote { color: oklch(0.35 0 0); }
+.epigrafe .autor { font-size: 0.9rem; color: var(--ouro); margin-top: 12px; font-style: normal; }
+.epigrafe .nota {
+  font-size: 0.8rem; color: var(--cinza); margin-top: 10px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  font-style: normal; line-height: 1.6; text-align: left;
+}
+
+/* ═══ ATO / TOPICO ═══ */
+.ato { margin-bottom: 48px; }
+.ato-titulo {
+  font-size: 1.2rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); padding: 16px 0;
+  border-top: 2px solid var(--ouro-claro); margin-bottom: 24px;
+}
+
+.topico { margin-bottom: 36px; }
+.topico-titulo {
+  font-size: 1.5rem; font-weight: 700; color: var(--azul);
+  margin-bottom: 16px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--azul-bg);
+}
+
+/* ═══ PARAGRAPHS ═══ */
+p {
+  font-family: var(--serif); font-size: var(--fs-base);
+  line-height: 1.85; margin-bottom: 16px; color: oklch(0.85 0 0);
+}
+[data-theme="light"] p { color: oklch(0.25 0 0); }
+p .termo { color: var(--ouro); font-weight: 600; }
+p .citacao { font-style: italic; color: var(--azul-claro); }
+p strong { color: var(--branco); }
+[data-theme="light"] p strong { color: oklch(0.15 0 0); }
+
+/* ═══ CONTEXT AXES ═══ */
+.contextualizacao-titulo {
+  font-size: 1.05rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin: 24px 0 12px;
+}
+.contexto { margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--cinza-borda); }
+.contexto-label {
+  font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font);
+}
+.ctx-historico .contexto-label { color: var(--ouro); }
+.ctx-cientifico .contexto-label { color: var(--azul); }
+.ctx-profissional .contexto-label { color: var(--verde); }
+
+/* ═══ EQUACAO ═══ */
+.equacao {
+  background: oklch(0.16 0.02 260); padding: 18px 22px; margin: 20px 0;
+  border: 1px solid var(--cinza-borda); text-align: center;
+}
+[data-theme="light"] .equacao {
+  background: oklch(0.96 0.01 260); border-color: oklch(0.80 0.02 260);
+}
+.equacao-label {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+  text-align: left;
+}
+.equacao-formula {
+  font-family: var(--serif); font-size: 1.5rem; color: var(--branco);
+  margin-bottom: 12px; letter-spacing: 1px;
+}
+.equacao-tabela { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.equacao-tabela th {
+  padding: 6px 10px; text-align: left; font-size: 0.8rem;
+  font-weight: 600; color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.equacao-tabela td {
+  padding: 6px 10px; font-size: 0.9rem; color: oklch(0.78 0 0);
+  border-bottom: 1px solid oklch(0.22 0.02 260); font-family: var(--font);
+}
+[data-theme="light"] .equacao-tabela td {
+  color: oklch(0.30 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.equacao-aplicacao {
+  background: oklch(0.14 0.02 260); padding: 12px 16px; margin-top: 12px;
+  text-align: left; font-size: 0.95rem; color: oklch(0.80 0 0);
+  border-left: 2px solid var(--ouro);
+}
+[data-theme="light"] .equacao-aplicacao {
+  background: oklch(0.94 0.01 260); color: oklch(0.25 0 0);
+}
+.equacao-aplicacao strong { color: var(--ouro); }
+
+/* ═══ QUADRO (TABLE) ═══ */
+.quadro { background: var(--superficie); padding: 14px 16px; margin: 20px 0; overflow-x: auto; }
+.quadro-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--ouro); margin-bottom: 10px;
+}
+.quadro table { width: 100%; border-collapse: collapse; font-size: 1.2rem; font-family: var(--font); }
+.quadro th {
+  padding: 8px 10px; text-align: left; font-weight: 600; color: var(--ouro);
+  border-bottom: 1px solid var(--cinza-borda); font-size: 0.85rem;
+}
+.quadro td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top;
+}
+[data-theme="light"] .quadro td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+
+/* ═══ FIGURES ═══ */
+.figura {
+  margin: 28px 0; text-align: center;
+}
+.figura-img {
+  width: 100%; max-width: 680px; height: auto; display: block; margin: 0 auto;
+  border: 1px solid var(--cinza-borda);
+}
+.figura-legenda {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  margin-top: 8px; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.figura-num {
+  font-weight: 700; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ═══ COVER / CAPA ═══ */
+.capa {
+  text-align: center; padding: 40px 20px 32px;
+  background: linear-gradient(180deg, oklch(0.10 0.02 260) 0%, var(--fundo) 100%);
+}
+[data-theme="light"] .capa {
+  background: linear-gradient(180deg, oklch(0.96 0.01 260) 0%, var(--fundo) 100%);
+}
+.capa-img {
+  width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto 20px;
+  border: 1px solid var(--cinza-borda);
+}
+.capa-label {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 8px;
+}
+.capa-titulo {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--branco); line-height: 1.3; margin-bottom: 16px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.capa-disciplina {
+  font-family: var(--font); font-size: 2.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 4px; color: var(--ouro);
+  margin-bottom: 4px;
+}
+.capa-curso {
+  font-family: var(--font); font-size: 2.0rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px; color: var(--cinza);
+  margin-bottom: 20px;
+}
+.capa-autores {
+  font-family: var(--font); font-size: 1.0rem; color: var(--cinza);
+  letter-spacing: 0.5px;
+}
+.capa-instituicao {
+  font-family: var(--font); font-size: 0.9rem; color: var(--cinza);
+  letter-spacing: 0.5px; margin-top: 12px;
+}
+
+/* ═══ CREDITOS / CIP SIDEBAR ═══ */
+.creditos-toggle {
+  position: fixed; top: 365px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.creditos-toggle:hover { color: var(--ouro); }
+
+/* ═══ MUSICA TOGGLE + SIDEBAR ═══ */
+.musica-toggle {
+  position: fixed; top: 60px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.musica-toggle:hover { color: var(--ouro); }
+.musica-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.musica-sidebar.open { transform: translateX(0); }
+.musica-sidebar .musica-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.musica-sidebar .musica-ref { font-style: italic; color: var(--cinza); margin-bottom: 16px; display: block; }
+.musica-sidebar .musica-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.musica-sidebar .musica-tag {
+  background: var(--ouro); color: oklch(0.12 0 0); font-weight: 700;
+  font-size: 0.75rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px;
+}
+.musica-sidebar .musica-album { font-weight: 700; color: var(--branco); margin-bottom: 8px; }
+.musica-sidebar .musica-detail { color: var(--cinza); font-size: 0.85rem; margin-bottom: 16px; }
+.musica-sidebar .musica-link {
+  display: inline-block; padding: 8px 16px; background: var(--erro);
+  color: oklch(0.98 0 0); font-weight: 700; font-size: 0.8rem;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.15s;
+}
+.musica-sidebar .musica-link:hover { opacity: 0.85; }
+
+/* ═══ INEDITISMO TOGGLE + SIDEBAR ═══ */
+.ineditismo-toggle {
+  position: fixed; top: 145px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.ineditismo-toggle:hover { color: var(--ouro); }
+.ineditismo-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.95rem; line-height: 1.7;
+  color: var(--texto);
+}
+.ineditismo-sidebar.open { transform: translateX(0); }
+.ineditismo-sidebar .ineditismo-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.ineditismo-sidebar p {
+  font-size: 0.95rem; color: oklch(0.65 0 0); line-height: 1.7; margin-bottom: 10px;
+}
+[data-theme="light"] .ineditismo-sidebar p { color: oklch(0.40 0 0); }
+
+/* ═══ FIGURAS TOGGLE + SIDEBAR ═══ */
+.figuras-toggle {
+  position: fixed; top: 460px; left: 0; z-index: 998;
+  background: var(--superficie); border: 1px solid var(--cinza-borda); border-left: none;
+  color: var(--cinza); font-size: 0.7rem; padding: 8px 10px; cursor: pointer;
+  font-family: var(--font); writing-mode: vertical-rl; text-orientation: mixed;
+  letter-spacing: 1px; text-transform: uppercase; border-radius: 0;
+  transition: color 0.15s;
+}
+.figuras-toggle:hover { color: var(--ouro); }
+.figuras-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 380px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.88rem; line-height: 1.7;
+  color: var(--texto);
+}
+.figuras-sidebar.open { transform: translateX(0); }
+.figuras-sidebar .figuras-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.figuras-sidebar p {
+  font-size: 0.85rem; color: var(--texto); margin-bottom: 8px; line-height: 1.5;
+}
+.figuras-sidebar .figura-num { color: var(--azul); font-weight: 700; }
+
+.creditos-sidebar {
+  position: fixed; top: 0; left: 0; z-index: 996;
+  width: 340px; height: 100vh; overflow-y: auto;
+  background: var(--superficie); border-right: 1px solid var(--cinza-borda);
+  padding: 24px 20px 24px 40px; transform: translateX(-100%); transition: transform 0.25s;
+  font-family: var(--font); font-size: 0.85rem; line-height: 1.7;
+  color: var(--texto);
+}
+.creditos-sidebar.open { transform: translateX(0); }
+.creditos-sidebar p {
+  font-family: var(--font); font-size: 0.85rem; color: var(--texto);
+  line-height: 1.6; margin-bottom: 4px;
+}
+.creditos-titulo, .cip-titulo {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--ouro); margin-bottom: 16px;
+  border-bottom: 1px solid var(--cinza-borda); padding-bottom: 8px;
+}
+.creditos-instituicao {
+  font-weight: 700; font-size: 0.9rem; color: var(--branco);
+  margin-bottom: 12px;
+}
+.creditos-cargo {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-top: 10px; margin-bottom: 2px;
+}
+.creditos-nome { margin-bottom: 0; }
+.creditos-subtitulo {
+  font-weight: 700; font-size: 0.85rem; color: var(--ouro);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.creditos-bio { margin-bottom: 8px; }
+.cip-section { margin-top: 24px; border-top: 1px solid var(--cinza-borda); padding-top: 16px; }
+.cip-bloco {
+  background: oklch(0.15 0.01 260); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; font-family: var(--mono); font-size: 0.7rem;
+  line-height: 1.5; white-space: pre-wrap; color: oklch(0.75 0 0);
+}
+[data-theme="light"] .cip-bloco {
+  background: oklch(0.94 0.01 260); color: oklch(0.30 0 0);
+}
+
+/* ═══ EXPLORE BOX ═══ */
+.explore {
+  background: oklch(0.16 0.03 150); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.28 0.06 150);
+}
+[data-theme="light"] .explore {
+  background: oklch(0.95 0.03 150); border-color: oklch(0.75 0.06 150);
+}
+.explore-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--verde); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.explore p { font-size: 1.05rem; }
+.explore a { color: var(--verde); }
+
+/* ═══ SIMULE BOX ═══ */
+.simule {
+  background: oklch(0.16 0.03 45); padding: 20px 24px; margin: 24px 0;
+  border: 1px solid oklch(0.32 0.08 45);
+}
+[data-theme="light"] .simule {
+  background: oklch(0.95 0.03 45); border-color: oklch(0.75 0.08 45);
+}
+.simule-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.simule p { font-size: 1.05rem; }
+.simule a { color: var(--azul); }
+
+/* ═══ DESTAQUE ═══ */
+.destaque {
+  background: oklch(0.16 0.04 45); padding: 14px 20px; margin: 16px 0;
+  font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+  color: var(--azul-claro); border-left: 3px solid var(--azul);
+}
+[data-theme="light"] .destaque {
+  background: oklch(0.95 0.03 45); color: oklch(0.40 0.15 45);
+}
+
+/* ═══ BLOCKQUOTE ═══ */
+blockquote {
+  font-family: var(--serif); font-style: italic; padding: 12px 20px;
+  margin: 16px 0; border-left: 3px solid var(--cinza-borda);
+  color: oklch(0.78 0 0);
+}
+[data-theme="light"] blockquote { color: oklch(0.35 0 0); }
+blockquote .bq-autor { font-size: 0.9rem; color: var(--ouro); font-style: normal; display: block; margin-top: 6px; }
+
+/* ═══ CIENCIA E ARTE ═══ */
+.ciencia-arte {
+  padding: 40px 0; border-top: 2px solid var(--ouro-claro); margin-top: 40px;
+}
+.ciencia-arte-titulo {
+  font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: var(--ouro); margin-bottom: 24px;
+  text-align: center;
+}
+.ciencia-arte-obra {
+  font-size: 1.5rem; font-weight: 600; color: var(--branco);
+  text-align: center; margin-bottom: 20px;
+}
+.ciencia-arte blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+  color: oklch(0.78 0 0); max-width: 500px; margin: 0 auto 12px;
+  text-align: center; border-left: none; padding: 0;
+}
+.ciencia-arte .ca-autor { font-size: 0.9rem; color: var(--ouro); text-align: center; }
+
+/* ═══ C5 PROTOCOL ═══ */
+.c5-box { background: var(--superficie); padding: 18px 22px; margin: 20px 0; }
+.c5-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.c5-tabela { width: 100%; border-collapse: collapse; }
+.c5-tabela th {
+  padding: 8px 10px; text-align: left; font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); border-bottom: 1px solid var(--cinza-borda);
+  font-family: var(--font); text-transform: uppercase;
+}
+.c5-tabela td {
+  padding: 8px 10px; border-bottom: 1px solid oklch(0.22 0.02 260);
+  color: oklch(0.82 0 0); vertical-align: top; font-size: 1.1rem;
+  font-family: var(--font);
+}
+[data-theme="light"] .c5-tabela td {
+  color: oklch(0.28 0 0); border-bottom-color: oklch(0.88 0.02 260);
+}
+.c5-tabela td:first-child {
+  font-family: var(--mono); font-weight: 700; color: var(--azul);
+  text-align: center; width: 40px;
+}
+
+/* ═══ ATIVIDADE INTERDISCIPLINAR ═══ */
+.atividade {
+  background: oklch(0.16 0.03 95); padding: 20px 24px; margin: 28px 0;
+  border-left: 3px solid var(--ouro);
+}
+[data-theme="light"] .atividade {
+  background: oklch(0.96 0.02 95);
+}
+.atividade-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--ouro); margin-bottom: 10px;
+  font-family: var(--font);
+}
+.atividade p { font-size: 0.95rem; margin-bottom: 10px; }
+.atividade .conexao {
+  font-size: 0.82rem; font-style: italic; color: var(--cinza);
+  margin-top: 8px; border-top: 1px solid var(--cinza-borda); padding-top: 8px;
+}
+
+/* ═══ RCP (C5 SOLUTION) ═══ */
+.rcp {
+  margin-top: 14px; background: oklch(0.14 0.02 260); padding: 16px 20px;
+  border: 1px solid var(--cinza-borda);
+}
+[data-theme="light"] .rcp {
+  background: oklch(0.94 0.01 260);
+}
+.rcp summary {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--azul); cursor: pointer;
+  font-family: var(--font); padding: 4px 0;
+}
+.rcp summary:hover { color: var(--ouro); }
+.rcp-step {
+  margin: 8px 0; padding-left: 4px;
+}
+.rcp-step-label {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  color: var(--ouro); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.rcp-step-text {
+  font-family: var(--font); font-size: 0.9rem; color: oklch(0.78 0 0);
+  line-height: 1.6; margin-top: 2px;
+}
+[data-theme="light"] .rcp-step-text { color: oklch(0.30 0 0); }
+
+/* ═══ FOOTNOTE ═══ */
+.footnote {
+  font-family: var(--font); font-size: 0.85rem; color: var(--cinza);
+  line-height: 1.6; margin: 12px 0; padding: 10px 16px;
+  background: oklch(0.15 0.01 260); border-left: 2px solid var(--cinza-borda);
+}
+[data-theme="light"] .footnote {
+  background: oklch(0.94 0.01 260);
+}
+.footnote strong { color: oklch(0.75 0 0); }
+[data-theme="light"] .footnote strong { color: oklch(0.30 0 0); }
+
+/* ═══ REFS ═══ */
+.refs { padding: 32px 0; border-top: 1px solid var(--cinza-borda); margin-top: 32px; }
+.refs-titulo {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--cinza); margin-bottom: 12px;
+  font-family: var(--font);
+}
+.refs p {
+  font-family: var(--font); font-size: 1.2rem; color: var(--cinza);
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* ═══ SEPARADOR ═══ */
+.separador { width: 60px; height: 1px; background: var(--cinza-borda); margin: 36px auto; }
+
+/* ═══ ENCERRAMENTO + FOOTER ═══ */
+.encerramento {
+  max-width: 720px; margin: 40px auto 0; padding: 24px 20px;
+  border-top: 2px solid var(--ouro-claro); text-align: center;
+}
+.fecho-frase {
+  font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+  color: var(--verde); margin-bottom: 10px;
+}
+.footer-line {
+  text-align: center; padding: 20px 0 12px; font-size: 0.75rem;
+  color: var(--cinza); letter-spacing: 0.5px; font-family: var(--font);
+}
+
+/* ═══ CONEXOES TITULO OVERRIDE ═══ */
+#conexoes > .ato-titulo { font-size: 1.5rem; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .header { padding-left: 46px; padding-right: 46px; }
+  /* Gutter para as abas laterais: sem ele, as abas fixas da borda esquerda
+     cobrem o texto durante a rolagem em tela estreita. */
+  .conteudo { padding: 0 14px 0 46px; }
+  .toc-toggle, .musica-toggle, .ineditismo-toggle, .creditos-toggle, .figuras-toggle { font-size: 0.6rem; padding: 6px 6px; }
+  .toc-sidebar, .musica-sidebar, .ineditismo-sidebar, .creditos-sidebar, .figuras-sidebar { width: 82vw; }
+  .toolbar { padding: 4px 8px; }
+  .ato-titulo { font-size: 1rem; letter-spacing: 2px; }
+  .topico-titulo { font-size: 1.2rem; }
+  .equacao-formula { font-size: 1.2rem; }
+  .atividade { padding: 14px 16px; }
+  .capa-titulo { font-size: 1.5rem; }
+  .capa-img { max-width: 100%; }
+}
+
+/* ═══ PRINT ═══ */
+@media print {
+  body { background: white !important; color: #1A1A1A !important; padding-bottom: 0 !important; }
+  .progress-top, .toolbar, .toc-toggle, .toc-sidebar, .creditos-toggle, .creditos-sidebar, .musica-toggle, .musica-sidebar, .ineditismo-toggle, .ineditismo-sidebar, .figuras-toggle, .figuras-sidebar, .capa { display: none !important; }
+  .header { background: none !important; }
+  .ato-titulo { color: #1F3864 !important; border-top-color: #CCC !important; }
+  .topico-titulo { color: #8B6914 !important; border-bottom-color: #DDD !important; }
+  p { color: #333 !important; }
+  .figura-img { border-color: #CCC !important; }
+  .figura-legenda { color: #333 !important; }
+}
+
+.capa-marca { margin-bottom: 18px; }
+.capa-marca .marca { width: 92px; height: 92px; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-top"><div class="bar" id="progressBar"></div></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button id="btnFontMinus" title="Diminuir fonte">A&minus;</button>
+  <button id="btnFontReset" title="Fonte padrão" class="active">A</button>
+  <button id="btnFontPlus" title="Aumentar fonte">A+</button>
+  <button id="btnTheme" title="Alternar tema claro/escuro">Tema</button>
+</div>
+
+<!-- TOC TOGGLE -->
+<button class="toc-toggle" id="tocToggle">Sumario</button>
+
+<!-- CREDITOS TOGGLE -->
+<button class="creditos-toggle" id="creditosToggle">Creditos</button>
+
+<!-- MUSICA TOGGLE -->
+<button class="musica-toggle" id="musicaToggle">Musica</button>
+
+<!-- INEDITISMO TOGGLE -->
+<button class="ineditismo-toggle" id="ineditismoToggle">Ineditismo</button>
+
+<!-- INEDITISMO SIDEBAR -->
+<aside class="ineditismo-sidebar" id="ineditismoSidebar">
+  <div class="ineditismo-titulo">Ineditismo</div>
+  <p>Trilhas de Aprendizagem é uma metodologia que faz parte do esforço do projeto Física Conceitual 1 + Física Experimental 1 aprovados pela Coordenadoria da Área de Física em inovar na publicação didática da física aplicada aos cursos técnicos ofertados gratuitamente pelo IFMG campus Ouro Preto, fazendo dialogar narrativa, contextualização tripla (técnica, histórico-cultural, cotidiana), metodologia experimental rigorosa e modelagem científica.</p>
+  <p>Até onde a pesquisa dos autores alcançou, este é o primeiro Texto Temático de Física aplicada ao ensino técnico em mineração integrado ao ensino médio estruturado em Trilhas de Aprendizagem publicado no Brasil. Os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+</aside>
+
+<!-- FIGURAS TOGGLE -->
+<button class="figuras-toggle" id="figurasToggle">Figuras</button>
+
+<!-- FIGURAS SIDEBAR -->
+<aside class="figuras-sidebar" id="figurasSidebar">
+  <div class="figuras-titulo">Índice de Figuras</div>
+  <p><span class="figura-num">Capa</span> &mdash; O pátio do Aeroporto de Confins ao amanhecer: uma aeronave parada no portão de embarque, a pista molhada refletindo a primeira luz e a serra do Cipó ao fundo</p>
+  <p><span class="figura-num">Figura 1</span> &mdash; A reta inclinada atravessando um quadriculado de gráfico, com um pequeno avião no lugar do ponto móvel — a assinatura visual da trilha em que nada muda e, por isso, tudo se prevê</p>
+  <p><span class="figura-num">Figura 2</span> &mdash; O embarque: o trio de costas atravessando a ponte de embarque em Confins, com a aeronave à frente e a manhã se abrindo nas janelas da conexão</p>
+  <p><span class="figura-num">Figura 3</span> &mdash; O mapa da viagem em traço de desenho: a linha reta de 360 km ligando Confins ao Santos Dumont, sobrevoando a serra da Mantiqueira, com o pequeno avião no meio do caminho</p>
+  <p><span class="figura-num">Figura 4</span> &mdash; A tela do mapa de bordo em três momentos diferentes do voo: o avioncinho avança sobre o mapa, o relógio muda, e a velocidade marca os mesmos 720 km/h nas três</p>
+  <p><span class="figura-num">Figura 5</span> &mdash; A régua do trajeto: a linha Confins–Santos Dumont graduada em quilômetros, com relógios marcando 8h45, 9h00 e 9h05 pendurados sobre as posições correspondentes do avião</p>
+  <p><span class="figura-num">Figura 6</span> &mdash; Dois gráficos lado a lado na mesma folha quadriculada: à esquerda a reta inclinada de s×t subindo como uma rampa; à direita a reta horizontal de v×t com a área retangular sombreada embaixo</p>
+  <p><span class="figura-num">Figura 7</span> &mdash; Dois aviões em rotas opostas sobre o mesmo corredor aéreo Confins–Santos Dumont, vistos de cima no mapa, com as duas equações horárias escritas como rastros atrás de cada um</p>
+  <p><span class="figura-num">Figura 8</span> &mdash; Painel duplo da usina: à esquerda a correia transportadora carregada correndo em regime permanente sob o céu do Quadrilátero; à direita o duto de polpa serpenteando a serra com a seta de vazão constante</p>
+  <p><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio de costas no corredor de desembarque de Confins, ao anoitecer, com o painel de chegadas aceso indicando o voo do Rio pontualmente cumprido</p>
+  <p><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas em órbita de uma única reta inclinada s×t — e o pequeno avião de Confins cruzando o fundo do quadro</p>
+  <p><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido, sob o rastro retilíneo do avião no céu</p>
+  <p><span class="figura-num">Figura 12</span> &mdash; Ravel e a Física: a baqueta suspensa sobre a tarola e, ao fundo, a reta inclinada de s×t subindo como um crescendo — o ritmo que não muda sustentando tudo o que muda</p>
+</aside>
+
+<!-- MUSICA SIDEBAR -->
+<aside class="musica-sidebar" id="musicaSidebar">
+  <div class="musica-titulo">Música</div>
+  <span class="musica-ref">Pierluigi Piazzi recomenda em <em>Aprendendo Inteligência</em>:</span>
+  <div class="musica-tags">
+    <span class="musica-tag">Ler</span>
+    <span class="musica-tag">Escrever</span>
+    <span class="musica-tag">Medir</span>
+  </div>
+  <p style="margin-bottom:16px;">ouvindo música instrumental</p>
+  <div class="musica-album">Yamandu Costa &mdash; sele&ccedil;&atilde;o instrumental</div>
+  <div class="musica-detail">viol&atilde;o de 7 cordas</div>
+  <a class="musica-link" href="https://music.youtube.com/playlist?list=PLXyZd3QdGENs" target="_blank" rel="noopener">YouTube Music</a>
+</aside>
+
+<!-- CREDITOS / CIP SIDEBAR -->
+<aside class="creditos-sidebar" id="creditosSidebar">
+  <div class="creditos-titulo">Créditos</div>
+
+  <div class="creditos-instituicao">Instituto Federal de Minas Gerais</div>
+
+  <div class="creditos-cargo">Reitor</div>
+  <p class="creditos-nome">Rafael Bastos Teixeira</p>
+
+  <div class="creditos-cargo">Pró-Reitor de Ensino</div>
+  <p class="creditos-nome">Mário Luiz Viana Alvarenga</p>
+
+  <div class="creditos-cargo">Diretor-Geral do Campus Ouro Preto</div>
+  <p class="creditos-nome">Reginato Fernandes dos Santos</p>
+
+  <div class="creditos-cargo">Diretora de Ensino</div>
+  <p class="creditos-nome">Talita Valadares</p>
+
+  <div class="creditos-cargo">Coordenadora do Curso Técnico em Mineração Integrado ao Ensino Médio</div>
+  <p class="creditos-nome">Ariana Cristina Santos Almeida</p>
+
+  <div class="creditos-cargo">Coordenador da Área de Física (CODAFIS)</div>
+  <p class="creditos-nome">Lázaro Souza Lima</p>
+
+  <div class="creditos-subtitulo">Autores da Trilha</div>
+
+  <p class="creditos-bio"><strong>Julio Azevedo</strong> &mdash; Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos em 2016 (NIDEC). Ex-aluno do Curso de Engenharia de Minas e Curso de Física ambos da UFOP.</p>
+
+  <p class="creditos-bio"><strong>Felipe Beato</strong> &mdash; Professor, pesquisador, colaborador do Núcleo de Inovação de Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto, Licenciado em Física, Mestre em Física dos Materiais.</p>
+
+  <div class="creditos-subtitulo">Edição</div>
+  <p>1.&ordf; edição &mdash; Ouro Preto, 2026</p>
+
+  <div class="cip-section">
+    <div class="cip-titulo">Ficha Catalográfica (CIP)</div>
+    <div class="cip-bloco">A994t
+Azevedo, Julio Cesar Silva.
+    Trilha de aprendizagem T10 &mdash;
+O Movimento Uniforme (MU) / Julio
+Cesar Silva Azevedo; colaboração Felipe
+Beato. &mdash; 1. ed. &mdash; Ouro Preto, MG:
+Instituto Federal de Minas Gerais &mdash;
+Campus Ouro Preto, 2026.
+    ____ p.: il. color.; 14 x 21 cm.
+(Coleção Trilhas de Aprendizagem de
+Física Conceitual 1; T10)
+
+    ISBN [a definir].
+
+1. Física conceitual &mdash; Estudo e
+   ensino.
+2. Mineração &mdash; Ensino técnico
+   integrado ao ensino médio.
+3. Cinemática &mdash; Movimento
+   uniforme.
+I. Beato, Felipe. II. Título.
+III. Série.
+
+26-XXXXX         CDD-530.078
+                 CDU-53:622
+
+Índices para catálogo sistemático:
+1. Física conceitual 530.078
+2. Física aplicada à mineração 62:53
+
+[Bibliotecário(a) a definir
+ &mdash; CRB-X/XXXXX]
+
+Submissão formal à CBL prevista
+para setembro de 2026.</div>
+  </div>
+</aside>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <h3>Sumario</h3>
+  <a href="#capa" class="toc-extra">Capa</a>
+  <a href="#epigrafe" class="toc-extra">Epígrafe</a>
+  <a href="#ato-i" class="toc-ato">Ato I &mdash; O Gancho</a>
+  <a href="#explore" class="toc-extra">Explore &mdash; Google Maps</a>
+  <a href="#ato-ii" class="toc-ato">Ato II &mdash; O Desenvolvimento</a>
+  <a href="#topico-1" class="toc-topico">Tópico 1 &mdash; Características do MU</a>
+  <a href="#topico-2" class="toc-topico">Tópico 2 &mdash; Equação horária da posição</a>
+  <a href="#topico-3" class="toc-topico">Tópico 3 &mdash; Gráficos do MU</a>
+  <a href="#topico-4" class="toc-topico">Tópico 4 &mdash; Encontro de móveis no MU</a>
+  <a href="#topico-5" class="toc-topico">Tópico 5 &mdash; MU na mineração</a>
+  <a href="#ato-iii" class="toc-ato">Ato III &mdash; O Fechamento</a>
+  <a href="#conexoes" class="toc-extra">Problemas Interdisciplinares</a>
+  <a href="#ciencia-arte" class="toc-extra">Ciência e Arte</a>
+  <a href="#referencias" class="toc-extra">Referências</a>
+</nav>
+
+<!-- ═══════════════════ CAPA ═══════════════════ -->
+<div class="capa" id="capa">
+  <div class="capa-marca"><svg class="marca" viewBox="0 0 120 120" role="img" aria-label="Símbolo das Trilhas de Aprendizagem">
+    <g fill="none" stroke="#C8A84B" stroke-width="3">
+      <ellipse cx="60" cy="58" rx="46" ry="18"/>
+      <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(60 60 58)"/>
+      <ellipse cx="60" cy="58" rx="46" ry="18" transform="rotate(120 60 58)"/>
+    </g>
+    <g fill="#C8A84B">
+      <circle cx="53" cy="53" r="7"/>
+      <circle cx="67" cy="53" r="7"/>
+      <circle cx="60" cy="64" r="9"/>
+      <circle cx="60" cy="110" r="4"/>
+    </g>
+  </svg></div>
+  <div class="capa-disciplina">Física Conceitual</div>
+  <div class="capa-curso">Curso Técnico em Mineração</div>
+  <img class="capa-img" src="../_imagens/_web/T10-IT-00-v1.jpg" alt="O pátio do Aeroporto de Confins ao amanhecer, com a aeronave parada no portão de embarque sob a primeira luz da manhã">
+  <div class="capa-label">Trilha de Aprendizagem 10</div>
+  <div class="capa-titulo">O Movimento Uniforme (MU)</div>
+  <div class="capa-autores">Julio Azevedo e Felipe Beato</div>
+  <div class="capa-instituicao">IFMG &mdash; Campus Ouro Preto</div>
+</div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span class="trilha-code">T10</span> &middot; O Movimento Uniforme (MU)</h1>
+    <span class="badge">Texto Temático (TT)</span>
+  </div>
+  <div class="header-sub">Pré-Aula &middot; ~40 min de leitura</div>
+</header>
+
+<div class="conteudo">
+
+<!-- ═══════════════════ EPIGRAFE ═══════════════════ -->
+<div class="epigrafe" id="epigrafe">
+  <blockquote>&ldquo;O movimento, uma vez impresso num corpo, persiste por si mesmo — cessa apenas quando outra causa o interrompe.&rdquo;</blockquote>
+  <div class="autor">&mdash; Christiaan Huygens (1629&ndash;1695)</div>
+
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T10-IT-01-v1.jpg" alt="Símbolo da trilha T10 — a reta inclinada de s×t com o pequeno avião como ponto móvel" loading="lazy" style="border:none">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 1</span> &mdash; A reta inclinada atravessando um quadriculado de gráfico, com um pequeno avião no lugar do ponto móvel — a assinatura visual da trilha em que nada muda e, por isso, tudo se prevê.</figcaption>
+  </figure>
+
+  <div class="nota"><strong>Christiaan Huygens</strong> (Haia, 1629 &mdash; Haia, 1695). Matemático, astrônomo e físico holandês. Inventou o relógio de pêndulo (1656), formulou a teoria ondulatória da luz, descobriu Titã &mdash; a maior lua de Saturno &mdash; e enunciou o princípio da inércia de forma independente de Newton. A frase acima resume a primeira hipótese do seu <em>Horologium Oscillatorium</em> (1673): abandonado a si mesmo, o movimento não precisa de causa para continuar &mdash; precisa de causa para mudar. Esta trilha é inteira sobre o movimento que ninguém interrompe.</div>
+</div>
+<!-- ═══════════════════ ATO I ═══════════════════ -->
+<div class="ato" id="ato-i">
+  <div class="ato-titulo">Ato I &mdash; O Gancho</div>
+
+  <p>O portão de embarque abriu às oito e cinco da manhã. Sofia entrou no avião com o caderno de campo debaixo do braço; Lucas parou um instante na porta, olhando a curva prateada da fuselagem; Pedro já contava as fileiras até encontrar o assento 14. A turma do curso técnico viajava para o Rio de Janeiro numa visita ao Museu Casa da Moeda &mdash; o destino final, séculos atrás, de boa parte do ouro que saía das lavras de Vila Rica. O Prof.&nbsp;Julio acomodou-se do outro lado do corredor, na mesma fileira dos três.</p>
+
+  <!-- Figura 2 — IT-02 (embarque) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T10-IT-02-v1.jpg" alt="O trio de costas atravessando a ponte de embarque em Confins, com a aeronave à frente" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 2</span> &mdash; O embarque: o trio de costas atravessando a ponte de embarque em Confins, com a aeronave à frente e a manhã se abrindo nas janelas da conexão.</figcaption>
+  </figure>
+
+  <p>Às oito e meia em ponto, o avião decolou de Confins. Subida, curva, o cinto apertado, aquela pressão conhecida contra o encosto &mdash; tudo o que a trilha passada ensinou a nomear. Mas o Prof.&nbsp;Julio não estava interessado na decolagem.</p>
+
+  <p>&mdash; A parte importante da aula de hoje &mdash; disse ele, inclinando-se sobre o corredor &mdash; começa quando <strong>nada</strong> estiver acontecendo.</p>
+
+  <p>Minutos depois, o comandante anunciou que a aeronave havia atingido a altitude de cruzeiro. O ponteiro do mundo pareceu parar. Pedro abriu o mapa de bordo na tela do encosto: um avioncinho parado sobre o mapa de Minas, e embaixo, em letras miúdas, <strong>velocidade em relação ao solo: 720 km/h</strong>.</p>
+
+  <p>&mdash; Setecentos e vinte &mdash; leu Pedro. &mdash; E eu conseguindo equilibrar o copo de suco na bandeja.</p>
+
+  <p>&mdash; É isso que eu queria que vocês vissem &mdash; respondeu o professor. &mdash; Olhem a tela de novo daqui a cinco minutos.</p>
+
+  <p>Sofia cronometrou. Cinco minutos depois, a velocidade era a mesma: 720 km/h. Dez minutos: 720. O avioncinho avançava sobre o mapa, cruzava a divisa de Minas com o Rio, mas o número não se mexia. Lucas olhou pela janela: nuvens paradas, chão parado, asa parada. A sensação era de estar pendurado no céu, imóvel &mdash; a 720 quilômetros por hora.</p>
+
+  <p>&mdash; Professor &mdash; disse Sofia, com o lápis já apontado para o caderno &mdash;, se essa velocidade não muda <strong>nunca</strong>, então eu não preciso da janela nem da tela. Eu sei o relógio, eu sei a velocidade... eu sei <strong>onde a gente está</strong>. Certo?</p>
+
+  <p>O Prof.&nbsp;Julio sorriu do jeito de quem esperou a manhã inteira por uma frase.</p>
+
+  <p>&mdash; Guarde essa. A pergunta de hoje é exatamente essa: <strong>se a velocidade é constante e eu conheço o ponto de partida, posso dizer onde qualquer objeto estará em qualquer instante futuro &mdash; ou isso é bom demais para ser verdade?</strong></p>
+
+  <p>Às nove e quinze, o avião tocou a pista do Santos Dumont. Quarenta e cinco minutos de porta a porta &mdash; e, no meio deles, meia hora em que a física inteira coube numa equação de primeiro grau.</p>
+
+  <div class="separador"></div>
+
+  <!-- EXPLORE -->
+  <div class="explore" id="explore">
+    <div class="explore-titulo">🗺️ Explore este trajeto</div>
+
+    <!-- Figura 3 — IT-03 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-03-v1.jpg" alt="O mapa da viagem em traço de desenho: a linha reta de 360 km ligando Confins ao Santos Dumont" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 3</span> &mdash; O mapa da viagem em traço de desenho: a linha reta de 360 km ligando Confins ao Santos Dumont, sobrevoando a serra da Mantiqueira, com o pequeno avião no meio do caminho.</figcaption>
+    </figure>
+
+    <p>Os dois aeroportos desta história existem exatamente como descritos. Abra o Google Maps e pesquise por <strong>&ldquo;Aeroporto Internacional de Belo Horizonte &mdash; Confins, MG&rdquo;</strong>; depois, numa segunda busca, <strong>&ldquo;Aeroporto Santos Dumont, Rio de Janeiro, RJ&rdquo;</strong>.</p>
+
+    <p><strong>Como medir a distância do voo:</strong></p>
+    <p>1. No mapa, clique com o botão direito sobre o Aeroporto de Confins.</p>
+    <p>2. Escolha <strong>&ldquo;Medir distância&rdquo;</strong> no menu.</p>
+    <p>3. Clique sobre o Aeroporto Santos Dumont &mdash; o Maps traça a linha reta entre os dois pontos.</p>
+    <p>4. Leia o valor: cerca de <strong>360 km</strong> em linha reta, cruzando a Mantiqueira.</p>
+    <p>5. Compare com a distância por rodovia (~440 km pela BR-040): o avião voa a linha que a estrada não pode seguir.</p>
+
+    <p>Divida os 360 km pelos 30 minutos de cruzeiro e você encontrará, sem nenhum instrumento de bordo, os 720 km/h da tela do Pedro. É esta trilha inteira numa conta de padaria.</p>
+
+    <p style="margin-top:14px;"><a href="https://www.google.com/maps/search/Aeroporto+Internacional+de+Belo+Horizonte+Confins,+MG" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--verde);color:oklch(0.10 0 0);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">📍 Aeroporto de Confins &mdash; ver no Google Maps</a></p>
+  </div>
+
+</div><!-- fim ato-i -->
+<!-- ═══════════════════ ATO II ═══════════════════ -->
+<div class="ato" id="ato-ii">
+  <div class="ato-titulo">Ato II &mdash; O Desenvolvimento</div>
+
+  <!-- ─── TÓPICO 1 ─── -->
+  <div class="topico" id="topico-1">
+    <div class="topico-titulo">Tópico 1 &mdash; Características do MU: velocidade constante, aceleração nula</div>
+
+    <p>Antes de qualquer equação, é preciso reconhecer o personagem desta trilha quando ele aparece. O Movimento Uniforme é o mais discreto de todos os movimentos: ele não empurra ninguém contra o banco, não joga ninguém para a frente, não faz barulho novo. A imagem a seguir mostra o seu retrato mais honesto &mdash; uma tela de bordo em que o número da velocidade simplesmente se recusa a mudar.</p>
+
+    <!-- Figura 4 — IT-04 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-04-v1.jpg" alt="A tela do mapa de bordo em três momentos diferentes do voo: o relógio muda, a velocidade não" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 4</span> &mdash; A tela do mapa de bordo em três momentos diferentes do voo: o avioncinho avança sobre o mapa, o relógio muda, e a velocidade marca os mesmos 720 km/h nas três.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O trole pneumático da Mina de Passagem, em Mariana, desce desde 1890 os seus 315 metros de galeria retilínea a velocidade praticamente constante &mdash; um dos transportes subterrâneos sobre trilhos mais antigos do Brasil ainda em operação. O guia turístico anuncia a descida com números redondos: trilho reto, 2 m/s, pouco mais de dois minutos e meio. Sem saber, ele está enunciando as duas condições do Movimento Uniforme.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Um movimento é <strong>uniforme</strong> quando a velocidade é constante e diferente de zero &mdash; e, como consequência direta, a aceleração é nula. As duas afirmações são a mesma: se v não muda, Δv = 0, e a taxa de variação da velocidade (a aceleração da trilha passada) é zero. O MU é um <strong>modelo ideal</strong>: nenhum objeto real mantém a velocidade rigorosamente constante para sempre. Ele acontece, na prática, quando as influências sobre o corpo se <strong>equilibram</strong> &mdash; o empuxo das turbinas compensando exatamente a resistência do ar, o motor da correia compensando o atrito.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>Na mineração, o MU não é acidente: é <strong>especificação de projeto</strong>. Correias transportadoras, dutos de polpa e alimentadores de britador são dimensionados para operar em <strong>regime permanente</strong> &mdash; velocidade constante, vazão constante, previsibilidade total. Um sistema que acelera e freia toda hora desgasta componentes, desregula a vazão e derruba a produtividade. O operador de sala de controle monitora exatamente isto: se a velocidade da correia está no valor de projeto, o sistema está saudável.</p>
+    </div>
+
+    <p><strong>As duas condições &mdash; e o caso especial.</strong> De volta ao voo. O Prof.&nbsp;Julio pediu que cada um dissesse, com as próprias palavras, o que caracterizava aquela meia hora de cruzeiro.</p>
+
+    <p>&mdash; A velocidade não muda &mdash; disse Pedro.</p>
+
+    <p>&mdash; E ela não é zero &mdash; completou Sofia. &mdash; Senão a gente estaria parado no ar.</p>
+
+    <p>&mdash; As duas coisas juntas &mdash; confirmou o professor. &mdash; <strong>Velocidade constante e diferente de zero.</strong> É a definição inteira. E o que vocês me dizem da aceleração?</p>
+
+    <p>Lucas respondeu com a trilha anterior:</p>
+
+    <p>&mdash; Se aceleração é a taxa de variação da velocidade, e a velocidade não varia... zero.</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 1 &mdash; O Movimento Uniforme e seus vizinhos</div>
+      <table>
+        <thead><tr><th>Situação</th><th>Velocidade</th><th>Aceleração</th><th>Nome</th></tr></thead>
+        <tbody>
+          <tr><td>Avião em cruzeiro a 720 km/h</td><td>constante &ne; 0</td><td>zero</td><td>Movimento <strong>Uniforme</strong></td></tr>
+          <tr><td>Avião decolando</td><td>aumenta</td><td>&ne; 0</td><td>Movimento acelerado (T09)</td></tr>
+          <tr><td>Avião pousando e freando</td><td>diminui</td><td>&ne; 0</td><td>Movimento retardado (T09)</td></tr>
+          <tr><td>Avião parado no portão</td><td>constante = 0</td><td>zero</td><td><strong>Repouso</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A última linha merece atenção: o repouso é o caso particular em que a velocidade constante vale zero. Ele satisfaz &ldquo;v constante&rdquo; e &ldquo;a = 0&rdquo;, mas <strong>não</strong> é MU &mdash; o MU exige movimento. Um trole parado na galeria e um trole descendo a 2 m/s têm a mesma aceleração (nenhuma); só o segundo está em Movimento Uniforme.</p>
+
+    <p>Em símbolos, a definição inteira cabe numa linha &mdash; a velocidade média da T08, que agora não é mais só média: é a velocidade de todos os instantes.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 1 &mdash; Definição do Movimento Uniforme</div>
+      <div class="equacao-formula">v = Δs/Δt = constante &ne; 0&nbsp;&nbsp;(e, portanto, a = 0)</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>v</td><td>Velocidade (a mesma em qualquer trecho)</td><td>m/s (metro por segundo)</td></tr>
+          <tr><td>Δs</td><td>Deslocamento em um intervalo qualquer</td><td>m</td></tr>
+          <tr><td>Δt</td><td>Duração do intervalo</td><td>s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> no cruzeiro, qualquer trecho dá o mesmo valor: 360 km em 0,5 h &rarr; 720 km/h; 12 km em 1 min &rarr; 720 km/h; 200 m em 1 s &rarr; 720 km/h.</div>
+    </div>
+
+    <p>E há uma condição física escondida na definição: para a velocidade não mudar, <strong>nada pode sobrar</strong> &mdash; todas as influências sobre o corpo precisam se cancelar. No cruzeiro, as turbinas não estão &ldquo;ganhando&rdquo; da resistência do ar; estão <strong>empatando</strong> com ela. É o empate que produz a constância. Essa ideia voltará com força total no Tema 5, quando as influências ganharem nome próprio: forças.</p>
+  </div>
+
+  <!-- ─── TÓPICO 2 ─── -->
+  <div class="topico" id="topico-2">
+    <div class="topico-titulo">Tópico 2 &mdash; Equação horária da posição no MU</div>
+
+    <p>Se a velocidade não muda, o futuro vira uma conta. Este tópico constrói a ferramenta que transforma o relógio em localizador &mdash; a mesma que Sofia intuiu no avião: saber a hora é saber o lugar. A imagem a seguir mostra essa ideia em régua e relógio.</p>
+
+    <!-- Figura 5 — IT-05 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-05-v1.jpg" alt="A régua do trajeto graduada em quilômetros, com relógios sobre as posições correspondentes do avião" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 5</span> &mdash; A régua do trajeto: a linha Confins–Santos Dumont graduada em quilômetros, com relógios marcando 8h45, 9h00 e 9h05 pendurados sobre as posições correspondentes do avião.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Os aquedutos coloniais de Ouro Preto (século XVIII) conduziam água por canaletas de pedra com declive cuidadosamente projetado: suave o bastante para a água não disparar, firme o bastante para ela não parar. O resultado era um fluxo de velocidade praticamente constante &mdash; e os construtores, sem nenhuma equação, sabiam prever quanto tempo a água levava da nascente ao chafariz. A equação horária já era usada na prática antes de ser escrita.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>No MU, a posição cresce sempre no mesmo ritmo. A cada segundo, o móvel avança a mesma distância; a cada minuto, sessenta vezes essa distância. A posição em qualquer instante é, portanto, o ponto de partida mais o que foi acumulado: <strong>posição inicial + velocidade × tempo</strong>. É uma função de primeiro grau do tempo &mdash; a mais simples que existe &mdash; e é exatamente por ser simples que ela é poderosa: uma única medição de velocidade e um relógio bastam para prever tudo.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>O controle de tráfego aéreo trabalha o dia inteiro com essa conta. Conhecendo a velocidade de solo de cada aeronave e sua posição num instante, o controlador projeta onde ela estará dali a 5, 10, 20 minutos &mdash; e é essa projeção que mantém as aeronaves separadas no céu. Na mina, o mesmo raciocínio diz ao operador quando o minério que entrou na correia vai chegar à pilha.</p>
+    </div>
+
+    <p><strong>As quatro perguntas antes de qualquer conta.</strong> Antes de escrever a primeira equação, o Prof.&nbsp;Julio fez o trio responder, em voz alta, quatro perguntas sobre o próprio voo:</p>
+
+    <p>1. <strong>Onde estará posicionado o marco &ldquo;Zero&rdquo; da trajetória?</strong></p>
+    <p>2. <strong>Qual será o sentido &ldquo;Positivo&rdquo; do movimento?</strong></p>
+    <p>3. <strong>Qual será a posição inicial do móvel?</strong></p>
+    <p>4. <strong>Qual será a leitura do instante inicial do estudo do movimento?</strong></p>
+
+    <p>&mdash; Reparem &mdash; disse ele &mdash; que a natureza não responde nenhuma das quatro. O avião voa exatamente igual se o marco zero estiver em Confins ou no Santos Dumont. Quem responde somos <strong>nós</strong> &mdash; e é por isso que essas respostas se chamam <strong>convenções</strong>.</p>
+
+    <p>As quatro respostas são o contrato que o estudante assina com o problema antes de modelá-lo matematicamente &mdash; e cada uma tem um papel distinto:</p>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 2 &mdash; As quatro convenções da modelagem do movimento</div>
+      <table>
+        <thead><tr><th>#</th><th>Pergunta</th><th>O que define</th><th>Natureza</th><th>No voo da turma</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Onde estará posicionado o marco &ldquo;Zero&rdquo;?</td><td>A <strong>origem</strong> do eixo de posições</td><td>Convenção de <strong>referencial</strong></td><td>Aeroporto de Confins (s = 0)</td></tr>
+          <tr><td>2</td><td>Qual será o sentido &ldquo;Positivo&rdquo;?</td><td>A <strong>orientação</strong> do eixo</td><td>Convenção de <strong>referencial</strong></td><td>De Confins para o Rio</td></tr>
+          <tr><td>3</td><td>Qual será a posição inicial do móvel?</td><td>O valor de <strong>s₀</strong> &mdash; onde o móvel está quando o estudo começa</td><td><strong>Condição inicial</strong></td><td>s₀ = 60 km (início do cruzeiro)</td></tr>
+          <tr><td>4</td><td>Qual será a leitura do instante inicial?</td><td>O <strong>zero do cronômetro</strong> (t₀ = 0) &mdash; quando o estudo começa</td><td><strong>Condição inicial</strong></td><td>O instante em que o comandante anunciou o cruzeiro</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>As perguntas 1 e 2 constroem o <strong>palco</strong>: sem origem e sem orientação, &ldquo;posição 180 km&rdquo; não significa nada &mdash; 180 km a partir de onde, andando para que lado? As perguntas 3 e 4 dão a <strong>cena de abertura</strong>: a equação horária é uma máquina de prever o futuro, e toda previsão precisa saber de onde e de quando parte. Mudar qualquer uma das quatro respostas muda os números e os sinais da descrição &mdash; mas <strong>não muda o movimento</strong>. É o mesmo voo descrito por outro observador; a física é a mesma, a contabilidade é outra. Por isso, em toda prova, relatório ou plano de lavra, as convenções se <strong>declaram antes</strong> da primeira conta &mdash; quem esconde o referencial não erra a conta: erra a comunicação.</p>
+
+    <p>Esse contrato de quatro cláusulas tem dois fiadores históricos. O primeiro é <strong>René Descartes</strong>: em <em>La Géométrie</em> (A Geometria), apêndice do <em>Discurso do Método</em> publicado em <strong>1637</strong>, ele mostrou que qualquer ponto pode ser localizado por números medidos a partir de eixos com origem e orientação escolhidas &mdash; as coordenadas que hoje levam seu nome (cartesianas). As perguntas 1 e 2 são herança direta dele: sem Descartes, posição não vira número, e sem número não há equação. O segundo é <strong>Galileu Galilei</strong>: em <em>Il Saggiatore</em> (O Ensaiador, <strong>1623</strong>), ele proclamou que o livro da natureza está escrito em linguagem matemática; e nos <em>Discorsi e Dimostrazioni Matematiche intorno a Due Nuove Scienze</em> (Discursos e Demonstrações Matemáticas sobre Duas Novas Ciências, <strong>1638</strong>), fez exatamente isso com o movimento &mdash; definiu o movimento uniforme, tratou o tempo como grandeza medida a partir de um instante escolhido e deduziu as relações entre espaços percorridos e tempos gastos. As perguntas 3 e 4 são o gesto galileano: disparar o cronômetro e anotar a leitura inicial. Descartes deu o <strong>onde</strong> ao movimento; Galileu deu o <strong>quando</strong> &mdash; e a equação horária que vem a seguir é o encontro dos dois.</p>
+
+    <p><strong>Construindo a equação.</strong> O Prof.&nbsp;Julio desenhou no guardanapo uma reta com uma marca de origem.</p>
+
+    <p>&mdash; Vamos colocar o marco zero em Confins e orientar a reta para o Rio. No início do cruzeiro, o avião já tinha andado 60 km. Essa é a <strong>posição inicial</strong>: onde o objeto está quando o cronômetro dispara. Chamamos de s₀.</p>
+
+    <p>&mdash; E daí em diante ele anda 720 km a cada hora &mdash; disse Pedro. &mdash; Ou 12 km por minuto.</p>
+
+    <p>&mdash; Então a posição em qualquer instante é 60 km mais 12 km por minuto vezes os minutos rodados &mdash; concluiu Sofia, escrevendo antes de o professor terminar.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 2 &mdash; Equação horária da posição no MU</div>
+      <div class="equacao-formula">s = s₀ + v·t</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>s</td><td>Posição no instante t</td><td>m (metro)</td></tr>
+          <tr><td>s₀</td><td>Posição inicial (em t = 0)</td><td>m</td></tr>
+          <tr><td>v</td><td>Velocidade (constante)</td><td>m/s (metro por segundo)</td></tr>
+          <tr><td>t</td><td>Instante de tempo</td><td>s (segundo)</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> no cruzeiro, s₀ = 60 km e v = 12 km/min. Aos 10 min: s = 60 + 12 × 10 = <strong>180 km</strong>. Aos 25 min: s = 60 + 12 × 25 = <strong>360 km</strong> &mdash; o Santos Dumont à vista.</div>
+    </div>
+
+    <p>Dois detalhes fazem diferença. Primeiro: <strong>s₀ não é o começo do mundo</strong>, é só onde o objeto estava quando você zerou o cronômetro &mdash; a origem é uma escolha sua, como o marco zero de uma rodovia. Segundo: a equação funciona <strong>para trás</strong>. Substituindo t = &minus;5 min: s = 60 &minus; 60 = 0 km. Cinco minutos <em>antes</em> do início do cruzeiro, o avião estava sobre Confins &mdash; o tempo negativo devolve o passado do movimento, desde que o movimento já fosse uniforme lá também.</p>
+
+    <div class="simule">
+      <div class="simule-titulo">🎮 Simule &mdash; Movimento (Vascak, cap. I &mdash; Mecânica)</div>
+      <p>Desafio de 3 minutos: abra o capítulo Mecânica e escolha a animação <strong>Movimento</strong>, no modo uniforme. Ajuste a velocidade, arraste o tempo e confira: a posição que a animação mostra é exatamente a que a Equação 2 prevê &mdash; para qualquer instante, inclusive antes do zero.</p>
+      <p style="margin-top:14px;"><a href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--superficie);border:1px solid var(--azul);color:var(--azul);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Abrir simulação</a></p>
+    </div>
+  </div>
+
+
+<!-- ─── TÓPICO 3 ─── -->
+  <div class="topico" id="topico-3">
+    <div class="topico-titulo">Tópico 3 &mdash; Gráficos do MU: posição × tempo e velocidade × tempo</div>
+
+    <p>Uma equação conta a história em símbolos; um gráfico conta a mesma história de um golpe de vista. O MU produz os dois gráficos mais limpos de toda a cinemática &mdash; e aprender a lê-los aqui é o que tornará legíveis os gráficos tortos das trilhas seguintes. A imagem abaixo os coloca lado a lado.</p>
+
+    <!-- Figura 6 — IT-06 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-06-v1.jpg" alt="Dois gráficos lado a lado: reta inclinada de s por t e reta horizontal de v por t com área sombreada" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 6</span> &mdash; Dois gráficos lado a lado na mesma folha quadriculada: à esquerda a reta inclinada de s×t subindo como uma rampa; à direita a reta horizontal de v×t com a área retangular sombreada embaixo.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Antes das telas, o registro gráfico de movimento era feito em papel: o tacógrafo, obrigatório em veículos de carga no Brasil desde os anos 1970, riscava a velocidade num disco de papel que girava com o relógio. Um trecho de velocidade constante aparecia como um arco perfeitamente paralelo à borda do disco &mdash; o fiscal reconhecia o movimento uniforme pelo desenho, sem ler um único número.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>No gráfico <strong>posição × tempo</strong>, o MU é uma <strong>reta inclinada</strong>: a inclinação é a velocidade. Quanto mais íngreme a reta, maior a velocidade; se a reta desce, a velocidade é negativa &mdash; o móvel anda contra a orientação escolhida. No gráfico <strong>velocidade × tempo</strong>, o MU é uma <strong>reta horizontal</strong>: a velocidade não muda, então a linha não sobe nem desce &mdash; a inclinação nula é a aceleração nula. E a <strong>área</strong> entre essa reta horizontal e o eixo do tempo é um retângulo cujo valor, base × altura = Δt × v, é exatamente o <strong>deslocamento</strong>.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>A sala de controle de uma usina de beneficiamento exibe exatamente esses gráficos, em tempo real, para cada correia do circuito. Velocidade em linha reta horizontal = regime permanente = tudo bem. Qualquer inclinação nessa linha é um evento: partida, parada, escorregamento de correia. O operador é, profissionalmente, um leitor de gráficos v×t.</p>
+    </div>
+
+    <p><strong>Lendo as duas retas.</strong> De volta à tela do encosto: Pedro percebeu que o mapa de bordo tinha um menu escondido com um gráfico da velocidade ao longo do voo.</p>
+
+    <p>&mdash; Olha só: subiu torto na decolagem, ficou uma régua no meio, e vai descer torto no pouso.</p>
+
+    <p>&mdash; A régua do meio é a nossa trilha &mdash; disse o Prof.&nbsp;Julio. &mdash; E ela esconde duas informações. A primeira: a inclinação dessa linha é zero. Que grandeza é a inclinação da linha no gráfico da velocidade?</p>
+
+    <p>&mdash; A aceleração &mdash; respondeu Lucas. &mdash; Zero. Confere.</p>
+
+    <p>&mdash; A segunda é mais bonita. Sombreiem mentalmente a região entre a linha e o eixo do tempo, só no trecho da régua. Que figura aparece?</p>
+
+    <p>&mdash; Um retângulo &mdash; disse Sofia. &mdash; Base de meia hora, altura de 720 km/h... &mdash; ela parou, fez a conta &mdash; ...área de 360 km. <strong>A área é a distância!</strong></p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 3 &mdash; Deslocamento como área sob o gráfico v×t</div>
+      <div class="equacao-formula">Δs = v·Δt</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>Δs</td><td>Deslocamento (área do retângulo em v×t)</td><td>m</td></tr>
+          <tr><td>v</td><td>Velocidade constante (altura do retângulo)</td><td>m/s</td></tr>
+          <tr><td>Δt</td><td>Intervalo de tempo (base do retângulo)</td><td>s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> cruzeiro de 30 min a 720 km/h: Δs = 720 × 0,5 = <strong>360 km</strong> &mdash; a área que Sofia sombreou de cabeça.</div>
+    </div>
+
+    <div class="quadro">
+      <div class="quadro-titulo">Quadro 3 &mdash; Como ler os gráficos do MU</div>
+      <table>
+        <thead><tr><th>Gráfico</th><th>Forma no MU</th><th>Inclinação significa</th><th>Área sob a curva significa</th></tr></thead>
+        <tbody>
+          <tr><td>s × t</td><td>reta inclinada</td><td>velocidade v</td><td>&mdash; (não tem significado físico direto)</td></tr>
+          <tr><td>v × t</td><td>reta horizontal</td><td>aceleração (= 0)</td><td>deslocamento Δs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O sinal também se lê no desenho: reta de s×t <strong>subindo</strong> = v positiva (movimento progressivo, a favor da orientação); reta <strong>descendo</strong> = v negativa (retrógrado). No gráfico v×t, linha horizontal <strong>acima</strong> do eixo = móvel avançando; <strong>abaixo</strong> = móvel voltando. Cuidado com a armadilha clássica: o gráfico s×t <strong>não é a trajetória</strong> &mdash; o avião não subiu uma rampa; a &ldquo;rampa&rdquo; é a posição crescendo no papel enquanto o tempo passa.</p>
+
+    <div class="simule">
+      <div class="simule-titulo">🎮 Simule &mdash; Movimento (Vascak, cap. I &mdash; Mecânica)</div>
+      <p>Desafio de 3 minutos: na mesma animação <strong>Movimento</strong>, observe os gráficos sincronizados: aumente a velocidade e veja a reta de s×t ficar mais íngreme enquanto a reta de v×t continua horizontal &mdash; apenas mais alta. Depois inverta o sentido do movimento e confira o que acontece com o sinal das duas retas.</p>
+      <p style="margin-top:14px;"><a href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener" style="display:inline-block;padding:8px 16px;background:var(--superficie);border:1px solid var(--azul);color:var(--azul);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.5px;">Abrir simulação</a></p>
+    </div>
+  </div>
+
+  <!-- ─── TÓPICO 4 ─── -->
+  <div class="topico" id="topico-4">
+    <div class="topico-titulo">Tópico 4 &mdash; Encontro de móveis no MU</div>
+
+    <p>Dois objetos em MU na mesma reta são duas equações de primeiro grau &mdash; e a pergunta &ldquo;onde eles se encontram?&rdquo; vira o problema mais clássico da cinemática escolar. Mas ele não nasceu na escola: nasceu em quem precisava saber se dois veículos na mesma via iam ou não ocupar o mesmo lugar ao mesmo tempo. A imagem a seguir arma o problema no céu.</p>
+
+    <!-- Figura 7 — IT-07 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-07-v1.jpg" alt="Dois aviões em rotas opostas sobre o corredor Confins–Santos Dumont, com as equações horárias como rastros" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 7</span> &mdash; Dois aviões em rotas opostas sobre o mesmo corredor aéreo Confins–Santos Dumont, vistos de cima no mapa, com as duas equações horárias escritas como rastros atrás de cada um.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>Na Estrada Real, as tropas de mulas que desciam com o ouro e as que subiam com mercadorias compartilhavam o mesmo caminho estreito. Os tropeiros calculavam de cabeça, pela hora de partida e pelo passo das mulas, em que rancho as tropas iam se cruzar &mdash; e ajustavam a viagem para que o cruzamento acontecesse onde havia espaço. Era o problema do encontro, resolvido sem álgebra, dois séculos antes dela chegar à escola.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Cada móvel em MU tem a sua equação horária, com o seu s₀ e a sua v &mdash; <strong>as duas escritas no mesmo referencial</strong>, com a mesma origem e a mesma orientação. O encontro é o instante em que os dois ocupam a mesma posição: <strong>s_A = s_B</strong>. Igualar as duas equações produz uma equação de primeiro grau em t; resolvida, ela entrega o <strong>instante</strong> do encontro, e qualquer uma das equações horárias entrega o <strong>local</strong>.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>É por isso que o controle de tráfego &mdash; aéreo, ferroviário ou de mina &mdash; existe. Dois troles na mesma galeria, dois trens na mesma linha, dois caminhões na mesma rampa: em todos os casos, o sistema calcula continuamente o ponto de encontro projetado e age <strong>antes</strong> que ele aconteça, alterando velocidade ou segregando vias. O encontro de móveis, na indústria, é um problema que se resolve para <strong>não</strong> acontecer.</p>
+    </div>
+
+    <p><strong>O encontro no céu &mdash; e na galeria.</strong> O Prof.&nbsp;Julio propôs o problema na volta, no saguão do Santos Dumont:</p>
+
+    <p>&mdash; Nosso voo de ida saiu de Confins às 8h30. Suponham que, no mesmo instante, um voo idêntico tivesse saído do Santos Dumont para Confins, no corredor paralelo, também a 720 km/h de velocidade de solo. Onde os dois se cruzariam?</p>
+
+    <p>Sofia armou as duas equações no mesmo eixo, com origem em Confins e orientação para o Rio, tomando o trecho de cruzeiro de 360 km como modelo:</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 4 &mdash; Condição de encontro</div>
+      <div class="equacao-formula">s_A = s_B</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>s_A</td><td>Avião A (Confins &rarr; Rio): s_A = 0 + 720·t</td><td>km</td></tr>
+          <tr><td>s_B</td><td>Avião B (Rio &rarr; Confins): s_B = 360 &minus; 720·t</td><td>km</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao">(t em horas, s em km, mesmo referencial para os dois)<br>720·t = 360 &minus; 720·t &rarr; 1440·t = 360 &rarr; <strong>t = 0,25 h = 15 min</strong><br>s_A = 720 × 0,25 = <strong>180 km</strong></div>
+    </div>
+
+    <p>&mdash; Quinze minutos de voo, exatamente no meio do caminho &mdash; leu Pedro. &mdash; Faz sentido: mesma velocidade, um contra o outro, o encontro é no meio.</p>
+
+    <p>&mdash; E se as velocidades fossem diferentes? &mdash; provocou o professor. &mdash; Dois troles na galeria da Mina de Passagem, partindo das extremidades dos 315 metros no mesmo instante: um a 2 m/s, outro a 1,5 m/s.</p>
+
+    <p>Lucas montou: s_A = 2t e s_B = 315 &minus; 1,5t. Igualando: 3,5t = 315, <strong>t = 90 s</strong>, e s = 2 × 90 = <strong>180 m</strong> &mdash; o encontro acontece mais perto da extremidade do trole mais lento.</p>
+
+    <p>No gráfico s×t, tudo isso é uma única imagem: cada móvel é uma reta, e o encontro é o <strong>ponto onde as retas se cruzam</strong>. Retas que se cruzam uma vez: um encontro. Retas paralelas (mesma velocidade, mesmo sentido): nunca se encontram &mdash; ou são o mesmo movimento.</p>
+  </div>
+
+  <!-- ─── TÓPICO 5 ─── -->
+  <div class="topico" id="topico-5">
+    <div class="topico-titulo">Tópico 5 &mdash; MU em sistemas de fluxo contínuo da mineração</div>
+
+    <p>O tópico final devolve a trilha para casa: da poltrona do avião para a sala de controle da usina. É aqui que o Movimento Uniforme deixa de ser modelo de sala de aula e vira parâmetro de contrato, meta de produção e item de inspeção. A imagem a seguir mostra o MU industrial em ação.</p>
+
+    <!-- Figura 8 — IT-08 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-08-v1.jpg" alt="Painel duplo da usina: correia transportadora em regime permanente e duto de polpa na serra" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 8</span> &mdash; Painel duplo da usina: à esquerda a correia transportadora carregada correndo em regime permanente sob o céu do Quadrilátero; à direita o duto de polpa serpenteando a serra com a seta de vazão constante.</figcaption>
+    </figure>
+
+    <div class="contextualizacao-titulo">Contextualização Tripla</div>
+
+    <div class="contexto ctx-historico">
+      <div class="contexto-label">Contexto histórico</div>
+      <p>O princípio do fluxo contínuo chegou à mineração de Minas antes da eletricidade: os <strong>rosários</strong> &mdash; correntes de canecas movidas por roda d'água que drenavam as minas coloniais &mdash; só funcionavam se girassem em ritmo constante. Caneca acelerada derramava; caneca lenta afogava a galeria. O regime permanente era, já no século XVIII, a diferença entre mina seca e mina perdida.</p>
+    </div>
+    <div class="contexto ctx-cientifico">
+      <div class="contexto-label">Contexto científico</div>
+      <p>Numa correia transportadora em <strong>regime permanente</strong>, cada ponto da correia está em MU: mesma velocidade, o tempo todo. Disso decorre a grandeza-chave dos sistemas contínuos: o <strong>tempo de residência</strong> &mdash; quanto tempo o material passa dentro do sistema. Para um trecho de comprimento L percorrido a velocidade v, ele é simplesmente t = L/v, a Equação 1 lida ao contrário. E a vazão de material (toneladas por hora) é proporcional à velocidade: v constante = vazão constante = usina previsível.</p>
+    </div>
+    <div class="contexto ctx-profissional">
+      <div class="contexto-label">Contexto profissional</div>
+      <p>A velocidade de projeto de uma correia de minério de ferro fica tipicamente entre 3 e 6 m/s. O operador acompanha os <strong>desvios operacionais</strong>: velocidade abaixo do projeto indica sobrecarga, escorregamento ou problema no acionamento; acima, risco de derramamento e desgaste. No duto de polpa (a mistura de minério fino com água que atravessa serras por dezenas de quilômetros), a velocidade é mantida numa janela estreita: rápida demais erode o duto por dentro; lenta demais deixa o minério decantar e entupir a linha. O MU, ali, não é ideal teórico &mdash; é condição de funcionamento.</p>
+    </div>
+
+    <p><strong>Do avião à correia.</strong> De volta a Ouro Preto, na aula seguinte, o Prof.&nbsp;Julio fechou o ciclo com números da indústria:</p>
+
+    <p>&mdash; Uma correia de 400 metros, velocidade de projeto de 3,5 m/s. Quanto tempo o minério que entra agora leva para chegar à pilha?</p>
+
+    <p>&mdash; Equação 2 ao contrário &mdash; disse Sofia. &mdash; t = L/v = 400 ÷ 3,5 &asymp; <strong>114 segundos</strong>. Menos de dois minutos.</p>
+
+    <p>&mdash; E um duto de polpa de 12 km a 1,8 m/s? &mdash; completou ele, olhando para Pedro.</p>
+
+    <p>&mdash; 12.000 ÷ 1,8 &asymp; 6.667 s... &mdash; Pedro converteu &mdash; <strong>1 hora e 51 minutos</strong> dentro do duto.</p>
+
+    <div class="equacao">
+      <div class="equacao-label">Equação 5 &mdash; Tempo de residência em sistemas de fluxo contínuo</div>
+      <div class="equacao-formula">t_res = L/v</div>
+      <table class="equacao-tabela">
+        <thead><tr><th>Símbolo</th><th>Grandeza</th><th>Unidade SI</th></tr></thead>
+        <tbody>
+          <tr><td>t_res</td><td>Tempo de residência do material no sistema</td><td>s (segundo)</td></tr>
+          <tr><td>L</td><td>Comprimento do trecho percorrido</td><td>m</td></tr>
+          <tr><td>v</td><td>Velocidade de operação (constante)</td><td>m/s</td></tr>
+        </tbody>
+      </table>
+      <div class="equacao-aplicacao"><strong>Aplicação:</strong> correia de 400 m a 3,5 m/s &rarr; t_res = 400/3,5 &asymp; <strong>114 s</strong>; duto de 12 km a 1,8 m/s &rarr; t_res = 12.000/1,8 &asymp; <strong>6.667 s &asymp; 1 h 51 min</strong>.</div>
+    </div>
+
+    <p>&mdash; Esse número é o <strong>tempo de residência</strong> &mdash; concluiu o professor. &mdash; Ele diz à usina quando o efeito de qualquer mudança lá na entrada vai aparecer na saída. Vocês calcularam com a mesma equação que previu a chegada do nosso avião ao Rio. O Movimento Uniforme é isto: a física da previsibilidade. Quando um sistema opera em MU, o futuro dele está escrito numa equação de primeiro grau &mdash; e quem sabe ler essa equação controla o sistema.</p>
+  </div>
+
+</div><!-- fim ato-ii -->
+
+<!-- ═══════════════════ ATO III ═══════════════════ -->
+<div class="ato" id="ato-iii">
+  <div class="ato-titulo">Ato III &mdash; O Fechamento</div>
+
+  <p>No fim da tarde da viagem, no voo de volta, o comandante anunciou o cruzeiro e Sofia nem olhou para a tela. Escreveu no caderno: &ldquo;8 minutos de cruzeiro, 720 km/h, 96 km rodados&rdquo;, e só então conferiu no mapa de bordo. O avioncinho estava exatamente onde a equação mandava. Lucas olhava pela janela o horizonte alaranjado, imóvel a 720 por hora; Pedro dormia, com o copo de suco intacto na bandeja &mdash; o mais involuntário dos experimentos de física da turma.</p>
+
+  <!-- Figura 9 — IT-09 (retorno) -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T10-IT-09-v1.jpg" alt="O trio de costas no corredor de desembarque de Confins, ao anoitecer, com o painel de chegadas aceso" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 9</span> &mdash; O retorno: o trio de costas no corredor de desembarque de Confins, ao anoitecer, com o painel de chegadas aceso indicando o voo do Rio pontualmente cumprido.</figcaption>
+  </figure>
+
+  <p>&mdash; Reparem no que aconteceu hoje &mdash; disse o Prof.&nbsp;Julio, quando as turbinas desligaram. &mdash; De manhã, a Sofia perguntou se saber a velocidade e o relógio bastava para saber o lugar. A resposta é sim &mdash; <strong>enquanto a velocidade não mudar</strong>. Toda a força do Movimento Uniforme está nessa condição, e toda a fragilidade dele também.</p>
+
+  <p>&mdash; Fragilidade? &mdash; estranhou Pedro.</p>
+
+  <p>&mdash; O nosso voo teve meia hora de MU e quinze minutos que não foram MU nenhum: decolagem, curvas, descida, pouso. A equação de hoje não alcança essas partes. Para elas, a velocidade muda no tempo &mdash; e aí é preciso uma equação que aceite a mudança.</p>
+
+  <p>&mdash; A aceleração constante &mdash; adiantou Lucas. &mdash; Da trilha passada.</p>
+
+  <p>&mdash; Exatamente. Na próxima trilha, o movimento que muda de velocidade em ritmo constante ganha nome, equações e gráficos próprios: o <strong>Movimento Uniformemente Variado</strong>. A decolagem de hoje, a frenagem do caminhão na rampa e a queda de uma pedra vão caber nele. O que hoje foi régua, amanhã será rampa.</p>
+
+  <p>Previsão sem incerteza no trecho constante; humildade para reconhecer onde a constância acaba. Entre uma coisa e outra, o técnico em mineração encontra o seu trabalho de todo dia &mdash; porque a usina inteira foi projetada para viver no primeiro caso e sobreviver ao segundo.</p>
+</div>
+
+<!-- ═══════════════════ PROBLEMAS INTERDISCIPLINARES ═══════════════════ -->
+<div class="ato" id="conexoes">
+  <div class="ato-titulo">Problemas Interdisciplinares</div>
+
+  <p><em>Cinco problemas que conectam a Física com outras áreas do conhecimento técnico e científico. Cada problema exige análise, síntese ou avaliação &mdash; Bloom L4 a L6.</em></p>
+
+  <!-- Figura 10 — IT-10 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T10-IT-10-v1.jpg" alt="Cinco disciplinas em órbita de uma única reta inclinada s por t, com o avião de Confins ao fundo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 10</span> &mdash; Cinco disciplinas em órbita de uma única reta inclinada s×t &mdash; e o pequeno avião de Confins cruzando o fundo do quadro.</figcaption>
+  </figure>
+
+  <!-- C5 Protocol Table -->
+  <div class="c5-box">
+    <div class="c5-titulo">Protocolo C5 &mdash; Metodologia para Problemas Interdisciplinares</div>
+    <p style="margin-bottom:12px;font-family:var(--serif);font-size:1rem;color:oklch(0.80 0 0);">Quando a Física se encontra com outra disciplina, o caminho até a resposta segue oito etapas &mdash; sempre as mesmas. Esse protocolo chama-se <strong>Componente 5</strong> e é o método que técnicos de mineração usam para resolver problemas reais. Pratique-o aqui: você vai reaplicá-lo integralmente no <strong>Trabalho (TR)</strong> desta trilha.</p>
+
+    <!-- Figura 11 — IT-11 -->
+    <figure class="figura">
+      <img class="figura-img" src="../_imagens/_web/T10-IT-11-v1.jpg" alt="As oito etapas do método científico de resolução de problemas, sob o rastro retilíneo do avião" loading="lazy">
+      <figcaption class="figura-legenda"><span class="figura-num">Figura 11</span> &mdash; O método em cena: as oito etapas que transformam um enunciado difícil numa resposta com sentido, sob o rastro retilíneo do avião no céu.</figcaption>
+    </figure>
+
+    <table class="c5-tabela">
+      <thead><tr><th>Etapa</th><th>Nome</th><th>O que fazer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>O que está sendo pedido?</td><td>Releia o enunciado. Escreva com suas próprias palavras o que é pedido.</td></tr>
+        <tr><td>2</td><td>Quais são os dados?</td><td>Liste cada grandeza com seu símbolo, valor e unidade.</td></tr>
+        <tr><td>3</td><td>Quais são as hipóteses?</td><td>Declare o que você vai assumir (movimento uniforme, trajetória retilínea etc.).</td></tr>
+        <tr><td>4</td><td>Qual é o desenho do problema?</td><td>Faça um esboço, diagrama ou esquema simples da situação.</td></tr>
+        <tr><td>5</td><td>Quais são as equações?</td><td>Identifique a equação do TT. Isole algebricamente a variável pedida.</td></tr>
+        <tr><td>6</td><td>Cálculo com unidades</td><td>Substitua os valores. Acompanhe as unidades passo a passo até o resultado.</td></tr>
+        <tr><td>7</td><td>Análise de resultados</td><td>O resultado faz sentido? Compare com valores típicos da mineração.</td></tr>
+        <tr><td>8</td><td>Responda o que foi pedido</td><td>Escreva a resposta completa, com unidade e interpretação no contexto.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separador"></div>
+
+<!-- Atividade 1 -->
+  <div class="atividade">
+    <div class="atividade-titulo">1. Física e Matemática</div>
+    <p>Um estudante afirmou: &ldquo;no gráfico s×t, duas retas paralelas representam móveis que vão se encontrar mais tarde, porque as duas continuam para sempre&rdquo;. Avalie a afirmação usando dois troles da Mina de Passagem que partem da mesma extremidade da galeria com 60 s de diferença, ambos a 2,0 m/s. Escreva as duas equações horárias, verifique algebricamente se existe encontro e proponha o critério gráfico correto.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Julgar uma afirmação sobre retas paralelas no gráfico s×t, testar o caso proposto com álgebra e formular o critério gráfico correto para haver encontro.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">v_A = v_B = 2,0 m/s &middot; mesma origem (s₀ = 0 para A). B parte 60 s depois de A.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Ambos os troles em MU na mesma galeria retilínea; mesmo referencial, com origem na extremidade de partida e cronômetro zerado na partida de A.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">A: parte em t = 0 &mdash;2 m/s&rarr; &middot; B: parte em t = 60 s &mdash;2 m/s&rarr; (mesma via, mesmo sentido)</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2 para cada trole: s_A = 2·t e s_B = 2·(t &minus; 60), válida para t &ge; 60 s. Condição de encontro (Equação 4): s_A = s_B.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">2·t = 2·(t &minus; 60) &rarr; 2t = 2t &minus; 120 &rarr; <strong>0 = &minus;120</strong> &mdash; equação impossível. A distância entre eles: s_A &minus; s_B = 2t &minus; 2t + 120 = <strong>120 m, constante</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">A álgebra confirma o que a geometria mostra: retas de mesma inclinação nunca se cruzam. Os troles mantêm 120 m de separação para sempre &mdash; que é exatamente o que um plano de tráfego de mina deseja entre veículos na mesma via.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">A afirmação é <strong>falsa</strong> &mdash; e é o oposto da verdade: retas paralelas em s×t representam móveis com a <strong>mesma velocidade</strong>, que <strong>nunca</strong> se encontram (a &ldquo;equação do encontro&rdquo; fica sem solução). O critério gráfico correto é: há encontro quando as retas têm <strong>inclinações diferentes</strong> e se <strong>cruzam</strong> dentro do intervalo de validade do movimento; o ponto de cruzamento dá o instante (eixo t) e o local (eixo s) do encontro.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 2 -->
+  <div class="atividade">
+    <div class="atividade-titulo">2. Física e Geografia</div>
+    <p>No voo Confins &rarr; Santos Dumont, a tela de bordo indicou velocidade em relação ao solo de 720 km/h durante 30 min de cruzeiro, cobrindo 360 km em linha reta. No voo de volta, um vento de proa reduziu a velocidade de solo para 640 km/h. Determine a duração do cruzeiro na volta, a diferença de tempo em relação à ida e explique por que a mesma aeronave, com o mesmo motor, pode estar em MU com duas velocidades de solo diferentes.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">O tempo de cruzeiro na volta, a comparação com a ida e a explicação física da diferença entre as duas velocidades de solo.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Ida: v₁ = 720 km/h &middot; Δs = 360 km &middot; Δt₁ = 30 min. Volta: v₂ = 640 km/h &middot; mesmos 360 km.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Cruzeiro em MU nos dois sentidos; trajeto de cruzeiro idêntico (360 km); vento constante durante a volta.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">ida: [CNF] &mdash;720 km/h&rarr; [SDU] (vento a favor ou neutro) &middot; volta: [SDU] &mdash;640 km/h&rarr; [CNF] (vento de proa)</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2 rearranjada para o tempo: t = Δs/v.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Δt₂ = 360 km ÷ 640 km/h = 0,5625 h = <strong>33,75 min &asymp; 34 min</strong>. Diferença: 33,75 &minus; 30 = <strong>3,75 min &asymp; 4 min a mais na volta</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Quatro minutos parecem pouco, mas companhias aéreas planejam combustível, malha de horários e conexões exatamente sobre essas diferenças &mdash; é por isso que o mesmo trecho tem durações de ida e volta diferentes no bilhete. A ordem de grandeza (minutos num voo de meia hora) é plausível.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O cruzeiro da volta dura cerca de <strong>34 min</strong>, aproximadamente <strong>4 min a mais</strong> que a ida. A aeronave está em MU nos dois casos porque a sua velocidade <strong>não varia no tempo</strong> em nenhum deles &mdash; o que muda entre ida e volta é o <strong>referencial do ar</strong>: o avião voa na mesma velocidade em relação à massa de ar, mas a massa de ar se move em relação ao solo. Velocidade constante define o MU; o <strong>valor</strong> dessa constante depende do referencial e das condições &mdash; no caso, do vento que a Geografia explica pelas correntes de altitude.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 3 -->
+  <div class="atividade">
+    <div class="atividade-titulo">3. Física e Engenharia de Minas</div>
+    <p>Uma correia transportadora de 400 m opera em regime permanente a 3,5 m/s, transportando 2.100 t/h. A engenharia estuda elevar a velocidade para 4,2 m/s, mantendo a mesma carga por metro de correia. Determine o tempo de residência do minério nas duas velocidades e a nova vazão, e avalie se o ganho compensa sabendo que acima de 4,0 m/s o desgaste dos roletes cresce 40% ao ano.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">Dois tempos de residência, a vazão na nova velocidade e um parecer técnico sobre a mudança considerando o custo de desgaste.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">L = 400 m &middot; v₁ = 3,5 m/s &middot; v₂ = 4,2 m/s. Vazão atual: Q₁ = 2.100 t/h &middot; carga linear constante. Desgaste de roletes: +40%/ano acima de 4,0 m/s.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Regime permanente (MU) nas duas velocidades; carga por metro de correia idêntica nos dois cenários &mdash; a vazão então é proporcional à velocidade.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[alimentação] &mdash;&mdash; correia 400 m · v &mdash;&mdash;&gt; [pilha]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 5: t_res = L/v. Proporcionalidade da vazão: Q₂ = Q₁ · (v₂/v₁).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">t₁ = 400 ÷ 3,5 = <strong>114 s</strong> &middot; t₂ = 400 ÷ 4,2 = <strong>95 s</strong>. Q₂ = 2.100 × (4,2/3,5) = 2.100 × 1,2 = <strong>2.520 t/h</strong> (+20%).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Os tempos (na casa de 1,5 a 2 minutos para 400 m) e a vazão são típicos de correias de minério de ferro. O ganho de 20% na vazão é real, mas a nova velocidade ultrapassa o limiar de 4,0 m/s do desgaste acelerado &mdash; o custo não cresce na mesma proporção do ganho: cresce mais.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O tempo de residência cai de <strong>114 s para 95 s</strong> e a vazão sobe para <strong>2.520 t/h</strong> (+20%). A decisão, porém, não se resolve só na cinemática: operar a 4,2 m/s coloca o sistema na faixa de desgaste 40% maior ao ano. O parecer técnico responsável é <strong>condicionar</strong> a mudança a um estudo de custo total (roletes, tambores, paradas de manutenção) &mdash; ou buscar os mesmos +20% de vazão aumentando a carga por metro, com a velocidade mantida abaixo do limiar. Rapidez que encurta a vida útil do sistema não é produtividade: é antecipação de despesa.</div></div>
+    </details>
+  </div>
+
+<!-- Atividade 4 -->
+  <div class="atividade">
+    <div class="atividade-titulo">4. Física e Segurança do Trabalho</div>
+    <p>Numa galeria retilínea de 315 m, o plano de tráfego permite dois troles simultâneos em sentidos opostos, desde que a parada programada ocorra a pelo menos 30 m de distância entre eles. Os troles partem simultaneamente das extremidades a 2,0 m/s e 1,5 m/s e o protocolo manda ambos pararem 60 s após a partida. Verifique se o protocolo cumpre a distância mínima e determine o tempo máximo de viagem que ainda a cumpriria.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">A distância entre os troles no instante da parada programada, a comparação com o mínimo de 30 m e o tempo-limite de viagem que ainda respeita esse mínimo.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Galeria: L = 315 m &middot; v_A = 2,0 m/s &middot; v_B = 1,5 m/s (sentidos opostos). Parada programada: t_p = 60 s &middot; distância mínima: d_min = 30 m.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">MU para os dois troles do início à parada (ignora-se a distância percorrida durante a frenagem, a favor da segurança seria somá-la); partida simultânea; mesmo referencial com origem na extremidade de A.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">[A]&mdash;2,0 m/s&rarr; ......... &larr;1,5 m/s&mdash;[B] &middot; 0 &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; 315 m</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 2 para cada trole: s_A = 2,0·t e s_B = 315 &minus; 1,5·t. Distância entre eles: d(t) = s_B &minus; s_A = 315 &minus; 3,5·t.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Em t = 60 s: d = 315 &minus; 3,5 × 60 = 315 &minus; 210 = <strong>105 m</strong> &check; (&ge; 30 m). Limite: 315 &minus; 3,5·t = 30 &rarr; 3,5·t = 285 &rarr; <strong>t = 81 s</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Com a parada aos 60 s, os troles ficam a 105 m um do outro &mdash; folga confortável, três vezes e meia o mínimo. O limite de 81 s mostra a margem real do protocolo: 21 segundos. A taxa de aproximação (3,5 m/s &mdash; soma das velocidades) é o número que o supervisor precisa ter na cabeça: cada segundo de atraso na parada come 3,5 m da distância de segurança.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">O protocolo cumpre o requisito: na parada programada os troles estão a <strong>105 m</strong>, bem acima dos 30 m. O tempo máximo de viagem que ainda cumpre a distância mínima é <strong>81 s</strong>. A recomendação de segurança do trabalho é manter os 60 s com os 21 s de margem &mdash; margens são exatamente o que absorve o atraso humano, e a NR-22 existe porque, no subsolo, a distância entre dois veículos nunca deve depender de ninguém acertar o cronômetro no limite.</div></div>
+    </details>
+  </div>
+
+  <!-- Atividade 5 -->
+  <div class="atividade">
+    <div class="atividade-titulo">5. Física e História</div>
+    <p>No século XVIII, o ouro de Vila Rica descia ao Rio de Janeiro pelo Caminho Novo: cerca de 500 km vencidos por tropas de mulas em aproximadamente 12 dias de marcha, viajando cerca de 10 h por dia. O voo desta trilha cobre os 360 km em linha reta em 45 min de porta a porta. Estime a velocidade média das tropas em marcha, compare as durações totais dos dois transportes e avalie a afirmação: &ldquo;a tecnologia multiplicou a velocidade, mas o modelo físico do transporte continua o mesmo&rdquo;.</p>
+    <details class="rcp">
+      <summary>Resolução Científica do Problema</summary>
+      <div class="rcp-step"><div class="rcp-step-label">1. O que está sendo pedido?</div><div class="rcp-step-text">A velocidade média das tropas, a razão entre as durações das duas viagens e um julgamento da afirmação sobre a permanência do modelo físico.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">2. Quais são os dados?</div><div class="rcp-step-text">Tropas: Δs = 500 km &middot; 12 dias × 10 h/dia = 120 h de marcha. Avião: 360 km &middot; 45 min = 0,75 h porta a porta.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">3. Quais são as hipóteses?</div><div class="rcp-step-text">Marcha das tropas tratada como MU médio nos trechos de deslocamento (ritmo de passo aproximadamente constante); comparam-se durações totais de cada época, embora os trajetos difiram (a mula contorna a serra que o avião sobrevoa).</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">4. Qual é o desenho do problema?</div><div class="rcp-step-text">1720: [Vila Rica] &sim;&sim;&sim; 500 km · 12 dias &sim;&sim;&sim; [Rio] &middot; 2026: [Confins] &mdash;&mdash; 360 km · 45 min &mdash;&mdash;&gt; [Santos Dumont]</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">5. Quais são as equações?</div><div class="rcp-step-text">Equação 1 (definição do MU): v = Δs/Δt, aplicada a cada transporte.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">6. Cálculo com unidades</div><div class="rcp-step-text">Tropas: v = 500 km ÷ 120 h &asymp; <strong>4,2 km/h</strong> (em marcha). Duração total: 12 dias = 288 h &middot; Avião: 0,75 h. Razão: 288 ÷ 0,75 = <strong>384 vezes mais rápido</strong>.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">7. Análise de resultados</div><div class="rcp-step-text">Os 4,2 km/h batem com o passo documentado das tropas de carga (3 a 5 km/h) &mdash; o resultado é plausível. A razão de quase 400 vezes explica por que a viagem que organizava a economia de um império hoje cabe entre o café e o almoço.</div></div>
+      <div class="rcp-step"><div class="rcp-step-label">8. Responda o que foi pedido</div><div class="rcp-step-text">As tropas marchavam a cerca de <strong>4,2 km/h</strong>; o avião completa a ligação <strong>~384 vezes mais depressa</strong>. A afirmação é <strong>verdadeira no essencial</strong>: nos trechos de regime &mdash; a mula em passo firme na estrada, o avião em cruzeiro &mdash; ambos são bem descritos pelo mesmo modelo, o Movimento Uniforme, e a mesma equação s = s₀ + v·t prevê a chegada dos dois. O que a tecnologia multiplicou foi o <strong>valor de v</strong> (e encolheu as partes não uniformes da viagem: paradas, pousos, ranchos). O modelo físico não mudou porque ele não é uma tecnologia &mdash; é uma descrição da natureza; as tecnologias apenas escolhem em que ponto dela conseguem operar.</div></div>
+    </details>
+  </div>
+</div>
+
+<div class="separador"></div>
+
+<!-- ═══════════════════ CIÊNCIA E ARTE ═══════════════════ -->
+<div class="ciencia-arte" id="ciencia-arte">
+  <div class="ciencia-arte-titulo">Ciência e Arte</div>
+  <div class="ciencia-arte-obra"><strong>Música:</strong> <em>Boléro</em> &mdash; Maurice Ravel (1928)</div>
+
+  <p>Em 1928, Maurice Ravel compôs uma obra que é quase um experimento de física: quinze minutos de música sobre <strong>um único ritmo que não muda nunca</strong>. A caixa (tarola) repete a mesma célula rítmica do primeiro ao último compasso &mdash; mais de quatro mil batidas idênticas, num andamento que Ravel proibiu de acelerar. Sobre esse pulso invariável, a melodia passa de instrumento em instrumento, a orquestra cresce de um sussurro a um clamor &mdash; mas o ritmo de fundo segue imperturbável, como a tela do mapa de bordo marcando 720 km/h enquanto a paisagem inteira muda lá embaixo.</p>
+
+  <p>O <em>Boléro</em> é o Movimento Uniforme feito som. A caixa é a velocidade constante: previsível a ponto de o ouvinte saber exatamente onde cada batida vai cair &mdash; como Sofia sabendo a posição do avião sem olhar a tela. E o crescendo da orquestra mostra o que o MU também ensina: constância não é monotonia. Sobre uma base que não muda, tudo o mais pode acontecer &mdash; é justamente porque a correia corre a velocidade fixa que a usina pode variar, com segurança, tudo o que corre sobre ela. Ravel, aliás, descreveu a obra com a secura de um relatório técnico: orquestração sem música, uma fábrica sonora &mdash; e há quem diga que a inspiração veio das fábricas que ele visitava com o pai, engenheiro.</p>
+
+  <!-- Figura 12 — IT-12 -->
+  <figure class="figura">
+    <img class="figura-img" src="../_imagens/_web/T10-IT-12-v1.jpg" alt="Ravel e a Física: a baqueta suspensa sobre a tarola e a reta s por t subindo como um crescendo" loading="lazy">
+    <figcaption class="figura-legenda"><span class="figura-num">Figura 12</span> &mdash; Ravel e a Física: a baqueta suspensa sobre a tarola e, ao fundo, a reta inclinada de s×t subindo como um crescendo &mdash; o ritmo que não muda sustentando tudo o que muda.</figcaption>
+  </figure>
+
+  <blockquote>&ldquo;A duração é o progresso contínuo do passado que rói o futuro e que incha ao avançar.&rdquo;</blockquote>
+  <div class="ca-autor">&mdash; Henri Bergson (1859&ndash;1941)</div>
+
+  <div class="footnote"><strong>Maurice Ravel</strong> (Ciboure, França, 1875 &mdash; Paris, 1937). Compositor francês, mestre da orquestração, autor de <em>Pavane pour une infante défunte</em>, <em>Daphnis et Chloé</em> e do <em>Boléro</em> (1928), sua obra mais executada. Filho de um engenheiro, fascinava-se por mecanismos e fábricas; o <em>Boléro</em> nasceu como estudo de orquestração sobre um ostinato invariável &mdash; um ritmo constante mantido do início ao fim &mdash; e tornou-se uma das peças mais reconhecíveis da música de concerto do século XX.</div>
+
+  <div class="footnote"><strong>Henri Bergson</strong> (Paris, 1859 &mdash; Paris, 1941). Filósofo francês, Prêmio Nobel de Literatura de 1927, autor de <em>A Evolução Criadora</em> (1907), de onde vem a frase acima. Bergson dedicou a obra a distinguir o tempo vivido &mdash; a duração &mdash; do tempo medido pelos relógios da física. Nesta trilha, os dois se encontram: a equação horária trata o tempo como a régua que Bergson criticava, e é exatamente essa régua que permite prever onde o avião estará; a experiência dos três estudantes dentro do voo, em que meia hora imóvel &ldquo;incha ao avançar&rdquo;, é a duração de que o filósofo falava.</div>
+</div>
+
+<!-- ═══════════════════ REFERÊNCIAS ═══════════════════ -->
+<div class="refs" id="referencias">
+  <div class="refs-titulo">Referências &mdash; Bibliografia Básica de Física</div>
+  <p>BONJORNO, J. R. <em>Identidade Saraiva: Física</em>. São Paulo: Saraiva, 2024.</p>
+  <p>MÁXIMO, A. et al. <em>Física: contexto &amp; aplicações</em>. São Paulo: Scipione, 2013.</p>
+  <p>TALAVEIRA, A. C. et al. <em>Física: ensino médio</em>, v. único. São Paulo: Nova Geração, 2005.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Referências &mdash; Bibliografia Pedagógica Científica</div>
+  <p>BLOOM, Benjamin S. (org.). <em>O desenvolvimento de talentos na juventude</em>. Porto Alegre: Globo, 1988.</p>
+  <p>HEWITT, Paul G. <em>Física conceitual</em>. 12. ed. Porto Alegre: Bookman, 2015.</p>
+  <p>NICOLELIS, Miguel. <em>O verdadeiro criador de tudo: como o cérebro humano esculpiu o universo que conhecemos</em>. São Paulo: Planeta, 2020.</p>
+  <p>PIAZZI, Pierluigi. <em>Aprendendo inteligência: manual de instruções do cérebro para estudantes em geral</em>. São Paulo: Aleph, 2008.</p>
+  <p>PIAZZI, Pierluigi. <em>Inteligência em concursos: manual de instruções do cérebro para concurseiros e universitários</em>. São Paulo: Aleph, 2013.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Referências &mdash; Simulações (Protocolo SIM-v1)</div>
+  <p>PhET INTERACTIVE SIMULATIONS. <em>Simulações interativas de Física</em>. Universidade do Colorado em Boulder. Disponível em: https://phet.colorado.edu/pt_BR/. Acesso em: agosto. 2026.</p>
+  <p>VA&Scaron;&Ccaron;&Aacute;K, Vladim&iacute;r. <em>Física na Escola &mdash; animações HTML5</em>. Disponível em: https://www.vascak.cz/?id=1&amp;language=pt. Acesso em: agosto. 2026.</p>
+
+  <div class="refs-titulo" style="margin-top:24px;">Declaração de autoria</div>
+  <p>Estas Trilhas de Aprendizagem são concebidas, dirigidas e revisadas por uma equipe humana &mdash; autor, coautor, colaboradores, monitores e a equipe do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) e equipe da Coordenadoria da Área de Física (CODAFIS).</p>
+  <p>A inteligência artificial entra no processo como ferramenta, nunca como autora: é usada sob curadoria humana, com princípios claros, diretrizes pedagógicas explícitas e honestidade intelectual.</p>
+  <p>Assim, declaramos abertamente o uso de IA como assistente de redação e diagramação de todos os Objetos de Aprendizagem (Claude Opus 5 e Claude Cowork, Anthropic, 2026; Gemini Notebook, Google, 2026), do mesmo modo que se declara o uso de qualquer ferramenta de autoria.</p>
+</div>
+
+</div><!-- fim .conteudo -->
+
+<!-- ═══════════════════ ENCERRAMENTO ═══════════════════ -->
+<div class="encerramento">
+  <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
+</div>
+<div class="footer-line">IFMG campus Ouro Preto - Coordenadoria da Área de Física (CODAFIS) - Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) &middot; FC1 &middot; T10 &middot; Primeira edição &middot; 2026</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+// ─── READING PROGRESS ───
+window.addEventListener('scroll', function() {
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+// ─── SAVE/RESTORE SCROLL POSITION ───
+var STORAGE_KEY = 'T10-TT-v2';
+window.addEventListener('beforeunload', function() {
+  try { localStorage.setItem(STORAGE_KEY + '-scroll', window.scrollY); } catch(e) {}
+});
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-scroll');
+    if (saved) { setTimeout(function() { window.scrollTo(0, parseInt(saved)); }, 100); }
+  } catch(e) {}
+});
+
+// ─── FONT SIZE ───
+var fontSteps = [1.0, 1.15, 1.30];
+var fontIdx = 1;
+try {
+  var savedFont = localStorage.getItem(STORAGE_KEY + '-font');
+  if (savedFont !== null) fontIdx = parseInt(savedFont);
+} catch(e) {}
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--fs-base', fontSteps[fontIdx] + 'rem');
+  document.getElementById('btnFontMinus').classList.toggle('active', fontIdx === 0);
+  document.getElementById('btnFontReset').classList.toggle('active', fontIdx === 1);
+  document.getElementById('btnFontPlus').classList.toggle('active', fontIdx === 2);
+  try { localStorage.setItem(STORAGE_KEY + '-font', fontIdx); } catch(e) {}
+}
+applyFontSize();
+
+document.getElementById('btnFontMinus').addEventListener('click', function() { fontIdx = 0; applyFontSize(); });
+document.getElementById('btnFontReset').addEventListener('click', function() { fontIdx = 1; applyFontSize(); });
+document.getElementById('btnFontPlus').addEventListener('click', function() { fontIdx = 2; applyFontSize(); });
+
+// ─── THEME TOGGLE ───
+function getTheme() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY + '-theme');
+    if (saved) return saved;
+  } catch(e) {}
+  return 'dark';
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem(STORAGE_KEY + '-theme', t); } catch(e) {}
+}
+setTheme(getTheme());
+
+document.getElementById('btnTheme').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ─── TOC SIDEBAR ───
+var tocBtn = document.getElementById('tocToggle');
+var tocSidebar = document.getElementById('tocSidebar');
+tocBtn.addEventListener('click', function() {
+  tocSidebar.classList.toggle('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+tocSidebar.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() { tocSidebar.classList.remove('open'); });
+});
+
+// ─── CREDITOS SIDEBAR ───
+var creditosBtn = document.getElementById('creditosToggle');
+var creditosSidebar = document.getElementById('creditosSidebar');
+creditosBtn.addEventListener('click', function() {
+  creditosSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── MUSICA SIDEBAR ───
+var musicaBtn = document.getElementById('musicaToggle');
+var musicaSidebar = document.getElementById('musicaSidebar');
+musicaBtn.addEventListener('click', function() {
+  musicaSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── INEDITISMO SIDEBAR ───
+var ineditismoBtn = document.getElementById('ineditismoToggle');
+var ineditismoSidebar = document.getElementById('ineditismoSidebar');
+ineditismoBtn.addEventListener('click', function() {
+  ineditismoSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  figurasSidebar.classList.remove('open');
+});
+
+// ─── FIGURAS SIDEBAR ───
+var figurasBtn = document.getElementById('figurasToggle');
+var figurasSidebar = document.getElementById('figurasSidebar');
+figurasBtn.addEventListener('click', function() {
+  figurasSidebar.classList.toggle('open');
+  tocSidebar.classList.remove('open');
+  creditosSidebar.classList.remove('open');
+  musicaSidebar.classList.remove('open');
+  ineditismoSidebar.classList.remove('open');
+});
+
+// Close all sidebars when clicking outside
+document.addEventListener('click', function(e) {
+  if (!tocSidebar.contains(e.target) && e.target !== tocBtn) {
+    tocSidebar.classList.remove('open');
+  }
+  if (!creditosSidebar.contains(e.target) && e.target !== creditosBtn) {
+    creditosSidebar.classList.remove('open');
+  }
+  if (!musicaSidebar.contains(e.target) && e.target !== musicaBtn) {
+    musicaSidebar.classList.remove('open');
+  }
+  if (!ineditismoSidebar.contains(e.target) && e.target !== ineditismoBtn) {
+    ineditismoSidebar.classList.remove('open');
+  }
+  if (!figurasSidebar.contains(e.target) && e.target !== figurasBtn) {
+    figurasSidebar.classList.remove('open');
+  }
+});
+</script>
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t10">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>
