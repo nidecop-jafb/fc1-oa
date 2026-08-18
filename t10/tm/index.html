@@ -1360,7 +1360,7 @@ function montarPacote() {
   return {
     schema: 'ifmg-fc1-tarefa-minima-v3',
     trilha: 'T10',
-    tipo: 'TN',
+    tipo: 'TM',
     versao: currentVersion,
     tentativa: tentativaAtual,
     timestamp: now.toISOString(),
@@ -1397,7 +1397,7 @@ function exportJSON() {
   const a = document.createElement('a');
   a.href = url;
   const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
-  a.download = `T10-TM-v1-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.download = `T10-TM-v2-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'Comprovante exportado com sucesso');
@@ -1609,11 +1609,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T10-TM-v1-estudante.html
+   Arquivo fonte: T10-TM-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T10-TM-v1-estudante.html';
+var ARQUIVO_FONTE = 'T10-TM-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
