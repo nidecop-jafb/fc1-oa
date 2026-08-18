@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chamada &middot; Professor &middot; FC1 &middot; IFMG-OP</title>
+<style>
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--fundo); color: var(--texto); font-family: Georgia, serif; min-height: 100vh; display: flex; flex-direction: column; }
+  header { border-bottom: 2px solid var(--ouro); padding: 1rem; text-align: center; }
+  .header-sub { font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim); }
+  h1 { font-size: 1.4rem; color: var(--ouro); margin-top: .3rem; }
+  main { flex: 1; width: 100%; max-width: 620px; margin: 0 auto; padding: 1rem 1rem 2rem; }
+  .cartao { background: var(--painel); border: 1px solid var(--borda); padding: 1.1rem; margin-top: 1rem; }
+  .cartao h2 { font-family: Arial, sans-serif; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem; }
+  label { font-family: Arial, sans-serif; font-size: .85rem; color: var(--texto-dim); display: block; margin: .6rem 0 .3rem; }
+  input, select {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem; font-family: Arial, sans-serif;
+    background: var(--fundo); border: 1px solid var(--borda); color: var(--texto);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--ouro); }
+  .linha2 { display: flex; gap: .8rem; }
+  .linha2 > div { flex: 1; }
+  .btn {
+    display: block; width: 100%; margin-top: .9rem; padding: .85rem;
+    font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none;
+  }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .btn-vermelho { background: var(--vermelho); color: #fff; }
+  .erro { margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .9rem;
+    background: rgba(224,91,75,.12); border-left: 3px solid var(--vermelho); color: #F0B3AA; }
+  .aberta-box { margin-top: .5rem; padding: .9rem; font-family: Arial, sans-serif;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde); }
+  .aberta-box strong { color: var(--verde); }
+  .pulso { display: inline-block; width: .6rem; height: .6rem; background: var(--verde); border-radius: 50%;
+    margin-right: .4rem; animation: pulso 1.2s infinite; }
+  @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: .88rem; margin-top: .5rem; }
+  th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--borda); }
+  th { color: var(--texto-dim); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+  .contagem { font-family: Arial, sans-serif; font-size: 1rem; color: var(--verde); font-weight: bold; }
+  .qr-box { text-align: center; padding: .5rem 0; }
+  .qr-box img { width: min(70vw, 340px); background: #fff; padding: 10px; }
+  .qr-box .url { font-family: 'Courier New', monospace; font-size: .95rem; color: var(--texto); margin-top: .5rem; word-break: break-all; }
+  .nota { margin-top: .8rem; font-family: Arial, sans-serif; font-size: .78rem; color: var(--texto-dim); line-height: 1.5; }
+  footer { border-top: 1px solid var(--borda); padding: .8rem 1rem; text-align: center;
+    font-family: Arial, sans-serif; font-size: .66rem; color: var(--texto-dim); line-height: 1.6; }
+  .link-dim { color: var(--texto-dim); font-family: Arial, sans-serif; font-size: .78rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; Equipe de Professores</div>
+  <h1>Chamada &mdash; Painel do Professor</h1>
+</header>
+
+<main>
+
+  <!-- CHAVE DA EQUIPE -->
+  <div class="cartao" id="cartaoChave">
+    <h2>Acesso da Equipe</h2>
+    <label for="inChave">Chave da equipe (a mesma do relat&oacute;rio)</label>
+    <input type="password" id="inChave" autocomplete="off">
+    <button class="btn" onclick="salvarChave()">Entrar</button>
+    <div class="erro" id="chaveErro" hidden></div>
+    <div class="nota">A chave fica salva apenas neste aparelho. Nunca compartilhe com estudantes.</div>
+  </div>
+
+  <!-- ABRIR CHAMADA -->
+  <div class="cartao" id="cartaoAbrir" hidden>
+    <h2>Abrir chamada</h2>
+    <div id="formAbrir">
+      <label for="selTurma">Turma</label>
+      <select id="selTurma"></select>
+      <div class="linha2">
+        <div>
+          <label for="selAula">Aula da semana</label>
+          <select id="selAula">
+            <option value="1">Aula 1</option>
+            <option value="2">Aula 2</option>
+          </select>
+        </div>
+        <div>
+          <label for="selDur">Janela (minutos)</label>
+          <select id="selDur">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" id="btnAbrir" onclick="abrirChamada()">Abrir chamada agora</button>
+      <div class="nota">Ao abrir, o IP p&uacute;blico <strong>deste aparelho</strong> (na rede do IFMG) passa a ser o IP
+      autorizado: s&oacute; registra presen&ccedil;a quem estiver na mesma rede do campus.</div>
+    </div>
+    <div class="aberta-box" id="boxAberta" hidden></div>
+    <button class="btn btn-vermelho" id="btnFechar" onclick="fecharChamada()" hidden>Encerrar chamada</button>
+    <div class="erro" id="abrirErro" hidden></div>
+  </div>
+
+  <!-- QR PARA PROJETAR -->
+  <div class="cartao" id="cartaoQR" hidden>
+    <h2>QR para projetar aos estudantes</h2>
+    <div class="qr-box">
+      <img alt="QR da pagina de presenca" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbwAAAG8AQAAAACNyy1yAAADLklEQVR4nO1cUW7sIAzEqP/kBnv/Y/UG4QSuMJg46a6DUhG93TejiIYUaxVjTYxtIA6XkOM1uRAg6ADKcQDlOIBy/inlBGbDrIlty6tp98N4xTw6gHJmKOerNGmtHQqB89KfUDXaELjcr3YYpsMFbHWicoiIxEjpIfaZqV179GGYDhew1Wm8asBiopVPuRjtUkn11xIM0+EAyrlFOalYZSPPLLyqnsCsXxxFHB55AAQ/ildZ+9VlLewqKH+qByvgt3zHCMHPjAOk11cH4gCfYwDxvXiVTZ8zNVLNx5bf9R0jBD9GObQ0B5XIOKiJO+s27hWL1cFv9o6XEK+JBQhO8wG4xk0l4M+r2ucq/9VudQNKtyUIMI8OoJyZa6vc1lNc6bQ+rRmBNsCstv70ixGCrwHleBAybR/6yqKdUUPnVSXV9hy8egKY3DTlZAqJiyP6MMHVpL5B91QftioA0+EAypnlA5B+9Hu75VaTUG5easoV8dUxxMFxvwDBoXoA/pZcfy8DyMKlVLq0bK5CKxiAVj3A5KblApLYocYBtppA1of9069dxAFcwFYn5q1YXdOjua77cKvErGCrZ4CtTlNO0jrVVRZWh26mHoCtLXIBZ4CtzqwHSHvyPO4C0MGVZhGzOgFsdVo9QF60WpU4Lz0IwBoQoMSU1nJtVQGYDgdQzkx/VWCrqrgHVyu0PKAtuJBj9QBbnVkPkKoZanLKmu7u0w8fYARxaNQTQHAgF6Dp/q3oOq02+M9thyCjHmAAcWTQM0DQw/ZZtze98kpjVvrpRz3ACOLQqCeA4GiOtd4URu0LKyHStuDabb+CVh1AOdP8VYPNOxV099WmsbC2OgNsddq+gA5JBLSqgLDfFFDrr6Q24O+/eAnxmliA4CdpNe1ItdxJWwpXEvdqlsax3/SW73gF8ZJUgOA9564EYc5STJUltdqPXslliAm9Yh4dQDl3nWWRS31gsOewadVKs2TsDTwBbPWOM4JIT10jDQXwFlOVHViNaTEdDqCcufWrfKhWTSY6YHdgtSeYDgdQzr3nr4Zd+tU+RMzqDLDVGcohnMH+GjA5B1COAyjHwf+gnB/9BDB5rr/CTwAAAABJRU5ErkJggg==">
+      <div class="url">nidecop-jafb.github.io/fc1-oa/presenca/</div>
+    </div>
+  </div>
+
+  <!-- PRESENTES DE HOJE -->
+  <div class="cartao" id="cartaoLista" hidden>
+    <h2>Presentes de hoje <span id="listaContagem" class="contagem"></span></h2>
+    <table>
+      <thead><tr><th>Hora</th><th>Nome</th><th>Turma</th><th>Aula</th></tr></thead>
+      <tbody id="listaCorpo"></tbody>
+    </table>
+    <div class="nota">Atualiza sozinha a cada 10 segundos. O espelho completo est&aacute; na aba
+    <strong>presenca</strong> da planilha FC1-Respostas-2026, para lan&ccedil;amento no SUAP.</div>
+    <div style="margin-top:.6rem"><a class="link-dim" href="#" onclick="sairChave(); return false;">sair (limpar chave deste aparelho)</a></div>
+  </div>
+
+</main>
+
+<footer>
+  IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+
+<script src="../../coleta-config.js"></script>
+<script>
+var COLETA_URL = (window.COLETA && window.COLETA.url) || '';
+var CHAVE_KEY = 'ifmg_fc1_presenca_chave';
+var chave = null, adminTimer = null, turmasTotais = {}, janelaAberta = null;
+
+function buscarIP() {
+  return fetch('https://api.ipify.org?format=json').then(function (r) { return r.json(); })
+    .then(function (d) { return d.ip; })
+    .catch(function () {
+      return fetch('https://ipv4.icanhazip.com').then(function (r) { return r.text(); })
+        .then(function (t) { return t.trim(); });
+    });
+}
+
+/* ---------- Chave ---------- */
+function salvarChave() {
+  var v = document.getElementById('inChave').value.trim();
+  if (!v) return;
+  chave = v;
+  document.getElementById('chaveErro').hidden = true;
+  consultarAdmin(true);
+}
+function sairChave() {
+  try { localStorage.removeItem(CHAVE_KEY); } catch (e) {}
+  location.reload();
+}
+
+/* ---------- Admin ---------- */
+function consultarAdmin(primeira) {
+  fetch(COLETA_URL + '?presenca_admin=1&chave=' + encodeURIComponent(chave))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) {
+        if (primeira) {
+          var el = document.getElementById('chaveErro');
+          el.textContent = res.erro || 'Chave inválida.'; el.hidden = false;
+        }
+        return;
+      }
+      if (primeira) {
+        try { localStorage.setItem(CHAVE_KEY, chave); } catch (e) {}
+        document.getElementById('cartaoChave').hidden = true;
+        document.getElementById('cartaoAbrir').hidden = false;
+        document.getElementById('cartaoQR').hidden = false;
+        document.getElementById('cartaoLista').hidden = false;
+        if (adminTimer) clearInterval(adminTimer);
+        adminTimer = setInterval(function () { consultarAdmin(false); }, 10000);
+      }
+      turmasTotais = res.turmas || {};
+      preencherTurmas();
+      atualizarJanela(res.janelas || []);
+      atualizarLista(res.presentes || []);
+    })
+    .catch(function () {
+      if (primeira) {
+        var el = document.getElementById('chaveErro');
+        el.textContent = 'Falha de conexão. Tente de novo.'; el.hidden = false;
+      }
+    });
+}
+
+function preencherTurmas() {
+  var sel = document.getElementById('selTurma');
+  if (sel.options.length) return;
+  Object.keys(turmasTotais).sort().forEach(function (t) {
+    var o = document.createElement('option');
+    o.value = t; o.textContent = t + ' (' + turmasTotais[t] + ' estudantes)';
+    sel.appendChild(o);
+  });
+  var oe = document.createElement('option');
+  oe.value = 'EQUIPE'; oe.textContent = 'EQUIPE (teste)';
+  sel.appendChild(oe);
+}
+
+function atualizarJanela(janelas) {
+  janelaAberta = null;
+  for (var i = 0; i < janelas.length; i++) if (janelas[i].status === 'aberta') { janelaAberta = janelas[i]; break; }
+  var box = document.getElementById('boxAberta');
+  var btnF = document.getElementById('btnFechar');
+  var form = document.getElementById('formAbrir');
+  if (janelaAberta) {
+    var exp = new Date(janelaAberta.expira_em);
+    box.hidden = false; btnF.hidden = false; form.style.display = 'none';
+    box.innerHTML = '<span class="pulso"></span><strong>Chamada aberta — ' + janelaAberta.turma +
+      ' · Aula ' + janelaAberta.aula + '</strong><br>Encerra automaticamente às ' +
+      exp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '.';
+  } else {
+    box.hidden = true; btnF.hidden = true; form.style.display = '';
+  }
+}
+
+function atualizarLista(presentes) {
+  var corpo = document.getElementById('listaCorpo');
+  corpo.innerHTML = '';
+  presentes.sort(function (a, b) { return a.hora < b.hora ? 1 : -1; });
+  presentes.forEach(function (p) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + p.hora + '</td><td>' + p.nome + '</td><td>' + p.turma + '</td><td>' + p.aula + '</td>';
+    corpo.appendChild(tr);
+  });
+  var cont = document.getElementById('listaContagem');
+  if (janelaAberta && turmasTotais[janelaAberta.turma]) {
+    var n = presentes.filter(function (p) {
+      return p.turma === janelaAberta.turma && p.aula === janelaAberta.aula;
+    }).length;
+    cont.textContent = '· ' + n + '/' + turmasTotais[janelaAberta.turma] + ' na chamada aberta';
+  } else {
+    cont.textContent = presentes.length ? '· ' + presentes.length + ' registros' : '';
+  }
+}
+
+/* ---------- Abrir / fechar ---------- */
+function mostrarErroAbrir(msg) {
+  var el = document.getElementById('abrirErro');
+  el.textContent = msg; el.hidden = false;
+}
+function abrirChamada() {
+  var btn = document.getElementById('btnAbrir');
+  btn.disabled = true; btn.textContent = 'Capturando o IP da rede...';
+  document.getElementById('abrirErro').hidden = true;
+  buscarIP()
+    .then(function (ip) {
+      btn.textContent = 'Abrindo...';
+      return fetch(COLETA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          tipo: 'PRESENCA_ABRIR', chave: chave,
+          turma: document.getElementById('selTurma').value,
+          aula: parseInt(document.getElementById('selAula').value, 10),
+          duracao_min: parseInt(document.getElementById('selDur').value, 10),
+          ip: ip, por: 'pagina-professor'
+        })
+      });
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'Não foi possível abrir.');
+      consultarAdmin(false);
+    })
+    .catch(function (err) { mostrarErroAbrir(err.message || 'Falha ao abrir a chamada.'); })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Abrir chamada agora'; });
+}
+function fecharChamada() {
+  if (!janelaAberta) return;
+  var btn = document.getElementById('btnFechar');
+  btn.disabled = true;
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'PRESENCA_FECHAR', chave: chave, turma: janelaAberta.turma })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function () { consultarAdmin(false); })
+    .finally(function () { btn.disabled = false; });
+}
+
+/* ---------- Boot ---------- */
+(function () {
+  if (!COLETA_URL) {
+    document.getElementById('cartaoChave').innerHTML =
+      '<div class="erro">Endpoint de coleta não configurado.</div>';
+    return;
+  }
+  var c = null;
+  try { c = localStorage.getItem(CHAVE_KEY); } catch (e) {}
+  if (c) { chave = c; consultarAdmin(true); }
+})();
+</script>
+</body>
+</html>
