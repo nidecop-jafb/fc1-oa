@@ -39,9 +39,10 @@
 .aba-toggle { position: fixed; left: 0; z-index: 998; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #999; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; }
 .aba-toggle:hover { color: #C8A84B; }
 #abaSiteT { top: 56px; }
-#abaMusicaT { top: 116px; }
-#abaIneditismoT { top: 202px; }
-#abaCreditosT { top: 322px; }
+#abaMetodoT { top: 120px; }
+#abaMusicaT { top: 208px; }
+#abaIneditismoT { top: 296px; }
+#abaCreditosT { top: 432px; }
 .aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 380px; max-width: 88vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
 .aba-painel.open { transform: translateX(0); }
 .aba-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 14px; }
@@ -51,12 +52,26 @@
 .aba-painel a.aba-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
 .aba-painel a.aba-btn:hover { border-color: #C8A84B; color: #C8A84B; }
 .aba-painel .aba-nota { font-size: .8rem; color: #888; }
+.aba-painel ol { margin: 0 0 14px 0; padding-left: 22px; }
+.aba-painel ol li { margin-bottom: 7px; font-size: .88rem; }
+.aba-painel .parada-t { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: 1px; color: #e8e8e8; margin: 16px 0 7px; }
+.aba-painel .regra { border: 1px solid #C8A84B; padding: 12px 14px; margin: 14px 0 4px; font-size: .88rem; }
 @media (max-width: 800px) {
   /* gutter: as abas fixas nao cobrem o conteudo em tela estreita */
   .wrap { padding-left: 46px; }
   .aba-toggle { font-size: .6rem; padding: 6px 6px; }
 }
 /* ABAS:CSS-FIM */
+
+/* METODO:CSS-INICIO */
+/* Paradas e numeracao do Metodo de Estudo (metodo_estudo.py) */
+  .parada { font-family: 'Courier New', monospace; font-size: .82rem; color: var(--verde); text-transform: uppercase; letter-spacing: .08em; margin: 22px 0 8px; border-left: 3px solid var(--verde); padding-left: 10px; }
+  .parada span { color: #8d8d8d; text-transform: none; letter-spacing: 0; }
+  .oa .num { display: inline-block; min-width: 1.6em; color: var(--ouro); }
+  .oa.offline { display: block; padding: 14px 18px; border: 1px dashed #444; color: #9a9a9a; font-family: 'Courier New', monospace; font-size: .95rem; }
+  .oa.offline .num { color: #9a9a9a; }
+  .oa.offline .tag { color: #7f7f7f; font-size: .8rem; margin-left: 10px; }
+/* METODO:CSS-FIM */
 
 </style>
 </head>
@@ -69,6 +84,37 @@
   <p>Endereço: <strong>nidecop-jafb.github.io/fc1-oa</strong> — abre direto, sem senha e sem aplicativo. Nos OAs, a identificação é pelo <strong>RA</strong> (7 dígitos) com confirmação.</p>
   <a class="aba-btn" href="_qr/">QR do site e cartaz A3 · imprimir</a>
   <a class="aba-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+
+<button class="aba-toggle" id="abaMetodoT">Método</button>
+<aside class="aba-painel" id="abaMetodo">
+  <h3>Método de Estudo</h3>
+  <p>A ordem não é burocracia: ela segue como o cérebro aprende — preparação (pergunta antes da resposta), construção ativa (recuperar em vez de reler) e consolidação (revisão no mesmo dia e revisões espaçadas, com o sono fazendo a parte dele).</p>
+  <p class="parada-t">Pré-Aula · em casa, antes da aula</p>
+  <p class="aba-nota">Preparar o cérebro para o que será discutido em sala: chegar à aula com pergunta na cabeça, não com a página em branco.</p>
+  <ol>
+    <li><strong>Ponto de Partida (PP)</strong> — vale nota · antes da aula · 10 min<br><span class="aba-nota">Responder antes de estudar cria erro produtivo: o cérebro marca a lacuna e passa a procurar a resposta. Testar antes de ensinar aumenta o que fica depois — e a curiosidade aberta aqui melhora a fixação do que vem a seguir.</span></li>
+    <li><strong>Resumo em Áudio (MD)</strong> — ouvir · 6 min (curto) ou 20 min (padrão)<br><span class="aba-nota">O áudio monta o esqueleto do assunto antes da leitura. Com o mapa geral pronto, a memória de trabalho gasta menos esforço para entender o texto — menos carga cognitiva, mais compreensão.</span></li>
+    <li><strong>Texto Temático (TT)</strong> — leitura · ~40 min<br><span class="aba-nota">Leitura profunda sobre um esquema já ativado: o detalhe novo gruda no que você acabou de ouvir. Ouvir e depois ler codifica o mesmo conteúdo por duas vias e deixa dois caminhos de recuperação.</span></li>
+    <li><strong>Cartões Didáticos (CD)</strong> — 25 cartões · revisão ativa<br><span class="aba-nota">Recuperação ativa: lembrar custa esforço, e é esse esforço que fixa. Reler dá a sensação de saber; tentar lembrar produz memória de verdade.</span></li>
+    <li><strong>Infográfico (IG)</strong> — painel visual · sem nota<br><span class="aba-nota">Organiza em imagem o que foi lido em palavras: codificação dupla (verbal e visual) e visão do todo. O cérebro guarda muito melhor o que está estruturado do que o que está solto.</span></li>
+    <li><strong>Testinho (TN)</strong> — vale nota · antes da aula · 10 min<br><span class="aba-nota">Fecha a Pré-Aula medindo o que ficou, com correção na hora. Erro corrigido na véspera vira aprendizagem; erro descoberto na prova, não.</span></li>
+  </ol>
+  <p class="parada-t">Aula · no encontro presencial, com o professor</p>
+  <p class="aba-nota">Construir o conhecimento junto: é aqui que o professor sustenta o raciocínio no ponto em que você ainda não anda sozinho.</p>
+  <ol>
+    <li><strong>Folha de Atividades (FA)</strong> — impressa · entregue em sala · escrever à mão<br><span class="aba-nota">Escrever à mão obriga a traduzir com as próprias palavras em vez de copiar: o que a gente gera fica mais do que o que a gente transcreve.</span></li>
+    <li><strong>Apresentação da Aula (AP)</strong> — slides da aula · rever depois<br><span class="aba-nota">Atenção conjunta e fio condutor. O professor é o andaime: sustenta o passo que você ainda não dá sozinho — e o andaime sai quando a estrutura para em pé.</span></li>
+    <li><strong>Provinha (PR)</strong> — vale nota · nos últimos minutos da aula<br><span class="aba-nota">Teste curto logo após a construção: consolida enquanto o traço ainda está fresco e mostra, ali mesmo, o que precisa voltar.</span></li>
+  </ol>
+  <p class="parada-t">Pós-Aula · a partir do mesmo dia da aula</p>
+  <p class="aba-nota">Consolidar. A memória não se fixa no momento da aula, e sim depois — em boa parte durante o sono da noite seguinte.</p>
+  <ol>
+    <li><strong>Tarefa Mínima (TM)</strong> — vale nota · no mesmo dia da aula<br><span class="aba-nota">O que é revisto ANTES de dormir entra na fila de consolidação da noite. É o "aula dada, aula estudada hoje" de Piazzi — e a neurociência do sono explica por que funciona.</span></li>
+    <li><strong>Tarefa Complementar (TC)</strong> — até 3 dias após a aula<br><span class="aba-nota">Repetição espaçada: voltar quando a lembrança já começou a cair rende muito mais do que repetir tudo no mesmo dia. É a resposta direta à curva do esquecimento.</span></li>
+    <li><strong>Trabalho (TR)</strong> — vale nota · até 6 dias após a aula · peso 20%<br><span class="aba-nota">Segundo intervalo de espaçamento, agora com transferência: aplicar o conceito a um problema novo é o que transforma memória em competência.</span></li>
+  </ol>
+  <div class="regra"><strong>Não pule nenhum objeto de aprendizagem. Se pulou, volte.</strong><br>Cada passo prepara o terreno do seguinte: sem o Ponto de Partida o texto não encontra pergunta; sem o texto a aula vira cópia; sem a Pós-Aula do mesmo dia o que foi construído se dissolve. Pular um objeto de aprendizagem não adianta a trilha — atrasa. Se você pulou, volte ao passo que ficou para trás e siga dali.</div>
 </aside>
 
 <button class="aba-toggle" id="abaMusicaT">Música</button>
@@ -127,152 +173,241 @@
     <section>
       <h2 class="intro-t">Trilhas de Aprendizagem</h2>
       <p>Percursos de estudo para orientar, apoiar e avaliar a sua caminhada pelo mundo da física — o conceito e o modelo mental antes de qualquer fórmula.</p>
-      <p>Escolha a trilha da semana abaixo. Quem somos, a música de estudo e o material de acesso estão nas <strong>abas da lateral esquerda</strong>.</p>
+      <p>Escolha a trilha da semana abaixo e faça os objetos de aprendizagem <strong>na ordem numerada</strong>, sem pular nenhum — a ordem segue como o cérebro aprende. Se pulou, volte.</p>
+      <p>O método completo, quem somos, a música de estudo e o material de acesso estão nas <strong>abas da lateral esquerda</strong>.</p>
     </section>
   </div>
 
 <!-- TRILHAS:INICIO -->
   <h2 id="t01">T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t01/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t01/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t01/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t01/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t01/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t01/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t01/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t01/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t01/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t01/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t01/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t01/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t01/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t01/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t01/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t01/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t01/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t01/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t01/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t01/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t01/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t01/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1e9uYNxb3AhKDbhhL1HSy3e8c_lhD2DNR" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 78 KB</span></a></li>
   </ul>
 
   <h2 id="t02">T02 &middot; Sistema de Numera&ccedil;&atilde;o de Base 12</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t02/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t02/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t02/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t02/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t02/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t02/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t02/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t02/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t02/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t02/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t02/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t02/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t02/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t02/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t02/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t02/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t02/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t02/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t02/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t02/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t02/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t02/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1vLqh4nA93lZtGf5PQYafSLESb91qAPc4" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 57 KB</span></a></li>
   </ul>
 
   <h2 id="t03">T03 &middot; Sistema de Numera&ccedil;&atilde;o de Base 10</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t03/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t03/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t03/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t03/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t03/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t03/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t03/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t03/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t03/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t03/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t03/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t03/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t03/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t03/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t03/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t03/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t03/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t03/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t03/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t03/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t03/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t03/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/15wjiw2WMqILeiKsE3V8ikGUfXDN2mYGH" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
 
   <h2 id="t04">T04 &middot; O SI e a Metrologia no Brasil</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t04/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t04/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t04/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t04/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t04/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t04/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t04/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t04/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t04/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t04/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t04/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t04/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t04/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t04/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t04/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t04/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t04/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t04/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t04/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t04/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t04/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t04/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1Ytv17iQ7-9iwp-8iJpSznhwN2eV0IdSC" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
 
   <h2 id="t05">T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t05/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t05/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t05/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t05/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t05/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t05/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t05/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t05/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t05/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t05/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t05/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t05/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t05/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t05/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t05/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t05/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t05/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t05/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t05/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t05/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t05/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t05/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1Fv29xSFRU8HaBbwLJmG_fe8uhmqiQE_5" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
 
   <h2 id="t06">T06 &middot; Ordem de Grandeza</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t06/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t06/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t06/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t06/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t06/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t06/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t06/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t06/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t06/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t06/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t06/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t06/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t06/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t06/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t06/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t06/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t06/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t06/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t06/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t06/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t06/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t06/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1PWHph8rLTINXP14g2uU0IhiNjSIA1Lqa" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
 
   <h2 id="t07">T07 &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t07/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t07/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t07/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t07/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t07/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t07/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t07/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t07/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t07/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t07/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t07/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t07/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t07/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t07/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t07/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t07/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t07/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t07/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t07/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t07/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t07/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t07/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1mQS8uFzukw5Iu85qUBCIKq7UAav4QETD" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 79 KB</span></a></li>
   </ul>
 
   <h2 id="t08">T08 &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t08/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t08/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t08/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t08/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t08/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t08/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t08/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t08/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t08/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t08/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t08/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t08/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t08/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t08/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t08/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t08/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t08/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t08/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t08/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t08/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t08/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t08/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1o7FwWHXEoJPvMxKJafbbzW9t1a77DZri" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 78 KB</span></a></li>
   </ul>
 
   <h2 id="t09">T09 &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h2>
+  <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
-    <li><a class="oa" href="t09/pp/">Ponto de Partida (PP)<span class="tag">pr&eacute;-aula &middot; 10 min &middot; diagn&oacute;stico</span></a></li>
-    <li><a class="oa" href="t09/tt/">Texto Tem&aacute;tico (TT)<span class="tag">pr&eacute;-aula &middot; leitura &middot; ~40 min</span></a></li>
-    <li><a class="oa" href="t09/md/">Resumo em &Aacute;udio (MD)<span class="tag">pr&eacute;-aula &middot; ouvir aqui ou baixar</span></a></li>
-    <li><a class="oa" href="t09/cd/">Cart&otilde;es Did&aacute;ticos (CD)<span class="tag">pr&eacute;-aula &middot; 25 cart&otilde;es &middot; revis&atilde;o</span></a></li>
-    <li><a class="oa" href="t09/tn/">Testinho (TN)<span class="tag">pr&eacute;-aula &middot; 10 min</span></a></li>
-    <li><a class="oa" href="t09/ig/">Infogr&aacute;fico (IG)<span class="tag">aula &middot; painel visual &middot; sem nota</span></a></li>
-    <li><a class="oa" href="t09/ap/">Apresenta&ccedil;&atilde;o da Aula (AP)<span class="tag">aula &middot; slides da aula &middot; rever depois</span></a></li>
-    <li><a class="oa" href="t09/pr/">Provinha (PR)<span class="tag">aula</span></a></li>
-    <li><a class="oa" href="t09/tm/">Tarefa M&iacute;nima (TM)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t09/tc/">Tarefa Complementar (TC)<span class="tag">p&oacute;s-aula</span></a></li>
-    <li><a class="oa" href="t09/tr/">Trabalho (TR)<span class="tag">p&oacute;s-aula &middot; prazo 6 dias &middot; peso 20%</span></a></li>
+    <li><a class="oa" href="t09/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+    <li><a class="oa" href="t09/md/"><b class="num">2</b>Resumo em Áudio (MD)<span class="tag">ouvir · 6 min (curto) ou 20 min (padrão)</span></a></li>
+    <li><a class="oa" href="t09/tt/"><b class="num">3</b>Texto Temático (TT)<span class="tag">leitura · ~40 min</span></a></li>
+    <li><a class="oa" href="t09/cd/"><b class="num">4</b>Cartões Didáticos (CD)<span class="tag">25 cartões · revisão ativa</span></a></li>
+    <li><a class="oa" href="t09/ig/"><b class="num">5</b>Infográfico (IG)<span class="tag">painel visual · sem nota</span></a></li>
+    <li><a class="oa" href="t09/tn/"><b class="num">6</b>Testinho (TN)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t09/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
+    <li><a class="oa" href="t09/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
+  </ul>
+  <p class="parada">Pós-Aula <span>&middot; a partir do mesmo dia da aula</span></p>
+  <ul>
+    <li><a class="oa" href="t09/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
+    <li><a class="oa" href="t09/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
+    <li><a class="oa" href="t09/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
   </ul>
   <!-- TRILHAS:FIM -->
 
@@ -311,8 +446,11 @@ if (location.protocol === 'file:') {
 <script>
 /* Abas laterais: uma aberta por vez; clique fora fecha. */
 (function () {
-  var pares = [['abaSiteT', 'abaSite'], ['abaMusicaT', 'abaMusica'],
-               ['abaIneditismoT', 'abaIneditismo'], ['abaCreditosT', 'abaCreditos']];
+  var pares = [['abaSiteT', 'abaSite'],
+               ['abaMetodoT', 'abaMetodo'],
+               ['abaMusicaT', 'abaMusica'],
+               ['abaIneditismoT', 'abaIneditismo'],
+               ['abaCreditosT', 'abaCreditos']];
   var abas = pares.map(function (p) {
     return [document.getElementById(p[0]), document.getElementById(p[1])];
   });
