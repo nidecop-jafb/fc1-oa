@@ -1610,6 +1610,46 @@ function enviarColeta(isRetry) {
     .finally(function () { coletaEnviando = false; });
 }
 
+
+/* ============================================================
+   MODO CEGO DE VERSAO (anti-cola) — injetado pelo injetar_coletor.py
+   A versao A/B/C continua no payload (planilha); some apenas da tela
+   quando a pre-carga CFG-OA define o caderno do estudante.
+   ============================================================ */
+(function () {
+  function ocultarSeletorVersao() {
+    var sel = document.getElementById('versionSelector');
+    var lbl = document.getElementById('versionLabel');
+    if (sel) sel.style.display = 'none';
+    if (lbl) lbl.style.display = 'none';
+  }
+  function precargaDefiniu() {
+    return typeof precargaAtiva !== 'undefined' && precargaAtiva &&
+           typeof currentVersion !== 'undefined' && currentVersion;
+  }
+  if (typeof toast === 'function') {
+    var _toastOrig = toast;
+    toast = function (tipo, msg) {
+      if (typeof msg === 'string') {
+        msg = msg
+          .replace(/Vers[a\u00e3]o\s+[ABC]\s+carregada automaticamente para voc[e\u00ea]/i,
+                   'Seu caderno foi carregado automaticamente')
+          .replace(/\s*[\u2014-]\s*Vers[a\u00e3]o\s+[ABC]\b/gi, '')
+          .replace(/Vers[a\u00e3]o\s+[ABC]\b/gi, 'seu caderno');
+      }
+      _toastOrig(tipo, msg);
+    };
+  }
+  if (typeof travarSeletorVersao === 'function') {
+    var _travarOrig = travarSeletorVersao;
+    travarSeletorVersao = function () {
+      _travarOrig();
+      if (precargaDefiniu()) ocultarSeletorVersao();
+    };
+    if (precargaDefiniu()) ocultarSeletorVersao();
+  }
+})();
+
 </script>
 <!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
 <style>
