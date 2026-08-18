@@ -1219,7 +1219,7 @@ function montarPacote() {
   return {
     schema: 'ifmg-fc1-provinha-v2',
     trilha: 'T02',
-    tipo: 'TN',
+    tipo: 'PR',
     versao: currentVersion,
     tentativa: tentativaAtual,
     timestamp: now.toISOString(),
@@ -1468,11 +1468,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T02-PR-v3-estudante.html
+   Arquivo fonte: T02-PR-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T02-PR-v3-estudante.html';
+var ARQUIVO_FONTE = 'T02-PR-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
