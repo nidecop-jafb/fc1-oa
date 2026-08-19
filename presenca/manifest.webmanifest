@@ -1,0 +1,21 @@
+{
+  "name": "Lista de Presença — FC1",
+  "short_name": "Presença FC1",
+  "start_url": "/fc1-oa/presenca/",
+  "scope": "/fc1-oa/presenca/",
+  "display": "standalone",
+  "background_color": "#14120D",
+  "theme_color": "#14120D",
+  "icons": [
+    {
+      "src": "/fc1-oa/_icones/app-presenca-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/fc1-oa/_icones/app-presenca-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

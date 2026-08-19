@@ -1,0 +1,21 @@
+{
+  "name": "Chamada FC1 — Painel do Professor",
+  "short_name": "Chamada FC1",
+  "start_url": "/fc1-oa/presenca/professor/",
+  "scope": "/fc1-oa/presenca/professor/",
+  "display": "standalone",
+  "background_color": "#14120D",
+  "theme_color": "#14120D",
+  "icons": [
+    {
+      "src": "/fc1-oa/_icones/app-professor-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/fc1-oa/_icones/app-professor-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

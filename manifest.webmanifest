@@ -1,0 +1,21 @@
+{
+  "name": "Trilhas de Aprendizagem — FC1",
+  "short_name": "Trilhas FC1",
+  "start_url": "/fc1-oa/",
+  "scope": "/fc1-oa/",
+  "display": "standalone",
+  "background_color": "#14120D",
+  "theme_color": "#14120D",
+  "icons": [
+    {
+      "src": "/fc1-oa/_icones/app-site-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/fc1-oa/_icones/app-site-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
