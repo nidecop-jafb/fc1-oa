@@ -58,6 +58,8 @@
 .aba-painel .aba-nota { font-size: .8rem; color: #888; }
 .aba-painel ol { margin: 0 0 14px 0; padding-left: 22px; }
 .aba-painel ol li { margin-bottom: 7px; font-size: .88rem; }
+.aba-painel ul.apoio { list-style: none; margin: 0 0 14px 0; padding-left: 22px; border-left: 1px dashed #444; }
+.aba-painel ul.apoio li { margin-bottom: 7px; font-size: .88rem; }
 .aba-painel .parada-t { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: 1px; color: #e8e8e8; margin: 16px 0 7px; }
 .aba-painel .regra { border: 1px solid #C8A84B; padding: 12px 14px; margin: 14px 0 4px; font-size: .88rem; }
 @media (max-width: 800px) {
@@ -75,6 +77,20 @@
   .oa.offline { display: block; padding: 14px 18px; border: 1px dashed #444; color: #9a9a9a; font-family: 'Courier New', monospace; font-size: .95rem; }
   .oa.offline .num { color: #9a9a9a; }
   .oa.offline .tag { color: #7f7f7f; font-size: .8rem; margin-left: 10px; }
+/* Navegacao das trilhas: atalhos fixos + sanfona por trilha (menos rolagem no celular) */
+  .trilha-nav { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 0; margin-bottom: 14px; background: #0d0d0d; border-bottom: 1px solid #333; }
+  .trilha-nav a { font-family: 'Courier New', monospace; font-size: .8rem; color: var(--ouro); text-decoration: none; border: 1px solid #444; padding: 5px 10px; }
+  .trilha-nav a:hover { border-color: var(--ouro); }
+  details.trilha { border: 1px solid #444; margin-bottom: 12px; scroll-margin-top: 64px; }
+  @media (max-width: 560px) { details.trilha { scroll-margin-top: 108px; } } /* a barra de atalhos quebra em 2 linhas */
+  details.trilha[open] { border-color: var(--verde); }
+  details.trilha > summary { cursor: pointer; list-style: none; padding: 15px 16px; font-family: 'Courier New', monospace; font-size: 1rem; color: #fff; }
+  details.trilha > summary::-webkit-details-marker { display: none; }
+  details.trilha > summary::before { content: '+'; color: var(--ouro); display: inline-block; min-width: 1.4em; }
+  details.trilha[open] > summary::before { content: '\2212'; }
+  details.trilha > summary:hover { color: var(--ouro); }
+  details.trilha > .trilha-corpo { padding: 0 14px 14px; }
+  details.trilha .parada:first-child { margin-top: 4px; }
 /* METODO:CSS-FIM */
 
 </style>
@@ -183,7 +199,11 @@
   </div>
 
 <!-- TRILHAS:INICIO -->
-  <h2 id="t01">T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</h2>
+  <nav class="trilha-nav" aria-label="Ir para a trilha"><a href="#t01">T01</a> <a href="#t02">T02</a> <a href="#t03">T03</a> <a href="#t04">T04</a> <a href="#t05">T05</a> <a href="#t06">T06</a> <a href="#t07">T07</a> <a href="#t08">T08</a> <a href="#t09">T09</a> <a href="#t10">T10</a></nav>
+
+  <details class="trilha" id="t01">
+  <summary>T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t01/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -208,8 +228,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1e9uYNxb3AhKDbhhL1HSy3e8c_lhD2DNR" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 78 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t02">T02 &middot; Sistema de Numera&ccedil;&atilde;o de Base 12</h2>
+  <details class="trilha" id="t02">
+  <summary>T02 &middot; Sistema de Numera&ccedil;&atilde;o de Base 12</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t02/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -234,8 +258,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1vLqh4nA93lZtGf5PQYafSLESb91qAPc4" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 57 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t03">T03 &middot; Sistema de Numera&ccedil;&atilde;o de Base 10</h2>
+  <details class="trilha" id="t03">
+  <summary>T03 &middot; Sistema de Numera&ccedil;&atilde;o de Base 10</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t03/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -260,8 +288,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/15wjiw2WMqILeiKsE3V8ikGUfXDN2mYGH" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t04">T04 &middot; O SI e a Metrologia no Brasil</h2>
+  <details class="trilha" id="t04">
+  <summary>T04 &middot; O SI e a Metrologia no Brasil</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t04/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -286,8 +318,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1Ytv17iQ7-9iwp-8iJpSznhwN2eV0IdSC" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t05">T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</h2>
+  <details class="trilha" id="t05">
+  <summary>T05 &middot; Nota&ccedil;&atilde;o Cient&iacute;fica</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t05/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -312,8 +348,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1Fv29xSFRU8HaBbwLJmG_fe8uhmqiQE_5" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t06">T06 &middot; Ordem de Grandeza</h2>
+  <details class="trilha" id="t06">
+  <summary>T06 &middot; Ordem de Grandeza</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t06/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -338,8 +378,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1PWHph8rLTINXP14g2uU0IhiNjSIA1Lqa" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 45 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t07">T07 &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</h2>
+  <details class="trilha" id="t07">
+  <summary>T07 &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t07/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -364,8 +408,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1mQS8uFzukw5Iu85qUBCIKq7UAav4QETD" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 79 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t08">T08 &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h2>
+  <details class="trilha" id="t08">
+  <summary>T08 &middot; Velocidade M&eacute;dia e Instant&acirc;nea</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t08/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -390,8 +438,12 @@
   <ul>
     <li><a class="oa drive" href="https://drive.google.com/drive/folders/1o7FwWHXEoJPvMxKJafbbzW9t1a77DZri" target="_blank" rel="noopener">Folha de QR codes<span class="tag">impress&atilde;o &middot; baixar &middot; 1 arq &middot; 78 KB</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t09">T09 &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</h2>
+  <details class="trilha" id="t09">
+  <summary>T09 &middot; Acelera&ccedil;&atilde;o M&eacute;dia e Instant&acirc;nea</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t09/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -413,8 +465,12 @@
     <li><a class="oa" href="t09/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
     <li><a class="oa" href="t09/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
   </ul>
+  </div>
+  </details>
 
-  <h2 id="t10">T10 &middot; T10</h2>
+  <details class="trilha" open id="t10">
+  <summary>T10 &middot; O Movimento Uniforme (MU)</summary>
+  <div class="trilha-corpo">
   <p class="parada">Pré-Aula <span>&middot; em casa, antes da aula</span></p>
   <ul>
     <li><a class="oa" href="t10/pp/"><b class="num">1</b>Ponto de Partida (PP)<span class="tag">vale nota · antes da aula · 10 min</span></a></li>
@@ -434,6 +490,20 @@
     <li><a class="oa" href="t10/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
     <li><a class="oa" href="t10/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
   </ul>
+  </div>
+  </details>
+
+  <script>
+/* Atalho #t{nn} abre a trilha na sanfona; sem JS o toque no titulo ainda abre. */
+(function () {
+  function abrir() {
+    var alvo = location.hash && document.getElementById(location.hash.slice(1));
+    if (alvo && alvo.tagName === 'DETAILS') alvo.open = true;
+  }
+  window.addEventListener('hashchange', abrir);
+  abrir();
+})();
+</script>
   <!-- TRILHAS:FIM -->
 
   <h2>Documentos do projeto</h2>
@@ -476,6 +546,15 @@ if (location.protocol === 'file:') {
                ['abaMusicaT', 'abaMusica'],
                ['abaIneditismoT', 'abaIneditismo'],
                ['abaCreditosT', 'abaCreditos']];
+  /* Espacamento UNIFORME entre as linguetas: o rotulo e vertical e a altura
+     real varia com a fonte do navegador — medir e empilhar com folga fixa
+     garante o que a estimativa em CSS (12px por letra) so aproximava. */
+  var y = 56;
+  pares.forEach(function (p) {
+    var t = document.getElementById(p[0]);
+    t.style.top = y + 'px';
+    y += t.offsetHeight + 14;
+  });
   var abas = pares.map(function (p) {
     return [document.getElementById(p[0]), document.getElementById(p[1])];
   });
