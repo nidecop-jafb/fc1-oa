@@ -1,6 +1,6 @@
 {
-  "name": "Trilhas de Aprendizagem — FC1",
-  "short_name": "Trilhas FC1",
+  "name": "Física Conceitual 1 aplicada à Mineração",
+  "short_name": "FC1",
   "start_url": "/fc1-oa/",
   "scope": "/fc1-oa/",
   "display": "standalone",
