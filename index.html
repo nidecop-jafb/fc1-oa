@@ -36,6 +36,7 @@
   a.oa .tag { color: var(--verde); font-size: 0.8rem; margin-left: 10px; }
   a.oa.drive, a.oa.extra { border-style: dashed; }
   a.oa.drive .tag, a.oa.extra .tag { color: var(--ouro); }
+  a.oa .oa-icone { vertical-align: middle; margin: -4px 10px -2px 0; }
   .footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid #333; font-size: 0.78rem; color: #888; font-family: 'Courier New', monospace; }
 
 /* ABAS:CSS-INICIO */
@@ -46,7 +47,8 @@
 #abaMetodoT { top: 120px; }
 #abaMusicaT { top: 208px; }
 #abaIneditismoT { top: 296px; }
-#abaCreditosT { top: 432px; }
+#abaProjetoT { top: 432px; }
+#abaCreditosT { top: 532px; }
 .aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 380px; max-width: 88vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
 .aba-painel.open { transform: translateX(0); }
 .aba-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 14px; }
@@ -152,7 +154,13 @@
   <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
   <p>Até onde a pesquisa dos autores alcançou, trilha de aprendizagem como metodologia aplicada ao ensino de física no curso técnico de mineração integrado ao ensino médio é algo que não existe no Brasil. Por exemplo, os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
   <p>Boas-vindas — e sucesso na sua caminhada pelas Trilhas de Aprendizagem de Física Conceitual.</p>
-  <a class="aba-btn" href="projeto/">O projeto — versão executiva · documento</a>
+</aside>
+
+<button class="aba-toggle" id="abaProjetoT">Projeto</button>
+<aside class="aba-painel" id="abaProjeto">
+  <h3>Projeto</h3>
+  <p>Documentos do projeto — escritos para professores, equipe, coordenação e direção. Não são material de estudo do estudante.</p>
+  <a class="aba-btn" href="projeto/">O projeto — versão executiva · 20 páginas</a>
 </aside>
 
 <button class="aba-toggle" id="abaCreditosT">Créditos</button>
@@ -507,9 +515,9 @@
 </script>
   <!-- TRILHAS:FIM -->
 
-  <h2>Documentos do projeto</h2>
+  <h2>Lista de Presen&ccedil;a</h2>
   <ul>
-    <li><a class="oa extra" href="projeto/">O projeto &mdash; vers&atilde;o executiva<span class="tag">documento &middot; 20 p&aacute;ginas &middot; professores e equipe</span></a></li>
+    <li><a class="oa extra" href="presenca/"><img class="oa-icone" src="_icones/app-presenca-192.png" alt="" width="30" height="30">Registrar presen&ccedil;a<span class="tag">durante a aula &middot; no Wi-Fi do IFMG &middot; login por RA</span></a></li>
   </ul>
 
   <h2>Sugest&otilde;es de aprimoramento</h2>
@@ -551,6 +559,7 @@ if (location.protocol === 'file:') {
                ['abaMetodoT', 'abaMetodo'],
                ['abaMusicaT', 'abaMusica'],
                ['abaIneditismoT', 'abaIneditismo'],
+               ['abaProjetoT', 'abaProjeto'],
                ['abaCreditosT', 'abaCreditos']];
   /* Espacamento UNIFORME entre as linguetas: o rotulo e vertical e a altura
      real varia com a fonte do navegador — medir e empilhar com folga fixa
