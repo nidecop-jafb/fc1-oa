@@ -320,7 +320,7 @@ body {
 
 <script>
 'use strict';
-var STORAGE_KEY = 'ifmg_fc1_t10_ig_v1';
+var STORAGE_KEY = 'ifmg_fc1_t10_ig_v2';
 
 /* ---------- dados ---------- */
 var EQUACOES = [
@@ -479,7 +479,9 @@ document.getElementById('btnLimpar').onclick = function () {
 };
 
 /* ---------- grafico vivo ---------- */
-var S0 = 60, T_END = 30, S_MIN = 0, S_MAX = 520;
+/* S_MAX com folga acima do ultimo tick (500 km): sem ela o rotulo "posicao s"
+   e o "500 km" dividem a mesma altura no topo do grafico e se sobrepoem. */
+var S0 = 60, T_END = 30, S_MIN = 0, S_MAX = 560;
 var W = 640, H = 340, ML = 56, MR = 20, MT = 18, MB = 40;
 function px(t) { return ML + t / T_END * (W - ML - MR); }
 function py(s) { return H - MB - (s - S_MIN) / (S_MAX - S_MIN) * (H - MT - MB); }
