@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T10 · O Movimento Uniforme (MU) — Apresentação de Aula (AP) v1</title>
+<title>T10 · O Movimento Uniforme (MU) — Apresentação de Aula (AP) v2</title>
 <style>
 /* ═══ DESIGN SYSTEM: BRUTALISMO CIENTIFICO — MODO PALCO ═══ */
 :root {
@@ -908,8 +908,18 @@ html, body {
   .qi-enunciado, .exercicio-enunciado { margin-bottom: 4px; }
   .c5-ap-conteudo { padding: 4px 0 4px 4px; }
   /* Slide 13 (integradora) e o mais denso: enunciado longo + C5 + resposta. */
+  .c5-des { max-width: 330px; }
+  .slide[data-slide="4"] .simule-qr, .slide[data-slide="5"] .simule-qr { width: 78px; height: 78px; }
+  .slide[data-slide="4"] .col-text .eq { font-size: 0.92em; }
+  .slide[data-slide="13"] .c5-des { max-width: 270px; }
+  .slide[data-slide="8"] .c5-ap, .slide[data-slide="9"] .c5-ap, .slide[data-slide="10"] .c5-ap,
+  .slide[data-slide="11"] .c5-ap, .slide[data-slide="12"] .c5-ap,
   .slide[data-slide="13"] .c5-ap { margin-top: 4px; }
+  .slide[data-slide="8"] .c5-ap-etapa, .slide[data-slide="9"] .c5-ap-etapa, .slide[data-slide="10"] .c5-ap-etapa,
+  .slide[data-slide="11"] .c5-ap-etapa, .slide[data-slide="12"] .c5-ap-etapa,
   .slide[data-slide="13"] .c5-ap-etapa { padding: 2px 4px; }
+  .slide[data-slide="8"] .c5-ap-conteudo, .slide[data-slide="9"] .c5-ap-conteudo, .slide[data-slide="10"] .c5-ap-conteudo,
+  .slide[data-slide="11"] .c5-ap-conteudo, .slide[data-slide="12"] .c5-ap-conteudo,
   .slide[data-slide="13"] .c5-ap-conteudo { padding: 2px 0 2px 4px; line-height: 1.32; }
   .slide[data-slide="13"] .qi-enunciado { line-height: 1.35; }
   /* Em tela baixa o .eq ja cai para 1.35rem; os slides 5 e 7 descem mais. */
@@ -1177,7 +1187,7 @@ html, body {
         <div class="col-text">
           <div class="eq"><strong>Equa&ccedil;&atilde;o 1 &mdash; Defini&ccedil;&atilde;o do MU:</strong> <span class="eq-inline">v = &Delta;s/&Delta;t = constante &ne; 0</span></div>
           <div class="eq"><strong>Consequ&ecirc;ncia direta:</strong> <span class="eq-inline">a = 0</span></div>
-          <p><strong>Exemplo &mdash; o cruzeiro:</strong> 360 km em 0,5 h &rarr; 720 km/h; 12 km em 1 min &rarr; 720 km/h; 200 m em 1 s &rarr; 720 km/h. Tr&ecirc;s escalas de tempo, uma s&oacute; velocidade.</p>
+          <p><strong>Exemplo &mdash; dados do voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra:</strong> 360 km em 0,5 h &rarr; 720 km/h; 12 km em 1 min &rarr; 720 km/h; 200 m em 1 s &rarr; 720 km/h. Tr&ecirc;s escalas de tempo, uma s&oacute; velocidade.</p>
           <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: para a velocidade n&atilde;o mudar, nada pode sobrar &mdash; todas as influ&ecirc;ncias sobre o corpo precisam se cancelar. &Eacute; o empate das for&ccedil;as que produz a const&acirc;ncia.</p>
         </div>
         <div class="col-img">
@@ -1197,16 +1207,16 @@ html, body {
         <div class="col-img">
           <img class="fig-inteira" src="../_imagens/_web/T10-IT-05-v1.jpg" alt="A regua do trajeto graduada em quilometros, com relogios sobre as posicoes do aviao">
           <div class="col-img-legenda"><span class="fig-num">Figura 5</span>A r&eacute;gua do trajeto: a linha Confins&mdash;Santos Dumont graduada em quil&ocirc;metros, com rel&oacute;gios marcando 8h45, 9h00 e 9h05 pendurados sobre as posi&ccedil;&otilde;es correspondentes do avi&atilde;o</div>
+          <div class="simule-strip">
+            <a href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener"><img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAADDElEQVR4nO1cS27jMAx9UgxkaQM9QI7i3KBHGvRIvYF1lB6ggL0sIIMDkpKSdgZODcwUUsK3MGKLC0LPFL+OI+xB8LvEAZPfhr+x/hUmvw3/ePKLSzgDcGesLj0bVocwAHm9q1P/XfAPJg+i+UACjHxR9BFEFIFxPuiCyk216e9N/hv749Q4F+eIZoCmpYNzA0Avp6gLYt22n629b92Xe4ee4Mb5KSKcj+TG+Wf18Sb/X/kluYTTh8NIq6MwfCbY9n8bvkp+Kd0dIsIzE7p0ICwD+19+3rPA8hP6eJP/5/EVEjSW+sslweKr9t5P0BWUaSa0l/uonF/B4uf2+J2zhUoaNPUcMPNllIWePq3Wpr83+Zv+d3UUzux6h5lDZ/bGy5EQhkOW6t87YHmKtp+N1jcm+a2mK0ZMxf8im7gs1Ka/N/ltkHhddbOFS7mdCt3qmI3fNt+3XjzsWurPqWrlfonVLilDTiZeof674B80fp7TIZ1ozIZNelJrYdryo3bPZ8oMpk5DVGopHc3FMdemvzf5m+dzBL1wL4G5lEagxs+4dBUYWsmy/dyGr09+OSb/66RXpPWND3dJfWlajiQ9pSr13wX/kPkvAE54n9fuMq7jgC6S9PfRv7PIoUL9vclvg1IZEtnD5iArLUjVqtQszf+2Or8RSxkj1ycZKQlWWPzcKr+4jOFIQqRcQp7Fq0zJ7LdVfin+Uakc+XyWIEt+aU2rNv29yW+DlNVMY2oDiunO5eAu6bDx225/kJjVKy6pBF56sf5gw/z2uQxZBupSJSv3/K2/fy/zG0jUQtMlaSyVnlJt+nuT//73C30KnRF4HHp840pl7ikhSHXL9nMbvsL61UFTXMcTGjw1qaxSOMVOfhKW1WF87Wx+o0l+wbXIRDLCOY3LOvRCbaFbxnVq09+b/I79WfmQjpDzmeit01NZG0v2fco9vG9UqlbJ4cqXSKdS7qhd/1vwD/39YLwax9LllDOV6mVt+nuT3/H9ArL95nYSFDwCYPWrFt83Z//P0BRf3uQ34beX707+N/NsX+zoNg/AAAAAAElFTkSuQmCC" alt="QR da simulacao Vascak"></a>
+            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa &middot; <a class="simule-link" href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener">Abrir a simula&ccedil;&atilde;o em nova janela &rarr;</a></span>
+          </div>
         </div>
         <div class="col-text">
-          <div class="eq"><strong>As quatro conven&ccedil;&otilde;es:</strong> origem &middot; sentido &middot; s&#8320; &middot; t&#8320;=0</div>
-          <div class="eq"><strong>Equa&ccedil;&atilde;o 2:</strong> <span class="eq-inline">s = s&#8320; + v&middot;t</span></div>
-          <p><strong>Exemplo &mdash; o cruzeiro:</strong> s&#8320; = 60 km, v = 12 km/min. Aos 10 min: s = 60 + 12&times;10 = 180 km. Aos 25 min: s = 360 km &mdash; o Santos Dumont &agrave; vista.</p>
-          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: s&#8320; n&atilde;o &eacute; o come&ccedil;o do mundo &mdash; &eacute; s&oacute; onde o objeto estava quando voc&ecirc; zerou o cron&ocirc;metro. A equa&ccedil;&atilde;o funciona at&eacute; para tr&aacute;s no tempo.</p>
-          <div class="simule-strip">
-            <img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADFklEQVR4nO1cW26sMAy1AamfYQd3KcwOuqS7prsDspQuYKTyORLIV3bsMFW/UEedR875oBCwNJgjP06SstBh5O64DRGMHHCEA45wwBEOOMIBRzjgiGdyBDsGIloGojz6GOVxY6IlHjjd5ecdBIxu4IhJFJ92vjGfFmaZkwjR8iZ8ot7uRxUKl7+wIwb/u4xE0z8ipiR6OA+sF0LpzEKLnlO//vrP62B0L0bsWJQHGhmmeRt4+nj73p/iOzXFiKS5I11YMvdC+c+F5cneqYPRDRiR9LMvWlHM22AUYOUGU+oLIa5pAZe/viOydRKjnlopubwJTR8D2YFPWm1a63Gnn3cMMPp5jJB9II9aRNKmuWIlyWMfEWQHXP7CjqDSVU6l8bQmcyWZ9cZMfbkRbam3oDI/+Dt1MPo5IyitKkqs+vVDe9DLnRFOEDCilRghrjWU8CDBDZr0QKpVFW6AEa3ECPIAEF/fLiN/VLkSjGiFEWLxwGjh3Kj5Q0sIp4qOIUa0wgipqUMrioJUefCFG6gsW8kasn9zo8AcQaE8V/MHGNGAkczpwh4UbOZbZ8P/ftqU+K5zu3r5JO90EDAK7AlDShSwQLHHiNJrWG9qzyFGvDiN6Grdw2S0SDVrxFh5zi/BiDYqyzlSgkkRXl4mv1HGoEc0plCJpokQolzFVmjqKGcKxIh25jX6cgi5MhKGVxTQI1pkhJQYcVU4eDERZQXmNRqb1xBXIWzEw8OeTnZ5AnpEKytvWdfSlXnx/H4mXx/B/cpEgx7qissHf6cORrdZHyEuVlchKvrQclXETMSIhuY1DF/IEM1oEaf2JPLg79TB6IZ7usQ1S93GQ73E2ktLLht7HwqXO15dj5CIAuVOVbZjDDGiJaOlbuok3ehpzYVFBu1IdaW27eG42887BBjd1BFZU8dsmz+T6JZPzRVlUrTOgsLlbe3pOg/aemia2AbJ77blk0nyCfs+W6wjpMSDWJgfS2l2jRu9RkOz4UR1LUSoELFVwxbVQLNswYjxn8me4jt1MCqAIxxwhAOOcMARDjjC8XuO+A/xV8MRNQHQ4wAAAABJRU5ErkJggg==" alt="QR da simulacao Vascak">
-            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa</span>
-          </div>
+          <div class="eq"><strong>As quatro conven&ccedil;&otilde;es:</strong><br>origem &middot; sentido &middot; s&#8320; &middot; t&#8320; = 0</div>
+          <div class="eq"><strong>Dedu&ccedil;&atilde;o da Equa&ccedil;&atilde;o 2:</strong> <span class="eq-inline">v = &Delta;s/&Delta;t = (s &minus; s&#8320;)/t</span> &rarr; <span class="eq-inline"><strong>s = s&#8320; + v&middot;t</strong></span></div>
+          <p><strong>Exemplo &mdash; dados do voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra:</strong> s&#8320; = 60 km, v = 12 km/min. Aos 10 min: s = 60 + 12&times;10 = 180 km. Aos 25 min: s = 360 km &mdash; o Santos Dumont &agrave; vista.</p>
+          <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: s&#8320; n&atilde;o &eacute; o come&ccedil;o do movimento &mdash; &eacute; s&oacute; onde o objeto estava quando voc&ecirc; zerou o cron&ocirc;metro. A equa&ccedil;&atilde;o funciona at&eacute; para tr&aacute;s no tempo.</p>
         </div>
       </div>
           <div class="salto-bar"><a class="salto" data-goto="9">Aplica&ccedil;&atilde;o 2 &rarr;</a></div>
@@ -1219,13 +1229,13 @@ html, body {
     <div class="slide-body">
       <div class="cols img-r">
         <div class="col-text">
-          <div class="eq"><strong>Gr&aacute;fico s&times;t:</strong> reta inclinada (inclina&ccedil;&atilde;o = v)</div>
-          <div class="eq"><strong>Equa&ccedil;&atilde;o 3:</strong> <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> (&aacute;rea sob v&times;t)</div>
-          <p><strong>Exemplo &mdash; o cruzeiro:</strong> 30 min a 720 km/h &rarr; &Delta;s = 720 &times; 0,5 = 360 km &mdash; a &aacute;rea que Sofia sombreou de cabe&ccedil;a.</p>
+          <div class="eq"><strong>Gr&aacute;fico s&times;t:</strong> reta inclinada &middot; declividade da reta = v &middot; <span class="eq-inline">declividade = cateto oposto / cateto adjacente</span></div>
+          <div class="eq"><strong>Gr&aacute;fico v&times;t:</strong> reta paralela ao eixo t &middot; <strong>Equa&ccedil;&atilde;o 3:</strong> <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> (&aacute;rea sob o gr&aacute;fico)</div>
+          <p><strong>Exemplo &mdash; dados do voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra:</strong> 30 min a 720 km/h &rarr; &Delta;s = 720 &times; 0,5 = 360 km &mdash; a &aacute;rea que Sofia sombreou de cabe&ccedil;a.</p>
           <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: o gr&aacute;fico s&times;t <strong>n&atilde;o &eacute; a trajet&oacute;ria</strong> &mdash; &eacute; a posi&ccedil;&atilde;o crescendo no papel enquanto o tempo passa.</p>
           <div class="simule-strip">
-            <img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADFklEQVR4nO1cW26sMAy1AamfYQd3KcwOuqS7prsDspQuYKTyORLIV3bsMFW/UEedR875oBCwNJgjP06SstBh5O64DRGMHHCEA45wwBEOOMIBRzjgiGdyBDsGIloGojz6GOVxY6IlHjjd5ecdBIxu4IhJFJ92vjGfFmaZkwjR8iZ8ot7uRxUKl7+wIwb/u4xE0z8ipiR6OA+sF0LpzEKLnlO//vrP62B0L0bsWJQHGhmmeRt4+nj73p/iOzXFiKS5I11YMvdC+c+F5cneqYPRDRiR9LMvWlHM22AUYOUGU+oLIa5pAZe/viOydRKjnlopubwJTR8D2YFPWm1a63Gnn3cMMPp5jJB9II9aRNKmuWIlyWMfEWQHXP7CjqDSVU6l8bQmcyWZ9cZMfbkRbam3oDI/+Dt1MPo5IyitKkqs+vVDe9DLnRFOEDCilRghrjWU8CDBDZr0QKpVFW6AEa3ECPIAEF/fLiN/VLkSjGiFEWLxwGjh3Kj5Q0sIp4qOIUa0wgipqUMrioJUefCFG6gsW8kasn9zo8AcQaE8V/MHGNGAkczpwh4UbOZbZ8P/ftqU+K5zu3r5JO90EDAK7AlDShSwQLHHiNJrWG9qzyFGvDiN6Grdw2S0SDVrxFh5zi/BiDYqyzlSgkkRXl4mv1HGoEc0plCJpokQolzFVmjqKGcKxIh25jX6cgi5MhKGVxTQI1pkhJQYcVU4eDERZQXmNRqb1xBXIWzEw8OeTnZ5AnpEKytvWdfSlXnx/H4mXx/B/cpEgx7qissHf6cORrdZHyEuVlchKvrQclXETMSIhuY1DF/IEM1oEaf2JPLg79TB6IZ7usQ1S93GQ73E2ktLLht7HwqXO15dj5CIAuVOVbZjDDGiJaOlbuok3ehpzYVFBu1IdaW27eG42887BBjd1BFZU8dsmz+T6JZPzRVlUrTOgsLlbe3pOg/aemia2AbJ77blk0nyCfs+W6wjpMSDWJgfS2l2jRu9RkOz4UR1LUSoELFVwxbVQLNswYjxn8me4jt1MCqAIxxwhAOOcMARDjjC8XuO+A/xV8MRNQHQ4wAAAABJRU5ErkJggg==" alt="QR da simulacao Vascak">
-            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa</span>
+            <a href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener"><img class="simule-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAADDElEQVR4nO1cS27jMAx9UgxkaQM9QI7i3KBHGvRIvYF1lB6ggL0sIIMDkpKSdgZODcwUUsK3MGKLC0LPFL+OI+xB8LvEAZPfhr+x/hUmvw3/ePKLSzgDcGesLj0bVocwAHm9q1P/XfAPJg+i+UACjHxR9BFEFIFxPuiCyk216e9N/hv749Q4F+eIZoCmpYNzA0Avp6gLYt22n629b92Xe4ee4Mb5KSKcj+TG+Wf18Sb/X/kluYTTh8NIq6MwfCbY9n8bvkp+Kd0dIsIzE7p0ICwD+19+3rPA8hP6eJP/5/EVEjSW+sslweKr9t5P0BWUaSa0l/uonF/B4uf2+J2zhUoaNPUcMPNllIWePq3Wpr83+Zv+d3UUzux6h5lDZ/bGy5EQhkOW6t87YHmKtp+N1jcm+a2mK0ZMxf8im7gs1Ka/N/ltkHhddbOFS7mdCt3qmI3fNt+3XjzsWurPqWrlfonVLilDTiZeof674B80fp7TIZ1ozIZNelJrYdryo3bPZ8oMpk5DVGopHc3FMdemvzf5m+dzBL1wL4G5lEagxs+4dBUYWsmy/dyGr09+OSb/66RXpPWND3dJfWlajiQ9pSr13wX/kPkvAE54n9fuMq7jgC6S9PfRv7PIoUL9vclvg1IZEtnD5iArLUjVqtQszf+2Or8RSxkj1ycZKQlWWPzcKr+4jOFIQqRcQp7Fq0zJ7LdVfin+Uakc+XyWIEt+aU2rNv29yW+DlNVMY2oDiunO5eAu6bDx225/kJjVKy6pBF56sf5gw/z2uQxZBupSJSv3/K2/fy/zG0jUQtMlaSyVnlJt+nuT//73C30KnRF4HHp840pl7ikhSHXL9nMbvsL61UFTXMcTGjw1qaxSOMVOfhKW1WF87Wx+o0l+wbXIRDLCOY3LOvRCbaFbxnVq09+b/I79WfmQjpDzmeit01NZG0v2fco9vG9UqlbJ4cqXSKdS7qhd/1vwD/39YLwax9LllDOV6mVt+nuT3/H9ArL95nYSFDwCYPWrFt83Z//P0BRf3uQ34beX707+N/NsX+zoNg/AAAAAAElFTkSuQmCC" alt="QR da simulacao Vascak"></a>
+            <span>&#127918; <strong>SIMULE</strong> &mdash; Movimento (Vascak, cap. I &mdash; Mec&acirc;nica) &middot; aponte a c&acirc;mera e fa&ccedil;a o desafio de 3 minutos em casa &middot; <a class="simule-link" href="https://www.vascak.cz/?id=1&amp;language=pt#kapitoly" target="_blank" rel="noopener">Abrir a simula&ccedil;&atilde;o em nova janela &rarr;</a></span>
           </div>
         </div>
         <div class="col-img">
@@ -1247,8 +1257,9 @@ html, body {
           <div class="col-img-legenda"><span class="fig-num">Figura 7</span>Dois avi&otilde;es em rotas opostas sobre o mesmo corredor a&eacute;reo Confins&mdash;Santos Dumont, com as duas equa&ccedil;&otilde;es hor&aacute;rias escritas como rastros atr&aacute;s de cada um</div>
         </div>
         <div class="col-text">
-          <div class="eq"><strong>Equa&ccedil;&atilde;o 4 &mdash; Encontro:</strong> <span class="eq-inline">s<sub>A</sub> = s<sub>B</sub></span></div>
-          <div class="eq"><strong>No gr&aacute;fico:</strong> retas que se cruzam &rarr; h&aacute; encontro; paralelas &rarr; nunca</div>
+          <div class="eq"><strong>Condi&ccedil;&otilde;es do encontro:</strong> mesmo referencial &middot; movimentos simult&acirc;neos e independentes</div>
+          <div class="eq"><strong>Solu&ccedil;&atilde;o alg&eacute;brica (Equa&ccedil;&atilde;o 4):</strong> <span class="eq-inline">s<sub>A</sub> = s<sub>B</sub></span></div>
+          <div class="eq"><strong>Solu&ccedil;&atilde;o gr&aacute;fica:</strong> coordenadas do ponto de encontro das retas &middot; retas paralelas &rarr; n&atilde;o ocorrer&aacute; o encontro</div>
           <p><strong>Exemplo &mdash; dois avi&otilde;es:</strong> partindo dos extremos dos 360 km a 720 km/h um contra o outro, o encontro &eacute; em t = 15 min, exatamente no meio (180 km).</p>
           <p style="font-style:italic; color: var(--ouro);">Conclus&atilde;o: retas paralelas em s&times;t nunca se cruzam &mdash; ou s&atilde;o o mesmo movimento, com a mesma dist&acirc;ncia de sempre entre si.</p>
         </div>
@@ -1284,13 +1295,13 @@ html, body {
       <div class="exercicio">
         <div class="exercicio-label">Enunciado</div>
         <div class="exercicio-enunciado">
-          No cruzeiro do voo Confins&rarr;Santos Dumont, a tela de bordo indicou <strong>720 km/h</strong>. Um estudante quer verificar, sem confiar cegamente na tela, se o movimento &eacute; realmente uniforme. Ele anota tr&ecirc;s medi&ccedil;&otilde;es independentes: 360 km em 0,5 h; 12 km em 1 min; 200 m em 1 s. (a) Calcule v em cada trecho. (b) O movimento &eacute; uniforme? Justifique.
+          No voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra, no trecho Confins&rarr;Santos Dumont, a tela de bordo indicou <strong>720 km/h</strong>. Um estudante quer verificar, sem confiar cegamente na tela, se o movimento &eacute; realmente uniforme. Ele anota tr&ecirc;s medi&ccedil;&otilde;es independentes: 360 km em 0,5 h; 12 km em 1 min; 200 m em 1 s. (a) Calcule v em cada trecho. (b) O movimento &eacute; uniforme? Justifique.
         </div>
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> Verificar se os tr&ecirc;s trechos medidos correspondem &agrave; mesma velocidade constante, confirmando (ou n&atilde;o) o MU.</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> Trecho 1: &Delta;s=360km, &Delta;t=0,5h. Trecho 2: &Delta;s=12km, &Delta;t=1min. Trecho 3: &Delta;s=200m, &Delta;t=1s.</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Medi&ccedil;&otilde;es feitas durante o mesmo cruzeiro; trajet&oacute;ria retil&iacute;nea (aproxima&ccedil;&atilde;o).</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [360km/0,5h] &middot; [12km/1min] &middot; [200m/1s] &mdash; tr&ecirc;s janelas de tempo diferentes no mesmo voo.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento uniforme do in&iacute;cio ao fim de cada janela medida (0,5 h &middot; 1 min &middot; 1 s), no mesmo voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra; trajet&oacute;ria retil&iacute;nea.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="8" y1="40" x2="478" y2="40"/><path class="aco" d="M478,40 l-9,-4 v8 z"/><line class="med" x1="30" y1="40" x2="180" y2="40" stroke-width="5"/><line class="med" x1="230" y1="40" x2="310" y2="40" stroke-width="5"/><line class="med" x1="360" y1="40" x2="400" y2="40" stroke-width="5"/><text x="30" y="30" font-size="11">360 km &middot; 0,5 h</text><text x="230" y="30" font-size="11">12 km &middot; 1 min</text><text x="360" y="30" font-size="11">200 m &middot; 1 s</text><text x="8" y="58" font-size="10" opacity=".8">mesmo voo &middot; tr&ecirc;s janelas de tempo &middot; v = &Delta;s/&Delta;t em cada uma</text></svg></div>
           <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 1: <span class="eq-inline">v = &Delta;s/&Delta;t</span> (defini&ccedil;&atilde;o do MU).</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> v&#8321;=360/0,5=720km/h. v&#8322;=12&times;60=720km/h. v&#8323;=200m/s&times;3,6=<strong>720km/h</strong> nos tr&ecirc;s.</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> As tr&ecirc;s medi&ccedil;&otilde;es, em escalas de tempo bem diferentes, resultam exatamente no mesmo valor &mdash; n&atilde;o &eacute; coincid&ecirc;ncia, &eacute; a pr&oacute;pria defini&ccedil;&atilde;o do MU sendo satisfeita.</div>
@@ -1308,13 +1319,13 @@ html, body {
       <div class="exercicio">
         <div class="exercicio-label">Enunciado</div>
         <div class="exercicio-enunciado">
-          Com <strong>s&#8320; = 60 km</strong> e <strong>v = 12 km/min</strong> (mesmos dados do cruzeiro), calcule a posi&ccedil;&atilde;o do avi&atilde;o aos <strong>20 min</strong> de voo e diga se, nesse instante, ele j&aacute; alcan&ccedil;ou o Rio de Janeiro (360 km).
+          Com <strong>s&#8320; = 60 km</strong> e <strong>v = 12 km/min</strong> (mesmos dados do voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra), calcule a posi&ccedil;&atilde;o do avi&atilde;o aos <strong>20 min</strong> de voo e diga se, nesse instante, ele j&aacute; alcan&ccedil;ou o Rio de Janeiro (360 km).
         </div>
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A posi&ccedil;&atilde;o do avi&atilde;o aos 20 min e a compara&ccedil;&atilde;o com a dist&acirc;ncia total (360 km).</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> s&#8320; = 60 km &middot; v = 12 km/min &middot; t = 20 min.</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU durante todo o cruzeiro; mesmo referencial (origem em Confins, sentido para o Rio).</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [Confins s=0] &mdash;60km&mdash; [s&#8320;] &mdash;12km/min&mdash; [s(20min)=?] &middot;&middot;&middot; [Rio, 360km]</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento considerado uniforme de t = 0 (in&iacute;cio da cronometragem, s&#8320; = 60 km) at&eacute; t = 20 min; mesmo referencial (origem em Confins, sentido para o Rio).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="8" y1="40" x2="478" y2="40"/><path class="aco" d="M478,40 l-9,-4 v8 z"/><line class="lin" x1="20" y1="34" x2="20" y2="46"/><line class="aco" x1="95" y1="34" x2="95" y2="46" stroke-width="2"/><line class="lin" x1="330" y1="34" x2="330" y2="46" stroke-dasharray="3 2"/><line class="lin" x1="455" y1="34" x2="455" y2="46"/><text x="8" y="58" font-size="10">Confins s=0</text><text x="72" y="26" font-size="10">s&#8320;=60 km (t=0)</text><text x="175" y="58" font-size="10" class="aco" stroke="none">v = 12 km/min &rarr;</text><text x="290" y="26" font-size="11">s(20 min) = ?</text><text x="428" y="58" font-size="10">Rio 360 km</text></svg></div>
           <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 2: <span class="eq-inline">s = s&#8320; + v&middot;t</span>.</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> s = 60 + 12&times;20 = 60 + 240 = <strong>300 km</strong>.</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> 300 km &eacute; menor que 360 km &mdash; o avi&atilde;o ainda est&aacute; a caminho, faltam 60 km.</div>
@@ -1332,14 +1343,14 @@ html, body {
       <div class="exercicio">
         <div class="exercicio-label">Enunciado</div>
         <div class="exercicio-enunciado">
-          No gr&aacute;fico v&times;t do cruzeiro, a velocidade &eacute; constante em 720 km/h. Calcule a &aacute;rea sob a reta entre <strong>t = 10 min</strong> e <strong>t = 25 min</strong> (&Delta;t = 15 min) e confira que ela corresponde ao deslocamento previsto pela equa&ccedil;&atilde;o hor&aacute;ria.
+          No gr&aacute;fico v&times;t do voo do avi&atilde;o em rela&ccedil;&atilde;o &agrave; Terra, a velocidade &eacute; constante em 720 km/h. Calcule a &aacute;rea sob a reta entre <strong>t = 10 min</strong> e <strong>t = 25 min</strong> (&Delta;t = 15 min) e confira que ela corresponde ao deslocamento previsto pela equa&ccedil;&atilde;o hor&aacute;ria.
         </div>
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A &aacute;rea do ret&acirc;ngulo v&times;t entre 10 e 25 min, e conferir que ela bate com &Delta;s pela equa&ccedil;&atilde;o hor&aacute;ria.</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> v = 720 km/h = 12 km/min (constante) &middot; &Delta;t = 15 min (de 10 a 25 min).</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU no intervalo; mesmo referencial da Equa&ccedil;&atilde;o 2 (s&#8320; = 60 km).</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> gr&aacute;fico v&times;t: reta horizontal em 12 km/min; &aacute;rea hachurada entre t=10 e t=25 min.</div>
-          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 3: <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> &middot; confer&ecirc;ncia: s(25)&minus;s(10).</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento considerado uniforme entre t = 10 min e t = 25 min; mesmo referencial da Equa&ccedil;&atilde;o 2 (s&#8320; = 60 km).</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="30" y1="52" x2="470" y2="52"/><line class="lin" x1="30" y1="52" x2="30" y2="6"/><rect class="med" x="180" y="16" width="180" height="36" opacity=".28" stroke="none"/><line class="aco" x1="30" y1="16" x2="450" y2="16" stroke-width="2.4"/><text x="36" y="12" font-size="10">v = 12 km/min</text><text x="168" y="62" font-size="10">10 min</text><text x="348" y="62" font-size="10">25 min</text><text x="216" y="40" font-size="11" class="med" stroke="none">&aacute;rea = &Delta;s</text><text x="452" y="62" font-size="10">t</text></svg></div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es &mdash; escreva as duas:</strong> <span class="eq-inline">&Delta;s = s<sub>fin</sub> &minus; s<sub>ini</sub></span> (1) &middot; <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> (3).</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> &Delta;s = 12&times;15 = <strong>180 km</strong>. Confer&ecirc;ncia: s(25)=360, s(10)=180, diferen&ccedil;a=<strong>180 km</strong>. &#10003;</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> As duas contas &mdash; &aacute;rea do ret&acirc;ngulo e diferen&ccedil;a das posi&ccedil;&otilde;es &mdash; d&atilde;o exatamente o mesmo resultado.</div>
         </div>
@@ -1361,9 +1372,9 @@ html, body {
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> O instante e o local (posi&ccedil;&atilde;o) do encontro dos dois troles.</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 315 m &middot; v<sub>A</sub> = 2,0 m/s (extremidade A) &middot; v<sub>B</sub> = 1,5 m/s (extremidade B, sentido oposto).</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU para ambos; mesmo referencial, origem em A, orienta&ccedil;&atilde;o de A para B; partida simult&acirc;nea.</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [A, s=0] &mdash;2,0m/s&rarr; &nbsp;&middot;&middot;&middot;&nbsp; &larr;1,5m/s&mdash; [B, s=315m]</div>
-          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> s<sub>A</sub>=2t &middot; s<sub>B</sub>=315&minus;1,5t &middot; condi&ccedil;&atilde;o de encontro (Equa&ccedil;&atilde;o 4): s<sub>A</sub>=s<sub>B</sub>.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento considerado uniforme, para os dois troles, da partida simult&acirc;nea (t = 0) at&eacute; o encontro; trilhos paralelos (os troles se cruzam sem colidir); mesmo referencial, origem em A, orienta&ccedil;&atilde;o de A para B.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="20" y1="30" x2="480" y2="30"/><line class="lin" x1="20" y1="42" x2="480" y2="42"/><rect class="aco" x="30" y="24" width="26" height="12" stroke="none"/><path class="aco" d="M64,30 h30 m0,0 l-8,-4 m8,4 l-8,4" fill="none" stroke-width="2"/><rect class="med" x="444" y="36" width="26" height="12" stroke="none"/><path class="med" d="M436,42 h-30 m0,0 l8,-4 m-8,4 l8,4" fill="none" stroke-width="2"/><line class="lin" x1="282" y1="20" x2="282" y2="52" stroke-dasharray="3 2"/><text x="20" y="16" font-size="10">A (s=0) &middot; v&#8321;=2,0 m/s &rarr;</text><text x="310" y="16" font-size="10">&larr; v&#8322;=1,5 m/s &middot; B (s=315 m)</text><text x="252" y="62" font-size="10">encontro?</text><text x="20" y="62" font-size="10" opacity=".8">trilhos paralelos</text></svg></div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es</strong> (deduzidas da Equa&ccedil;&atilde;o 2, s = s&#8320; + v&middot;t): trole A: s<sub>A</sub> = 0 + 2,0&middot;t; trole B: s<sub>B</sub> = 315 + (&minus;1,5)&middot;t &mdash; v negativa porque B anda contra a orienta&ccedil;&atilde;o &middot; encontro (Equa&ccedil;&atilde;o 4): s<sub>A</sub> = s<sub>B</sub>.</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> 2t=315&minus;1,5t &rarr; 3,5t=315 &rarr; <strong>t=90s</strong>. s=2&times;90=<strong>180m</strong>.</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> O encontro ocorre mais perto da extremidade do trole mais lento (B) &mdash; quem anda mais r&aacute;pido percorre mais dist&acirc;ncia no mesmo tempo.</div>
         </div>
@@ -1385,9 +1396,9 @@ html, body {
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> O tempo que o min&eacute;rio leva para atravessar a correia (tempo de resid&ecirc;ncia).</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 400 m &middot; v = 3,5 m/s (constante, regime permanente).</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU ao longo de toda a correia; velocidade uniforme em toda a extens&atilde;o.</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [entrada] &mdash;400m, v=3,5m/s&rarr; [pilha]</div>
-          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> Equa&ccedil;&atilde;o 5: <span class="eq-inline">t<sub>res</sub> = L/v</span>.</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento considerado uniforme da entrada na correia (t = 0) at&eacute; a sa&iacute;da (t = t<sub>res</sub>); velocidade uniforme em toda a extens&atilde;o.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="40" y1="36" x2="440" y2="36" stroke-width="3"/><circle class="lin" cx="40" cy="42" r="7" fill="none"/><circle class="lin" cx="440" cy="42" r="7" fill="none"/><path class="aco" d="M200,24 h80 m0,0 l-9,-4 m9,4 l-9,4" fill="none" stroke-width="2"/><text x="14" y="60" font-size="10">entrada (t=0)</text><text x="196" y="14" font-size="10">v = 3,5 m/s</text><text x="218" y="50" font-size="10">L = 400 m</text><text x="404" y="60" font-size="10">pilha (t=t<tspan baseline-shift="sub" font-size="8">res</tspan>)</text></svg></div>
+          <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es</strong> (dedu&ccedil;&atilde;o da Equa&ccedil;&atilde;o 5): <span class="eq-inline">&Delta;s = v&middot;&Delta;t</span> com &Delta;s = L e &Delta;t = t<sub>res</sub> &rarr; L = v&middot;t<sub>res</sub> &rarr; <span class="eq-inline">t<sub>res</sub> = L/v</span> (Equa&ccedil;&atilde;o 5).</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> t<sub>res</sub> = 400 &divide; 3,5 &asymp; <strong>114 s</strong> (&asymp; 1 min 54 s).</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> Menos de 2 minutos &mdash; coerente com correias industriais de m&eacute;dio porte; esse n&uacute;mero &eacute; o que a usina usa para prever a chegada do material.</div>
         </div>
@@ -1404,13 +1415,13 @@ html, body {
       <div class="exercicio">
         <div class="exercicio-label">Enunciado</div>
         <div class="exercicio-enunciado">
-          Numa galeria retil&iacute;nea de <strong>315 m</strong>, o plano de tr&aacute;fego permite dois troles simult&acirc;neos em sentidos opostos, desde que a parada programada ocorra a pelo menos <strong>30 m</strong> de dist&acirc;ncia entre eles. Os troles partem simultaneamente das extremidades a <strong>2,0 m/s</strong> e <strong>1,5 m/s</strong>, e o protocolo manda ambos pararem <strong>60 s</strong> ap&oacute;s a partida. Verifique se o protocolo cumpre a dist&acirc;ncia m&iacute;nima e determine o tempo m&aacute;ximo de viagem que ainda a cumpriria.
+          Numa galeria retil&iacute;nea de <strong>315 m</strong>, o plano de tr&aacute;fego permite dois troles simult&acirc;neos em sentidos opostos, <strong>em trilhos paralelos</strong>, desde que a parada programada ocorra a pelo menos <strong>30 m</strong> de dist&acirc;ncia entre eles. Os troles partem simultaneamente das extremidades a <strong>2,0 m/s</strong> e <strong>1,5 m/s</strong>, e o protocolo manda ambos pararem <strong>60 s</strong> ap&oacute;s a partida. Verifique se o protocolo cumpre a dist&acirc;ncia m&iacute;nima e determine o tempo m&aacute;ximo de viagem que ainda a cumpriria.
         </div>
         <div class="c5-ap">
           <div class="c5-ap-etapa">1</div><div class="c5-ap-conteudo"><strong>O que est&aacute; sendo pedido?</strong> A dist&acirc;ncia entre os troles na parada programada, a compara&ccedil;&atilde;o com o m&iacute;nimo de 30 m e o tempo-limite de viagem.</div>
           <div class="c5-ap-etapa">2</div><div class="c5-ap-conteudo"><strong>Dados:</strong> L = 315 m &middot; v<sub>A</sub> = 2,0 m/s &middot; v<sub>B</sub> = 1,5 m/s (sentidos opostos) &middot; t<sub>p</sub> = 60 s &middot; d<sub>m&iacute;n</sub> = 30 m.</div>
-          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> MU para os dois troles do in&iacute;cio &agrave; parada; partida simult&acirc;nea; mesmo referencial com origem na extremidade de A.</div>
-          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong> [A] &mdash;2,0m/s&rarr; &nbsp; &larr;1,5m/s&mdash; [B] &middot; 0 &mdash;&mdash;&mdash;&mdash;&mdash; 315 m</div>
+          <div class="c5-ap-etapa">3</div><div class="c5-ap-conteudo"><strong>Hip&oacute;teses:</strong> Movimento uniforme, para os dois troles, da partida (t = 0) at&eacute; a parada programada (t = 60 s); trilhos paralelos; origem na extremidade de A.</div>
+          <div class="c5-ap-etapa">4</div><div class="c5-ap-conteudo"><strong>Desenho:</strong><svg class="c5-des" viewBox="0 0 500 62" role="img"><line class="lin" x1="20" y1="30" x2="480" y2="30"/><line class="lin" x1="20" y1="42" x2="480" y2="42"/><rect class="aco" x="180" y="24" width="26" height="12" stroke="none"/><rect class="med" x="330" y="36" width="26" height="12" stroke="none"/><path class="lin" d="M212,52 h112 m-112,0 l7,-3 m-7,3 l7,3 m105,-3 l-7,-3 m7,3 l-7,3" fill="none"/><text x="20" y="16" font-size="10">A (s=0) &middot; 2,0 m/s &rarr;</text><text x="330" y="16" font-size="10">&larr; 1,5 m/s &middot; B (s=315 m)</text><text x="200" y="62" font-size="10">parada (t=60 s): d = ? &ge; 30 m</text><text x="20" y="62" font-size="10" opacity=".8">trilhos paralelos</text></svg></div>
           <div class="c5-ap-etapa">5</div><div class="c5-ap-conteudo"><strong>Equa&ccedil;&otilde;es:</strong> s<sub>A</sub>=2,0t &middot; s<sub>B</sub>=315&minus;1,5t &middot; dist&acirc;ncia entre eles: d(t)=s<sub>B</sub>&minus;s<sub>A</sub>=315&minus;3,5t.</div>
           <div class="c5-ap-etapa">6</div><div class="c5-ap-conteudo"><strong>C&aacute;lculo:</strong> Em t=60s: d=315&minus;3,5&times;60=<strong>105 m</strong> &#10003; (&ge;30m). Limite: 315&minus;3,5t=30 &rarr; <strong>t=81s</strong>.</div>
           <div class="c5-ap-etapa">7</div><div class="c5-ap-conteudo"><strong>An&aacute;lise:</strong> Com a parada aos 60 s, os troles ficam a 105 m um do outro &mdash; folga confort&aacute;vel. O limite de 81 s mostra a margem real: 21 s.</div>
@@ -1430,7 +1441,7 @@ html, body {
           <div class="col-img-legenda"><span class="fig-num">Figura 12</span>Ravel e a F&iacute;sica: a baqueta suspensa sobre a tarola e, ao fundo, a reta inclinada de s&times;t subindo como um crescendo</div>
         </div>
         <div class="col-text">
-          <div class="ca-obra"><strong>M&uacute;sica:</strong> <em>Bol&eacute;ro</em><br>Maurice Ravel &middot; obra orquestral (1928)</div>
+          <div class="ca-obra"><strong>M&uacute;sica:</strong> <em>Bol&eacute;ro</em><br>Maurice Ravel &middot; obra orquestral (1928)<br><a href="https://music.youtube.com/watch?v=LwLABSm0yYc" target="_blank" rel="noopener" style="color: var(--verde); font-weight: 700; text-decoration: underline;">&#9835; Ouvir o Bol&eacute;ro &rarr;</a></div>
           <div class="ca-versos">
             Em 1928, Ravel comp&ocirc;s quinze minutos de m&uacute;sica sobre <strong>um &uacute;nico ritmo que n&atilde;o muda nunca</strong> &mdash; mais de quatro mil batidas id&ecirc;nticas, num andamento que ele proibiu de acelerar.
           </div>
@@ -1465,7 +1476,7 @@ html, body {
   <section class="slide despedida" data-slide="16" data-titulo="Despedida">
     <div class="desp-bg" style="background-image: url('../_imagens/_web/T10-IT-09-v1.jpg');"></div>
     <div class="desp-body">
-      <div class="desp-sofia" style="color: var(--ouro);">&ldquo;Se essa velocidade n&atilde;o muda nunca, eu sei onde a gente est&aacute;.&rdquo; &mdash; Sofia</div>
+      <div class="desp-sofia" style="color: var(--ouro);">&ldquo;Se essa velocidade n&atilde;o muda nunca, com apenas um rel&oacute;gio eu sei onde a gente est&aacute;.&rdquo; &mdash; Sofia</div>
       <div class="desp-acao">N&atilde;o esque&ccedil;a de fazer a</div>
       <div class="desp-tarefa">Tarefa M&iacute;nima &middot; HOJE</div>
       <div class="ca-provinha" style="margin-top:24px;">
@@ -1520,7 +1531,7 @@ html, body {
 
 <script>
 (function() {
-  var STORAGE_KEY = 'T10-AP-v1';
+  var STORAGE_KEY = 'T10-AP-v2';
   var slides = document.querySelectorAll('.slide');
   var total = slides.length;
   var atual = 1;
@@ -2179,21 +2190,39 @@ html, body {
 .c5-ap-conteudo { line-height: 1.36; }
 .exercicio-enunciado { line-height: 1.4; margin-bottom: 8px; }
 
+/* == Desenho didatico do C5 (etapa 4) — v2 == */
+.c5-des { display: block; width: 100%; max-width: 380px; height: auto; margin-top: 3px; }
+.c5-des text { font-family: 'Courier New', monospace; fill: currentColor; }
+.c5-des .lin { stroke: currentColor; stroke-width: 1.6; opacity: .75; }
+.c5-des .aco { stroke: var(--ouro); fill: var(--ouro); }
+.c5-des .med { stroke: var(--verde); fill: var(--verde); }
+
+/* Telas altas: o desenho do C5 e a faixa SIMULE ganharam altura na v2 —
+   estas folgas so valem acima de 820px, para nao sobrepor a compactacao
+   da media query de altura (camada 3 da secao 3.4 do SKILL.md). */
+@media (min-height: 821px) {
+  .slide[data-slide="5"] .simule-strip { margin-top: 4px; }
+  .slide[data-slide="13"] .c5-ap-etapa { padding: 3px 5px; }
+  .slide[data-slide="13"] .c5-ap-conteudo { padding: 3px 0 3px 5px; }
+  .slide[data-slide="13"] .c5-des { max-width: 300px; }
+}
+
 /* == Faixa SIMULE (Protocolo SIM-v1, Fase 3) == */
 .simule-strip {
   display: flex; align-items: center; gap: 12px;
-  max-height: 64px; margin-top: 10px;
+  margin-top: 10px;
   background: var(--input-bg); border: 1px solid var(--cinza-borda);
   border-left: 4px solid var(--verde);
   padding: 6px 14px;
 }
-.simule-qr { width: 56px; height: 56px; flex-shrink: 0; background: #fff; }
+.simule-qr { width: 110px; height: 110px; flex-shrink: 0; background: #fff; padding: 4px; }
+.simule-link { font-weight: 700; color: var(--verde); text-decoration: underline; }
 .simule-strip span { font-size: 0.95rem; color: oklch(0.90 0 0); line-height: 1.35; }
 [data-theme="light"] .simule-strip span { color: oklch(0.18 0 0); }
 .simule-strip strong { color: var(--verde); }
 @media (max-height: 800px) {
-  .simule-strip { max-height: 52px; padding: 4px 10px; gap: 8px; }
-  .simule-qr { width: 44px; height: 44px; }
+  .simule-strip { padding: 4px 10px; gap: 8px; }
+  .simule-qr { width: 88px; height: 88px; }
   .simule-strip span { font-size: 0.82rem; }
 }
 
