@@ -73,8 +73,18 @@
 
 /* METODO:CSS-INICIO */
 /* Paradas e numeracao do Metodo de Estudo (metodo_estudo.py) */
-  .parada { font-family: 'Courier New', monospace; font-size: .82rem; color: var(--verde); text-transform: uppercase; letter-spacing: .08em; margin: 22px 0 8px; border-left: 3px solid var(--verde); padding-left: 10px; }
-  .parada span { color: #8d8d8d; text-transform: none; letter-spacing: 0; }
+  .parada { font-family: 'Courier New', monospace; font-size: .95rem; font-weight: bold; color: #fff; text-transform: uppercase; letter-spacing: .1em; margin: 26px 0 10px; border-left: 5px solid var(--ouro); background: rgba(76,175,125,.14); padding: 9px 12px; }
+  .parada span { color: var(--verde); text-transform: none; letter-spacing: 0; font-weight: normal; font-size: .95rem; }
+  /* Tags dos OAs maiores (mesmo ajuste do fe1-oa, 2026-08-28) */
+  a.oa .tag { font-size: .95rem; }
+  /* No celular a parada e o marco visual e as linhas de OA crescem para leitura */
+  @media (max-width: 560px) {
+    .parada { font-size: 1.05rem; padding: 11px 12px; margin: 28px 0 12px; }
+    .parada span { display: block; margin-top: 3px; font-size: 1rem; }
+    a.oa, .oa.offline { font-size: 1.08rem; line-height: 1.5; }
+    a.oa .tag, .oa.offline .tag { display: block; font-size: 1.02rem; margin-left: 2.2em; margin-top: 2px; }
+    a.oa.extra .tag { margin-left: 0; }
+  }
   .oa .num { display: inline-block; min-width: 1.6em; color: var(--ouro); }
   .oa.offline { display: block; padding: 14px 18px; border: 1px dashed #444; color: #9a9a9a; font-family: 'Courier New', monospace; font-size: .95rem; }
   .oa.offline .num { color: #9a9a9a; }
@@ -86,13 +96,15 @@
   details.trilha { border: 1px solid #444; margin-bottom: 12px; scroll-margin-top: 64px; }
   @media (max-width: 560px) { details.trilha { scroll-margin-top: 108px; } } /* a barra de atalhos quebra em 2 linhas */
   details.trilha[open] { border-color: var(--verde); }
-  details.trilha > summary { cursor: pointer; list-style: none; padding: 15px 16px; font-family: 'Courier New', monospace; font-size: 1rem; color: #fff; }
+  details.trilha > summary { cursor: pointer; list-style: none; padding: 15px 16px; font-family: 'Courier New', monospace; font-size: 1.15rem; color: #fff; }
   details.trilha > summary::-webkit-details-marker { display: none; }
   details.trilha > summary::before { content: '+'; color: var(--ouro); display: inline-block; min-width: 1.4em; }
   details.trilha[open] > summary::before { content: '\2212'; }
   details.trilha > summary:hover { color: var(--ouro); }
   details.trilha > .trilha-corpo { padding: 0 14px 14px; }
   details.trilha .parada:first-child { margin-top: 4px; }
+  /* Titulo da trilha maior no celular — depois da regra-base do summary na cascata */
+  @media (max-width: 560px) { details.trilha > summary { font-size: 1.28rem; } }
 /* METODO:CSS-FIM */
 
 </style>
@@ -223,7 +235,8 @@
   </ul>
   <p class="parada">Aula <span>&middot; no encontro presencial, com o professor</span></p>
   <ul>
-    <li><span class="oa offline"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></span></li>
+    <li><a class="oa" href="t01/fa/"><b class="num">1</b>Folha de Atividades (FA)<span class="tag">impressa · entregue em sala · escrever à mão</span></a></li>
+    <li><a class="oa extra" href="t01/fa/T01-FA-impressa.pdf">Baixar a FA em PDF<span class="tag">imprimir em casa &middot; A4 &middot; escrever &agrave; m&atilde;o</span></a></li>
     <li><a class="oa" href="t01/ap/"><b class="num">2</b>Apresentação da Aula (AP)<span class="tag">slides da aula · rever depois</span></a></li>
     <li><a class="oa" href="t01/pr/"><b class="num">3</b>Provinha (PR)<span class="tag">vale nota · nos últimos minutos da aula</span></a></li>
   </ul>
