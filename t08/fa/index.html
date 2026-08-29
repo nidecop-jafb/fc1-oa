@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T08 · Velocidade Média e Instantânea — FA Estudante (impresso, 4 páginas)</title>
+<style>
+/* ============================================================
+   T08-FA-v2-estudante-impressa.html
+   Folha de Atividades — 4 paginas A4, para ESCRITA A MAO.
+   Piazzi (Aprendendo Inteligencia): "estudar e escrever a mao".
+
+   Estrutura:
+     pag 1  cabecalho + identificacao + epigrafe + Anotacoes T1-T3
+     pag 2  Anotacoes T4-T5 (fecha ~1,5 pag) + Aplicacao 1
+     pag 3  Aplicacoes 2, 3 e 4
+     pag 4  Aplicacoes 5 e 6 (integradora) + fechamento
+
+   Cada Aplicacao traz: enunciado + questao conceitual + as 8 etapas do
+   Protocolo C5 para o estudante preencher (mesma sequencia da AP).
+
+   IMPRESSAO: a paleta de tela (colorida) e substituida por uma ESCALA DE
+   CINZA calibrada no @media print — ver o bloco "PALETA DE IMPRESSAO".
+   ============================================================ */
+
+:root {
+  /* --- paleta de TELA --- */
+  --azul: oklch(0.65 0.22 45);
+  --azul-bg: oklch(0.28 0.05 45);
+  --ouro: oklch(0.85 0.18 95);
+  --ouro-bg: oklch(0.25 0.04 95);
+  --verde: oklch(0.7 0.15 150);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --branco: oklch(0.93 0 0);
+  --superficie: oklch(0.24 0.02 260);
+  --fundo: oklch(0.18 0.02 260);
+  --linha: oklch(0.38 0.02 260);
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.45;
+}
+
+.folha { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+/* ── PAGINA ── */
+.pagina { margin-bottom: 28px; }
+.pagina + .pagina { border-top: 2px dashed var(--cinza-borda); padding-top: 24px; }
+
+/* ── CABECALHO ── */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  border-top: 3px solid var(--azul);
+  border-bottom: 1px solid var(--cinza-borda);
+  padding: 10px 0; margin-bottom: 12px;
+}
+.header-left h1 { font-size: 1.05rem; font-weight: 700; color: var(--azul); }
+.header-left .sub { font-size: .72rem; color: var(--cinza); margin-top: 2px; }
+.header-right { text-align: right; font-size: .7rem; color: var(--cinza); line-height: 1.5; }
+.header-right .badge { font-weight: 700; color: var(--azul); font-size: .75rem; }
+
+/* ── IDENTIFICACAO ── */
+.id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin-bottom: 8px; }
+/* Curso, Turma e Data dividem a MESMA linha */
+.id-linha { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px 18px; margin-bottom: 12px; }
+.id-grid .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .8rem; border-bottom: 1px solid var(--linha); padding-bottom: 5px;
+}
+.id-grid .campo.full { grid-column: 1 / -1; }
+.id-grid .campo label,
+.id-linha .campo label { font-weight: 700; color: var(--azul); font-size: .74rem; white-space: nowrap; }
+.id-grid .campo .linha,
+.id-linha .campo .linha { flex: 1; min-width: 0; height: 1.3em; }
+.id-linha .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .8rem; border-bottom: 1px solid var(--linha); padding-bottom: 5px;
+}
+
+/* ── BARRA PIAZZI ── */
+.piazzi {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  border: 1px solid var(--cinza-borda); padding: 7px 12px; margin-bottom: 10px;
+  font-size: .72rem; color: var(--cinza);
+}
+.piazzi em { color: var(--ouro); font-style: italic; }
+.piazzi .tag {
+  border: 1px solid var(--ouro); color: var(--ouro);
+  padding: 1px 7px; font-size: .65rem; font-weight: 700; text-transform: uppercase;
+}
+.piazzi .mao { color: var(--branco); font-weight: 600; }
+
+/* ── EPIGRAFE ── */
+.epigrafe {
+  border-left: 3px solid var(--ouro); background: var(--ouro-bg);
+  padding: 8px 12px; margin-bottom: 14px;
+}
+.epigrafe blockquote { font-family: var(--serif); font-style: italic; font-size: .8rem; color: var(--ouro); }
+.epigrafe .atrib { font-size: .68rem; color: var(--cinza); margin-top: 3px; }
+
+/* ── SECAO ── */
+.secao { margin-bottom: 12px; }
+.secao-titulo { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.secao-titulo .num {
+  width: 24px; height: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 700;
+  background: var(--azul-bg); color: var(--azul); border-radius: 50%;
+}
+.secao-titulo h2 {
+  font-size: .88rem; font-weight: 700; color: var(--azul);
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.secao-titulo .hint {
+  margin-left: auto; font-size: .66rem; color: var(--cinza); font-style: italic;
+}
+
+/* ══════════ 1 · MINHAS ANOTACOES ══════════ */
+.anot-card {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--cinza-borda);
+  border-left: 3px solid var(--ouro);
+  margin-bottom: 10px;
+  background: var(--superficie);
+}
+.anot-fundo {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: .34; filter: grayscale(1) contrast(.9);
+  pointer-events: none;
+}
+.anot-conteudo { position: relative; padding: 9px 12px 10px; }
+.anot-titulo {
+  display: flex; align-items: baseline; gap: 7px;
+  font-size: .78rem; font-weight: 700; color: var(--ouro); margin-bottom: 3px;
+}
+.anot-titulo .t-num {
+  font-family: var(--mono); font-size: .68rem;
+  border: 1px solid var(--ouro); padding: 0 5px; flex-shrink: 0;
+}
+.anot-guia { font-size: .67rem; color: var(--cinza); font-style: italic; margin-bottom: 7px; }
+.anot-pauta { display: flex; flex-direction: column; gap: 0; }
+.anot-pauta .pauta-linha { border-bottom: 1px solid var(--linha); height: 26px; }
+
+/* ══════════ 2 · APLICACOES ══════════ */
+.aplic {
+  border: 1px solid var(--cinza-borda);
+  border-left: 3px solid var(--azul);
+  padding: 9px 12px 11px;
+  margin-bottom: 11px;
+}
+.aplic.destaque { border-color: var(--ouro); border-left-color: var(--ouro); border-width: 1.5px; border-left-width: 4px; }
+.aplic-head { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.aplic-tag {
+  font-family: var(--mono); font-size: .66rem; font-weight: 700;
+  color: var(--azul); background: var(--azul-bg); padding: 2px 7px;
+}
+.aplic.destaque .aplic-tag { color: var(--ouro); background: var(--ouro-bg); }
+.aplic-titulo { font-size: .79rem; font-weight: 700; }
+.aplic.destaque .aplic-titulo { color: var(--ouro); }
+.aplic-estrela { color: var(--ouro); font-size: 1rem; }
+.aplic-enunciado { font-size: .745rem; line-height: 1.5; margin-bottom: 6px; }
+.aplic-enunciado strong { color: var(--ouro); }
+
+.conceitual {
+  border-left: 2px solid var(--verde);
+  padding: 5px 9px; margin-bottom: 7px;
+  font-size: .72rem; line-height: 1.45;
+}
+.conceitual .rot {
+  font-size: .62rem; font-weight: 700; color: var(--verde);
+  text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 2px;
+}
+.conceitual .resp-linha { border-bottom: 1px solid var(--linha); height: 22px; margin-top: 4px; }
+
+/* --- grade das 8 etapas do C5 (2 colunas x 4 linhas) --- */
+.c5-rot {
+  font-size: .62rem; font-weight: 700; color: var(--azul);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px;
+}
+.c5 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; }
+.c5-etapa { display: grid; grid-template-columns: 18px 1fr; gap: 6px; align-items: start; }
+.c5-n {
+  font-family: var(--mono); font-size: .64rem; font-weight: 700;
+  color: var(--azul); background: var(--azul-bg);
+  width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+}
+.aplic.destaque .c5-n { color: var(--ouro); background: var(--ouro-bg); }
+.c5-corpo { min-width: 0; }
+.c5-label { font-size: .645rem; font-weight: 600; color: var(--cinza); line-height: 1.25; }
+.c5-campo { border-bottom: 1px solid var(--linha); height: 20px; margin-top: 2px; }
+.c5-campo.alto { height: 30px; }
+
+/* ── FECHAMENTO ── */
+.fechamento { border-top: 1px solid var(--cinza-borda); margin-top: 10px; padding-top: 9px; }
+.fechamento .frase {
+  text-align: center; font-size: .95rem; font-style: italic; color: var(--texto); line-height: 1.55;
+}
+.fechamento .frase strong { color: var(--ouro); font-style: normal; }
+
+/* ── CHECKLIST DA TRILHA (ordem dos OAs) ── */
+.checklist { margin-top: 10px; }
+.checklist-titulo {
+  text-align: center; font-size: .68rem; font-weight: 700; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px;
+}
+.checklist-fases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fase { border: 1px solid var(--cinza-borda); border-top: 2px solid var(--ouro); padding: 6px 8px 7px; }
+.fase-nome {
+  font-size: .66rem; font-weight: 700; color: var(--ouro);
+  text-transform: uppercase; letter-spacing: .4px; margin-bottom: 5px;
+}
+.fase-oas { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.oa-item { display: flex; align-items: center; gap: 4px; font-size: .64rem; line-height: 1.2; }
+.oa-box {
+  width: 9px; height: 9px; border: 1px solid var(--cinza); flex-shrink: 0;
+}
+.oa-sigla { font-family: var(--mono); font-weight: 700; color: var(--texto); }
+.oa-nome { color: var(--cinza); }
+
+/* ── ESPACO DA EQUIPE DE MONITORIA (preenchido por quem recebe a folha) ── */
+.monitoria { border: 1.5px solid var(--verde); margin-top: 10px; padding: 8px 10px 9px; }
+.monitoria-titulo {
+  font-size: .68rem; font-weight: 700; color: var(--verde);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px;
+}
+.monitoria-entrega { font-size: .8rem; font-weight: 600; margin-bottom: 7px; }
+.monitoria-marcas { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-bottom: 7px; }
+.marca { display: flex; align-items: center; gap: 5px; font-size: .72rem; }
+.marca .cx { width: 11px; height: 11px; border: 1px solid var(--cinza); flex-shrink: 0; }
+/* data de recebimento: tres lacunas (dia/mes/ano) escritas a caneta */
+.marca .data { display: inline-flex; align-items: flex-end; gap: 3px; color: var(--cinza); }
+.marca .data i { display: inline-block; border-bottom: 1px solid var(--linha); height: 1em; font-style: normal; }
+.marca .data .d, .marca .data .m { width: 22px; }
+.marca .data .a { width: 34px; }
+.monitoria-obs { font-size: .64rem; color: var(--cinza); text-transform: uppercase; letter-spacing: .4px; }
+.monitoria-linha { border-bottom: 1px solid var(--linha); height: 22px; }
+.monitoria-assina { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-top: 6px; }
+.monitoria-assina .campo {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: .72rem; border-bottom: 1px solid var(--linha); padding-bottom: 3px;
+}
+.monitoria-assina label { font-weight: 600; color: var(--verde); white-space: nowrap; font-size: .68rem; }
+.monitoria-assina .linha { flex: 1; min-width: 0; height: 1.2em; }
+
+/* ── RODAPES ── */
+.rodape-print { display: none; }
+.barra-tela { text-align: center; padding: 18px 0 6px; }
+.barra-tela .btn {
+  padding: 11px 26px; background: var(--azul); color: var(--branco);
+  border: none; font-family: var(--font); font-size: .85rem; font-weight: 700;
+  cursor: pointer; min-height: 44px;
+}
+.barra-tela .btn:hover { filter: brightness(1.1); }
+.barra-tela .nota { font-size: .66rem; color: var(--cinza); margin-top: 8px; line-height: 1.5; }
+
+/* ============================================================
+   PALETA DE IMPRESSAO — escala de cinza calibrada
+   ------------------------------------------------------------
+   A folha e impressa em P&B. Cores de tela (azul/ouro/verde) tem
+   luminancias parecidas e virariam o MESMO cinza no papel, apagando a
+   hierarquia visual. Aqui cada papel grafico recebe um tom com
+   luminancia distinta, e a diferenciacao passa a vir de tom + peso +
+   borda, nunca de matiz:
+
+     #000000  texto principal
+     #1A1A1A  titulos e numeros de etapa
+     #4D4D4D  rotulos e legendas
+     #7A7A7A  linhas de escrita (visiveis, nao dominantes)
+     #B5B5B5  bordas de caixa
+     #E4E4E4  fundo de marcador (tag, numero de etapa)
+     #F4F4F4  fundo de caixa (anotacoes)
+   ============================================================ */
+@media print {
+  /* margin: 0 no @page e o que SUPRIME o cabecalho e o rodape que o navegador
+     injeta no PDF (titulo da pagina a esquerda, data e URL file:// a direita).
+     A margem real da folha nao desaparece: ela migra para o padding de .pagina,
+     na mesma medida de antes (11mm 13mm 9mm 13mm). */
+  @page { size: A4 portrait; margin: 0; }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 8.6pt;
+    line-height: 1.34;
+  }
+  .folha { max-width: none; padding: 0; }
+
+  /* Uma .pagina por folha A4. Com @page zerado, a margem vira padding daqui —
+     e a altura precisa ser a da folha inteira: sem `height`, o Chrome descarta
+     o padding do topo dos blocos que comecam depois de uma quebra forcada, e as
+     paginas 2 a 4 saem coladas na borda superior. */
+  .pagina {
+    margin: 0; padding: 11mm 13mm 9mm 13mm;
+    break-after: page; page-break-after: always;
+  }
+  .pagina:last-of-type { break-after: auto; page-break-after: auto; }
+  /* ARMADILHA: a regra de tela `.pagina + .pagina` tem especificidade MAIOR que
+     `.pagina` e vence mesmo dentro do @media print — se o padding-top nao for
+     repetido aqui, as folhas 2 a 4 saem com os 24px da tela (6,3mm) no lugar
+     dos 11mm de margem superior. */
+  .pagina + .pagina { border-top: none; padding-top: 11mm; }
+
+  .header { border-top: 2.5pt solid #1A1A1A; border-bottom: .5pt solid #B5B5B5; padding: 5pt 0; margin-bottom: 7pt; }
+  .header-left h1 { color: #000000 !important; font-size: 12pt; }
+  .header-left .sub, .header-right { color: #4D4D4D !important; }
+  .header-right .badge { color: #000000 !important; }
+
+  .id-grid { gap: 6pt 14pt; margin-bottom: 5pt; }
+  .id-linha { gap: 6pt 14pt; margin-bottom: 8pt; }
+  .id-grid .campo,
+  .id-linha .campo { border-bottom: .75pt solid #7A7A7A !important; padding-bottom: 4pt; }
+  .id-grid .campo label,
+  .id-linha .campo label { color: #000000 !important; }
+
+  .piazzi { border: .5pt solid #B5B5B5 !important; color: #4D4D4D !important; padding: 4pt 8pt; margin-bottom: 7pt; }
+  .piazzi em { color: #1A1A1A !important; }
+  .piazzi .tag {
+    border: .75pt solid #1A1A1A !important; color: #1A1A1A !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .piazzi .mao { color: #000000 !important; }
+
+  .epigrafe {
+    background: #F4F4F4 !important; border-left: 2.5pt solid #1A1A1A !important;
+    padding: 5pt 9pt; margin-bottom: 9pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .epigrafe blockquote { color: #1A1A1A !important; font-size: 9pt; }
+  .epigrafe .atrib { color: #4D4D4D !important; }
+
+  .secao-titulo { margin-bottom: 6pt; gap: 6pt; }
+  .secao-titulo .num {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .75pt solid #1A1A1A;
+    width: 15pt; height: 15pt; font-size: 8pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .secao-titulo h2 { color: #000000 !important; font-size: 9.5pt; }
+  .secao-titulo .hint { color: #4D4D4D !important; font-size: 7pt; }
+
+  /* ---- Minhas Anotacoes ---- */
+  .anot-card {
+    background: #FFFFFF !important;
+    border: .5pt solid #B5B5B5 !important;
+    border-left: 2.5pt solid #1A1A1A !important;
+    margin-bottom: 6pt;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  /* Imagem de fundo: visivel o bastante para ilustrar o topico, clara o
+     bastante para a caneta passar por cima. A impressora P&B costuma clarear
+     meios-tons, por isso o valor de tela nao serve aqui — este e calibrado
+     no PDF (validar_contraste_pdf.py continua PASS neste nivel). */
+  .anot-fundo {
+    opacity: .26 !important;
+    filter: grayscale(1) contrast(.95) brightness(1.02) !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .anot-conteudo { padding: 6pt 9pt 7pt; }
+  .anot-titulo { color: #000000 !important; font-size: 9pt; margin-bottom: 2pt; }
+  .anot-titulo .t-num { border: .75pt solid #1A1A1A !important; color: #000000 !important; font-size: 7.5pt; }
+  .anot-guia { color: #4D4D4D !important; font-size: 7.2pt; margin-bottom: 5pt; }
+  .anot-pauta .pauta-linha { border-bottom: .5pt solid #7A7A7A !important; height: 9.5mm; }
+
+  /* ---- Aplicacoes ---- */
+  .aplic {
+    border: .5pt solid #B5B5B5 !important;
+    border-left: 2.5pt solid #1A1A1A !important;
+    padding: 4.5pt 8pt 5pt; margin-bottom: 4.5pt;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque { border: 1pt solid #1A1A1A !important; border-left: 3.5pt solid #000000 !important; }
+  .aplic-head { margin-bottom: 2.5pt; gap: 5pt; }
+  .aplic-tag {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .5pt solid #1A1A1A; font-size: 7.4pt; padding: 1pt 5pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque .aplic-tag { background: #1A1A1A !important; color: #FFFFFF !important; }
+  .aplic-titulo, .aplic.destaque .aplic-titulo { color: #000000 !important; font-size: 9pt; }
+  .aplic-estrela { color: #000000 !important; }
+  .aplic-enunciado { color: #000000 !important; font-size: 8pt; line-height: 1.34; margin-bottom: 3pt; }
+  .aplic-enunciado strong { color: #000000 !important; font-weight: 700; }
+
+  .conceitual {
+    border-left: 2pt solid #7A7A7A !important;
+    background: #F4F4F4 !important;
+    padding: 3pt 6pt; margin-bottom: 4pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .conceitual .rot { color: #1A1A1A !important; font-size: 7pt; }
+  .conceitual .resp-linha { border-bottom: .5pt solid #7A7A7A !important; height: 5.8mm; }
+
+  .c5-rot { color: #1A1A1A !important; font-size: 7pt; margin-bottom: 2pt; }
+  .c5 { gap: 2.5pt 8pt; }
+  .c5-n {
+    background: #E4E4E4 !important; color: #000000 !important;
+    border: .5pt solid #1A1A1A;
+    width: 13pt; height: 13pt; font-size: 7.2pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .aplic.destaque .c5-n { background: #1A1A1A !important; color: #FFFFFF !important; }
+  .c5-etapa { grid-template-columns: 13pt 1fr; gap: 4pt; }
+  .c5-label { color: #4D4D4D !important; font-size: 6.9pt; line-height: 1.2; }
+  .c5-campo { border-bottom: .5pt solid #7A7A7A !important; height: 5.4mm; }
+  .c5-campo.alto { height: 7mm; }
+
+  .fechamento { border-top: .5pt solid #B5B5B5 !important; margin-top: 6pt; padding-top: 5pt; }
+  .fechamento .frase { color: #000000 !important; font-size: 9.8pt; line-height: 1.4; }
+  .fechamento .frase strong { color: #000000 !important; }
+
+  .checklist { margin-top: 6pt; }
+  .checklist-titulo { color: #1A1A1A !important; font-size: 7.2pt; margin-bottom: 3pt; }
+  .checklist-fases { gap: 6pt; }
+  .fase {
+    border: .5pt solid #B5B5B5 !important; border-top: 1.5pt solid #1A1A1A !important;
+    padding: 4pt 6pt 4.5pt;
+    break-inside: avoid;
+  }
+  .fase-nome { color: #000000 !important; font-size: 7.4pt; margin-bottom: 3pt; }
+  .fase-oas { gap: 3pt 7pt; }
+  .oa-item { font-size: 7pt; }
+  .oa-box { width: 7pt; height: 7pt; border: .75pt solid #1A1A1A !important; }
+  .oa-sigla { color: #000000 !important; }
+  .oa-nome { color: #4D4D4D !important; }
+
+  /* Espaco da Equipe de Monitoria: quem RECEBE a folha escreve aqui, entao a
+     moldura e mais forte que a das demais caixas e as linhas sao altas o
+     bastante para caneta. */
+  .monitoria {
+    border: 1pt solid #1A1A1A !important;
+    margin-top: 5pt; padding: 4pt 7pt 4.5pt;
+    break-inside: avoid;
+  }
+  .monitoria-titulo { color: #000000 !important; font-size: 7pt; margin-bottom: 2pt; }
+  .monitoria-entrega { color: #000000 !important; font-size: 8.6pt; margin-bottom: 3.5pt; }
+  .monitoria-marcas { gap: 3pt 24pt; margin-bottom: 3.5pt; }
+  .marca { font-size: 7.8pt; color: #000000 !important; }
+  .marca .cx { width: 8.5pt; height: 8.5pt; border: .75pt solid #1A1A1A !important; }
+  .marca .data { color: #000000 !important; gap: 2pt; }
+  .marca .data i { border-bottom: .75pt solid #7A7A7A !important; height: .95em; }
+  .marca .data .d, .marca .data .m { width: 16pt; }
+  .marca .data .a { width: 26pt; }
+  .monitoria-obs { color: #4D4D4D !important; font-size: 6.6pt; }
+  .monitoria-linha { border-bottom: .5pt solid #7A7A7A !important; height: 6mm; }
+  .monitoria-assina { gap: 16pt; margin-top: 3pt; }
+  .monitoria-assina .campo { border-bottom: .75pt solid #7A7A7A !important; padding-bottom: 2.5pt; font-size: 7.8pt; }
+  .monitoria-assina label { color: #000000 !important; font-size: 7.2pt; }
+
+  .barra-tela { display: none !important; }
+  .rodape-print {
+    display: block; text-align: center;
+    font-size: 6.8pt; color: #4D4D4D;
+    border-top: .5pt solid #B5B5B5; padding-top: 3pt; margin-top: 5pt;
+  }
+
+  /* -- MAXIMIZACAO VERTICAL (regra do TR aplicada a FA) -- */
+  /* A folha fecha na BASE da A4, nao onde o conteudo acaba: coluna flex com a
+     altura da folha, rodape colado embaixo e a folga distribuida nos campos de
+     escrita. Sem isso sobra branco no pe (medido: 22 mm na T09). */
+  .pagina { display: flex; flex-direction: column; height: 297mm; }
+  .pagina > .secao:last-of-type { flex: 1 1 auto; }
+  .rodape-print { margin-top: auto; }
+
+  .anot-card { display: flex; }
+  .anot-conteudo { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .anot-pauta { display: flex; flex-direction: column; justify-content: space-between;
+                flex: 1 1 auto; }
+  .aplic { display: flex; flex-direction: column; }
+  .c5 { flex: 1 1 auto; }
+  .c5-corpo { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .c5-campo { flex: 1 1 auto; min-height: 5.4mm; }
+  .c5-campo.alto { min-height: 7mm; }
+
+  /* professor: gabarito e texto corrido — so o rodape desce para a base */
+  .gab-lista, .gab-texto, .c5-resp { flex: 0 0 auto; }
+
+}
+</style>
+</head>
+<body>
+
+<div class="folha">
+
+<!-- ═══════════════════════ PÁGINA 1 ═══════════════════════ -->
+<div class="pagina">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>T08 &middot; Velocidade M&eacute;dia e Instant&acirc;nea</h1>
+      <div class="sub">F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto</div>
+    </div>
+    <div class="header-right">
+      <div class="badge">Folha de Atividades (FA)</div>
+      <div>5 t&oacute;picos + 6 aplica&ccedil;&otilde;es &middot; 4 p&aacute;ginas</div>
+    </div>
+  </div>
+
+  <div class="id-grid">
+    <div class="campo full"><label>Nome:</label><div class="linha"></div></div>
+  </div>
+  <div class="id-linha">
+    <div class="campo"><label>Curso:</label><div class="linha"></div></div>
+    <div class="campo"><label>Turma:</label><div class="linha"></div></div>
+    <div class="campo"><label>Data:</label><div class="linha"></div></div>
+  </div>
+
+  <div class="piazzi">
+    <span>Pierluigi Piazzi, em <em>Aprendendo Intelig&ecirc;ncia</em>:</span>
+    <span class="mao">&ldquo;estudar &eacute; escrever &agrave; m&atilde;o&rdquo;</span>
+    <span class="tag">Ler</span>
+    <span class="tag">Escrever</span>
+    <span class="tag">Medir</span>
+    <span>ouvindo m&uacute;sica instrumental.</span>
+  </div>
+
+  <div class="epigrafe">
+    <blockquote>&ldquo;A natureza, para ser comandada, deve ser obedecida.&rdquo;</blockquote>
+    <div class="atrib">&mdash; Francis Bacon (1561&ndash;1626)</div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">1</div>
+      <h2>Minhas Anota&ccedil;&otilde;es</h2>
+      <span class="hint">escreva &agrave; m&atilde;o, com suas palavras</span>
+    </div>
+
+    <div class="anot-card">
+      <div class="anot-fundo" style="background-image:url('../_imagens/_web/T08-IT-04-v1.jpg');"></div>
+      <div class="anot-conteudo">
+        <div class="anot-titulo"><span class="t-num">T1</span> Velocidade m&eacute;dia: o deslocamento dividido pelo tempo</div>
+        <div class="anot-guia">O que a raz&atilde;o &Delta;s / &Delta;t responde &middot; a unidade do SI e a convers&atilde;o &divide;3,6 &middot; por que o sinal acompanha o deslocamento.</div>
+        <div class="anot-pauta">
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anot-card">
+      <div class="anot-fundo" style="background-image:url('../_imagens/_web/T08-IT-05-v1.jpg');"></div>
+      <div class="anot-conteudo">
+        <div class="anot-titulo"><span class="t-num">T2</span> Velocidade m&eacute;dia em percursos compostos</div>
+        <div class="anot-guia">Somar deslocamentos e tempos, nunca velocidades &middot; por que cada trecho pesa o seu tempo &middot; o que as paradas fazem com a m&eacute;dia.</div>
+        <div class="anot-pauta">
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anot-card">
+      <div class="anot-fundo" style="background-image:url('../_imagens/_web/T08-IT-06-v1.jpg');"></div>
+      <div class="anot-conteudo">
+        <div class="anot-titulo"><span class="t-num">T3</span> Velocidade instant&acirc;nea: o conceito de limite</div>
+        <div class="anot-guia">O que acontece com &Delta;s / &Delta;t quando &Delta;t encolhe &middot; o que o veloc&iacute;metro mostra &middot; como o radar de solo mede &ldquo;agora&rdquo;.</div>
+        <div class="anot-pauta">
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rodape-print">
+    T08 &middot; FA v2 (estudante) &middot; p&aacute;gina 1 de 4 &middot; F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto
+  </div>
+</div><!-- /pagina 1 -->
+
+<!-- ═══════════════════════ PÁGINA 2 ═══════════════════════ -->
+<div class="pagina">
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">1</div>
+      <h2>Minhas Anota&ccedil;&otilde;es <span style="font-weight:400;text-transform:none;letter-spacing:0;">(continua&ccedil;&atilde;o)</span></h2>
+    </div>
+
+    <div class="anot-card">
+      <div class="anot-fundo" style="background-image:url('../_imagens/_web/T08-IT-07-v1.jpg');"></div>
+      <div class="anot-conteudo">
+        <div class="anot-titulo"><span class="t-num">T4</span> Movimento progressivo e retr&oacute;grado</div>
+        <div class="anot-guia">O que o sinal de v informa &mdash; e o que ele n&atilde;o informa &middot; repouso permanente x repouso instant&acirc;neo &middot; o que muda ao trocar o referencial.</div>
+        <div class="anot-pauta">
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anot-card">
+      <div class="anot-fundo" style="background-image:url('../_imagens/_web/T08-IT-08-v1.jpg');"></div>
+      <div class="anot-conteudo">
+        <div class="anot-titulo"><span class="t-num">T5</span> Velocidade como ferramenta de gest&atilde;o na minera&ccedil;&atilde;o</div>
+        <div class="anot-guia">Vaz&atilde;o m&aacute;ssica Q<sub>m</sub> = &rho;&middot;A&middot;v &middot; por que a produ&ccedil;&atilde;o &eacute; proporcional &agrave; velocidade &middot; tempo de ciclo e tamanho da frota.</div>
+        <div class="anot-pauta">
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div><div class="pauta-linha"></div>
+          <div class="pauta-linha"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Aplica&ccedil;&otilde;es</h2>
+      <span class="hint">resolva pelas 8 etapas do Protocolo C5</span>
+    </div>
+
+    <!-- APLICAÇÃO 1 -->
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">T1</span>
+        <span class="aplic-titulo">Velocidade m&eacute;dia da viagem</span>
+      </div>
+      <div class="aplic-enunciado">
+        O &ocirc;nibus da linha Ouro Preto&ndash;Belo Horizonte sai do Terminal 8 de Julho &agrave;s <strong>7h30</strong> e chega &agrave; rodovi&aacute;ria de BH &agrave;s <strong>9h30</strong>, tendo percorrido <strong>107&nbsp;km</strong>. Calcule a velocidade m&eacute;dia <strong>(a)</strong> em km/h e <strong>(b)</strong> em m/s.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        O que esse n&uacute;mero descreve &mdash; e o que ele <em>n&atilde;o</em> descreve?
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">
+    T08 &middot; FA v2 (estudante) &middot; p&aacute;gina 2 de 4 &middot; F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto
+  </div>
+</div><!-- /pagina 2 -->
+
+<!-- ═══════════════════════ PÁGINA 3 ═══════════════════════ -->
+<div class="pagina">
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Aplica&ccedil;&otilde;es <span style="font-weight:400;text-transform:none;letter-spacing:0;">(continua&ccedil;&atilde;o)</span></h2>
+    </div>
+
+    <!-- APLICAÇÃO 2 -->
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">T2</span>
+        <span class="aplic-titulo">Percurso composto e a m&eacute;dia das m&eacute;dias</span>
+      </div>
+      <div class="aplic-enunciado">
+        A mesma viagem, trecho a trecho: <strong>19&nbsp;km em 25&nbsp;min</strong>, <strong>28&nbsp;km em 30&nbsp;min</strong> e <strong>60&nbsp;km em 45&nbsp;min</strong>, com <strong>duas paradas de 10&nbsp;min</strong>. Determine <strong>(a)</strong> a velocidade m&eacute;dia da viagem completa e <strong>(b)</strong> a velocidade m&eacute;dia s&oacute; dos trechos em movimento.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        Um estudante somou 45,6 + 56,0 + 80,0 e dividiu por 3, obtendo 60,5&nbsp;km/h. Em que condi&ccedil;&atilde;o esse procedimento daria o valor correto?
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+
+    <!-- APLICAÇÃO 3 -->
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">T3</span>
+        <span class="aplic-titulo">O radar de solo e a velocidade instant&acirc;nea</span>
+      </div>
+      <div class="aplic-enunciado">
+        Um radar de solo tem dois sensores separados por <strong>d&nbsp;=&nbsp;2,0&nbsp;m</strong>. O &ocirc;nibus aciona o primeiro e depois o segundo com intervalo de <strong>&Delta;t&nbsp;=&nbsp;0,090&nbsp;s</strong>. Calcule a velocidade registrada <strong>(a)</strong> em m/s e <strong>(b)</strong> em km/h.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        Por que essa medida vale como velocidade <em>instant&acirc;nea</em>, se tecnicamente ela &eacute; uma m&eacute;dia?
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+
+    <!-- APLICAÇÃO 4 -->
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">T4</span>
+        <span class="aplic-titulo">Progressivo, retr&oacute;grado e o sinal da velocidade</span>
+      </div>
+      <div class="aplic-enunciado">
+        Origem na rodovi&aacute;ria de Ouro Preto (s&nbsp;=&nbsp;0) e sentido positivo apontando para Belo Horizonte. &Agrave;s 17h o &ocirc;nibus faz a volta: de <strong>s<sub>0</sub>&nbsp;=&nbsp;+107&nbsp;km</strong> at&eacute; <strong>s&nbsp;=&nbsp;0</strong> em <strong>2,0&nbsp;h</strong>. Calcule <strong>(a)</strong> a velocidade m&eacute;dia com sinal e <strong>(b)</strong> classifique o movimento.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        O que muda se a origem passar a ser Belo Horizonte, com o positivo apontando para Ouro Preto?
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">
+    T08 &middot; FA v2 (estudante) &middot; p&aacute;gina 3 de 4 &middot; F&iacute;sica Conceitual 1 &middot; IFMG &mdash; Campus Ouro Preto
+  </div>
+</div><!-- /pagina 3 -->
+
+<!-- ═══════════════════════ PÁGINA 4 ═══════════════════════ -->
+<div class="pagina">
+
+  <div class="secao">
+    <div class="secao-titulo">
+      <div class="num">2</div>
+      <h2>Aplica&ccedil;&otilde;es <span style="font-weight:400;text-transform:none;letter-spacing:0;">(continua&ccedil;&atilde;o)</span></h2>
+    </div>
+
+    <!-- APLICAÇÃO 5 -->
+    <div class="aplic">
+      <div class="aplic-head">
+        <span class="aplic-tag">T5</span>
+        <span class="aplic-titulo">Elevar a produ&ccedil;&atilde;o da correia</span>
+      </div>
+      <div class="aplic-enunciado">
+        Uma correia opera a <strong>3,5&nbsp;m/s</strong> com min&eacute;rio de ferro britado de <strong>&rho;&nbsp;=&nbsp;2&nbsp;200&nbsp;kg/m&sup3;</strong> e se&ccedil;&atilde;o de carga <strong>A&nbsp;=&nbsp;0,072&nbsp;m&sup2;</strong>, entregando cerca de <strong>2&nbsp;000&nbsp;t/h</strong>. A usina precisa chegar a <strong>2&nbsp;400&nbsp;t/h</strong>. Determine a nova velocidade necess&aacute;ria.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        Ela cabe na faixa de opera&ccedil;&atilde;o industrial (1,5 a 5,0&nbsp;m/s)? Que cuidado o resultado exige?
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+
+    <!-- APLICAÇÃO 6 — INTEGRADORA -->
+    <div class="aplic destaque">
+      <div class="aplic-head">
+        <span class="aplic-estrela">&#9733;</span>
+        <span class="aplic-tag">T6</span>
+        <span class="aplic-titulo">Integradora &mdash; rampa de cava e NR-22</span>
+      </div>
+      <div class="aplic-enunciado">
+        Numa rampa de cava, a <strong>NR-22</strong> e o plano de tr&aacute;fego limitam a velocidade a <strong>25&nbsp;km/h</strong>. Um caminh&atilde;o fora de estrada percorre os <strong>1,2&nbsp;km</strong> da rampa em <strong>2&nbsp;min&nbsp;20&nbsp;s</strong>. A telemetria registrou um <strong>pico instant&acirc;neo de 34&nbsp;km/h</strong> na descida. Calcule <strong>(a)</strong> a velocidade m&eacute;dia na rampa e <strong>(b)</strong> compare m&eacute;dia e pico com o limite.
+      </div>
+      <div class="conceitual">
+        <span class="rot">Quest&atilde;o conceitual</span>
+        Houve infra&ccedil;&atilde;o? Justifique distinguindo as duas grandezas &mdash; e explique por que uma m&eacute;dia dentro do limite n&atilde;o absolve um pico acima dele.
+        <div class="resp-linha"></div>
+      </div>
+      <div class="c5-rot">Resolu&ccedil;&atilde;o cient&iacute;fica &mdash; Protocolo C5</div>
+      <div class="c5">
+        <div class="c5-etapa"><div class="c5-n">1</div><div class="c5-corpo"><div class="c5-label">O que est&aacute; sendo pedido?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">2</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o os dados?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">3</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as hip&oacute;teses?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">4</div><div class="c5-corpo"><div class="c5-label">Qual &eacute; o desenho do problema?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">5</div><div class="c5-corpo"><div class="c5-label">Quais s&atilde;o as equa&ccedil;&otilde;es?</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">6</div><div class="c5-corpo"><div class="c5-label">C&aacute;lculo com unidades</div><div class="c5-campo alto"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">7</div><div class="c5-corpo"><div class="c5-label">An&aacute;lise de resultados</div><div class="c5-campo"></div></div></div>
+        <div class="c5-etapa"><div class="c5-n">8</div><div class="c5-corpo"><div class="c5-label">Responda o que foi pedido</div><div class="c5-campo alto"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fechamento">
+    <div class="checklist">
+      <div class="checklist-titulo">Minha trilha T08 &mdash; marque o que j&aacute; concluiu</div>
+      <div class="checklist-fases">
+
+        <div class="fase">
+          <div class="fase-nome">Pr&eacute;-Aula</div>
+          <div class="fase-oas">
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">PP</span> <span class="oa-nome">Ponto de Partida</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">TT</span> <span class="oa-nome">Texto Tem&aacute;tico</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">MD</span> <span class="oa-nome">Resumo em &Aacute;udio</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">TN</span> <span class="oa-nome">Testinho</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">MC</span> <span class="oa-nome">Mapa Conceitual</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">CD</span> <span class="oa-nome">Cart&otilde;es Did&aacute;ticos</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">IG</span> <span class="oa-nome">Infogr&aacute;fico</span></span>
+          </div>
+        </div>
+
+        <div class="fase">
+          <div class="fase-nome">Aula</div>
+          <div class="fase-oas">
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">FA</span> <span class="oa-nome">Folha de Atividades</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">AP</span> <span class="oa-nome">Apresenta&ccedil;&atilde;o</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">PR</span> <span class="oa-nome">Provinha</span></span>
+          </div>
+        </div>
+
+        <div class="fase">
+          <div class="fase-nome">P&oacute;s-Aula</div>
+          <div class="fase-oas">
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">TM</span> <span class="oa-nome">Tarefa M&iacute;nima</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">TC</span> <span class="oa-nome">Tarefa Complementar</span></span>
+            <span class="oa-item"><span class="oa-box"></span><span class="oa-sigla">TR</span> <span class="oa-nome">Trabalho</span></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="frase">
+      &ldquo;Terminamos por aqui, um abra&ccedil;o, e at&eacute; o pr&oacute;ximo encontro.&rdquo;<br>
+      N&atilde;o esque&ccedil;a de fazer a <strong>Tarefa M&iacute;nima HOJE</strong>.
+    </div>
+
+    <div class="monitoria">
+      <div class="monitoria-titulo">Espa&ccedil;o da Equipe de Monitoria</div>
+      <div class="monitoria-entrega">Entregue essa Folha de Atividades na Monitoria.</div>
+      <div class="monitoria-marcas">
+        <span class="marca"><span class="cx"></span> No prazo
+          <span class="data"><i class="d"></i>/<i class="m"></i>/<i class="a"></i></span>
+        </span>
+        <span class="marca"><span class="cx"></span> Fora do prazo
+          <span class="data"><i class="d"></i>/<i class="m"></i>/<i class="a"></i></span>
+        </span>
+      </div>
+      <div class="monitoria-marcas">
+        <span class="marca"><span class="cx"></span> Completa</span>
+        <span class="marca"><span class="cx"></span> Incompleta</span>
+      </div>
+      <div class="monitoria-obs">Observa&ccedil;&otilde;es da monitoria</div>
+      <div class="monitoria-linha"></div>
+      <div class="monitoria-assina">
+        <div class="campo"><label>Monitor(a):</label><div class="linha"></div></div>
+        <div class="campo"><label>Data:</label><div class="linha"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rodape-print">
+    T08 &middot; FA v2 (estudante) &middot; p&aacute;gina 4 de 4 &middot; IFMG &mdash; Campus Ouro Preto &middot; 2026
+  </div>
+</div><!-- /pagina 4 -->
+
+<div class="barra-tela">
+  <button class="btn" onclick="abrirParaImpressao()">Imprimir (A4 &mdash; 4 p&aacute;ginas)</button>
+  <div class="nota">
+    O bot&atilde;o abre uma <strong>janela nova</strong> s&oacute; com a folha e j&aacute; chama a impress&atilde;o.
+    Em &ldquo;Salvar como PDF&rdquo;, o navegador sugere o nome correto:
+    <strong>T08-FA-v2-estudante-impressa</strong>.<br>
+    Ao imprimir, a folha troca a paleta de tela por uma <strong>escala de cinza calibrada</strong>,
+    pensada para sair leg&iacute;vel em impressora P&amp;B.<br>
+    Nas op&ccedil;&otilde;es de impress&atilde;o, mantenha <strong>&ldquo;Gr&aacute;ficos de plano de fundo&rdquo;</strong> ligado
+    &mdash; &eacute; o que preserva as imagens de fundo e os marcadores das etapas.
+  </div>
+</div>
+
+</div><!-- .folha -->
+
+<script>
+/* ============================================================
+   IMPRESSAO EM JANELA PROPRIA
+   ------------------------------------------------------------
+   Por que uma janela nova, e nao window.print() direto:
+     1. o <title> da janela e o que o Chrome oferece como NOME DO ARQUIVO
+        em "Salvar como PDF" — aqui ele e o nome canonico, com a versao;
+     2. a janela nasce sem a barra de botoes, entao o que vai para o papel
+        e exatamente as 4 paginas;
+     3. <base> preserva os caminhos relativos das imagens de fundo (as
+        ilustracoes das Anotacoes vem de ../_imagens/_web/).
+   O cabecalho/rodape que o navegador injeta (titulo + data + file://) e
+   suprimido pelo @page { margin: 0 } do bloco @media print.
+   ============================================================ */
+var NOME_ARQUIVO_PDF = 'T08-FA-v2-estudante-impressa';
+
+function abrirParaImpressao() {
+  var folha = document.querySelector('.folha').cloneNode(true);
+  var barra = folha.querySelector('.barra-tela');
+  if (barra) { barra.parentNode.removeChild(barra); }
+
+  var w = window.open('', '_blank');
+  if (!w) {
+    alert('O navegador bloqueou a janela de impressao.\n' +
+          'Libere os pop-ups para esta pagina e clique de novo.');
+    return;
+  }
+
+  w.document.open();
+  w.document.write(
+    '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<base href="' + document.baseURI + '">' +
+    '<title>' + NOME_ARQUIVO_PDF + '</title>' +
+    document.querySelector('style').outerHTML +
+    '</head><body>' + folha.outerHTML + '</body></html>'
+  );
+  w.document.close();
+
+  /* pequena espera para as imagens de fundo (ja em cache nesta aba)
+     chegarem a nova janela antes de o dialogo de impressao capturar a pagina */
+  var imprimir = function () { w.focus(); w.print(); };
+  if (w.document.readyState === 'complete') { setTimeout(imprimir, 500); }
+  else { w.addEventListener('load', function () { setTimeout(imprimir, 500); }); }
+}
+</script>
+
+<!-- ABA-SITE (injetada na publicacao — nao existe no OA canonico) -->
+<style>
+.aba-site-toggle { position: fixed; top: 56px; left: 0; z-index: 999; background: #1a1b1f; border: 1px solid #444; border-left: none; color: #bbb; font-size: .7rem; padding: 8px 10px; cursor: pointer; font-family: 'Courier New', monospace; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; transition: color .15s; border-radius: 0; }
+.aba-site-toggle:hover { color: #C8A84B; }
+.aba-site-painel { position: fixed; top: 0; left: 0; z-index: 1001; width: 330px; max-width: 86vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-family: 'Segoe UI', system-ui, sans-serif; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
+.aba-site-painel.open { transform: translateX(0); }
+.aba-site-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 0 0 14px; }
+.aba-site-painel a.aba-site-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid #444; color: #e8e8e8; text-decoration: none; font-family: 'Courier New', monospace; font-size: .85rem; }
+.aba-site-painel a.aba-site-btn:hover { border-color: #C8A84B; color: #C8A84B; }
+/* TT: abre espaco no topo do trilho e oculta a aba Figuras (decisao 2026-08-08) */
+.musica-toggle { top: 128px !important; }
+.ineditismo-toggle { top: 210px !important; }
+.toc-toggle { top: 330px !important; }
+.creditos-toggle { top: 418px !important; }
+.figuras-toggle, .figuras-sidebar { display: none !important; }
+/* Celular: a aba fica sobre o conteudo, porque em tela estreita o texto ocupa
+   a largura toda e o trilho e `position: fixed` na borda esquerda. Abrir uma
+   faixa no body empurra TUDO para a direita — vale para a aba Site e para o
+   trilho do TT (Musica/Ineditismo/Sumario/Creditos), todos em left: 0.
+   Com `box-sizing: border-box` (padrao nos OAs) nao cria rolagem lateral. */
+@media (max-width: 600px) {
+  body { padding-left: 30px; }
+  .aba-site-toggle { font-size: .6rem; padding: 6px 6px; }
+  .aba-site-painel { width: 86vw; }
+}
+@media print { .aba-site-toggle, .aba-site-painel { display: none !important; } }
+</style>
+<button class="aba-site-toggle" id="abaSiteToggle">Site</button>
+<aside class="aba-site-painel" id="abaSitePainel">
+  <h3>Site</h3>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/#t08">Ver todos os OAs da trilha</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fc1-oa/">Início do site</a>
+  <a class="aba-site-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
+</aside>
+<script>
+(function () {
+  var t = document.getElementById('abaSiteToggle');
+  var p = document.getElementById('abaSitePainel');
+  var outras = '.metodo-sidebar,.musica-sidebar,.ineditismo-sidebar,.toc-sidebar,.projeto-sidebar,.creditos-sidebar,.figuras-sidebar';
+  t.addEventListener('click', function () {
+    p.classList.toggle('open');
+    document.querySelectorAll(outras).forEach(function (s) { s.classList.remove('open'); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!p.contains(e.target) && e.target !== t) { p.classList.remove('open'); }
+  });
+})();
+</script>
+</body>
+</html>
