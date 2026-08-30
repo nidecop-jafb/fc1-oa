@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T01 · Física, uma linguagem básica da ciência — Estudante</title>
+<title>T01 &middot; Física, uma linguagem básica da ciência &mdash; Estudante</title>
 <style>
 :root {
   --azul: oklch(0.65 0.22 45);
@@ -25,7 +25,6 @@
   --hover-bg: oklch(0.22 0.02 260);
   --r: 0px;
   --r-sm: 0px;
-  --shadow: 0 1px 0 oklch(0.3 0.02 260);
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Space Mono', 'Cascadia Code', 'Consolas', monospace;
   --serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
@@ -58,7 +57,7 @@ body {
   color: var(--cinza);
 }
 
-/* ── PIAZZI BAR ── */
+/* PIAZZI BAR */
 .piazzi-bar { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; background:oklch(0.14 0.02 260); border:1px solid var(--cinza-borda); padding:10px 16px; margin-bottom:16px; font-size:.78rem; }
 .piazzi-bar .piazzi-ref { color:var(--cinza); }
 .piazzi-bar .piazzi-tag { display:inline-block; border:1px solid var(--ouro); color:var(--ouro); padding:2px 10px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
@@ -66,163 +65,97 @@ body {
 .piazzi-bar .piazzi-yt { display:inline-flex; align-items:center; gap:5px; background:var(--erro); color:var(--branco); padding:4px 12px; font-size:.72rem; font-weight:700; text-decoration:none; cursor:pointer; }
 .piazzi-bar .piazzi-yt::before { content:'\25B6'; font-size:.6rem; }
 
-/* ── ENCERRAMENTO ── */
-.encerramento { max-width:800px; margin:30px auto 10px; padding:20px; border-top:2px solid var(--ouro); text-align:center; }
-.encerramento .fecho-frase { font-family:var(--serif); font-size:.88rem; }
-.encerramento .fecho-acao { color:var(--ouro); font-size:.82rem; text-transform:uppercase; font-weight:700; margin-top:8px; }
-.encerramento .fecho-nidec { color:var(--cinza); font-size:.82rem; margin-top:12px; line-height:1.4; }
-.footer-line { text-align:center; font-size:.7rem; color:var(--cinza); padding:16px 0; }
+/* VERSION SELECTOR */
+.version-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+.version-btn {
+  flex: 1; padding: 12px;
+  background: var(--input-bg); border: 2px solid var(--cinza-borda);
+  color: var(--cinza); font-family: var(--mono); font-size: 1rem;
+  font-weight: 700; cursor: pointer; text-align: center;
+  transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.version-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.version-btn.active { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.version-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.version-label { font-size: 0.7rem; color: var(--cinza); text-align: center; margin-bottom: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* RESTORATION BANNER */
 .restore-banner {
-  display: none;
-  background: var(--ouro-claro);
-  border: 1px solid var(--ouro);
-  border-radius: var(--r);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  font-size: 0.875rem;
-  color: var(--ouro);
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: none; background: var(--ouro-claro); border: 1px solid var(--ouro);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 0.875rem; color: var(--ouro); align-items: center;
+  justify-content: space-between; gap: 12px;
 }
 .restore-banner.show { display: flex; }
 .restore-banner button {
-  background: var(--ouro);
-  color: oklch(0.10 0.02 260);
-  border: none;
-  padding: 6px 14px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  white-space: nowrap;
+  background: var(--ouro); color: oklch(0.10 0.02 260); border: none;
+  padding: 6px 14px; font-family: var(--mono); font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; text-transform: uppercase; white-space: nowrap;
 }
-.restore-banner .btn-discard {
-  background: transparent;
-  color: var(--ouro);
-  border: 1px solid var(--ouro);
-}
+.restore-banner .btn-discard { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
 
 /* PROGRESS BAR */
-.progress-bar {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 3px;
-  margin-bottom: 24px;
-}
+.progress-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-bottom: 24px; }
 .progress-seg {
-  height: 6px;
-  background: var(--cinza-claro);
-  border-radius: var(--r-sm);
-  transition: background 0.3s;
+  height: 6px; background: var(--cinza-claro);
+  border-radius: var(--r-sm); transition: background 0.3s;
 }
 .progress-seg.resp { background: var(--azul); }
 .progress-seg.certo { background: var(--verde); }
 .progress-seg.errado { background: var(--erro); }
+.progress-seg.parcial { background: var(--ouro); }
 
 /* STUDENT ID FORM */
 .id-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  padding: 16px;
-  margin-bottom: 28px;
-  border-radius: var(--r);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 16px; margin-bottom: 28px;
 }
 .id-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  display: flex; flex-direction: column; gap: 4px;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
-.id-form input,
-.id-form select {
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  color: var(--texto);
-  padding: 8px 10px;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  border-radius: var(--r-sm);
-  outline: none;
-  transition: border-color 0.2s;
+.id-form input, .id-form select {
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  color: var(--texto); padding: 8px 10px; font-family: var(--font);
+  font-size: 0.9rem; outline: none; transition: border-color 0.2s;
 }
-.id-form input:focus,
-.id-form select:focus { border-color: var(--azul); }
-.id-form input:disabled,
-.id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+.id-form input:focus, .id-form select:focus { border-color: var(--azul); }
+.id-form input:disabled, .id-form select:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* QUESTION CARD */
 .q-card {
-  background: var(--superficie);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 20px;
-  margin-bottom: 16px;
+  background: var(--superficie); border: 1px solid var(--cinza-borda);
+  padding: 20px; margin-bottom: 16px;
 }
 .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .q-num {
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--azul-bg);
-  border: 2px solid var(--azul);
-  color: var(--azul-claro);
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  border-radius: 50%;
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--azul-bg); border: 2px solid var(--azul); color: var(--azul-claro);
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; flex-shrink: 0; border-radius: 50%;
 }
 .q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .tag {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--r-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.04em;
 }
 .tag-bloom { background: var(--azul-bg); color: var(--azul-claro); border: 1px solid var(--azul); }
 .tag-pts { background: var(--ouro-claro); color: var(--ouro); border: 1px solid var(--ouro); }
+.tag-tipo { background: var(--cinza-claro); color: var(--cinza); border: 1px solid var(--cinza-borda); }
 
-.q-text {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: 16px;
-  color: var(--texto);
-}
+.q-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; color: var(--texto); }
 .q-text strong { color: var(--ouro); font-weight: 700; }
 .q-text em { color: var(--azul-claro); font-style: italic; }
 
-/* ALTERNATIVES */
+/* MC ALTERNATIVES */
 .alt-list { display: flex; flex-direction: column; gap: 6px; }
 .alt-btn {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: var(--input-bg);
-  border: 1px solid var(--cinza-borda);
-  border-radius: var(--r);
-  padding: 12px 14px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  text-align: left;
-  width: 100%;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  color: var(--texto);
-  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  text-align: left; width: 100%; font-family: var(--font);
+  font-size: 0.9rem; color: var(--texto); line-height: 1.5;
 }
 .alt-btn:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
 .alt-btn.selected { background: var(--azul-bg); border-color: var(--azul); }
@@ -231,70 +164,128 @@ body {
 .alt-btn.incorrect { border-color: var(--erro); background: var(--erro-claro); }
 .alt-btn.correct-answer { border-color: var(--verde); }
 .alt-letra {
-  font-family: var(--mono);
-  font-weight: 700;
-  color: var(--cinza);
-  min-width: 20px;
-  flex-shrink: 0;
-  padding-top: 1px;
+  font-family: var(--mono); font-weight: 700; color: var(--cinza);
+  min-width: 20px; flex-shrink: 0; padding-top: 1px;
 }
 .alt-btn.selected .alt-letra { color: var(--azul-claro); }
 .alt-btn.correct .alt-letra { color: var(--verde); }
 .alt-btn.incorrect .alt-letra { color: var(--erro); }
 
+/* MM CHECKBOXES */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.check-item:hover:not(.locked) { background: var(--hover-bg); border-color: var(--azul); }
+.check-item.selected { background: var(--azul-bg); border-color: var(--azul); }
+.check-item.locked { cursor: default; }
+.check-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.check-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.check-item.missed { border-color: var(--ouro); border-style: dashed; }
+.check-box {
+  width: 18px; height: 18px; border: 2px solid var(--cinza-borda);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; margin-top: 2px;
+}
+.check-item.selected .check-box { border-color: var(--azul); color: var(--azul-claro); }
+.check-item.correct .check-box { border-color: var(--verde); color: var(--verde); }
+.check-item.incorrect .check-box { border-color: var(--erro); color: var(--erro); }
+
+/* VF STATEMENTS */
+.vf-list { display: flex; flex-direction: column; gap: 10px; }
+.vf-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--input-bg); border: 1px solid var(--cinza-borda);
+  padding: 12px 14px; transition: border-color 0.2s;
+}
+.vf-item.correct { border-color: var(--verde); background: var(--verde-claro); }
+.vf-item.incorrect { border-color: var(--erro); background: var(--erro-claro); }
+.vf-toggles { display: flex; gap: 4px; flex-shrink: 0; }
+.vf-btn {
+  width: 36px; height: 36px; border: 2px solid var(--cinza-borda);
+  background: transparent; color: var(--cinza); font-family: var(--mono);
+  font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.vf-btn:hover:not(.locked) { border-color: var(--azul); color: var(--azul); }
+.vf-btn.selected { background: var(--azul-bg); border-color: var(--azul); color: var(--azul-claro); }
+.vf-btn.locked { cursor: default; }
+.vf-btn.correct { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+.vf-btn.incorrect { background: var(--erro-claro); border-color: var(--erro); color: var(--erro); }
+.vf-texto { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+.vf-resultado { font-family: var(--mono); font-size: 0.75rem; margin-top: 4px; }
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-top: 8px; -webkit-overflow-scrolling: touch; }
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px;
+}
+.matrix-table th {
+  background: oklch(0.18 0.02 260); border: 1px solid var(--cinza-borda);
+  padding: 8px 6px; font-family: var(--mono); font-size: 0.7rem;
+  font-weight: 600; text-align: center; color: var(--azul-claro); vertical-align: bottom;
+}
+.matrix-table th:first-child { text-align: left; min-width: 130px; font-size: 0.72rem; }
+.matrix-table td {
+  border: 1px solid var(--cinza-borda); padding: 8px 6px;
+  text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-size: 0.84rem; }
+.matrix-table tbody tr:hover td { background: var(--hover-bg); }
+.matrix-table input[type="radio"] {
+  width: 18px; height: 18px; accent-color: var(--azul); cursor: pointer;
+}
+.matrix-table tr.row-correct td { background: var(--verde-claro); }
+.matrix-table tr.row-incorrect td { background: var(--erro-claro); }
+.matrix-table td.cell-correct-answer { outline: 2px solid var(--verde); outline-offset: -2px; }
+.matrix-table input[type="radio"]:disabled { cursor: default; }
+
 /* FEEDBACK */
 .q-feedback {
-  display: none;
-  margin-top: 12px;
-  padding: 12px 14px;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  border-left: 3px solid;
-  border-radius: var(--r);
+  display: none; margin-top: 12px; padding: 12px 14px;
+  font-size: 0.85rem; line-height: 1.6; border-left: 3px solid;
 }
 .q-feedback.show { display: block; }
 .q-feedback.ok { border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
 .q-feedback.nok { border-color: var(--erro); background: var(--erro-claro); color: var(--erro); }
+.q-feedback.parcial { border-color: var(--ouro); background: var(--ouro-claro); color: var(--ouro); }
+.fb-title { font-weight: 700; margin-bottom: 6px; }
+.fb-level { margin-bottom: 4px; font-size: 0.82rem; }
+.fb-level strong { font-weight: 700; }
+.q-score-detail { font-family: var(--mono); font-size: 0.78rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid; opacity: 0.8; }
 
-/* SCORE DISPLAY */
+/* SCORE BOX */
 .score-box {
-  display: none;
-  background: var(--superficie);
-  border: 2px solid var(--ouro);
-  border-radius: var(--r);
-  padding: 24px;
-  margin-bottom: 20px;
-  text-align: center;
+  display: none; background: var(--superficie); border: 2px solid var(--ouro);
+  padding: 24px; margin-bottom: 20px; text-align: center;
 }
 .score-box.show { display: block; }
-.score-value {
-  font-family: var(--mono);
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--ouro);
-}
+.score-value { font-family: var(--mono); font-size: 3rem; font-weight: 700; color: var(--ouro); }
 .score-label {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  color: var(--cinza);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 4px;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--cinza);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
 }
+.score-breakdown {
+  /* flex-wrap: com 8 questoes a linha unica estourava 375 px e o celular
+     ganhava rolagem lateral (medido em T08 e T09). */
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px 16px; margin-top: 12px; max-width: 100%;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--cinza);
+}
+.score-breakdown span { display: flex; align-items: center; gap: 4px; }
+.score-breakdown .dot { width: 8px; height: 8px; display: inline-block; }
+.score-breakdown .dot-ok { background: var(--verde); }
+.score-breakdown .dot-nok { background: var(--erro); }
 
 /* BUTTONS */
 .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .btn {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-radius: var(--r);
-  transition: opacity 0.2s;
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  padding: 12px 24px; border: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.2s;
 }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .btn-submit { background: var(--azul); color: oklch(0.10 0.02 260); }
@@ -305,25 +296,22 @@ body {
 .btn-reset { background: transparent; color: var(--erro); border: 1px solid var(--erro); }
 .btn-reset:hover { background: var(--erro-claro); }
 
+/* ENCERRAMENTO */
+.encerramento { max-width:800px; margin:30px auto 10px; padding:20px 16px; border-top:2px solid var(--ouro); text-align:center; }
+.encerramento .fecho-frase { font-family:var(--serif); font-size:1.02rem; line-height:1.5; }
+.encerramento .fecho-acao { color:var(--ouro); font-size:.95rem; text-transform:uppercase; font-weight:700; margin-top:10px; line-height:1.5; }
+.encerramento .fecho-nidec { color:var(--cinza); font-size:.9rem; margin-top:14px; line-height:1.55; }
+.footer-line { text-align:center; font-size:.85rem; color:var(--cinza); padding:16px 12px; line-height:1.5; }
+
 /* TOAST */
 .toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
 }
 .toast {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  padding: 10px 16px;
-  border-radius: var(--r);
-  color: var(--texto);
-  border: 1px solid;
+  font-family: var(--mono); font-size: 0.8rem; padding: 10px 16px;
+  color: var(--texto); border: 1px solid; max-width: 320px;
   animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-  max-width: 320px;
 }
 .toast-info { background: var(--azul-bg); border-color: var(--azul); }
 .toast-success { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
@@ -334,38 +322,42 @@ body {
 /* RESPONSIVE */
 @media (max-width: 600px) {
   .container { padding: 16px 12px 60px; }
-  .header-title { font-size: 1.2rem; }
+  .header h1 { font-size: 1.2rem; }
   .id-form { grid-template-columns: 1fr; }
   .q-card { padding: 14px; }
-  .alt-btn { padding: 10px 12px; font-size: 0.85rem; }
+  .alt-btn, .check-item { padding: 10px 12px; font-size: 0.85rem; }
   .actions { flex-direction: column; }
   .btn { width: 100%; text-align: center; }
   .restore-banner { flex-direction: column; align-items: stretch; }
+  .vf-item { flex-direction: column; gap: 8px; }
+  .vf-toggles { align-self: flex-start; }
+  .matrix-table { font-size: 0.75rem; }
+  .matrix-table th { font-size: 0.65rem; padding: 6px 4px; }
+  .matrix-table td { padding: 6px 4px; }
+  .version-btn { padding: 10px 8px; font-size: 0.9rem; }
 }
 
 /* PRINT */
 @media print {
   body { background: #fff; color: #111; }
   .container { max-width: 100%; padding: 0; }
-  .header-title { color: #111; }
+  .header h1 { color: #111; }
   .badge { border-color: #333; color: #333; }
   .header-sub { color: #555; }
-  .progress-bar, .toast-container, .restore-banner, .actions { display: none !important; }
+  .progress-bar, .toast-container, .restore-banner, .actions, .version-selector, .version-label { display: none !important; }
   .q-card { background: #fff; border-color: #ccc; break-inside: avoid; page-break-inside: avoid; }
   .q-num { border-color: #333; color: #333; background: #eee; }
   .tag { border-color: #999; color: #555; background: #f5f5f5; }
   .q-text { color: #111; }
   .q-text strong { color: #111; }
-  .alt-btn { background: #fff; border-color: #ccc; color: #111; }
-  .alt-btn.correct { border-color: #090; background: #e8f5e9; }
-  .alt-btn.incorrect { border-color: #c00; background: #fbe9e7; }
-  .alt-letra { color: #333; }
+  .alt-btn, .check-item { background: #fff; border-color: #ccc; color: #111; }
+  .alt-btn.correct, .check-item.correct { border-color: #090; background: #e8f5e9; }
+  .alt-btn.incorrect, .check-item.incorrect { border-color: #c00; background: #fbe9e7; }
   .q-feedback { display: block !important; }
   .q-feedback.ok { border-color: #090; background: #e8f5e9; color: #060; }
   .q-feedback.nok { border-color: #c00; background: #fbe9e7; color: #800; }
   .score-box { display: block !important; border-color: #333; background: #fff; }
   .score-value { color: #111; }
-  .score-label { color: #555; }
   .id-form { background: #f5f5f5; border-color: #ccc; }
   .id-form label { color: #555; }
   .id-form input, .id-form select { background: #fff; border-color: #ccc; color: #111; }
@@ -394,12 +386,12 @@ body {
 <body>
 <div class="container">
 
-  <!-- RESTORATION BANNER -->
+  <!-- BANNER DE ESTADO SALVO (Protocolo CFG-OA v1) -->
   <div class="restore-banner" id="restoreBanner">
-    <span>Dados salvos encontrados. Deseja restaurar suas respostas anteriores?</span>
+    <span id="restoreMsg"></span>
     <div style="display:flex;gap:8px;flex-shrink:0;">
-      <button onclick="restoreData()">Restaurar</button>
-      <button class="btn-discard" onclick="discardData()">Descartar</button>
+      <button id="btnRestaurar" style="display:none;" onclick="restoreData()">Restaurar</button>
+      <button class="btn-discard" id="btnDescartar" onclick="discardData()">Descartar</button>
     </div>
   </div>
 
@@ -409,7 +401,7 @@ body {
       <h1><span class="trilha-code">T01</span> &middot; Física, uma linguagem básica da ciência</h1>
       <span class="badge">Provinha (PR)</span>
     </div>
-    <div class="header-sub">10 questões &middot; 10 pontos &middot; 10-15 min</div>
+    <div class="header-sub">2 quest&otilde;es &middot; 10 pontos &middot; 15 min</div>
   </header>
 
   <!-- PIAZZI BAR -->
@@ -423,8 +415,19 @@ body {
     <span class="piazzi-text">Baden Powell &mdash; sele&ccedil;&atilde;o instrumental &middot; viol&atilde;o solo</span>
   </div>
 
+  <!-- VERSION SELECTOR -->
+  <div class="version-label" id="versionLabel">Selecione sua versão</div>
+  <div class="version-selector" id="versionSelector">
+    <button class="version-btn" data-v="A" onclick="switchVersion('A')">Versão A</button>
+    <button class="version-btn" data-v="B" onclick="switchVersion('B')">Versão B</button>
+    <button class="version-btn" data-v="C" onclick="switchVersion('C')">Versão C</button>
+  </div>
+
   <!-- PROGRESS BAR -->
-  <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg" id="prog-0"></div>
+    <div class="progress-seg" id="prog-1"></div>
+  </div>
 
   <!-- STUDENT ID -->
   <div class="id-form" id="idForm">
@@ -440,19 +443,16 @@ body {
       </select>
     </label>
     <label>
-      Grupo
-      <select id="inputGrupo">
-        <option value="">Selecione</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-      </select>
+      Data
+      <input type="date" id="inputData">
     </label>
   </div>
 
   <!-- SCORE BOX -->
   <div class="score-box" id="scoreBox">
     <div class="score-value" id="scoreValue">0/10</div>
-    <div class="score-label">Pontuacao Final</div>
+    <div class="score-label">Pontuação Final</div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
   </div>
 
   <!-- QUESTIONS -->
@@ -467,15 +467,15 @@ body {
 
   <div class="actions" id="actionsBar">
     <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitQuiz()">Enviar Respostas</button>
-    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar JSON</button>
-    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomecar</button>
+    <button class="btn btn-export" id="btnExport" onclick="exportJSON()">Exportar Comprovante (.json)</button>
+    <button class="btn btn-reset" id="btnReset" onclick="resetQuiz()">Recomeçar</button>
   </div>
 
 </div>
 
 <div class="encerramento">
   <div class="fecho-frase">Terminamos por aqui, um abraço, e até o próximo encontro.</div>
-  <div class="fecho-acao">Não esqueça de fazer a <strong>TAREFA MÍNIMA HOJE</strong>.</div>
+  <div class="fecho-acao">Aula encerrada! N&atilde;o esque&ccedil;a de fazer a <strong>TAREFA M&Iacute;NIMA HOJE</strong>.</div>
   <div class="fecho-nidec">Trilhas de Aprendizagem em Física é uma metodologia que faz parte de um esforço do NIDEC+CODAFIS em inovar no ensino de física aplicada ao ensino técnico em Mineração.</div>
 </div>
 
@@ -509,327 +509,739 @@ body {
 <script src="../../coleta-config.js"></script>
 
 <script>
-const BANCO = [
-  {
-    id: 'T01-PR-Q1', bloom: 'L3', comp: 'C1', pts: 1,
-    enunciado: 'Sofia, ao se deparar com o bloco de granito na Praca Tiradentes, aplicou um raciocinio para estimar sua massa. Considerando o metodo descrito no Topico 1, qual sequencia de passos e equacoes ela utilizou para chegar ao valor de <strong>540 kg</strong>?',
-    alternativas: [
-      {letra:'A', texto:'Ela mediu a forca necessaria para empurrar o bloco (F = m × a) e, em seguida, calculou a densidade do granito.'},
-      {letra:'B', texto:'Ela estimou o volume do bloco (V = c × l × h) e, em seguida, multiplicou esse volume pela densidade do granito (m = ρ × V).'},
-      {letra:'C', texto:'Ela calculou a pressao que o bloco exerce sobre o solo (P = F/A) e, em seguida, usou a densidade para encontrar a massa.'},
-      {letra:'D', texto:'Ela usou a energia cinetica do bloco (E<sub>c</sub> = m × v²/2) e a relacao com a densidade para isolar a massa.'}
-    ],
-    correta: 'B',
-    feedbacks: {
-      B: {ok:true, texto:'Correto! Sofia estimou V = 1,0 × 0,5 × 0,4 = 0,20 m³, pesquisou ρ = 2 700 kg/m³ e aplicou m = ρ × V = 540 kg.'},
-      _: {ok:false, texto:'O metodo descrito no Topico 1 e: estimar volume (V = c × l × h), consultar a densidade (ρ) e aplicar m = ρ × V. As demais alternativas usam conceitos nao relacionados ao calculo inicial.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q2', bloom: 'L4', comp: 'C1', pts: 1,
-    enunciado: 'O Topico 2 apresenta a diferenca entre Fisica Teorica e Fisica Experimental. No contexto da construcao do <strong>monumento a Tiradentes</strong> (1893–1894), como a interacao entre essas duas abordagens e descrita?',
-    alternativas: [
-      {letra:'A', texto:'A Fisica Teorica foi usada pelos engenheiros para construir o monumento, enquanto a Fisica Experimental foi usada apenas para a decoracao final.'},
-      {letra:'B', texto:'A Fisica Experimental foi aplicada primeiro, com a medicao de todos os blocos, e a Fisica Teorica serviu apenas para documentar o que foi construido.'},
-      {letra:'C', texto:'Os engenheiros usaram a Fisica Teorica (calculos em prancheta) para prever a estabilidade, e a Fisica Experimental (medicoes no canteiro) para verificar se a realidade correspondia ao modelo.'},
-      {letra:'D', texto:'As duas abordagens foram usadas de forma independente, pois a teoria nao precisa concordar com a pratica em obras de engenharia.'}
-    ],
-    correta: 'C',
-    feedbacks: {
-      C: {ok:true, texto:'Correto! O texto descreve que os engenheiros calcularam em prancheta (teoria) e depois mediram e verificaram no canteiro (experimento). A interacao e ciclica.'},
-      _: {ok:false, texto:'O texto mostra que teoria (prancheta) e experimento (canteiro) trabalham juntos: a teoria preve, o experimento verifica. Nenhum funciona sozinho.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q3', bloom: 'L3', comp: 'C1', pts: 1,
-    enunciado: 'Um tecnico em mineracao precisa mover um bloco de minerio de <strong>800 kg</strong> em uma galeria. Aplicando a Segunda Lei de Newton (F = m × a), qual e a forca resultante necessaria para imprimir uma aceleracao de <strong>0,4 m/s²</strong> a esse bloco?',
-    alternativas: [
-      {letra:'A', texto:'200 N'},
-      {letra:'B', texto:'320 N'},
-      {letra:'C', texto:'2 000 N'},
-      {letra:'D', texto:'3 200 N'}
-    ],
-    correta: 'B',
-    feedbacks: {
-      B: {ok:true, texto:'Correto! F = m × a = 800 × 0,4 = 320 N.'},
-      _: {ok:false, texto:'Aplicando F = m × a: F = 800 kg × 0,4 m/s² = 320 N. Verifique se multiplicou corretamente.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q4', bloom: 'L4', comp: 'C2', pts: 1,
-    enunciado: 'O Quadro 2 do Topico 3 distingue as ciencias da natureza (Fisica, Quimica, Biologia e Geologia). Analise a seguinte pergunta sobre um problema de mineracao: <em>“Qual a pressao que a coluna de rocha exerce sobre o teto da galeria?”</em> Qual ciencia e a mais adequada para responder e por que?',
-    alternativas: [
-      {letra:'A', texto:'Geologia, porque estuda a origem e estrutura das rochas que formam a galeria.'},
-      {letra:'B', texto:'Quimica, porque a pressao depende da composicao mineralogica da rocha.'},
-      {letra:'C', texto:'Biologia, porque a pressao afeta os ecossistemas presentes na mina.'},
-      {letra:'D', texto:'Fisica, porque a pergunta envolve uma grandeza (pressao) que descreve uma interacao de forca e area.'}
-    ],
-    correta: 'D',
-    feedbacks: {
-      D: {ok:true, texto:'Correto! A pressao e uma grandeza fisica (P = F/A). A Fisica pergunta “como” as coisas interagem e responde com equacoes que relacionam grandezas mensuraveis.'},
-      _: {ok:false, texto:'A pressao (P = F/A) e uma grandeza fisica. A Fisica estuda interacoes e responde com equacoes. Geologia estuda a formacao da rocha, Quimica sua composicao, Biologia os ecossistemas.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q5', bloom: 'L5', comp: 'C2', pts: 1,
-    enunciado: 'Um bloco de <strong>540 kg</strong> que se desprende do teto de uma galeria atinge <strong>8 m/s</strong> antes do impacto, liberando <strong>17 280 J</strong> de energia cinetica. Considerando que o limite de tolerancia para impacto em uma estrutura de suporte e de <strong>15 000 J</strong>, qual decisao um engenheiro de seguranca deve tomar?',
-    alternativas: [
-      {letra:'A', texto:'Ignorar o risco, pois a energia calculada esta dentro da margem de erro aceitavel para a mineracao.'},
-      {letra:'B', texto:'Manter o plano atual, ja que 17 280 J e um valor teorico e, na pratica, a energia sera sempre menor.'},
-      {letra:'C', texto:'Revisar o plano de suporte da galeria, pois a energia do impacto e superior ao limite de tolerancia, representando risco de falha estrutural.'},
-      {letra:'D', texto:'Reduzir a massa do bloco para 500 kg, pois isso resolveria o problema sem alterar o suporte.'}
-    ],
-    correta: 'C',
-    feedbacks: {
-      C: {ok:true, texto:'Correto! 17 280 J > 15 000 J — o valor calculado supera o limite toleravel. A decisao segura e revisar o suporte.'},
-      _: {ok:false, texto:'O calculo mostra 17 280 J, que supera o limite de 15 000 J. Quando o resultado ultrapassa a tolerancia, o plano de suporte deve ser revisto.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q6', bloom: 'L4', comp: 'C2', pts: 1,
-    enunciado: 'Um tecnico precisa escolher uma bomba para duas galerias: uma a <strong>40 m</strong> e outra a <strong>120 m</strong> de profundidade. Analisando a equacao P<sub>h</sub> = ρ × g × h, qual a relacao entre as pressoes que as bombas precisarao vencer?',
-    alternativas: [
-      {letra:'A', texto:'A bomba da galeria mais profunda (120 m) precisara vencer o dobro da pressao da galeria de 40 m.'},
-      {letra:'B', texto:'A pressao em ambas as galerias sera a mesma, pois a densidade da agua e a gravidade sao constantes.'},
-      {letra:'C', texto:'A bomba da galeria de 40 m precisara vencer uma pressao maior, pois esta mais proxima da superficie.'},
-      {letra:'D', texto:'A bomba da galeria mais profunda precisara vencer o triplo da pressao da galeria de 40 m.'}
-    ],
-    correta: 'D',
-    feedbacks: {
-      D: {ok:true, texto:'Correto! P<sub>h</sub> e proporcional a h. Como 120/40 = 3, a pressao triplica.'},
-      _: {ok:false, texto:'P<sub>h</sub> = ρ × g × h e diretamente proporcional a profundidade. Se h triplica (40 → 120), a pressao tambem triplica.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q7', bloom: 'L3', comp: 'C3', pts: 1,
-    enunciado: 'Em uma operacao de desmonte de rocha, calcule a pressao de detonacao usando P = ρ<sub>e</sub> × D² / 8, com ρ<sub>e</sub> = <strong>1 200 kg/m³</strong> e D = <strong>4 000 m/s</strong>.',
-    alternativas: [
-      {letra:'A', texto:'2,4 × 10⁹ Pa'},
-      {letra:'B', texto:'6,0 × 10⁶ Pa'},
-      {letra:'C', texto:'4,8 × 10⁸ Pa'},
-      {letra:'D', texto:'2,4 × 10⁶ Pa'}
-    ],
-    correta: 'A',
-    feedbacks: {
-      A: {ok:true, texto:'Correto! P = 1 200 × (4 000)² / 8 = 1 200 × 16 000 000 / 8 = 2,4 × 10⁹ Pa.'},
-      _: {ok:false, texto:'P = ρ<sub>e</sub> × D² / 8 = 1 200 × 16 000 000 / 8 = 2 400 000 000 Pa = 2,4 × 10⁹ Pa.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q8', bloom: 'L5', comp: 'C3', pts: 1,
-    enunciado: 'Uma galeria tem secao de <strong>5 m²</strong> e velocidade do ar de <strong>1,2 m/s</strong>, resultando em Q = <strong>6 m³/s</strong>. A NR-22 exige <strong>4 m³/s</strong>. Avalie a situacao.',
-    alternativas: [
-      {letra:'A', texto:'A vazao esta 50% acima do minimo exigido, portanto o sistema de ventilacao e seguro e nao requer ajustes.'},
-      {letra:'B', texto:'A vazao e insuficiente, pois a velocidade do ar esta abaixo de 2 m/s, que e o padrao da industria.'},
-      {letra:'C', texto:'O calculo esta errado, pois a vazao deveria ser Q = A / v, resultando em um valor diferente.'},
-      {letra:'D', texto:'A vazao esta abaixo do minimo, sendo necessario aumentar a velocidade do ar ou a secao da galeria.'}
-    ],
-    correta: 'A',
-    feedbacks: {
-      A: {ok:true, texto:'Correto! Q = 6 m³/s > 4 m³/s (NR-22). O requisito minimo e atendido com folga de 50%.'},
-      _: {ok:false, texto:'Q = A × v = 5 × 1,2 = 6 m³/s. Como 6 > 4 (NR-22), o sistema atende ao minimo exigido com 50% de folga.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q9', bloom: 'L4', comp: 'C4', pts: 1,
-    enunciado: 'O texto afirma que a divisao da Fisica em areas e uma “estrategia didatica — nao uma divisao rigida da natureza”. Analise o fenomeno de um <strong>deslizamento de talude</strong> e identifique a alternativa que melhor explica essa afirmacao.',
-    alternativas: [
-      {letra:'A', texto:'O deslizamento e um fenomeno puramente geologico, e a Fisica nao consegue analisa-lo em sua totalidade.'},
-      {letra:'B', texto:'O deslizamento pode ser analisado por uma unica area da Fisica, a Mecanica, que estuda forcas e movimentos.'},
-      {letra:'C', texto:'O deslizamento envolve multiplas areas da Fisica — Mecanica (forcas), Termodinamica (energia do impacto) e Ondas (vibracao) — mostrando que a natureza nao se divide em compartimentos estanques.'},
-      {letra:'D', texto:'A divisao em areas e util apenas para o ensino, mas na pratica um engenheiro deve escolher uma unica area para resolver qualquer problema.'}
-    ],
-    correta: 'C',
-    feedbacks: {
-      C: {ok:true, texto:'Correto! O deslizamento envolve forcas (Mecanica), energia (Termodinamica) e vibracao (Ondas). A natureza e um sistema integrado.'},
-      _: {ok:false, texto:'O texto mostra que fenomenos reais (como o deslizamento) envolvem multiplas areas da Fisica simultaneamente. A divisao em areas e didatica, nao rigida.'}
-    }
-  },
-  {
-    id: 'T01-PR-Q10', bloom: 'L5', comp: 'C4', pts: 1,
-    enunciado: 'Um tecnico calculou a massa teorica de um bloco como <strong>500 kg</strong>. Apos pesagem, o valor medido foi <strong>515 kg</strong> (E<sub>r</sub> = 3%). A tolerancia para contratos de venda e de no maximo <strong>1,5%</strong>. Qual deve ser a acao do tecnico?',
-    alternativas: [
-      {letra:'A', texto:'Aceitar o modelo, pois o erro de 3% e baixo e nao afeta a operacao da mina.'},
-      {letra:'B', texto:'Ignorar a medicao, pois o modelo teorico e sempre mais confiavel que a medicao experimental.'},
-      {letra:'C', texto:'Revisar o modelo teorico, pois o erro (3%) supera a tolerancia (1,5%), indicando que as hipoteses do modelo nao sao adequadas para a precisao exigida.'},
-      {letra:'D', texto:'Repetir apenas o calculo teorico, pois o erro de 3% e aceitavel e o problema esta na balanca de campo.'}
-    ],
-    correta: 'C',
-    feedbacks: {
-      C: {ok:true, texto:'Correto! 3% > 1,5% (tolerancia). O modelo teorico precisa ser revisado para identificar e corrigir suas imprecisoes.'},
-      _: {ok:false, texto:'O erro (3%) supera a tolerancia (1,5%). Quando isso acontece, o modelo precisa ser revisto — talvez a densidade ou as dimensoes estejam imprecisas.'}
-    }
-  }
-];
+/* ============================================================
+   BANCO DE QUESTÕES — 3 VERSÕES (A, B, C) × 2 QUESTÕES
+   Provinha (PR-v2 digital) — Q1 Pense e Use (MC, 4 pt) +
+   Q2 Componente 5 simplificado (VF, 6 pt) = 10 pt
+   ============================================================ */
 
-/* ---- STATE ---- */
+const BANCO = {
+  A: [
+    /* Q1-A: Pense e Use (MC) - 4 pt */
+    {
+      id:"T01-PR-Q1-A", num:1, bloom:'L3', pts:4, tipo:'MC',
+      tipoLabel:'Pense e Use',
+      enunciado:"No pátio da Escola de Minas, um bloco de itabirito de demonstração mede <strong>0,60 × 0,50 × 0,40 m</strong> (V = 0,12 m³). A densidade do itabirito é <strong>ρ = 3.500 kg/m³</strong>. <strong>Aplicando m = ρ × V (Equação 2 do TT)</strong>, qual é a massa estimada do bloco?",
+      opcoes:[
+        {letra:"A", texto:"420 kg"},
+        {letra:"B", texto:"29.167 kg"},
+        {letra:"C", texto:"3.500 kg"},
+        {letra:"D", texto:"42 kg"}
+      ],
+      correta:"A",
+      feedbacks:{
+        A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> m = 3.500 × 0,12 = 420 kg.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> massa = densidade × volume é a estimativa que a mineração faz antes de qualquer balança — de bloco de demonstração a pilha de minério.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> é a mesma conta de conferir se a caixa-d'água cheia pode ficar na laje de casa.</div>"},
+        B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 29.167 vem de ρ ÷ V. A Equação 2 MULTIPLICA densidade por volume: 3.500 × 0,12 = 420 kg.</div><div class=\"fb-level\"><strong>② ERRO E2:</strong> estrutura da operação — dividir onde a equação multiplica.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia a Equação 2 no Tópico 1 do TT e o exemplo da Sofia na Praça Tiradentes.</div>"},
+        C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3.500 kg/m³ é a DENSIDADE, não a massa — sem multiplicar pelo volume, o número não descreve este bloco.</div><div class=\"fb-level\"><strong>② ERRO E3:</strong> inventário — um dado do problema foi tomado como resposta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> no Tópico 1 do TT, densidade é propriedade do MATERIAL; massa é do OBJETO (ρ × V).</div>"},
+        D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 3.500 × 0,12 = 420, não 42 — a vírgula escorregou uma casa.</div><div class=\"fb-level\"><strong>② ERRO E1:</strong> ordem de grandeza — um bloco de meio metro cúbico de minério não pesa como uma mochila.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> estime antes de calcular: 0,1 m³ de rocha (~3× a água) já passa de 300 kg.</div>"}
+      }
+    },
+    /* Q2-A: C5 simplificado (VF) - 6 pt */
+    {
+      id:"T01-PR-Q2-A", num:2, bloom:'L4', pts:6, tipo:'VF',
+      tipoLabel:'Componente 5 simplificado',
+      enunciado:"Na reforma de um cruzeiro de pedra em Ouro Preto, o caderno de um estagiário traz esta anotação: <em>\"O bloco do pedestal mede 0,90 × 0,60 × 0,50 m; granito tem ρ = 2.700 kg/m³; estimei m = 2.700 × 0,27 = 729 kg. A balança do guindaste marcou 810 kg, mas como o MEU CÁLCULO deu abaixo de 750 kg, o guindaste pequeno (capacidade 750 kg) resolve.\"</em> Julgue as afirmações:",
+      afirmacoes:[
+        {texto:"<strong>Interpretação:</strong> o que está em jogo é decidir se o guindaste de 750 kg pode erguer o bloco — comparando estimativa, medição e capacidade.", correta:"V", just:"É exatamente a pergunta da anotação: uma decisão de içamento, não um exercício de conta."},
+        {texto:"<strong>Inventário:</strong> os dados disponíveis são as dimensões, a densidade do granito, a leitura da balança (810 kg) e a capacidade do guindaste (750 kg).", correta:"V", just:"Inventário completo — inclusive o dado que o estagiário resolveu ignorar: a balança."},
+        {texto:"<strong>Cálculo:</strong> o volume é 0,27 m³ e a estimativa m = 2.700 × 0,27 = 729 kg está aritmeticamente correta.", correta:"V", just:"0,90 × 0,60 × 0,50 = 0,27 m³; 2.700 × 0,27 = 729 kg. A conta não é o problema."},
+        {texto:"<strong>Plausibilidade:</strong> entre o modelo (729 kg) e a balança (810 kg), vale o modelo — número calculado é mais confiável que medição.", correta:"F", just:"<strong>E5 — modelo mental.</strong> É o contrário: no confronto teoria × experimento, a MEDIÇÃO real manda. O modelo usou densidade média e dimensões aproximadas de um bloco irregular — o TT inteiro é sobre esse diálogo (Tópico 2)."},
+        {texto:"<strong>Decisão:</strong> o guindaste de 750 kg não deve ser usado: a carga real medida (810 kg) excede a capacidade.", correta:"V", just:"810 &gt; 750 — a decisão segue o dado experimental, com margem de segurança, nunca a estimativa que convém."}
+      ],
+      feedbackGeral:"Função pedagógica: auditar o conflito modelo × medição — o coração do TT (Física Teórica e Física Experimental). Conclusão-modelo: a conta do estagiário está certa; a decisão está errada, porque descartou a balança."
+    }
+  ],
+  B: [
+    /* Q1-B: Pense e Use (MC) - 4 pt */
+    {
+      id:"T01-PR-Q1-B", num:1, bloom:'L3', pts:4, tipo:'MC',
+      tipoLabel:'Pense e Use',
+      enunciado:"A balança da expedição registrou <strong>262 t</strong> de minério num silo cujo modelo de carregamento previa <strong>250 t</strong>. <strong>Aplicando Er = |Vm − Vt| / Vt × 100% (Equação 3 do TT)</strong>, qual é o erro relativo entre o medido e o previsto?",
+      opcoes:[
+        {letra:"A", texto:"4,8%"},
+        {letra:"B", texto:"4,6%"},
+        {letra:"C", texto:"0,048%"},
+        {letra:"D", texto:"12%"}
+      ],
+      correta:"A",
+      feedbacks:{
+        A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> |262 − 250| ÷ 250 × 100% = 12 ÷ 250 × 100% = 4,8%.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> o erro relativo compara a divergência com o valor de REFERÊNCIA — é ele que diz se 12 t é muito ou pouco.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> é a mesma lógica de conferir a nota do mercado: o que importa não é a diferença em reais, é a diferença em relação ao total.</div>"},
+        B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 4,6% vem de dividir por 262. O denominador da Equação 3 é o valor TEÓRICO (250 t), a referência do modelo.</div><div class=\"fb-level\"><strong>② ERRO E2:</strong> estrutura da operação — denominador trocado.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia a Equação 3 no Tópico 2 do TT: Vt no denominador, sempre.</div>"},
+        C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 12 ÷ 250 = 0,048 — mas a Equação 3 termina em × 100%: o erro é 4,8%.</div><div class=\"fb-level\"><strong>② ERRO E6:</strong> conversão — a fração ficou sem virar percentual.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> 0,048% significaria 120 kg em 250 t — confira a ordem de grandeza antes de responder.</div>"},
+        D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 12 é a diferença em TONELADAS, não em percentual. O erro relativo divide pela referência: 12 ÷ 250 × 100% = 4,8%.</div><div class=\"fb-level\"><strong>② ERRO E5:</strong> modelo mental — confundir diferença absoluta com relativa.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> no Tópico 2 do TT, é a divisão pela referência que transforma \"12 t\" em informação de qualidade da medida.</div>"}
+      }
+    },
+    /* Q2-B: C5 simplificado (VF) - 6 pt */
+    {
+      id:"T01-PR-Q2-B", num:2, bloom:'L4', pts:6, tipo:'VF',
+      tipoLabel:'Componente 5 simplificado',
+      enunciado:"O <strong>registro de turno</strong> do embarque traz esta anotação: <em>\"O contrato admite ±5% entre o previsto e o embarcado. Previmos 250 t; a balança acumulou 262 t; Er = 4,8%. Como a diferença é para MAIS, não há problema algum — erro só preocupa quando FALTA minério.\"</em> Julgue as afirmações:",
+      afirmacoes:[
+        {texto:"<strong>Interpretação:</strong> a questão do turno é auditar se a divergência entre previsto e embarcado cabe na tolerância contratual de ±5%.", correta:"V", just:"É uma auditoria de conformidade: comparar o erro relativo com o limite do contrato."},
+        {texto:"<strong>Inventário:</strong> os dados são o previsto (250 t), o medido (262 t) e a tolerância (±5%) — suficientes para a decisão.", correta:"V", just:"Nada falta: a Equação 3 só precisa dos dois valores, e o contrato dá o critério."},
+        {texto:"<strong>Cálculo:</strong> Er = |262 − 250| ÷ 250 × 100% = 4,8%, abaixo do limite de 5%.", correta:"V", just:"12 ÷ 250 × 100% = 4,8% — a conta do turno está certa."},
+        {texto:"<strong>Plausibilidade:</strong> o registro está correto — erro para MAIS não preocupa, porque a tolerância só existe para proteger de falta de material.", correta:"F", just:"<strong>E5 — modelo mental.</strong> A tolerância é em MÓDULO (±5%): excesso também custa — frete, capacidade do navio, multa contratual. Por isso a Equação 3 carrega o |módulo|: desvio é desvio, para qualquer lado."},
+        {texto:"<strong>Decisão:</strong> aceitar o embarque (4,8% &lt; 5%) e registrar o desvio para calibrar o modelo de carregamento do silo.", correta:"V", just:"Dentro da tolerância, a carga segue — mas o desvio sistemático vira dado para melhorar a previsão."}
+      ],
+      feedbackGeral:"Função pedagógica: auditar um registro em que a conta está certa e a interpretação está errada. Conclusão-modelo: o |módulo| da Equação 3 não é enfeite — desvio para mais também é desvio."
+    }
+  ],
+  C: [
+    /* Q1-C: Pense e Use (MC) - 4 pt */
+    {
+      id:"T01-PR-Q1-C", num:1, bloom:'L3', pts:4, tipo:'MC',
+      tipoLabel:'Pense e Use',
+      enunciado:"Uma galeria desativada em Ouro Preto acumulou uma lâmina de <strong>2,0 m</strong> de água (ρ = 1.000 kg/m³; g = 10 m/s²). <strong>Aplicando P = ρ × g × h (Equação 8 do TT)</strong>, qual é a pressão da água na base da galeria?",
+      opcoes:[
+        {letra:"A", texto:"20.000 Pa (20 kPa)"},
+        {letra:"B", texto:"2.000 Pa"},
+        {letra:"C", texto:"20 Pa"},
+        {letra:"D", texto:"5.000 Pa"}
+      ],
+      correta:"A",
+      feedbacks:{
+        A:{ok:true,html:"<div class=\"fb-title\">✔ Correto!</div><div class=\"fb-level\"><strong>① VALIDAÇÃO:</strong> P = 1.000 × 10 × 2,0 = 20.000 Pa = 20 kPa.</div><div class=\"fb-level\"><strong>② REFORÇO:</strong> a pressão hidrostática só depende da densidade, da gravidade e da ALTURA da coluna — não do formato da galeria.</div><div class=\"fb-level\"><strong>③ EXTENSÃO:</strong> é por isso que o chuveiro perde força no andar de cima da casa: menos coluna d'água acima dele.</div>"},
+        B:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 2.000 = 1.000 × 2,0 — faltou multiplicar por g. A Equação 8 tem TRÊS fatores: ρ, g e h.</div><div class=\"fb-level\"><strong>② ERRO E3:</strong> inventário — um dado do problema ficou fora da conta.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> releia a Equação 8 no Tópico 5 do TT e confira a legenda: cada símbolo entra uma vez.</div>"},
+        C:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> o valor 20 só está certo em QUILOpascal — em pascal são 20.000. Número sem a unidade certa não é medida.</div><div class=\"fb-level\"><strong>② ERRO E1:</strong> unidades — kPa tratado como Pa.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> Tópico 1 do TT: a unidade faz parte do número; 1 kPa = 1.000 Pa.</div>"},
+        D:{ok:false,html:"<div class=\"fb-title\">❌ Atenção!</div><div class=\"fb-level\"><strong>① CORREÇÃO:</strong> 5.000 vem de ρ × g ÷ h. A Equação 8 MULTIPLICA os três fatores: 1.000 × 10 × 2,0 = 20.000 Pa.</div><div class=\"fb-level\"><strong>② ERRO E2:</strong> estrutura da operação — dividir onde a equação multiplica.</div><div class=\"fb-level\"><strong>③ ORIENTAÇÃO:</strong> mais água acima = mais pressão embaixo; se dividir por h, a pressão CAIRIA com a profundidade — o mundo não funciona assim.</div>"}
+      }
+    },
+    /* Q2-C: C5 simplificado (VF) - 6 pt */
+    {
+      id:"T01-PR-Q2-C", num:2, bloom:'L4', pts:6, tipo:'VF',
+      tipoLabel:'Componente 5 simplificado',
+      enunciado:"Numa galeria com <strong>2,5 m</strong> de lâmina d'água represada, a anotação de um colega diz: <em>\"P = 1.000 × 10 × 2,5 = 25.000 Pa = 25 kPa. Como 25 kPa é só um QUARTO da pressão atmosférica (~100 kPa), a força na comporta improvisada de tábuas é pequena — pode segurar.\"</em> Julgue as afirmações:",
+      afirmacoes:[
+        {texto:"<strong>Interpretação:</strong> a pergunta real é se a comporta improvisada suporta a água represada — uma decisão de segurança, não um exercício.", correta:"V", just:"É o que a anotação tenta responder: liberar ou não uma contenção improvisada."},
+        {texto:"<strong>Inventário:</strong> para a pressão na base, os dados ρ = 1.000 kg/m³, g = 10 m/s² e h = 2,5 m são suficientes.", correta:"V", just:"Para a PRESSÃO, sim. (Para a força total na comporta ainda faltaria a área — e é aí que a anotação escorrega.)"},
+        {texto:"<strong>Cálculo:</strong> P = 1.000 × 10 × 2,5 = 25.000 Pa = 25 kPa está correto.", correta:"V", just:"A aritmética e a conversão para kPa estão certas."},
+        {texto:"<strong>Plausibilidade:</strong> como 25 kPa é menor que a pressão atmosférica, a força total sobre a comporta é de fato pequena.", correta:"F", just:"<strong>E5 — modelo mental.</strong> Pressão \"pequena\" × área grande = força enorme: numa comporta de 2 m², 25 kPa viram 50.000 N — o peso de ~5 toneladas empurrando as tábuas. Comparar com a atmosfera (que empurra dos DOIS lados) esconde o risco."},
+        {texto:"<strong>Decisão:</strong> não liberar a comporta improvisada: calcular a força (F = P × A), comunicar o risco (NR-22, 22.21) e instalar contenção dimensionada.", correta:"V", just:"Quase-acidente identificado se comunica — e contenção de água represada se dimensiona, não se improvisa."}
+      ],
+      feedbackGeral:"Função pedagógica: auditar uma conclusão em que a conta certa alimenta uma decisão errada. Conclusão-modelo: pressão não é força — sem multiplicar pela área, 25 kPa parecem inofensivos e não são."
+    }
+  ]
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
 const PREFIX = 'ifmg_fc1_t01_pr_';
+
+/* ── CFG-OA v1 — Configuracao de Aplicacao (ver _skill_cowork/protocolo-cfg-oa-v1.md)
+   Default embutido pelo autor; a Equipe de Professores pode sobrescrever via
+   aba `config` da planilha (o coletor injetado chama aplicarConfigOA). ── */
+var OA_ID = { trilha: 'T01', oa: 'PR' };
+var OA_CFG = {
+  schema: 'ifmg-oa-cfg-v1',
+  versao_precarga: 'auto',   /* 'auto' (por RA) | 'A' | 'B' | 'C' | 'livre' */
+  tentativas: 1              /* 1 = envio unico (padrao) | 2 = liberado pelo professor */
+};
+(function () {
+  try {
+    const cache = JSON.parse(localStorage.getItem(PREFIX + 'cfg'));
+    if (cache && cache.schema === OA_CFG.schema) {
+      if (cache.versao_precarga) OA_CFG.versao_precarga = cache.versao_precarga;
+      if (cache.tentativas) OA_CFG.tentativas = parseInt(cache.tentativas, 10) || 1;
+    }
+  } catch (e) {}
+})();
+
+let tentativaAtual = 1;
+try { tentativaAtual = parseInt(localStorage.getItem(PREFIX + 'tentativa') || '1', 10) || 1; } catch (e) {}
+function oaTentativaAtual() { return tentativaAtual; }
+
+let currentVersion = null;
 let respostas = {};
 let submitted = false;
 let saveTimer = null;
+let bannerModo = null;      /* null | 'pre-envio' | 'segunda' */
+let precargaAtiva = false;
 
-/* ---- INIT ---- */
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  buildProgressBar();
-  buildQuestions();
+  setupInputListeners();
   checkLocalStorage();
-  setupDebouncedSave();
 });
 
-/* ---- PROGRESS BAR ---- */
-function buildProgressBar() {
-  const bar = document.getElementById('progressBar');
-  for (let i = 0; i < 10; i++) {
-    const seg = document.createElement('div');
-    seg.className = 'progress-seg';
-    seg.id = 'prog-' + i;
-    bar.appendChild(seg);
-  }
-}
-
-function updateProgress() {
-  BANCO.forEach((q, i) => {
-    const seg = document.getElementById('prog-' + i);
-    seg.className = 'progress-seg';
-    if (submitted) {
-      if (respostas[q.id] === q.correta) seg.classList.add('certo');
-      else if (respostas[q.id]) seg.classList.add('errado');
-    } else if (respostas[q.id]) {
-      seg.classList.add('resp');
-    }
-  });
-}
-
-/* ---- BUILD QUESTIONS ---- */
-function buildQuestions() {
-  const container = document.getElementById('questionsContainer');
-  BANCO.forEach((q, idx) => {
-    const card = document.createElement('div');
-    card.className = 'q-card';
-    card.id = 'card-' + q.id;
-
-    const bloomLabel = {L3:'Bloom L3 — Aplicar', L4:'Bloom L4 — Analisar', L5:'Bloom L5 — Avaliar'}[q.bloom] || q.bloom;
-
-    card.innerHTML = `
-      <div class="q-header">
-        <div class="q-num">${idx + 1}</div>
-        <div class="q-tags">
-          <span class="tag tag-bloom">${bloomLabel}</span>
-          <span class="tag tag-pts">${q.pts} pt</span>
-        </div>
-      </div>
-      <div class="q-text">${q.enunciado}</div>
-      <div class="alt-list" id="alts-${q.id}">
-        ${q.alternativas.map(a => `
-          <button class="alt-btn" data-qid="${q.id}" data-letra="${a.letra}" onclick="selectAlt('${q.id}','${a.letra}')">
-            <span class="alt-letra">${a.letra}.</span>
-            <span>${a.texto}</span>
-          </button>
-        `).join('')}
-      </div>
-      <div class="q-feedback" id="fb-${q.id}"></div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-/* ---- SELECT ALTERNATIVE ---- */
-function selectAlt(qid, letra) {
+/* ============================================================
+   VERSION SELECTOR
+   ============================================================ */
+function switchVersion(v) {
   if (submitted) return;
-  respostas[qid] = letra;
-  const btns = document.querySelectorAll(`[data-qid="${qid}"]`);
-  btns.forEach(b => {
-    b.classList.toggle('selected', b.dataset.letra === letra);
+  if (currentVersion === v) return;
+
+  /* Save current version state before switching */
+  if (currentVersion) saveToLocalStorage();
+
+  currentVersion = v;
+
+  /* Update buttons */
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === v);
   });
+
+  /* Try to restore this version's state */
+  const saved = loadVersionState(v);
+  if (saved) {
+    respostas = saved.respostas || {};
+    if (saved.nome) document.getElementById('inputNome').value = saved.nome;
+    if (saved.turma) document.getElementById('inputTurma').value = saved.turma;
+    if (saved.data) document.getElementById('inputData').value = saved.data;
+    if (saved.submitted) {
+      buildQuestions();
+      submitQuiz(true);
+      return;
+    }
+  } else {
+    respostas = {};
+  }
+
+  buildQuestions();
   updateProgress();
   checkSubmitReady();
   debouncedSave();
 }
 
-/* ---- SUBMIT CHECK ---- */
+/* ============================================================
+   BUILD QUESTIONS
+   ============================================================ */
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+
+  qs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    const bloomMap = {'L1-L2':'Bloom L1-L2','L2-L3':'Bloom L2-L3','L3':'Bloom L3','L3-L4':'Bloom L3-L4','L4':'Bloom L4','L4-L5':'Bloom L4-L5','L5':'Bloom L5'};
+    const bloomLabel = bloomMap[q.bloom] || q.bloom;
+
+    let bodyHTML = '';
+
+    switch (q.tipo) {
+      case 'MC':
+        bodyHTML = buildMC(q);
+        break;
+      case 'MM':
+        bodyHTML = buildMM(q);
+        break;
+      case 'VF':
+        bodyHTML = buildVF(q);
+        break;
+      case 'MATRIZ':
+        bodyHTML = buildMATRIZ(q);
+        break;
+    }
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${q.num}</div>
+        <div class="q-tags">
+          <span class="tag tag-bloom">${bloomLabel}</span>
+          <span class="tag tag-pts">${q.pts} pt</span>
+          <span class="tag tag-tipo">${q.tipoLabel}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.enunciado}</div>
+      ${bodyHTML}
+      <div class="q-feedback" id="fb-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  /* Restore visual state for answers already in respostas */
+  restoreVisualState();
+}
+
+/* ── MC builder ── */
+function buildMC(q) {
+  return `<div class="alt-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <button class="alt-btn" data-qid="${q.id}" data-letra="${o.letra}" onclick="selectMC('${q.id}','${o.letra}')">
+        <span class="alt-letra">${o.letra}.</span>
+        <span>${o.texto}</span>
+      </button>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MM builder ── */
+function buildMM(q) {
+  return `<div class="check-list" id="alts-${q.id}">
+    ${q.opcoes.map(o => `
+      <div class="check-item" data-qid="${q.id}" data-key="${o.key}" onclick="toggleMM('${q.id}','${o.key}')">
+        <div class="check-box" id="cb-${q.id}-${o.key}"></div>
+        <span>${o.texto}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── VF builder ── */
+function buildVF(q) {
+  return `<div class="vf-list" id="alts-${q.id}">
+    ${q.afirmacoes.map((af, i) => `
+      <div class="vf-item" id="vf-${q.id}-${i}">
+        <div class="vf-toggles">
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="V" onclick="selectVF('${q.id}',${i},'V')">V</button>
+          <button class="vf-btn" data-qid="${q.id}" data-idx="${i}" data-val="F" onclick="selectVF('${q.id}',${i},'F')">F</button>
+        </div>
+        <div class="vf-texto">${af.texto}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+/* ── MATRIZ builder ── */
+function buildMATRIZ(q) {
+  return `<div class="matrix-wrap"><table class="matrix-table" id="alts-${q.id}">
+    <thead><tr>
+      <th>Processo / Âncora</th>
+      ${q.colunas.map(c => `<th>${c}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${q.linhas.map((l, ri) => `<tr id="mrow-${q.id}-${ri}">
+        <td>${l}</td>
+        ${q.colunas.map((_, ci) => `<td>
+          <input type="radio" name="mat-${q.id}-${ri}" value="${ci}"
+            onchange="selectMATRIZ('${q.id}',${ri},${ci})">
+        </td>`).join('')}
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+/* ============================================================
+   INTERACTION HANDLERS
+   ============================================================ */
+function selectMC(qid, letra) {
+  if (submitted) return;
+  respostas[qid] = letra;
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.letra === letra);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function toggleMM(qid, key) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [];
+  const idx = respostas[qid].indexOf(key);
+  if (idx >= 0) respostas[qid].splice(idx, 1);
+  else respostas[qid].push(key);
+
+  const item = document.querySelector(`[data-qid="${qid}"][data-key="${key}"]`);
+  item.classList.toggle('selected', idx < 0);
+  const cb = document.getElementById('cb-' + qid + '-' + key);
+  cb.textContent = idx < 0 ? '✓' : '';
+
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectVF(qid, idx, val) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][idx] = val;
+
+  document.querySelectorAll(`[data-qid="${qid}"][data-idx="${idx}"]`).forEach(b => {
+    b.classList.toggle('selected', b.dataset.val === val);
+  });
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+function selectMATRIZ(qid, row, col) {
+  if (submitted) return;
+  if (!respostas[qid]) respostas[qid] = [null, null, null, null, null];
+  respostas[qid][row] = col;
+  updateProgress(); checkSubmitReady(); debouncedSave();
+}
+
+/* ============================================================
+   RESTORE VISUAL STATE (after buildQuestions)
+   ============================================================ */
+function restoreVisualState() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach(q => {
+    const r = respostas[q.id];
+    if (r == null) return;
+
+    switch (q.tipo) {
+      case 'MC':
+        document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+          b.classList.toggle('selected', b.dataset.letra === r);
+        });
+        break;
+      case 'MM':
+        if (Array.isArray(r)) {
+          r.forEach(key => {
+            const item = document.querySelector(`[data-qid="${q.id}"][data-key="${key}"]`);
+            if (item) { item.classList.add('selected'); }
+            const cb = document.getElementById('cb-' + q.id + '-' + key);
+            if (cb) cb.textContent = '✓';
+          });
+        }
+        break;
+      case 'VF':
+        if (Array.isArray(r)) {
+          r.forEach((val, i) => {
+            if (val) {
+              document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+                b.classList.toggle('selected', b.dataset.val === val);
+              });
+            }
+          });
+        }
+        break;
+      case 'MATRIZ':
+        if (Array.isArray(r)) {
+          r.forEach((col, row) => {
+            if (col != null) {
+              const radio = document.querySelector(`input[name="mat-${q.id}-${row}"][value="${col}"]`);
+              if (radio) radio.checked = true;
+            }
+          });
+        }
+        break;
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+function updateProgress() {
+  if (!currentVersion) return;
+  const qs = BANCO[currentVersion];
+  qs.forEach((q, i) => {
+    const seg = document.getElementById('prog-' + i);
+    seg.className = 'progress-seg';
+    if (submitted) {
+      const sc = questionScore(q);
+      if (sc >= q.pts) seg.classList.add('certo');
+      else if (sc > 0) seg.classList.add('parcial');
+      else if (isAnswered(q)) seg.classList.add('errado');
+    } else if (isAnswered(q)) {
+      seg.classList.add('resp');
+    }
+  });
+}
+
+function isAnswered(q) {
+  const r = respostas[q.id];
+  if (r == null) return false;
+  switch (q.tipo) {
+    case 'MC': return !!r;
+    case 'MM': return Array.isArray(r) && r.length > 0;
+    case 'VF': return Array.isArray(r) && r.every(v => v != null);
+    case 'MATRIZ': return Array.isArray(r) && r.every(v => v != null);
+  }
+  return false;
+}
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function questionScore(q) {
+  const r = respostas[q.id];
+  if (r == null) return 0;
+
+  switch (q.tipo) {
+    case 'MC':
+      return r === q.correta ? q.pts : 0;
+
+    case 'MM': {
+      if (!Array.isArray(r)) return 0;
+      const nCorretas = q.opcoes.filter(o => o.correta).length;
+      let acertos = 0, erros = 0;
+      q.opcoes.forEach(o => {
+        const sel = r.includes(o.key);
+        if (sel && o.correta) acertos++;
+        else if (sel && !o.correta) erros++;
+      });
+      return Math.max(0, Math.min(q.pts, (acertos * q.pts / nCorretas) - (erros * 0.5)));
+    }
+
+    case 'VF': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.afirmacoes.forEach((af, i) => {
+        if (r[i] === af.correta) acertos++;
+      });
+      return acertos * q.pts / q.afirmacoes.length;
+    }
+
+    case 'MATRIZ': {
+      if (!Array.isArray(r)) return 0;
+      let acertos = 0;
+      q.gabarito.forEach((g, i) => {
+        if (r[i] === g) acertos++;
+      });
+      return acertos * q.pts / q.gabarito.length;
+    }
+  }
+  return 0;
+}
+
+function totalScore() {
+  if (!currentVersion) return 0;
+  let total = 0;
+  BANCO[currentVersion].forEach(q => { total += questionScore(q); });
+  return Math.round(total * 10) / 10;
+}
+
+/* ============================================================
+   SUBMIT CHECK
+   ============================================================ */
 function checkSubmitReady() {
   const nome = document.getElementById('inputNome').value.trim();
   const turma = document.getElementById('inputTurma').value;
-  const allAnswered = BANCO.every(q => respostas[q.id]);
-  document.getElementById('btnSubmit').disabled = !(nome && turma && allAnswered);
+  if (!currentVersion || !nome || !turma) {
+    document.getElementById('btnSubmit').disabled = true;
+    return;
+  }
+  const allAnswered = BANCO[currentVersion].every(q => isAnswered(q));
+  document.getElementById('btnSubmit').disabled = !allAnswered;
 }
 
-/* ---- SUBMIT ---- */
-function submitQuiz() {
-  if (submitted) return;
-  submitted = true;
+/* ── Exportar JSON: visivel apenas como plano B ──
+   Com o coletor ativo (site), o envio e automatico; o botao so aparece
+   se o envio falhar. Sem coletor (offline/professor), aparece apos o envio. */
+function atualizarExportVisivel() {
+  const btn = document.getElementById('btnExport');
+  if (!btn || !submitted) return;
+  const temColeta = (typeof COLETA_URL !== 'undefined') && COLETA_URL;
+  const st = document.getElementById('coletaStatus');
+  const falhou = st && st.classList.contains('falha');
+  if (!temColeta || falhou) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
 
-  // Lock inputs
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function submitQuiz(isRestore) {
+  if (submitted && !isRestore) return;
+  submitted = true;
+  esconderBanner();
+
+  /* Lock inputs */
   document.getElementById('inputNome').disabled = true;
   document.getElementById('inputTurma').disabled = true;
-  document.getElementById('inputGrupo').disabled = true;
+  document.getElementById('inputData').disabled = true;
+  document.querySelectorAll('.version-btn').forEach(b => b.classList.add('locked'));
 
-  let score = 0;
+  const qs = BANCO[currentVersion];
+  let score = totalScore();
 
-  BANCO.forEach(q => {
-    const chosen = respostas[q.id];
-    const isCorrect = chosen === q.correta;
-    if (isCorrect) score++;
-
-    // Mark alternatives
-    const btns = document.querySelectorAll(`[data-qid="${q.id}"]`);
-    btns.forEach(b => {
-      b.classList.add('locked');
-      b.classList.remove('selected');
-      if (b.dataset.letra === q.correta) b.classList.add('correct');
-      if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
-      if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
-    });
-
-    // Show feedback
-    const fb = document.getElementById('fb-' + q.id);
-    const fbData = isCorrect ? q.feedbacks[q.correta] : q.feedbacks['_'];
-    fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
-    fb.innerHTML = fbData.texto;
+  qs.forEach(q => {
+    const sc = questionScore(q);
+    switch (q.tipo) {
+      case 'MC': showFeedbackMC(q); break;
+      case 'MM': showFeedbackMM(q, sc); break;
+      case 'VF': showFeedbackVF(q, sc); break;
+      case 'MATRIZ': showFeedbackMATRIZ(q, sc); break;
+    }
   });
 
-  // Show score
+  /* Score box */
   const scoreBox = document.getElementById('scoreBox');
   scoreBox.classList.add('show');
   document.getElementById('scoreValue').textContent = score + '/10';
 
-  // Update progress
+  /* Breakdown */
+  const bd = document.getElementById('scoreBreakdown');
+  bd.innerHTML = qs.map(q => {
+    const sc = questionScore(q);
+    const pct = Math.round(sc / q.pts * 100);
+    return `<span>Q${q.num}: ${sc.toFixed(1)}/${q.pts}</span>`;
+  }).join('');
+
   updateProgress();
 
-  // Update buttons
+  /* Placar junto ao envio — abaixo do status de coleta na copia publicada */
+  const actionsBarEl = document.getElementById('actionsBar');
+  actionsBarEl.parentNode.insertBefore(scoreBox, actionsBarEl);
+
   document.getElementById('btnSubmit').style.display = 'none';
-  document.getElementById('btnExport').classList.add('show');
+  /* CFG-OA: apos o envio nao ha Recomecar/Descartar — nada e restauravel */
+  document.getElementById('btnReset').style.display = 'none';
+  atualizarExportVisivel();
+  const stColeta = document.getElementById('coletaStatus');
+  if (stColeta && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(atualizarExportVisivel).observe(stColeta, { attributes: true, attributeFilter: ['class'] });
+  }
 
-  // Save state
   saveToLocalStorage();
+  avaliarSegundaTentativa();
 
-  toast(score >= 7 ? 'success' : 'info', `Pontuacao: ${score}/10`);
+  if (!isRestore) toast(score >= 7 ? 'success' : 'info', `Pontuação: ${score}/10`);
   enviarColeta();
 }
 
-/* ---- EXPORT JSON ---- */
+/* ── MC feedback ── */
+function showFeedbackMC(q) {
+  const chosen = respostas[q.id];
+  const isCorrect = chosen === q.correta;
+
+  document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(b => {
+    b.classList.add('locked');
+    b.classList.remove('selected');
+    if (b.dataset.letra === q.correta) b.classList.add('correct');
+    if (b.dataset.letra === chosen && !isCorrect) b.classList.add('incorrect');
+    if (b.dataset.letra === q.correta && !isCorrect) b.classList.add('correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const fbData = q.feedbacks[chosen] || q.feedbacks[q.correta];
+  fb.className = 'q-feedback show ' + (fbData.ok ? 'ok' : 'nok');
+  fb.innerHTML = fbData.html;
+}
+
+/* ── MM feedback ── */
+function showFeedbackMM(q, sc) {
+  const selected = respostas[q.id] || [];
+  let hasError = false;
+  let errorTexts = [];
+
+  q.opcoes.forEach(o => {
+    const item = document.querySelector(`[data-qid="${q.id}"][data-key="${o.key}"]`);
+    const cb = document.getElementById('cb-' + q.id + '-' + o.key);
+    item.classList.add('locked');
+    item.classList.remove('selected');
+
+    const sel = selected.includes(o.key);
+    if (sel && o.correta) {
+      item.classList.add('correct');
+      cb.textContent = '✓';
+    } else if (sel && !o.correta) {
+      item.classList.add('incorrect');
+      cb.textContent = '✗';
+      hasError = true;
+      if (q.feedbackErros && q.feedbackErros[o.key]) {
+        errorTexts.push(q.feedbackErros[o.key]);
+      }
+    } else if (!sel && o.correta) {
+      item.classList.add('missed');
+      cb.textContent = '—';
+      hasError = true;
+    } else {
+      cb.textContent = '';
+    }
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  if (perfect) {
+    fb.className = 'q-feedback show ok';
+    fb.innerHTML = q.feedbackOk;
+  } else {
+    fb.className = 'q-feedback show ' + (sc > 0 ? 'parcial' : 'nok');
+    let html = '<div class="fb-title">' + (sc > 0 ? '⚠ Parcialmente correto' : '❌ Atenção!') + '</div>';
+    if (errorTexts.length) {
+      html += errorTexts.map(t => '<div class="fb-level">' + t + '</div>').join('');
+    }
+    html += `<div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+    fb.innerHTML = html;
+  }
+}
+
+/* ── VF feedback ── */
+function showFeedbackVF(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.afirmacoes.forEach((af, i) => {
+    const item = document.getElementById('vf-' + q.id + '-' + i);
+    const correct = answers[i] === af.correta;
+    item.classList.add(correct ? 'correct' : 'incorrect');
+
+    /* Color the buttons */
+    document.querySelectorAll(`[data-qid="${q.id}"][data-idx="${i}"]`).forEach(b => {
+      b.classList.add('locked');
+      b.classList.remove('selected');
+      if (b.dataset.val === af.correta) b.classList.add('correct');
+      if (b.dataset.val === answers[i] && !correct) b.classList.add('incorrect');
+    });
+
+    /* Add justification */
+    const justDiv = document.createElement('div');
+    justDiv.className = 'vf-resultado';
+    justDiv.style.color = correct ? 'var(--verde)' : 'var(--erro)';
+    justDiv.innerHTML = (correct ? '✓ ' : '✗ ') + af.just;
+    item.appendChild(justDiv);
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ── MATRIZ feedback ── */
+function showFeedbackMATRIZ(q, sc) {
+  const answers = respostas[q.id] || [];
+
+  q.linhas.forEach((_, ri) => {
+    const row = document.getElementById('mrow-' + q.id + '-' + ri);
+    const correct = answers[ri] === q.gabarito[ri];
+    row.classList.add(correct ? 'row-correct' : 'row-incorrect');
+
+    /* Disable radios and mark correct cell */
+    document.querySelectorAll(`input[name="mat-${q.id}-${ri}"]`).forEach(r => {
+      r.disabled = true;
+    });
+
+    /* Highlight the correct cell */
+    const correctCell = row.children[q.gabarito[ri] + 1];
+    if (correctCell) correctCell.classList.add('cell-correct-answer');
+  });
+
+  const fb = document.getElementById('fb-' + q.id);
+  const perfect = sc >= q.pts;
+  const cls = perfect ? 'ok' : (sc > 0 ? 'parcial' : 'nok');
+  fb.className = 'q-feedback show ' + cls;
+  fb.innerHTML = `<div class="fb-level">${q.feedbackGeral}</div><div class="q-score-detail">Pontuação: ${sc.toFixed(1)} / ${q.pts}</div>`;
+}
+
+/* ============================================================
+   EXPORT JSON
+   ============================================================ */
 function montarPacote() {
   var now = new Date();
+  const qs = BANCO[currentVersion];
   return {
     schema: 'ifmg-fc1-provinha-v2',
     trilha: 'T01',
     tipo: 'PR',
+    versao: currentVersion,
+    tentativa: tentativaAtual,
     timestamp: now.toISOString(),
     estudante: {
       nome: document.getElementById('inputNome').value.trim(),
       turma: document.getElementById('inputTurma').value,
-      grupo: document.getElementById('inputGrupo').value || null
+      data: document.getElementById('inputData').value || null
     },
-    questoes: BANCO.map(q => ({
-      id: q.id,
-      bloom: q.bloom,
-      comp: q.comp,
-      pts: q.pts,
-      resposta: respostas[q.id] || null,
-      correta: q.correta,
-      acertou: respostas[q.id] === q.correta
-    })),
-    pontuacao: BANCO.filter(q => respostas[q.id] === q.correta).length,
+    questoes: qs.map(q => {
+      const sc = questionScore(q);
+      return {
+        id: q.id,
+        bloom: q.bloom,
+        tipo: q.tipo,
+        pts_max: q.pts,
+        pts_obtidos: Math.round(sc * 100) / 100,
+        resposta: respostas[q.id] || null,
+        gabarito: q.tipo === 'MC' ? q.correta : (q.tipo === 'MM' ? q.opcoes.filter(o=>o.correta).map(o=>o.key) : (q.tipo === 'VF' ? q.afirmacoes.map(a=>a.correta) : q.gabarito)),
+        acertou: sc >= q.pts
+      };
+    }),
+    pontuacao: totalScore(),
     total: 10
   };
 }
@@ -843,95 +1255,197 @@ function exportJSON() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `T01-PR-${data.estudante.turma || 'SEM'}-${data.estudante.nome.replace(/\s+/g, '_').substring(0, 30)}-${ts}.json`;
+  const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
+  a.download = `T01-PR-v4-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('success', 'JSON exportado com sucesso');
+  toast('success', 'Comprovante exportado com sucesso');
 }
 
-/* ---- RESET ---- */
+/* ============================================================
+   RESET
+   ============================================================ */
 function resetQuiz() {
-  if (!confirm('Tem certeza que deseja recomecar? Todas as respostas serao perdidas.')) return;
+  if (submitted) return; /* CFG-OA: apos o envio nao e possivel recomecar */
+  if (!confirm('Recomeçar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
   location.reload();
 }
 
-/* ---- LOCAL STORAGE ---- */
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================ */
+function storageKey() {
+  return PREFIX + 'v' + currentVersion;
+}
+
 function saveToLocalStorage() {
+  if (!currentVersion) return;
   try {
     const state = {
+      versao: currentVersion,
       nome: document.getElementById('inputNome').value,
       turma: document.getElementById('inputTurma').value,
-      grupo: document.getElementById('inputGrupo').value,
+      data: document.getElementById('inputData').value,
       respostas: respostas,
       submitted: submitted,
       savedAt: new Date().toISOString()
     };
-    localStorage.setItem(PREFIX + 'state', JSON.stringify(state));
+    localStorage.setItem(storageKey(), JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', currentVersion);
   } catch(e) { /* quota exceeded or private mode */ }
 }
 
+function loadVersionState(v) {
+  try {
+    const raw = localStorage.getItem(PREFIX + 'v' + v);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
 function clearLocalStorage() {
-  localStorage.removeItem(PREFIX + 'state');
+  ['A','B','C'].forEach(v => localStorage.removeItem(PREFIX + 'v' + v));
+  localStorage.removeItem(PREFIX + 'lastVersion');
+}
+
+/* ============================================================
+   CFG-OA v1 — ESTADO SALVO, TENTATIVAS, PRE-CARGA A/B/C
+   (Protocolo: _skill_cowork/protocolo-cfg-oa-v1.md)
+   ============================================================ */
+function versaoSalva() {
+  const lastV = localStorage.getItem(PREFIX + 'lastVersion');
+  if (lastV && loadVersionState(lastV)) return lastV;
+  for (const v of ['A','B','C']) { if (loadVersionState(v)) return v; }
+  return null;
 }
 
 function checkLocalStorage() {
   try {
-    const raw = localStorage.getItem(PREFIX + 'state');
-    if (raw) {
-      document.getElementById('restoreBanner').classList.add('show');
+    const v = versaoSalva();
+    if (!v) return; /* sem estado salvo: pre-carga fica a cargo de aplicarPrecargaOA */
+    const state = loadVersionState(v);
+    if (state.submitted) {
+      /* Envio ja realizado: restaura a visao corrigida (switchVersion chama
+         submitQuiz(true)); avaliarSegundaTentativa decide se ha Restaurar */
+      switchVersion(v);
+    } else {
+      /* Progresso NAO enviado: pre-carga automatica, sem pergunta */
+      switchVersion(v);
+      mostrarBanner('pre-envio');
+      toast('info', 'Respostas em andamento recuperadas — Versão ' + v);
     }
   } catch(e) {}
 }
 
-function restoreData() {
-  try {
-    const raw = localStorage.getItem(PREFIX + 'state');
-    if (!raw) return;
-    const state = JSON.parse(raw);
-
-    document.getElementById('inputNome').value = state.nome || '';
-    document.getElementById('inputTurma').value = state.turma || '';
-    document.getElementById('inputGrupo').value = state.grupo || '';
-    respostas = state.respostas || {};
-
-    // Restore visual selections
-    Object.entries(respostas).forEach(([qid, letra]) => {
-      const btns = document.querySelectorAll(`[data-qid="${qid}"]`);
-      btns.forEach(b => b.classList.toggle('selected', b.dataset.letra === letra));
-    });
-
-    if (state.submitted) {
-      submitQuiz();
-    } else {
-      updateProgress();
-      checkSubmitReady();
-    }
-
-    toast('info', 'Dados restaurados');
-  } catch(e) {
-    toast('error', 'Erro ao restaurar dados');
+function mostrarBanner(modo) {
+  bannerModo = modo;
+  const msg = document.getElementById('restoreMsg');
+  const btnR = document.getElementById('btnRestaurar');
+  if (modo === 'pre-envio') {
+    msg.innerHTML = 'Suas respostas em andamento foram recuperadas automaticamente. ' +
+      '<strong>Descartar</strong> apaga as respostas deste aparelho e só é possível ' +
+      '<strong>antes do envio</strong> — após enviar, não será possível descartar nem restaurar.';
+    btnR.style.display = 'none';
+  } else if (modo === 'segunda') {
+    msg.innerHTML = 'Tentativa 1 de ' + OA_CFG.tentativas + ' enviada. O professor liberou uma ' +
+      '<strong>2ª tentativa</strong>: <strong>Restaurar</strong> reaproveita as respostas ' +
+      'anteriores para você revisar; <strong>Descartar</strong> recomeça em branco. ' +
+      'Após o envio da 2ª tentativa, não será possível restaurar.';
+    btnR.style.display = '';
   }
+  document.getElementById('restoreBanner').classList.add('show');
+}
+
+function esconderBanner() {
+  bannerModo = null;
   document.getElementById('restoreBanner').classList.remove('show');
+}
+
+/* Restaurar: SO existe no fluxo de 2 tentativas (regra do autor, 2026-07-29) */
+function restoreData() {
+  if (bannerModo === 'segunda') iniciarSegundaTentativa(true);
 }
 
 function discardData() {
+  if (bannerModo === 'segunda') {
+    if (!confirm('Iniciar a 2ª tentativa em branco? As respostas da 1ª tentativa serão apagadas deste aparelho.')) return;
+    iniciarSegundaTentativa(false);
+    return;
+  }
+  if (!confirm('Descartar apaga as respostas deste aparelho e só é possível ANTES do envio. Após enviar, não será possível descartar nem restaurar. Continuar?')) return;
   clearLocalStorage();
-  document.getElementById('restoreBanner').classList.remove('show');
-  toast('info', 'Dados anteriores descartados');
+  location.reload();
 }
 
-/* ---- DEBOUNCED SAVE ---- */
-function setupDebouncedSave() {
-  ['inputNome', 'inputTurma', 'inputGrupo'].forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
-      checkSubmitReady();
-      debouncedSave();
-    });
-    document.getElementById(id).addEventListener('change', () => {
-      checkSubmitReady();
-      debouncedSave();
-    });
+function iniciarSegundaTentativa(comRespostas) {
+  try {
+    const v = currentVersion || versaoSalva();
+    const state = loadVersionState(v) || {};
+    state.submitted = false;
+    if (!comRespostas) state.respostas = {};
+    localStorage.setItem(PREFIX + 'v' + v, JSON.stringify(state));
+    localStorage.setItem(PREFIX + 'lastVersion', v);
+    localStorage.setItem(PREFIX + 'tentativa', '2');
+  } catch(e) {}
+  location.reload();
+}
+
+/* Banner de 2.a tentativa: aparece apenas se o professor configurou 2 envios */
+function avaliarSegundaTentativa() {
+  if (!submitted) return;
+  if (OA_CFG.tentativas >= 2 && tentativaAtual < OA_CFG.tentativas) {
+    mostrarBanner('segunda');
+  } else if (bannerModo === 'segunda') {
+    esconderBanner();
+  }
+}
+
+/* Override remoto da Equipe de Professores (chamado pelo coletor injetado) */
+function aplicarConfigOA(cfg) {
+  if (!cfg) return;
+  if (cfg.versao_precarga && ['auto','A','B','C','livre'].indexOf(cfg.versao_precarga) !== -1) {
+    OA_CFG.versao_precarga = cfg.versao_precarga;
+  }
+  if (cfg.tentativas) OA_CFG.tentativas = parseInt(cfg.tentativas, 10) || OA_CFG.tentativas;
+  try { localStorage.setItem(PREFIX + 'cfg', JSON.stringify(OA_CFG)); } catch(e) {}
+  if (precargaAtiva) travarSeletorVersao();
+  avaliarSegundaTentativa();
+}
+
+/* Pre-carga da versao A/B/C (chamada pelo coletor apos identificar o RA).
+   Estado salvo do estudante SEMPRE prevalece — nunca descartar trabalho. */
+function aplicarPrecargaOA(aluno) {
+  const modo = OA_CFG.versao_precarga;
+  if (modo === 'livre') return;
+  let alvo = null;
+  if (modo === 'A' || modo === 'B' || modo === 'C') alvo = modo;
+  else if (modo === 'auto' && aluno && aluno.ra) alvo = ['A','B','C'][parseInt(aluno.ra, 10) % 3];
+  if (!alvo && !currentVersion) return; /* auto sem RA e sem estado salvo: escolha livre */
+  precargaAtiva = true;
+  if (!currentVersion && alvo) {
+    switchVersion(alvo);
+    toast('info', 'Versão ' + alvo + ' carregada automaticamente para você');
+  }
+  travarSeletorVersao();
+}
+
+function travarSeletorVersao() {
+  if (!precargaAtiva || !currentVersion) return;
+  document.querySelectorAll('.version-btn').forEach(btn => {
+    if (btn.dataset.v !== currentVersion) btn.classList.add('locked');
+  });
+  const lbl = document.getElementById('versionLabel');
+  if (lbl) lbl.textContent = 'Versão definida automaticamente';
+}
+
+/* ============================================================
+   INPUT LISTENERS & DEBOUNCED SAVE
+   ============================================================ */
+function setupInputListeners() {
+  ['inputNome', 'inputTurma', 'inputData'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => { checkSubmitReady(); debouncedSave(); });
+    el.addEventListener('change', () => { checkSubmitReady(); debouncedSave(); });
   });
 }
 
@@ -940,7 +1454,9 @@ function debouncedSave() {
   saveTimer = setTimeout(() => saveToLocalStorage(), 1500);
 }
 
-/* ---- TOAST ---- */
+/* ============================================================
+   TOAST
+   ============================================================ */
 function toast(type, msg) {
   const container = document.getElementById('toastContainer');
   const el = document.createElement('div');
@@ -952,11 +1468,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T01-PR-v3-estudante.html
+   Arquivo fonte: T01-PR-v4-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T01-PR-v3-estudante.html';
+var ARQUIVO_FONTE = 'T01-PR-v4-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
