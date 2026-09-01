@@ -199,6 +199,9 @@
     <audio id="audioPreview" controls hidden></audio>
     <div class="nota" id="audioNota" hidden></div>
 
+    <label for="inEmail">Meu e-mail <span class="opcional">(opcional — para receber avisos e retorno)</span></label>
+    <input type="email" id="inEmail" maxlength="80" autocomplete="email" placeholder="nome@exemplo.com">
+
     <label for="inContato">Contato para retorno <span class="opcional">(opcional — RA ou e-mail)</span></label>
     <input type="text" id="inContato" maxlength="80" autocomplete="off">
 
@@ -356,6 +359,7 @@ function enviarSugestao() {
     trilha: document.getElementById('inTrilha').value,
     oa: document.getElementById('inOA').value,
     tipo_sug: document.getElementById('inTipo').value,
+    email: document.getElementById('inEmail').value.trim(),
     contato: document.getElementById('inContato').value.trim(),
     texto: texto,
     hp: document.getElementById('inSite').value
