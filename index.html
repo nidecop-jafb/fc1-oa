@@ -64,6 +64,12 @@
 .aba-painel ul.apoio { list-style: none; margin: 0 0 14px 0; padding-left: 22px; border-left: 1px dashed #444; }
 .aba-painel ul.apoio li { margin-bottom: 7px; font-size: .88rem; }
 .aba-painel .parada-t { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: 1px; color: #e8e8e8; margin: 16px 0 7px; }
+.aba-painel .aba-sec { font-family: 'Courier New', monospace; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin: 20px 0 12px; }
+.aba-painel .aba-tags { display: flex; gap: 8px; margin: 0 0 14px; flex-wrap: wrap; }
+.aba-painel .aba-tag { background: #C8A84B; color: #14120d; font-weight: 700; font-size: .72rem; padding: 4px 10px; text-transform: uppercase; letter-spacing: 1px; }
+.aba-painel b { color: #e8e8e8; font-weight: 700; }
+.aba-painel .aba-cargo { font-family: 'Courier New', monospace; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin: 12px 0 2px; }
+.aba-painel .aba-nome { margin-bottom: 0; }
 .aba-painel .regra { border: 1px solid #C8A84B; padding: 12px 14px; margin: 14px 0 4px; font-size: .88rem; }
 @media (max-width: 800px) {
   /* gutter: as abas fixas nao cobrem o conteudo em tela estreita */
@@ -157,18 +163,19 @@
   <h3>Música</h3>
   <p>Por que estudar ouvindo? Miguel Nicolelis responde em <em>O Verdadeiro Criador de Tudo</em>: ciência e arte saem do mesmo lugar — o cérebro humano. E Pierluigi Piazzi, em <em>Aprendendo Inteligência</em>, acrescenta a parte prática: música sem letra não disputa com a leitura as áreas da linguagem. A palavra cantada rouba a palavra lida; a música instrumental sustenta, e some.</p>
   <p>Daí a regra do projeto — <strong>uma trilha, uma música</strong>: <strong>ler, escrever e medir</strong> ouvindo música instrumental. A peça de cada trilha aparece na barra do topo dos OAs e na aba Música do Texto Temático.</p>
-  <p class="parada-t">O acervo — as sete playlists</p>
-  <p><strong>1 · Baden Powell</strong> — nos Afro-sambas cabem a bossa, o candomblé e a harmonia de câmara. Somar mundos é o ofício de quem estuda Física: a bancada mede, o caderno deduz, a mina explica por que importa.</p>
-  <p><strong>2 · Yamandu Costa</strong> — improvisa porque conhece a estrutura até o último traste. Improviso não é sorte: é o nome da liberdade de quem estudou.</p>
-  <p><strong>3 · Orquestra Ouro Preto</strong> — fundada em 2000 por Ronaldo R. B. Toffolo, ex-aluno, professor e diretor-geral desta escola. Estudar Física com ela ao fundo é estudar ouvindo a própria escola.</p>
-  <p><strong>4 · Filarmônica de Minas Gerais</strong> — noventa músicos, um único referencial de tempo, erro na casa dos milissegundos: ordem de grandeza, sincronia, medida.</p>
-  <p><strong>5 · J. S. Bach</strong> — a fuga é a definição de sistema físico: muitas vozes, uma lei só.</p>
-  <p><strong>6 · W. A. Mozart</strong> — nada sobra, nada falta. Elegância é saber o que pode ser retirado sem quebrar o todo — no pentagrama e na montagem experimental.</p>
-  <p><strong>7 · L. van Beethoven</strong> — de quatro notas, uma sinfonia; de duas ou três letras, uma lei. Muda a escala; a lei, não. E a Nona, composta já na surdez, lembra: o modelo vem antes da medida.</p>
+  <div class="aba-tags"><span class="aba-tag">Ler</span><span class="aba-tag">Escrever</span><span class="aba-tag">Medir</span></div>
+  <div class="aba-sec">O acervo — as sete playlists</div>
+  <p><b>1 · Baden Powell</b> — nos Afro-sambas cabem a bossa, o candomblé e a harmonia de câmara. Somar mundos é o ofício de quem estuda Física: a bancada mede, o caderno deduz, a mina explica por que importa.</p>
+  <p><b>2 · Yamandu Costa</b> — improvisa porque conhece a estrutura até o último traste. Improviso não é sorte: é o nome da liberdade de quem estudou.</p>
+  <p><b>3 · Orquestra Ouro Preto</b> — fundada em 2000 por Ronaldo R. B. Toffolo, ex-aluno, professor e diretor-geral desta escola. Estudar Física com ela ao fundo é estudar ouvindo a própria escola.</p>
+  <p><b>4 · Filarmônica de Minas Gerais</b> — noventa músicos, um único referencial de tempo, erro na casa dos milissegundos: ordem de grandeza, sincronia, medida.</p>
+  <p><b>5 · J. S. Bach</b> — a fuga é a definição de sistema físico: muitas vozes, uma lei só.</p>
+  <p><b>6 · W. A. Mozart</b> — nada sobra, nada falta. Elegância é saber o que pode ser retirado sem quebrar o todo — no pentagrama e na montagem experimental.</p>
+  <p><b>7 · L. van Beethoven</b> — de quatro notas, uma sinfonia; de duas ou três letras, uma lei. Muda a escala; a lei, não. E a Nona, composta já na surdez, lembra: o modelo vem antes da medida.</p>
   <p class="aba-nota">Na FC1, as playlists 1 a 4 giram em ciclo pelas trilhas T01-T12; a partir da T13 entram Bach, Mozart e Beethoven no ciclo — e Marco Antônio Araújo, já com lugar reservado, estreia na T16.</p>
-  <p class="parada-t">Ampliando o acervo — em preparação</p>
-  <p><strong>Marco Antônio Araújo</strong> (Belo Horizonte, 1949 — 1986) — primeiro violoncelista contratado da Sinfônica de Minas e, no estúdio, compositor que fez o barroco mineiro, a modinha e a seresta caberem no rock progressivo. Quatro discos autorais entre 1981 e 1985; morreu aos 36 anos, na véspera de receber o prêmio de melhor músico instrumental do país.</p>
-  <p><strong>Raphael Rabello</strong> (Petrópolis, 1962 — Rio de Janeiro, 1995) — primeiro registro profissional aos treze anos; discípulo de Dino 7 Cordas e parceiro de Radamés Gnattali, levou o violão de sete cordas do acompanhamento ao centro do palco. Morreu aos 32 anos.</p>
+  <div class="aba-sec">Ampliando o acervo — em preparação</div>
+  <p><b>Marco Antônio Araújo</b> (Belo Horizonte, 1949 — 1986) — primeiro violoncelista contratado da Sinfônica de Minas e, no estúdio, compositor que fez o barroco mineiro, a modinha e a seresta caberem no rock progressivo. Quatro discos autorais entre 1981 e 1985; morreu aos 36 anos, na véspera de receber o prêmio de melhor músico instrumental do país.</p>
+  <p><b>Raphael Rabello</b> (Petrópolis, 1962 — Rio de Janeiro, 1995) — primeiro registro profissional aos treze anos; discípulo de Dino 7 Cordas e parceiro de Radamés Gnattali, levou o violão de sete cordas do acompanhamento ao centro do palco. Morreu aos 32 anos.</p>
   <p>Os dois deixaram obras relevantes e inacabadas — e é exatamente isso que elas ensinam: nenhum experimento termina; toda medida com incerteza é um convite à medida seguinte.</p>
 </aside>
 
@@ -192,15 +199,24 @@
 <button class="aba-toggle" id="abaCreditosT">Créditos</button>
 <aside class="aba-painel" id="abaCreditos">
   <h3>Créditos</h3>
-  <p><strong>Reitor</strong><br>Rafael Bastos Teixeira</p>
-  <p><strong>Pró-Reitor de Ensino</strong><br>Mário Luiz Viana Alvarenga</p>
-  <p><strong>Diretor-Geral do Campus Ouro Preto</strong><br>Reginato Fernandes dos Santos</p>
-  <p><strong>Diretora de Ensino</strong><br>Talita Valadares</p>
-  <p><strong>Coordenador do Curso Técnico em Mineração Integrado ao Ensino Médio</strong><br>Salatiel Assis Resende</p>
-  <p><strong>Coordenador da Área de Física (CODAFIS)</strong><br>Lázaro Souza Lima</p>
-  <p><strong>Autor da Trilha</strong><br>Julio Azevedo — Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) em 2016. Ex-aluno do Curso de Engenharia de Minas e do Curso de Física, ambos da UFOP.</p>
-  <p><strong>Colaborador</strong><br>Felipe Beato — Professor, pesquisador, colaborador do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto. Licenciado em Física, Mestre em Física dos Materiais.</p>
-  <p><strong>Edição</strong><br>1.ª edição — Ouro Preto, 2026</p>
+  <p class="aba-cargo">Reitor</p>
+  <p class="aba-nome">Rafael Bastos Teixeira</p>
+  <p class="aba-cargo">Pró-Reitor de Ensino</p>
+  <p class="aba-nome">Mário Luiz Viana Alvarenga</p>
+  <p class="aba-cargo">Diretor-Geral do Campus Ouro Preto</p>
+  <p class="aba-nome">Reginato Fernandes dos Santos</p>
+  <p class="aba-cargo">Diretora de Ensino</p>
+  <p class="aba-nome">Talita Valadares</p>
+  <p class="aba-cargo">Coordenador do Curso Técnico em Mineração Integrado ao Ensino Médio</p>
+  <p class="aba-nome">Salatiel Assis Resende</p>
+  <p class="aba-cargo">Coordenador da Área de Física (CODAFIS)</p>
+  <p class="aba-nome">Lázaro Souza Lima</p>
+  <p class="aba-cargo">Autor da Trilha</p>
+  <p class="aba-nome">Julio Azevedo — Professor do Ensino Técnico e Tecnológico do IFMG, atuando na Área de Física do campus Ouro Preto desde 1985. Criador do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos (NIDEC) em 2016. Ex-aluno do Curso de Engenharia de Minas e do Curso de Física, ambos da UFOP.</p>
+  <p class="aba-cargo">Colaborador</p>
+  <p class="aba-nome">Felipe Beato — Professor, pesquisador, colaborador do Núcleo de Inovação e Desenvolvimento de Experimentos Científicos do IFMG campus Ouro Preto. Licenciado em Física, Mestre em Física dos Materiais.</p>
+  <p class="aba-cargo">Edição</p>
+  <p class="aba-nome">1.ª edição — Ouro Preto, 2026</p>
 </aside>
 <!-- ABAS:FIM -->
 
