@@ -709,7 +709,10 @@ if (location.protocol === 'file:') {
 (function () {
   var sec = document.getElementById('minhasEntregas');
   if (!sec) return;
-  var URL_BASE = (window.COLETA && window.COLETA.COLETA_URL) || '';
+  /* O contrato do coleta-config.js e `window.COLETA.url` (FC1 e FE1). Aceitamos tambem
+     COLETA_URL porque o arquivo semente da ILB nasceu com esse nome — os dois valem. */
+  var C = window.COLETA || {};
+  var URL_BASE = C.url || C.COLETA_URL || '';
   if (!URL_BASE) return;            // modo offline: secao fica oculta
   sec.hidden = false;
 
