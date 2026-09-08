@@ -119,7 +119,38 @@
   @media (max-width: 560px) { details.trilha > summary { font-size: 1.28rem; } }
 /* METODO:CSS-FIM */
 
+/* ENTREGAS:CSS-INICIO */
+.entregas { border: 1px solid var(--cinza-borda, #333); border-radius: 6px; padding: 16px 18px;
+  margin: 22px 0 26px; background: rgba(255,255,255,.02); }
+.entregas h2 { font-family: 'Courier New', monospace; font-size: .82rem; text-transform: uppercase;
+  letter-spacing: 2px; color: #C8A84B; margin: 0 0 10px; }
+.entregas .ent-intro { font-size: .92rem; color: #b8b8b8; margin: 0 0 12px; line-height: 1.6; }
+.entregas .ent-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.entregas input { background: #0f0f0f; border: 1px solid #444; color: #e8e8e8; padding: 8px 10px;
+  font-family: 'Courier New', monospace; font-size: .95rem; border-radius: 4px; width: 130px; }
+.entregas button { background: #C8A84B; border: none; color: #111; font-weight: 700; padding: 9px 16px;
+  border-radius: 4px; cursor: pointer; font-size: .9rem; }
+.entregas button:hover { filter: brightness(1.12); }
+.entregas .ent-msg { font-size: .88rem; margin-top: 10px; color: #c9a227; }
+.entregas .ent-painel { margin-top: 14px; display: none; }
+.entregas .ent-painel.on { display: block; }
+.entregas .ent-nome { font-weight: 700; color: #e8e8e8; margin-bottom: 10px; font-size: .98rem; }
+.entregas .ent-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.entregas .ent-card { flex: 1 1 150px; border: 1px solid #3a3a3a; border-radius: 5px; padding: 10px 12px; }
+.entregas .ent-card .rot { font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: #8a8a8a; }
+.entregas .ent-card .val { font-size: 1.25rem; font-weight: 700; color: #C8A84B; margin-top: 3px; }
+.entregas .ent-card .obs { font-size: .78rem; color: #8a8a8a; margin-top: 2px; }
+.entregas .ent-card.alerta .val { color: #E05B4B; }
+.entregas table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.entregas th { text-align: left; color: #8a8a8a; font-weight: 400; font-size: .78rem;
+  text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #3a3a3a; padding: 5px 4px; }
+.entregas td { padding: 5px 4px; border-bottom: 1px solid #262626; color: #d0d0d0; }
+.entregas .vazio { color: #8a8a8a; font-size: .9rem; font-style: italic; }
+@media (max-width: 600px) { .entregas .ent-card { flex: 1 1 100%; } }
+/* ENTREGAS:CSS-FIM */
+
 </style>
+  <script src="coleta-config.js"></script>
 </head>
 <body>
 <!-- ABAS:INICIO -->
@@ -254,6 +285,26 @@
       <p class="sucesso">Sucesso no seu estudo.</p>
     </section>
   </div>
+
+<!-- ENTREGAS:INICIO -->
+<section class="entregas" id="minhasEntregas" hidden>
+  <h2>Minhas entregas</h2>
+  <p class="ent-intro">Digite a sua matr&iacute;cula para ver <strong>o que falta entregar</strong>,
+  os <strong>pontos j&aacute; lan&ccedil;ados</strong> e a sua <strong>frequ&ecirc;ncia</strong>.
+  Sem senha &mdash; a mesma identifica&ccedil;&atilde;o que voc&ecirc; usa nos objetos de aprendizagem.</p>
+  <div class="ent-form">
+    <input id="entRA" type="text" inputmode="numeric" maxlength="7" placeholder="0000000"
+           aria-label="Matr&iacute;cula (7 d&iacute;gitos)">
+    <button type="button" id="entBtn">Ver minhas entregas</button>
+  </div>
+  <div class="ent-msg" id="entMsg" role="status"></div>
+  <div class="ent-painel" id="entPainel">
+    <div class="ent-nome" id="entNome"></div>
+    <div class="ent-cards" id="entCards"></div>
+    <div id="entTabela"></div>
+  </div>
+</section>
+<!-- ENTREGAS:FIM -->
 
 <!-- TRILHAS:INICIO -->
   <nav class="trilha-nav" aria-label="Ir para a trilha"><a href="#t01">T01</a> <a href="#t02">T02</a> <a href="#t03">T03</a> <a href="#t04">T04</a> <a href="#t05">T05</a> <a href="#t06">T06</a> <a href="#t07">T07</a> <a href="#t08">T08</a> <a href="#t09">T09</a> <a href="#t10">T10</a></nav>
@@ -651,5 +702,88 @@ if (location.protocol === 'file:') {
 })();
 </script>
 <!-- ABAS-JS:FIM -->
+<!-- ENTREGAS-JS:INICIO -->
+<script>
+/* Minhas Entregas — le do endpoint ?entregas=1&ra= do Apps Script da disciplina.
+   Sem endpoint configurado, a secao nem aparece: o site segue igual ao que era. */
+(function () {
+  var sec = document.getElementById('minhasEntregas');
+  if (!sec) return;
+  var URL_BASE = (window.COLETA && window.COLETA.COLETA_URL) || '';
+  if (!URL_BASE) return;            // modo offline: secao fica oculta
+  sec.hidden = false;
+
+  var inp = document.getElementById('entRA');
+  var btn = document.getElementById('entBtn');
+  var msg = document.getElementById('entMsg');
+  var pan = document.getElementById('entPainel');
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function card(rot, val, obs, alerta) {
+    return '<div class="ent-card' + (alerta ? ' alerta' : '') + '"><div class="rot">' + esc(rot) +
+           '</div><div class="val">' + esc(val) + '</div>' +
+           (obs ? '<div class="obs">' + esc(obs) + '</div>' : '') + '</div>';
+  }
+
+  function render(d) {
+    document.getElementById('entNome').textContent = d.nome + ' · ' + d.turma;
+
+    var f = d.frequencia || {};
+    var abaixo = (f.percentual != null && f.minimo != null && f.percentual < f.minimo);
+    var cards = card('Objetos entregues', d.entregas.length, d.reenvios ? d.reenvios + ' reenvio(s)' : '');
+    if (d.pontos && d.pontos.possiveis) {
+      cards += card('Pontos', d.pontos.obtidos + ' / ' + d.pontos.possiveis,
+                    'do que já foi lançado');
+    }
+    if (f.percentual != null) {
+      cards += card('Frequência', f.percentual + '%',
+                    f.presentes + ' de ' + f.aulas + ' aulas · mínimo ' + f.minimo + '%', abaixo);
+    }
+    document.getElementById('entCards').innerHTML = cards;
+
+    var alvo = document.getElementById('entTabela');
+    if (!d.entregas.length) {
+      alvo.innerHTML = '<p class="vazio">Nenhum envio registrado ainda. ' +
+                       'Assim que voce enviar o primeiro objeto, ele aparece aqui.</p>';
+    } else {
+      var linhas = d.entregas.map(function (e) {
+        var nota = e.total ? (e.pontos + ' / ' + e.total) : '—';
+        return '<tr><td>' + esc(e.trilha) + '</td><td>' + esc(e.oa) + '</td><td>' +
+               esc(e.quando) + '</td><td>' + esc(nota) + '</td></tr>';
+      }).join('');
+      alvo.innerHTML = '<table><thead><tr><th>Trilha</th><th>Objeto</th><th>Enviado em</th>' +
+                       '<th>Pontos</th></tr></thead><tbody>' + linhas + '</tbody></table>';
+    }
+    pan.classList.add('on');
+  }
+
+  function consultar() {
+    var ra = (inp.value || '').replace(/\D/g, '');
+    pan.classList.remove('on');
+    if (ra.length !== 7) { msg.textContent = 'A matricula tem 7 digitos.'; return; }
+    msg.textContent = 'Consultando...';
+    btn.disabled = true;
+    fetch(URL_BASE + '?entregas=1&ra=' + encodeURIComponent(ra))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        btn.disabled = false;
+        if (!d.ok) { msg.textContent = d.erro || 'Nao foi possivel consultar.'; return; }
+        msg.textContent = '';
+        render(d);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        msg.textContent = 'Sem conexao com o servidor. Tente de novo em instantes.';
+      });
+  }
+
+  btn.addEventListener('click', consultar);
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') consultar(); });
+})();
+</script>
+<!-- ENTREGAS-JS:FIM -->
+
 </body>
 </html>
