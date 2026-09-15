@@ -19,12 +19,17 @@
     font-family: Georgia, 'Times New Roman', serif;
     min-height: 100vh; display: flex; flex-direction: column;
   }
-  header { border-bottom: 2px solid var(--ouro); padding: 1.1rem 1rem .9rem; text-align: center; }
+  header { border-bottom: 2px solid var(--ouro); padding: 1rem 1rem .8rem; }
+  .cab { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+  .cab-marca img { width: 48px; height: 48px; display: block; }
+  .cab-texto { flex: 1; min-width: 12rem; }
+  .cab .badge { margin-top: 0; align-self: center; }
+  .cab-msg { max-width: 760px; margin: .45rem auto 0; font-family: Arial, sans-serif; font-size: .82rem; color: var(--texto-dim); }
   .header-sub {
     font-family: Arial, Helvetica, sans-serif; font-size: .72rem;
     letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
   }
-  h1 { font-size: 1.45rem; color: var(--ouro); margin-top: .3rem; }
+  h1 { font-size: 1.35rem; color: var(--ouro); margin-top: .15rem; line-height: 1.2; }
   .badge {
     display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
     border: 1px solid var(--verde); color: var(--verde);
@@ -78,18 +83,31 @@
   .hp { position: absolute; left: -9999px; top: -9999px; }
   .progresso { font-family: Arial, sans-serif; font-size: .76rem; color: var(--texto-dim); margin-top: .8rem; }
   footer {
-    border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
-    font-family: Arial, sans-serif; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+    border-top: 1px solid var(--borda); padding: 1.3rem 1rem 1.5rem; text-align: center;
+    font-family: Arial, sans-serif; font-size: .74rem; color: var(--texto-dim); line-height: 1.6;
   }
+  .rod-marcas { display: flex; gap: 14px; align-items: center; justify-content: center; margin: 0 auto 10px; }
+  .rod-marcas a { display: flex; }
+  .rod-marcas img { width: 30px; height: 30px; display: block; }
+  .rod-agr { display: flex; justify-content: center; margin: 0 auto 10px; }
+  .rod-agr a { display: flex; }
+  .rod-agr svg { width: 30px; height: 30px; display: block; }
+  .rod-voltar { margin-bottom: .5rem; }
   footer a { color: var(--texto-dim); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
-  <h1>Consulta: RP e Protocolo RCP</h1>
-  <span class="badge">Equipe e professores de F&iacute;sica &middot; 3 minutos</span>
+  <div class="cab">
+    <div class="cab-marca"><img src="../_icones/app-site-192.png" alt="Trilhas de Aprendizagem &middot; FC1"></div>
+    <div class="cab-texto">
+      <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
+      <h1>FC1 &middot; Consulta: RP e Protocolo RCP</h1>
+    </div>
+    <span class="badge">Consulta &agrave; equipe</span>
+  </div>
+  <div class="cab-msg">Leia a proposta &middot; marque 7 respostas &middot; 3 minutos &middot; at&eacute; 22/09/2026</div>
 </header>
 
 <main>
@@ -153,7 +171,7 @@
       <label class="op"><input type="checkbox" name="fontes" value="OBF">OBF &mdash; Olimp&iacute;ada Brasileira de F&iacute;sica</label>
       <label class="op"><input type="checkbox" name="fontes" value="OBA">OBA &mdash; Olimp&iacute;ada Brasileira de Astronomia</label>
       <label class="op"><input type="checkbox" name="fontes" value="IPhO">IPhO &mdash; Olimp&iacute;ada Internacional de F&iacute;sica</label>
-      <label class="op"><input type="checkbox" name="fontes" value="Vestibulares">Vestibulares (UFOP, UFMG...)</label>
+      <label class="op"><input type="checkbox" name="fontes" value="OBFEP">OBFEP &mdash; Olimp&iacute;ada Brasileira de F&iacute;sica das Escolas P&uacute;blicas</label>
     </fieldset>
 
     <fieldset data-q="tempo">
@@ -165,14 +183,14 @@
 
     <fieldset data-q="contribuicao" data-multi="1">
       <legend><span class="n">7.</span>Como voc&ecirc; pode contribuir?<span class="dica">Marque quantas quiser.</span></legend>
-      <label class="op"><input type="checkbox" name="contribuicao" value="Curar questoes">Selecionar e adaptar quest&otilde;es</label>
-      <label class="op"><input type="checkbox" name="contribuicao" value="Revisar o RCP">Revisar o Protocolo RCP</label>
-      <label class="op"><input type="checkbox" name="contribuicao" value="Acompanhar o piloto T10">Acompanhar o piloto da T10 em sala</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Revisar a redacao das questoes">Revisar a reda&ccedil;&atilde;o das quest&otilde;es</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Revisar a resolucao das questoes">Revisar a resolu&ccedil;&atilde;o das quest&otilde;es</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Aplicar piloto em tema especifico">Aplicar um piloto sobre um tema espec&iacute;fico</label>
       <label class="op"><input type="checkbox" name="contribuicao" value="Sem disponibilidade agora">Sem disponibilidade agora</label>
     </fieldset>
 
     <label class="campo" for="inComentario">8. Coment&aacute;rio ou sugest&atilde;o <span class="opcional">(opcional)</span></label>
-    <textarea id="inComentario" maxlength="1500" placeholder="Algo que a proposta n&atilde;o considerou?"></textarea>
+    <textarea id="inComentario" maxlength="1500" placeholder="Algo que a proposta n&atilde;o considerou ou sugest&atilde;o de tema espec&iacute;fico."></textarea>
 
     <div class="progresso" id="progresso">0 de 7 respondidas</div>
     <button class="btn" id="btnEnviar" onclick="enviarConsulta()">Enviar respostas</button>
@@ -184,7 +202,9 @@
 </main>
 
 <footer>
-  <a href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a><br>
+  <div class="rod-voltar"><a href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a></div>
+  <div class="rod-marcas"><a href="https://ouropreto.ifmg.edu.br/ouropreto" target="_blank" rel="noopener" title="IFMG &mdash; Campus Ouro Preto (abre em nova aba)"><img src="../_icones/icon-ifmg.png" alt="IFMG &mdash; Campus Ouro Preto"></a><img src="../_icones/icon-nidec.png" alt="NIDEC"></div>
+  <div class="rod-agr"><a href="../agradecimentos/" title="Agradecimentos &middot; F&iacute;sica e Poesia"><svg viewBox="0 0 120 120" role="img" aria-label="Agradecimentos &middot; F&iacute;sica e Poesia"><g fill="none" stroke="#C8A84B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M 60 44 C 46 36 28 36 12 40 L 12 104 C 28 100 46 100 60 108 C 74 100 92 100 108 104 L 108 40 C 92 36 74 36 60 44 Z"/><line x1="60" y1="44" x2="60" y2="108"/></g><g stroke="#C8A84B" stroke-width="2" stroke-linecap="round" opacity=".7"><line x1="22" y1="58" x2="50" y2="56"/><line x1="22" y1="70" x2="50" y2="68"/><line x1="22" y1="82" x2="44" y2="81"/></g><path d="M 68 70 C 72 62 76 62 80 70 S 88 78 92 70 S 98 62 100 66" fill="none" stroke="#4CAF7D" stroke-width="2.5" stroke-linecap="round"/><path d="M 104 8 C 86 12 72 24 66 44 C 80 40 94 28 104 8 Z" fill="none" stroke="#4CAF7D" stroke-width="3" stroke-linejoin="round"/><line x1="100" y1="13" x2="62" y2="56" stroke="#4CAF7D" stroke-width="3" stroke-linecap="round"/></svg></a></div>
   IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
 </footer>
 
