@@ -240,8 +240,12 @@ var envioId = '';
 /* Confirma pelo id se as respostas chegaram a planilha (ate n tentativas, 1,5 s entre elas). */
 function confirmarGravacao(n) {
   return new Promise(function (ok) { setTimeout(ok, 1500); })
-    .then(function () { return fetch(COLETA_URL + '?consulta_rcp=' + encodeURIComponent(envioId)); })
-    .then(function (r) { return r.json(); })
+    .then(function () {
+      return Promise.race([
+        fetch(COLETA_URL + '?consulta_rcp=' + encodeURIComponent(envioId)).then(function (r) { return r.json(); }),
+        new Promise(function (ok) { setTimeout(function () { ok({}); }, 8000); })
+      ]);
+    })
     .catch(function () { return {}; })
     .then(function (res) {
       if (res && res.gravada) return { ok: true };
@@ -280,12 +284,16 @@ function enviarConsulta() {
   if (!envioId) envioId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
   payload.id = envioId;
 
-  fetch(COLETA_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(payload)
-  })
-    .then(function (r) { return r.text(); })
+  /* a volta do Google as vezes trava: apos 15 s, segue para a confirmacao pelo id */
+  var limite = new Promise(function (ok) { setTimeout(function () { ok(''); }, 15000); });
+  Promise.race([
+    fetch(COLETA_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.text(); }).catch(function () { return ''; }),
+    limite
+  ])
     .then(function (txt) {
       try { return JSON.parse(txt); }
       catch (e) { return confirmarGravacao(3); } /* o Google devolveu HTML: perguntar se gravou */
