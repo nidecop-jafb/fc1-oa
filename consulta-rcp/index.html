@@ -235,6 +235,21 @@ function mostrarErro(msg) {
   el.textContent = msg; el.hidden = false;
 }
 
+var envioId = '';
+
+/* Confirma pelo id se as respostas chegaram a planilha (ate n tentativas, 1,5 s entre elas). */
+function confirmarGravacao(n) {
+  return new Promise(function (ok) { setTimeout(ok, 1500); })
+    .then(function () { return fetch(COLETA_URL + '?consulta_rcp=' + encodeURIComponent(envioId)); })
+    .then(function (r) { return r.json(); })
+    .catch(function () { return {}; })
+    .then(function (res) {
+      if (res && res.gravada) return { ok: true };
+      if (n > 1) return confirmarGravacao(n - 1);
+      return { ok: false, erro: 'Não foi possível confirmar o envio. Toque em Enviar de novo — a resposta não será duplicada.' };
+    });
+}
+
 function enviarConsulta() {
   if (enviando) return;
   mostrarErro('');
@@ -261,13 +276,20 @@ function enviarConsulta() {
     hp: document.getElementById('inSite').value
   };
   PERGUNTAS.forEach(function (q) { payload[q] = valorDe(q); });
+  /* id do envio: o mesmo em cada nova tentativa, para o servidor nao duplicar */
+  if (!envioId) envioId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  payload.id = envioId;
 
   fetch(COLETA_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   })
-    .then(function (r) { return r.json(); })
+    .then(function (r) { return r.text(); })
+    .then(function (txt) {
+      try { return JSON.parse(txt); }
+      catch (e) { return confirmarGravacao(3); } /* o Google devolveu HTML: perguntar se gravou */
+    })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'Envio recusado. Tente de novo.');
       var nome = payload.nome ? ', ' + payload.nome.split(' ')[0] : '';
