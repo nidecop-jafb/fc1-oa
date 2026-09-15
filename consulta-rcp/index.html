@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="/fc1-oa/_icones/app-site-192.png">
+<meta name="theme-color" content="#14120D">
+<meta name="robots" content="noindex">
+<title>Consulta RP e Protocolo RCP &middot; FC1 &middot; IFMG-OP</title>
+<style>
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fundo); color: var(--texto);
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  header { border-bottom: 2px solid var(--ouro); padding: 1.1rem 1rem .9rem; text-align: center; }
+  .header-sub {
+    font-family: Arial, Helvetica, sans-serif; font-size: .72rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
+  }
+  h1 { font-size: 1.45rem; color: var(--ouro); margin-top: .3rem; }
+  .badge {
+    display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
+    border: 1px solid var(--verde); color: var(--verde);
+    font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+  }
+  main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
+  .cartao { background: var(--painel); border: 1px solid var(--borda); padding: 1.1rem 1.1rem; margin-top: 1rem; }
+  .cartao h2 {
+    font-family: Arial, sans-serif; font-size: .8rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ouro); margin-bottom: .6rem;
+  }
+  .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
+  .intro a { color: var(--ouro); }
+  fieldset { border: 0; margin-top: 1.15rem; }
+  legend { font-family: Arial, sans-serif; font-size: .95rem; color: var(--texto); line-height: 1.4; margin-bottom: .45rem; }
+  legend .n { color: var(--ouro); font-weight: bold; margin-right: .3rem; }
+  legend .dica { display: block; font-size: .76rem; color: var(--texto-dim); }
+  .op {
+    display: flex; gap: .6rem; align-items: flex-start; padding: .55rem .65rem; margin-top: .35rem;
+    border: 1px solid var(--borda); background: var(--fundo); cursor: pointer;
+    font-family: Arial, sans-serif; font-size: .92rem; line-height: 1.35;
+  }
+  .op input { margin-top: .15rem; accent-color: var(--ouro); width: 1.05rem; height: 1.05rem; flex: none; }
+  .op:has(input:checked) { border-color: var(--ouro); }
+  .op small { display: block; color: var(--texto-dim); font-size: .78rem; }
+  label.campo { font-family: Arial, sans-serif; font-size: .82rem; color: var(--texto-dim); display: block; margin: .9rem 0 .3rem; }
+  .opcional { opacity: .7; font-size: .74rem; }
+  input[type=text], select, textarea {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem; font-family: Arial, sans-serif;
+    background: var(--fundo); border: 1px solid var(--borda); color: var(--texto);
+  }
+  input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
+  textarea { resize: vertical; min-height: 5.5rem; line-height: 1.5; }
+  .btn {
+    display: block; width: 100%; margin-top: 1.2rem; padding: .85rem;
+    font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none;
+  }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .erro {
+    margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .9rem;
+    background: rgba(224,91,75,.12); border-left: 3px solid var(--vermelho); color: #F0B3AA;
+  }
+  .ok-box {
+    margin-top: .8rem; padding: .9rem; font-family: Arial, sans-serif;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde); line-height: 1.5;
+  }
+  .ok-box strong { color: var(--verde); }
+  .nota { margin-top: 1rem; font-family: Arial, sans-serif; font-size: .78rem; color: var(--texto-dim); line-height: 1.5; }
+  .hp { position: absolute; left: -9999px; top: -9999px; }
+  .progresso { font-family: Arial, sans-serif; font-size: .76rem; color: var(--texto-dim); margin-top: .8rem; }
+  footer {
+    border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
+    font-family: Arial, sans-serif; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+  }
+  footer a { color: var(--texto-dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
+  <h1>Consulta: RP e Protocolo RCP</h1>
+  <span class="badge">Equipe e professores de F&iacute;sica &middot; 3 minutos</span>
+</header>
+
+<main>
+
+  <div class="cartao">
+    <p class="intro">Estamos propondo um novo OA para a FC1: o <strong>RP &mdash; Resolu&ccedil;&atilde;o de Problemas</strong>,
+    com o <strong>Protocolo RCP (Resolu&ccedil;&atilde;o Criativa do Problema)</strong>: as 8 etapas do C5 mais 4 etapas criativas,
+    em 3 n&iacute;veis (T&eacute;cnico, ENEM e Ol&iacute;mpico). Sua opini&atilde;o decide os pontos em aberto.</p>
+    <p class="intro" style="margin-top:.6rem">&#128196; <a href="proposta-RP-RCP-v1.pdf" target="_blank" rel="noopener">Ler a proposta (2 p&aacute;ginas, PDF)</a> &middot; responda at&eacute; <strong>22/09/2026</strong>.</p>
+  </div>
+
+  <div class="cartao" id="cartaoForm">
+    <h2>Quem responde</h2>
+
+    <label class="campo" for="inNome">Seu nome <span class="opcional">(opcional)</span></label>
+    <input type="text" id="inNome" maxlength="80" autocomplete="name">
+    <input type="text" id="inSite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <label class="campo" for="inPapel">Seu papel</label>
+    <select id="inPapel">
+      <option value="">Escolha...</option>
+      <option>Coautor(a)</option>
+      <option>Colaborador(a) das Trilhas</option>
+      <option>Professor(a) de F&iacute;sica do campus</option>
+      <option>Outro</option>
+    </select>
+
+    <fieldset data-q="relevancia">
+      <legend><span class="n">1.</span>Um RP em cada trilha, na P&oacute;s-Aula, &eacute;...</legend>
+      <label class="op"><input type="radio" name="relevancia" value="Muito relevante">Muito relevante</label>
+      <label class="op"><input type="radio" name="relevancia" value="Relevante">Relevante</label>
+      <label class="op"><input type="radio" name="relevancia" value="Pouco relevante">Pouco relevante</label>
+      <label class="op"><input type="radio" name="relevancia" value="Nao recomendo">N&atilde;o recomendo</label>
+    </fieldset>
+
+    <fieldset data-q="etapas" data-multi="1">
+      <legend><span class="n">2.</span>Quais etapas criativas s&atilde;o essenciais para todos?<span class="dica">Marque quantas quiser. As n&atilde;o marcadas podem ficar s&oacute; no n&iacute;vel Ol&iacute;mpico.</span></legend>
+      <label class="op"><input type="checkbox" name="etapas" value="Estimativa de Fermi"><span>Estimativa de Fermi<small>ordem de grandeza antes de calcular</small></span></label>
+      <label class="op"><input type="checkbox" name="etapas" value="Multiplas estrategias"><span>M&uacute;ltiplas estrat&eacute;gias<small>resolver por outro caminho e comparar</small></span></label>
+      <label class="op"><input type="checkbox" name="etapas" value="Caso-limite e simetria"><span>Caso-limite e simetria<small>testar o resultado nos extremos</small></span></label>
+      <label class="op"><input type="checkbox" name="etapas" value="Problema reverso"><span>Problema reverso ou varia&ccedil;&atilde;o<small>o estudante cria a pr&oacute;xima pergunta</small></span></label>
+    </fieldset>
+
+    <fieldset data-q="frequencia">
+      <legend><span class="n">3.</span>Com que frequ&ecirc;ncia aplicar o RP?</legend>
+      <label class="op"><input type="radio" name="frequencia" value="Toda trilha">Toda trilha</label>
+      <label class="op"><input type="radio" name="frequencia" value="Trilha sim, trilha nao">Trilha sim, trilha n&atilde;o</label>
+      <label class="op"><input type="radio" name="frequencia" value="Uma vez por tema">Uma vez por tema (fechando um bloco de trilhas)</label>
+    </fieldset>
+
+    <fieldset data-q="bonus">
+      <legend><span class="n">4.</span>O n&iacute;vel Ol&iacute;mpico (opcional) deve valer...</legend>
+      <label class="op"><input type="radio" name="bonus" value="Ate 0,5 ponto">B&ocirc;nus de at&eacute; 0,5 ponto na etapa</label>
+      <label class="op"><input type="radio" name="bonus" value="Ate 1 ponto">B&ocirc;nus de at&eacute; 1 ponto na etapa</label>
+      <label class="op"><input type="radio" name="bonus" value="Sem nota, com certificado">Sem nota &mdash; reconhecimento/certificado</label>
+    </fieldset>
+
+    <fieldset data-q="fontes" data-multi="1">
+      <legend><span class="n">5.</span>Quais exames e olimp&iacute;adas priorizar?<span class="dica">Marque quantas quiser.</span></legend>
+      <label class="op"><input type="checkbox" name="fontes" value="ENEM">ENEM</label>
+      <label class="op"><input type="checkbox" name="fontes" value="OBF">OBF &mdash; Olimp&iacute;ada Brasileira de F&iacute;sica</label>
+      <label class="op"><input type="checkbox" name="fontes" value="OBA">OBA &mdash; Olimp&iacute;ada Brasileira de Astronomia</label>
+      <label class="op"><input type="checkbox" name="fontes" value="IPhO">IPhO &mdash; Olimp&iacute;ada Internacional de F&iacute;sica</label>
+      <label class="op"><input type="checkbox" name="fontes" value="Vestibulares">Vestibulares (UFOP, UFMG...)</label>
+    </fieldset>
+
+    <fieldset data-q="tempo">
+      <legend><span class="n">6.</span>Tempo esperado para o estudante resolver o RP (n&iacute;veis obrigat&oacute;rios)</legend>
+      <label class="op"><input type="radio" name="tempo" value="30 min">30 minutos</label>
+      <label class="op"><input type="radio" name="tempo" value="45 min">45 minutos</label>
+      <label class="op"><input type="radio" name="tempo" value="60 min">60 minutos</label>
+    </fieldset>
+
+    <fieldset data-q="contribuicao" data-multi="1">
+      <legend><span class="n">7.</span>Como voc&ecirc; pode contribuir?<span class="dica">Marque quantas quiser.</span></legend>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Curar questoes">Selecionar e adaptar quest&otilde;es</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Revisar o RCP">Revisar o Protocolo RCP</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Acompanhar o piloto T10">Acompanhar o piloto da T10 em sala</label>
+      <label class="op"><input type="checkbox" name="contribuicao" value="Sem disponibilidade agora">Sem disponibilidade agora</label>
+    </fieldset>
+
+    <label class="campo" for="inComentario">8. Coment&aacute;rio ou sugest&atilde;o <span class="opcional">(opcional)</span></label>
+    <textarea id="inComentario" maxlength="1500" placeholder="Algo que a proposta n&atilde;o considerou?"></textarea>
+
+    <div class="progresso" id="progresso">0 de 7 respondidas</div>
+    <button class="btn" id="btnEnviar" onclick="enviarConsulta()">Enviar respostas</button>
+    <div class="erro" id="formErro" hidden></div>
+
+    <div class="nota">As respostas v&atilde;o direto para a planilha da equipe do projeto. Nome &eacute; opcional.</div>
+  </div>
+
+</main>
+
+<footer>
+  <a href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a><br>
+  IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+
+<script src="../coleta-config.js"></script>
+<script>
+var COLETA_URL = (window.COLETA && window.COLETA.url) || '';
+var enviando = false;
+var PERGUNTAS = ['relevancia', 'etapas', 'frequencia', 'bonus', 'fontes', 'tempo', 'contribuicao'];
+
+function valorDe(nome) {
+  var marcados = document.querySelectorAll('input[name="' + nome + '"]:checked');
+  var v = [];
+  for (var i = 0; i < marcados.length; i++) v.push(marcados[i].value);
+  return v.join('; ');
+}
+
+function atualizarProgresso() {
+  var n = 0;
+  PERGUNTAS.forEach(function (q) { if (valorDe(q)) n++; });
+  document.getElementById('progresso').textContent = n + ' de 7 respondidas';
+  return n;
+}
+document.addEventListener('change', atualizarProgresso);
+
+function mostrarErro(msg) {
+  var el = document.getElementById('formErro');
+  if (!msg) { el.hidden = true; return; }
+  el.textContent = msg; el.hidden = false;
+}
+
+function enviarConsulta() {
+  if (enviando) return;
+  mostrarErro('');
+  var papel = document.getElementById('inPapel').value;
+  if (!papel) { mostrarErro('Escolha o seu papel.'); return; }
+  var faltam = PERGUNTAS.filter(function (q) { return !valorDe(q); });
+  if (faltam.length) {
+    var n = PERGUNTAS.indexOf(faltam[0]) + 1;
+    mostrarErro('Falta responder a pergunta ' + n + '.');
+    document.querySelector('fieldset[data-q="' + faltam[0] + '"]').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (!COLETA_URL) { mostrarErro('Sistema de envio indisponível no momento.'); return; }
+
+  enviando = true;
+  var btn = document.getElementById('btnEnviar');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  var payload = {
+    tipo: 'CONSULTA_RCP',
+    nome: document.getElementById('inNome').value.trim(),
+    papel: papel,
+    comentario: document.getElementById('inComentario').value.trim(),
+    hp: document.getElementById('inSite').value
+  };
+  PERGUNTAS.forEach(function (q) { payload[q] = valorDe(q); });
+
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'Envio recusado. Tente de novo.');
+      var nome = payload.nome ? ', ' + payload.nome.split(' ')[0] : '';
+      document.getElementById('cartaoForm').innerHTML =
+        '<h2>Respostas enviadas</h2>' +
+        '<div class="ok-box"><strong>✓ Recebido — obrigado' + nome + '!</strong><br>' +
+        'Suas respostas chegaram à equipe e entram na consolidação do Protocolo RCP e do piloto da T10.</div>' +
+        '<div class="nota"><a href="proposta-RP-RCP-v1.pdf" style="color:var(--ouro);">Reler a proposta</a></div>';
+    })
+    .catch(function (err) {
+      mostrarErro((err && err.message) ? err.message : 'Falha de conexão. Verifique sua internet e tente de novo.');
+      btn.disabled = false; btn.textContent = 'Enviar respostas';
+    })
+    .finally(function () { enviando = false; });
+}
+</script>
+</body>
+</html>
