@@ -8,6 +8,8 @@
 <meta name="robots" content="noindex">
 <title>Consulta RP e Protocolo RCP &middot; FC1 &middot; IFMG-OP</title>
 <style>
+  /* fonte unica da pagina (autor, 2026-09-17) */
+  input, button, select, textarea { font-family: inherit; }
   :root {
     --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
     --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
@@ -16,7 +18,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--fundo); color: var(--texto);
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: 'Courier New', Courier, monospace;
     min-height: 100vh; display: flex; flex-direction: column;
   }
   header { border-bottom: 2px solid var(--ouro); padding: 1rem 1rem .8rem; }
@@ -24,67 +26,67 @@
   .cab-marca img { width: 48px; height: 48px; display: block; }
   .cab-texto { flex: 1; min-width: 12rem; }
   .cab .badge { margin-top: 0; align-self: center; }
-  .cab-msg { max-width: 760px; margin: .45rem auto 0; font-family: Arial, sans-serif; font-size: .82rem; color: var(--texto-dim); }
+  .cab-msg { max-width: 760px; margin: .45rem auto 0; font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim); }
   .header-sub {
-    font-family: Arial, Helvetica, sans-serif; font-size: .72rem;
+    font-family: 'Courier New', Courier, monospace; font-size: .72rem;
     letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
   }
   h1 { font-size: 1.35rem; color: var(--ouro); margin-top: .15rem; line-height: 1.2; }
   .badge {
     display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
     border: 1px solid var(--verde); color: var(--verde);
-    font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
   }
   main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
   .cartao { background: var(--painel); border: 1px solid var(--borda); padding: 1.1rem 1.1rem; margin-top: 1rem; }
   .cartao h2 {
-    font-family: Arial, sans-serif; font-size: .8rem; letter-spacing: .12em;
+    font-family: 'Courier New', Courier, monospace; font-size: .8rem; letter-spacing: .12em;
     text-transform: uppercase; color: var(--ouro); margin-bottom: .6rem;
   }
   .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
   .intro a { color: var(--ouro); }
   fieldset { border: 0; margin-top: 1.15rem; }
-  legend { font-family: Arial, sans-serif; font-size: .95rem; color: var(--texto); line-height: 1.4; margin-bottom: .45rem; }
+  legend { font-family: 'Courier New', Courier, monospace; font-size: .95rem; color: var(--texto); line-height: 1.4; margin-bottom: .45rem; }
   legend .n { color: var(--ouro); font-weight: bold; margin-right: .3rem; }
   legend .dica { display: block; font-size: .76rem; color: var(--texto-dim); }
   .op {
     display: flex; gap: .6rem; align-items: flex-start; padding: .55rem .65rem; margin-top: .35rem;
     border: 1px solid var(--borda); background: var(--fundo); cursor: pointer;
-    font-family: Arial, sans-serif; font-size: .92rem; line-height: 1.35;
+    font-family: 'Courier New', Courier, monospace; font-size: .92rem; line-height: 1.35;
   }
   .op input { margin-top: .15rem; accent-color: var(--ouro); width: 1.05rem; height: 1.05rem; flex: none; }
   .op:has(input:checked) { border-color: var(--ouro); }
   .op small { display: block; color: var(--texto-dim); font-size: .78rem; }
-  label.campo { font-family: Arial, sans-serif; font-size: .82rem; color: var(--texto-dim); display: block; margin: .9rem 0 .3rem; }
+  label.campo { font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim); display: block; margin: .9rem 0 .3rem; }
   .opcional { opacity: .7; font-size: .74rem; }
   input[type=text], select, textarea {
-    width: 100%; padding: .6rem .7rem; font-size: 1rem; font-family: Arial, sans-serif;
+    width: 100%; padding: .6rem .7rem; font-size: 1rem; font-family: 'Courier New', Courier, monospace;
     background: var(--fundo); border: 1px solid var(--borda); color: var(--texto);
   }
   input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
   textarea { resize: vertical; min-height: 5.5rem; line-height: 1.5; }
   .btn {
     display: block; width: 100%; margin-top: 1.2rem; padding: .85rem;
-    font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
+    font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
     letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
     background: var(--ouro); color: #14120D; border: none;
   }
   .btn:disabled { opacity: .55; cursor: wait; }
   .erro {
-    margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .9rem;
+    margin-top: .8rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace; font-size: .9rem;
     background: rgba(224,91,75,.12); border-left: 3px solid var(--vermelho); color: #F0B3AA;
   }
   .ok-box {
-    margin-top: .8rem; padding: .9rem; font-family: Arial, sans-serif;
+    margin-top: .8rem; padding: .9rem; font-family: 'Courier New', Courier, monospace;
     background: rgba(76,175,125,.12); border-left: 3px solid var(--verde); line-height: 1.5;
   }
   .ok-box strong { color: var(--verde); }
-  .nota { margin-top: 1rem; font-family: Arial, sans-serif; font-size: .78rem; color: var(--texto-dim); line-height: 1.5; }
+  .nota { margin-top: 1rem; font-family: 'Courier New', Courier, monospace; font-size: .78rem; color: var(--texto-dim); line-height: 1.5; }
   .hp { position: absolute; left: -9999px; top: -9999px; }
-  .progresso { font-family: Arial, sans-serif; font-size: .76rem; color: var(--texto-dim); margin-top: .8rem; }
+  .progresso { font-family: 'Courier New', Courier, monospace; font-size: .76rem; color: var(--texto-dim); margin-top: .8rem; }
   footer {
     border-top: 1px solid var(--borda); padding: 1.3rem 1rem 1.5rem; text-align: center;
-    font-family: Arial, sans-serif; font-size: .74rem; color: var(--texto-dim); line-height: 1.6;
+    font-family: 'Courier New', Courier, monospace; font-size: .74rem; color: var(--texto-dim); line-height: 1.6;
   }
   .rod-marcas { display: flex; gap: 14px; align-items: center; justify-content: center; margin: 0 auto 10px; }
   .rod-marcas a { display: flex; }

@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#14120D">
 <title>Sugest&otilde;es de Aprimoramento &middot; FC1 &middot; IFMG-OP</title>
 <style>
+  /* fonte unica da pagina (autor, 2026-09-17) */
+  input, button, select, textarea { font-family: inherit; }
   :root {
     --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
     --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
@@ -15,7 +17,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--fundo); color: var(--texto);
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: 'Courier New', Courier, monospace;
     min-height: 100vh; display: flex; flex-direction: column;
   }
   header {
@@ -23,14 +25,14 @@
     text-align: center;
   }
   .header-sub {
-    font-family: Arial, Helvetica, sans-serif; font-size: .72rem;
+    font-family: 'Courier New', Courier, monospace; font-size: .72rem;
     letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
   }
   h1 { font-size: 1.5rem; color: var(--ouro); margin-top: .3rem; }
   .badge {
     display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
     border: 1px solid var(--verde); color: var(--verde);
-    font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .12em;
+    font-family: 'Courier New', Courier, monospace; font-size: .7rem; letter-spacing: .12em;
     text-transform: uppercase;
   }
   main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
@@ -39,32 +41,32 @@
     padding: 1.2rem 1.1rem; margin-top: 1rem;
   }
   .cartao h2 {
-    font-family: Arial, sans-serif; font-size: .8rem; letter-spacing: .12em;
+    font-family: 'Courier New', Courier, monospace; font-size: .8rem; letter-spacing: .12em;
     text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem;
   }
   .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
   label {
-    font-family: Arial, sans-serif; font-size: .82rem; color: var(--texto-dim);
+    font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim);
     display: block; margin: .9rem 0 .3rem;
   }
   label .opcional { color: var(--texto-dim); opacity: .7; font-size: .74rem; }
   input[type=text], select, textarea {
     width: 100%; padding: .6rem .7rem; font-size: 1rem;
-    font-family: Arial, sans-serif; background: var(--fundo);
+    font-family: 'Courier New', Courier, monospace; background: var(--fundo);
     border: 1px solid var(--borda); color: var(--texto);
   }
   input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
   textarea { resize: vertical; min-height: 7rem; font-size: 1.02rem; line-height: 1.5; }
   .btn {
     display: block; width: 100%; margin-top: 1rem; padding: .85rem;
-    font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
+    font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
     letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
     background: var(--ouro); color: #14120D; border: none;
   }
   .btn:disabled { opacity: .55; cursor: wait; }
   .btn-sec {
     background: transparent; color: var(--texto); border: 1px solid var(--borda);
-    font-family: Arial, sans-serif; padding: .55rem .9rem; cursor: pointer;
+    font-family: 'Courier New', Courier, monospace; padding: .55rem .9rem; cursor: pointer;
     font-size: .88rem;
   }
   .btn-grav { border-color: var(--verde); color: var(--verde); }
@@ -78,24 +80,24 @@
   @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
   audio { width: 100%; margin-top: .6rem; }
   .erro {
-    margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif;
+    margin-top: .8rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace;
     font-size: .9rem; background: rgba(224,91,75,.12);
     border-left: 3px solid var(--vermelho); color: #F0B3AA;
   }
   .ok-box {
-    margin-top: .8rem; padding: .9rem; font-family: Arial, sans-serif;
+    margin-top: .8rem; padding: .9rem; font-family: 'Courier New', Courier, monospace;
     background: rgba(76,175,125,.12); border-left: 3px solid var(--verde);
     line-height: 1.5;
   }
   .ok-box strong { color: var(--verde); }
   .nota {
-    margin-top: 1rem; font-family: Arial, sans-serif; font-size: .78rem;
+    margin-top: 1rem; font-family: 'Courier New', Courier, monospace; font-size: .78rem;
     color: var(--texto-dim); line-height: 1.5;
   }
   .hp { position: absolute; left: -9999px; top: -9999px; }
   footer {
     border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
-    font-family: Arial, sans-serif; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+    font-family: 'Courier New', Courier, monospace; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
   }
   footer a { color: var(--texto-dim); }
 </style>
