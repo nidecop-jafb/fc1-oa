@@ -11,7 +11,12 @@
 <style>
   :root { --ouro: #C8A84B; --verde: #4CAF7D; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0d0d0d; color: #e8e8e8; font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; }
+  /* Courier New em toda a pagina, com a metrica de leitura corrigida no texto
+     corrido (autor, 2026-09-17) — o mesmo tratamento das paginas de Documentos. */
+  body { background: #0d0d0d; color: #e8e8e8; font-family: 'Courier New', Courier, monospace;
+         font-size: 1.02rem; line-height: 1.85; letter-spacing: .005em; }
+  p, li { max-width: 68ch; }
+  input, button, select, textarea { font-family: inherit; }
   .wrap { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
   h1 { font-family: 'Courier New', monospace; font-size: 1.6rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--ouro); padding-bottom: 12px; margin-bottom: 8px; }
   .sub { display: flex; align-items: flex-start; gap: 24px; border: 1px solid #444; padding: 24px 26px; margin-bottom: 44px; font-size: 0.95rem; color: #c4c4c4; }
