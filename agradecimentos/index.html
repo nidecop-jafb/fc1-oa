@@ -48,6 +48,41 @@
   footer { border-top: 1px solid var(--fio); padding: .9rem 1rem; text-align: center;
            font-family: var(--sans); font-size: .68rem; color: var(--dim); line-height: 1.6; }
   footer a { color: var(--dim); }
+  /* ---- barra de navegacao (autor, 2026-09-17) ---- */
+  .agr-barra { position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+               background: var(--papel); border-bottom: 1px solid var(--acento); }
+  .agr-barra-in { max-width: 46rem; margin: 0 auto; padding: .5rem 1.2rem;
+                  display: flex; align-items: center; gap: .75rem; }
+  .agr-barra img { width: 24px; height: 24px; border-radius: 5px; flex: 0 0 auto; }
+  .agr-barra-nome { flex: 1 1 auto; min-width: 0; color: var(--acento); font-family: var(--sans);
+                    font-size: .74rem; letter-spacing: .12em; text-transform: uppercase;
+                    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .agr-acoes { display: flex; gap: .4rem; flex: 0 0 auto; }
+  .agr-bt { display: inline-flex; align-items: center; gap: .4rem; background: transparent;
+            border: 1px solid var(--fio); color: var(--tinta); font: inherit;
+            font-family: var(--sans); font-size: .72rem; padding: .38rem .6rem;
+            cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .agr-bt:hover, .agr-bt[aria-expanded="true"] { background: var(--acento); border-color: var(--acento);
+                                                 color: var(--papel); }
+  .agr-bt svg { width: 13px; height: 13px; flex: 0 0 auto; }
+  .agr-painel { max-width: 46rem; margin: 0 auto; padding: 0 1.2rem .9rem;
+                max-height: 60vh; overflow-y: auto; }
+  .agr-painel[hidden] { display: none; }
+  .agr-painel a { display: block; padding: .5rem .6rem; color: var(--tinta);
+                  text-decoration: none; font-size: .98rem; border-bottom: 1px solid var(--fio); }
+  .agr-painel a:hover { background: rgba(255,255,255,.04); color: var(--acento); }
+  .agr-painel .quem { font-family: var(--sans); font-size: .64rem; letter-spacing: .12em;
+                      text-transform: uppercase; color: var(--dim); display: block; }
+  /* a barra e fixa desde o topo: o conteudo comeca abaixo dela */
+  body { padding-top: 3rem; }
+  .agradecimento { scroll-margin-top: 3.6rem; }
+  @media (max-width: 560px) {
+    .agr-barra-in { padding: .45rem .8rem; gap: .5rem; }
+    .agr-bt span { display: none; }        /* no celular, so os icones */
+    .agr-bt { padding: .42rem .5rem; }
+    .agr-barra-nome { font-size: .64rem; letter-spacing: .08em; }
+  }
+  @media print { .agr-barra { display: none !important; } body { padding-top: 0; } }
   @media (max-width: 480px) {
     h1 { font-size: 1.75rem; }
     .poema p { font-size: 1.1rem; }
@@ -55,6 +90,22 @@
 </style>
 </head>
 <body>
+
+<div class="agr-barra">
+  <div class="agr-barra-in">
+    <img src="../_icones/app-site-192.png" alt="">
+    <span class="agr-barra-nome">Agradecimentos &middot; F&iacute;sica e Poesia</span>
+    <nav class="agr-acoes">
+      <button class="agr-bt" type="button" id="agrPoemasBt" aria-expanded="false" hidden>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h8"/></svg><span>Poemas</span></button>
+      <a class="agr-bt" href="../sugestoes/">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 3.5h11v8h-6l-3 2.5v-2.5h-2z"/></svg><span>Sugest&otilde;es</span></a>
+      <a class="agr-bt" href="../">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5 8 2.5l6 5V14H2z"/></svg><span>Trilhas</span></a>
+    </nav>
+  </div>
+  <div class="agr-painel" id="agrPainel" hidden></div>
+</div>
 
 <header>
   <div class="marca"><img src="../_icones/app-site-192.png" alt="">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
@@ -141,5 +192,46 @@
 IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
 </footer>
 
+
+<script>
+/* Painel "Poemas": a lista sai dos <article class="agradecimento"> da propria
+   pagina — nada se escreve a mao. Sem JS, a barra segue com os dois links. */
+(function () {
+  function pronto(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+  pronto(function () {
+    try {
+      var bt = document.getElementById('agrPoemasBt');
+      var painel = document.getElementById('agrPainel');
+      var artigos = document.querySelectorAll('article.agradecimento[id]');
+      if (!bt || !painel || !artigos.length) { return; }
+      var html = '';
+      for (var i = 0; i < artigos.length; i++) {
+        var a = artigos[i];
+        var titulo = a.querySelector('h2');
+        var quem = a.querySelector('.para');
+        html += '<a href="#' + a.id + '">'
+             + (quem ? '<span class="quem">' + quem.textContent.trim() + '</span>' : '')
+             + (titulo ? titulo.textContent.trim() : a.id) + '</a>';
+      }
+      painel.innerHTML = html;
+      bt.hidden = false;
+      function fecha() { painel.hidden = true; bt.setAttribute('aria-expanded', 'false'); }
+      bt.addEventListener('click', function () {
+        painel.hidden = !painel.hidden;
+        bt.setAttribute('aria-expanded', painel.hidden ? 'false' : 'true');
+      });
+      painel.addEventListener('click', function (ev) {
+        if (ev.target.closest('a')) { fecha(); }
+      });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') { fecha(); }
+      });
+    } catch (e) { /* sem painel, a pagina continua inteira */ }
+  });
+})();
+</script>
 </body>
 </html>
