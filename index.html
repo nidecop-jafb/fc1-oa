@@ -706,6 +706,23 @@ if (location.protocol === 'file:') {
       }
     });
   });
+
+  /* Um link de fora pode pedir uma aba: .../#abaDocumentos ja chega com ela
+     aberta. Sem hash, nada muda. */
+  function porHash() {
+    var id = (location.hash || '').replace(/^#/, '').replace(/T$/, '');
+    if (!id) { return; }
+    var achou = false;
+    abas.forEach(function (par) {
+      if (par[1].id === id) { achou = true; }
+    });
+    if (!achou) { return; }
+    abas.forEach(function (par) {
+      par[1].classList.toggle('open', par[1].id === id);
+    });
+  }
+  window.addEventListener('hashchange', porHash);
+  porHash();
 })();
 </script>
 <!-- ABAS-JS:FIM -->
