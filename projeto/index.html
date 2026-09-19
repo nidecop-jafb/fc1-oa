@@ -88,6 +88,19 @@ table, pre, figure { page-break-inside: avoid; }
 .rodape { color: #444; }
 }
 </style>
+<!-- CELULAR:INICIO --><style>
+@media (max-width: 560px) {
+  table { table-layout: fixed; width: 100% !important; max-width: 100%; min-width: 0 !important; }
+  table col { width: auto !important; }
+  th, td { overflow-wrap: anywhere; hyphens: auto; min-width: 0 !important; white-space: normal;
+           padding-left: 5px; padding-right: 5px; }
+  .tabela-rolagem, .quadro { overflow-x: visible; }
+  p, li, a, span, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: anywhere; }
+  .fase, .fase-oas, .oa-item { flex-wrap: wrap; min-width: 0; }
+  .campo-resultado { flex-wrap: wrap; }
+  .campo-resultado > .rot { flex: 1 1 100%; min-width: 0; }
+}
+</style><!-- CELULAR:FIM -->
 </head>
 <body data-pagina="projeto">
 <div class="wrap">
