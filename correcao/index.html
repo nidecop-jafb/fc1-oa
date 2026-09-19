@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/fc1-oa/correcao/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/fc1-oa/_icones/app-professor-192.png">
+<link rel="apple-touch-icon" href="/fc1-oa/_icones/app-professor-512.png">
+<meta name="theme-color" content="#14120D">
+<meta name="robots" content="noindex">
+<title>Corre&ccedil;&atilde;o de Provas &middot; Professor &middot; FC1 &middot; IFMG-OP</title>
+<!-- Gerado por _scripts/gerar_correcao.py a partir de _scripts/_correcao/ — nao editar o publicado. -->
+<style>
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B; --ambar: #E0A33B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { overflow-x: hidden; }
+  body { background: var(--fundo); color: var(--texto); font-family: Georgia, serif; min-height: 100vh; display: flex; flex-direction: column; }
+  header { border-bottom: 2px solid var(--ouro); padding: 1rem; text-align: center; }
+  .header-sub { font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim); }
+  h1 { font-size: 1.4rem; color: var(--ouro); margin-top: .3rem; }
+  main { flex: 1; width: 100%; max-width: 720px; margin: 0 auto; padding: .6rem 1rem 2rem; }
+  .cartao { background: var(--painel); border: 1px solid var(--borda); padding: 1.1rem; margin-top: 1rem; }
+  .cartao h2 { font-family: Arial, sans-serif; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem; }
+  label { font-family: Arial, sans-serif; font-size: .85rem; color: var(--texto-dim); display: block; margin: .6rem 0 .3rem; }
+  input, select {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem; font-family: Arial, sans-serif;
+    background: var(--fundo); border: 1px solid var(--borda); color: var(--texto);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--ouro); }
+  .gab { font-family: 'Courier New', monospace; letter-spacing: .25em; text-transform: uppercase; }
+  .linha2 { display: flex; gap: .8rem; flex-wrap: wrap; }
+  .linha2 > div { flex: 1; min-width: 120px; }
+  .btn {
+    display: block; width: 100%; margin-top: .9rem; padding: .85rem;
+    font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none; text-align: center;
+  }
+  .btn:disabled, .btn-desab { opacity: .45; cursor: not-allowed; }
+  .btn-sec { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+  .btn-verde { background: var(--verde); }
+  .erro { margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .9rem;
+    background: rgba(224,91,75,.12); border-left: 3px solid var(--vermelho); color: #F0B3AA; }
+  .aviso { margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .9rem;
+    background: rgba(224,163,59,.12); border-left: 3px solid var(--ambar); color: #F2D29B; }
+  .sucesso { margin-top: .8rem; padding: .7rem .8rem; font-family: Arial, sans-serif; font-size: .95rem;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde); }
+  .nota { margin-top: .8rem; font-family: Arial, sans-serif; font-size: .78rem; color: var(--texto-dim); line-height: 1.5; }
+  .abas { display: flex; gap: .3rem; margin-top: .8rem; flex-wrap: wrap; }
+  .abas button { flex: 1; min-width: 70px; padding: .6rem .3rem; font-family: Arial, sans-serif; font-size: .8rem; font-weight: bold;
+    letter-spacing: .05em; text-transform: uppercase; background: var(--painel); color: var(--texto-dim); border: 1px solid var(--borda); cursor: pointer; }
+  .abas button.ativa { background: var(--ouro); color: #14120D; border-color: var(--ouro); }
+  .status { margin-top: .6rem; font-family: Arial, sans-serif; font-size: .8rem; color: var(--texto-dim); display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+  .status .ponto { width: .6rem; height: .6rem; border-radius: 50%; background: var(--verde); display: inline-block; }
+  .status.off .ponto { background: var(--vermelho); }
+  .link { color: var(--ouro); cursor: pointer; text-decoration: underline; background: none; border: none; font: inherit; }
+  table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: .85rem; margin-top: .5rem; table-layout: fixed; }
+  th, td { text-align: left; padding: .35rem .4rem; border-bottom: 1px solid var(--borda); word-break: break-word; }
+  th { color: var(--texto-dim); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; }
+  .foto-btn { position: relative; overflow: hidden; }
+  .foto-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  #cvRet { width: 100%; height: auto; display: block; margin-top: .7rem; background: #fff; }
+  .aluno { font-family: Arial, sans-serif; font-size: 1.05rem; margin-top: .6rem; }
+  .aluno strong { color: var(--ouro); }
+  .grade { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem 1rem; margin-top: .8rem; font-family: Arial, sans-serif; }
+  .q { display: flex; align-items: center; gap: .2rem; padding: .2rem .25rem; border-left: 3px solid transparent; }
+  .q.duvida { border-left-color: var(--ambar); background: rgba(224,163,59,.10); }
+  .q.resolvida { border-left-color: var(--verde); }
+  .q .num { width: 1.8rem; font-weight: bold; font-size: .9rem; }
+  .q button { flex: 1; min-width: 0; padding: .35rem 0; font-size: .85rem; font-weight: bold; font-family: Arial, sans-serif;
+    background: var(--fundo); color: var(--texto-dim); border: 1px solid var(--borda); cursor: pointer; }
+  .q button.sel { background: var(--texto); color: #14120D; border-color: var(--texto); }
+  .motivo { display: block; font-size: .72rem; color: var(--ambar); padding: 0 0 .2rem 2.2rem; }
+  .q-bloco { display: flex; flex-direction: column; }
+  .placar { font-family: Arial, sans-serif; font-size: 1.6rem; color: var(--verde); font-weight: bold; }
+  .num-dir { text-align: right; }
+  footer { border-top: 1px solid var(--borda); padding: .8rem 1rem; text-align: center;
+    font-family: Arial, sans-serif; font-size: .66rem; color: var(--texto-dim); line-height: 1.6; }
+  #impressao { display: none; }
+  @media (max-width: 560px) {
+    .grade { grid-template-columns: 1fr; }
+    table { font-size: .78rem; }
+  }
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: #fff; display: block; min-height: 0; }
+    header, main, footer { display: none !important; }
+    #impressao { display: block; }
+    .folha { width: 210mm; height: 297mm; position: relative; break-after: page; overflow: hidden; }
+    .folha:last-child { break-after: auto; }
+    .folha svg { display: block; width: 210mm; height: 148.5mm; }
+    .folha .corte { position: absolute; left: 0; right: 0; top: 148.5mm; border-top: .3mm dashed #999; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; Equipe de Professores</div>
+  <h1>Corre&ccedil;&atilde;o de Provas pelo Celular</h1>
+</header>
+
+<main>
+
+  <div class="cartao" id="cartaoChave">
+    <h2>Acesso da Equipe</h2>
+    <label for="inChave">Chave da equipe (a mesma do relat&oacute;rio)</label>
+    <input type="password" id="inChave" autocomplete="off">
+    <button class="btn" onclick="entrar()">Entrar</button>
+    <div class="erro" id="chaveErro" hidden></div>
+    <div class="nota">A chave fica salva apenas neste aparelho. Nunca compartilhe com estudantes.
+    Entre uma vez com internet: depois a corre&ccedil;&atilde;o funciona sem rede.</div>
+  </div>
+
+  <div id="app" hidden>
+    <nav class="abas">
+      <button data-aba="corrigir" class="ativa">Corrigir</button>
+      <button data-aba="provas">Provas</button>
+      <button data-aba="cartoes">Cart&otilde;es</button>
+      <button data-aba="resultados">Resultados</button>
+    </nav>
+    <div class="status" id="status"><span class="ponto"></span><span id="stTexto"></span>
+      <button class="link" id="stEnviar" onclick="sincronizar(true)" hidden>enviar agora</button></div>
+
+    <!-- CORRIGIR -->
+    <section id="aba-corrigir">
+      <div class="cartao">
+        <h2>1 &middot; Prova</h2>
+        <select id="selProvaC"></select>
+        <div class="nota" id="provaInfo"></div>
+      </div>
+      <div class="cartao" id="cartaoFoto">
+        <h2>2 &middot; Foto do cart&atilde;o</h2>
+        <label class="btn foto-btn" id="btnFoto">Fotografar cart&atilde;o
+          <input type="file" id="inFoto" accept="image/*" capture="environment">
+        </label>
+        <div class="nota">Cart&atilde;o sobre mesa clara, inteiro na foto, com as <strong>4 marcas pretas dos cantos</strong>
+        vis&iacute;veis, sem sombra do celular. Um cart&atilde;o por foto.</div>
+        <div class="erro" id="fotoErro" hidden></div>
+      </div>
+      <div class="cartao" id="cartaoLeitura" hidden>
+        <h2>3 &middot; Confer&ecirc;ncia</h2>
+        <div id="leituraAvisos"></div>
+        <div class="aluno" id="alunoInfo"></div>
+        <div id="raManual" hidden>
+          <div class="linha2">
+            <div><label for="inRA">RA (7 d&iacute;gitos)</label><input id="inRA" inputmode="numeric" maxlength="7"></div>
+            <div id="boxVersao"><label for="selVersao">Caderno</label>
+              <select id="selVersao"><option value="A">&#9679; A</option><option value="B">&#9650; B</option><option value="C">&#9632; C</option></select></div>
+          </div>
+        </div>
+        <canvas id="cvRet"></canvas>
+        <div class="nota">Quest&otilde;es em <span style="color:var(--ambar)">&acirc;mbar</span> precisam da sua decis&atilde;o:
+        toque na letra marcada (ou em &ndash; se ficou em branco). Toque em qualquer letra para corrigir uma leitura.</div>
+        <div class="grade" id="grade"></div>
+        <div class="aviso" id="pendentes" hidden></div>
+        <button class="btn btn-verde" id="btnConfirmar" onclick="confirmar()">Confirmar e salvar</button>
+        <button class="btn btn-sec" onclick="descartar()">Descartar esta foto</button>
+      </div>
+      <div class="cartao" id="cartaoSalvo" hidden>
+        <h2>Salvo</h2>
+        <div id="salvoTexto"></div>
+        <label class="btn foto-btn">Pr&oacute;ximo cart&atilde;o
+          <input type="file" id="inFoto2" accept="image/*" capture="environment">
+        </label>
+      </div>
+    </section>
+
+    <!-- PROVAS -->
+    <section id="aba-provas" hidden>
+      <div class="cartao">
+        <h2>Cadastrar ou editar prova</h2>
+        <select id="selProvaE"><option value="">&mdash; nova prova &mdash;</option></select>
+        <label for="pNome">Nome da prova</label><input id="pNome" maxlength="80" placeholder="Ex.: Prova da Etapa 2">
+        <div class="linha2">
+          <div><label for="pData">Data</label><input id="pData" type="date"></div>
+          <div><label for="pN">Quest&otilde;es (1 a 20)</label><input id="pN" type="number" min="1" max="20" value="10"></div>
+          <div><label for="pTotal">Valor total</label><input id="pTotal" type="number" min="0.5" step="0.5" value="10"></div>
+        </div>
+        <label for="pVersoes">Cadernos</label>
+        <select id="pVersoes"><option value="1">Um caderno (todos iguais)</option><option value="3">Tr&ecirc;s cadernos &#9679; A &middot; &#9650; B &middot; &#9632; C (pelo RA)</option></select>
+        <label for="pGabA">Gabarito <span id="rotGabA"></span></label><input id="pGabA" class="gab" autocomplete="off" autocapitalize="characters">
+        <div id="boxGabBC" hidden>
+          <label for="pGabB">Gabarito &#9650; B</label><input id="pGabB" class="gab" autocomplete="off" autocapitalize="characters">
+          <label for="pGabC">Gabarito &#9632; C</label><input id="pGabC" class="gab" autocomplete="off" autocapitalize="characters">
+        </div>
+        <label for="pValores">Valor de cada quest&atilde;o (opcional)</label>
+        <input id="pValores" placeholder="Em branco = valor total dividido igualmente. Ex.: 1;1;2;1...">
+        <div class="nota">Gabarito: uma letra por quest&atilde;o, de A a E, na ordem (ex.: <span class="gab">BDAAC</span>).
+        Use <strong>*</strong> para quest&atilde;o anulada (vale ponto para todos).</div>
+        <div class="erro" id="provaErro" hidden></div>
+        <div class="sucesso" id="provaOk" hidden></div>
+        <button class="btn" id="btnSalvarProva" onclick="salvarProva()">Salvar prova</button>
+        <button class="btn btn-sec" id="btnExcluirProva" onclick="excluirProva()" hidden>Excluir esta prova</button>
+        <div class="nota">Excluir s&oacute; &eacute; poss&iacute;vel enquanto nenhum estudante foi corrigido na prova.</div>
+      </div>
+    </section>
+
+    <!-- CARTOES -->
+    <section id="aba-cartoes" hidden>
+      <div class="cartao">
+        <h2>Cart&otilde;es-resposta da turma</h2>
+        <label for="selTurmaK">Turma</label>
+        <select id="selTurmaK"></select>
+        <button class="btn" id="btnGerar" onclick="gerarCartoes()">Gerar cart&otilde;es</button>
+        <div class="erro" id="cartaoErro" hidden></div>
+        <div id="listaCartoes" hidden>
+          <div class="nota"><button class="link" onclick="marcarTodos(true)">marcar todos</button> &middot;
+          <button class="link" onclick="marcarTodos(false)">desmarcar todos</button></div>
+          <table><thead><tr><th style="width:2.2rem"></th><th>Nome</th><th style="width:5.5rem">RA</th><th style="width:4rem">Cad.</th></tr></thead><tbody id="corpoCartoes"></tbody></table>
+          <button class="btn" onclick="imprimir()">Imprimir cart&otilde;es marcados</button>
+        </div>
+        <div class="nota">Um cart&atilde;o por estudante, com nome, RA e QR, dois por folha A4 (cortar na linha tracejada).
+        O mesmo cart&atilde;o serve para qualquer prova. Impress&atilde;o: A4, margens <strong>Nenhuma</strong>, escala 100%.
+        O s&iacute;mbolo do caderno (&#9679; &#9650; &#9632;) diz qual caderno da prova entregar a cada estudante.</div>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="aba-resultados" hidden>
+      <div class="cartao">
+        <h2>Resultados da prova</h2>
+        <select id="selProvaR"></select>
+        <label for="selTurmaR">Turma</label>
+        <select id="selTurmaR"></select>
+        <button class="btn" onclick="verResultados()">Ver resultados</button>
+        <div class="erro" id="resErro" hidden></div>
+      </div>
+      <div class="cartao" id="resBox" hidden>
+        <h2>Notas <span id="resResumo" style="color:var(--texto)"></span></h2>
+        <table><thead><tr><th>Nome</th><th style="width:5.5rem">RA</th><th style="width:3rem">Cad.</th><th style="width:4.5rem" class="num-dir">Nota</th></tr></thead><tbody id="corpoNotas"></tbody></table>
+        <button class="btn" onclick="baixarSUAP()">Baixar arquivo para o SUAP</button>
+        <button class="btn btn-sec" onclick="copiarSUAP()">Copiar notas (colar em planilha)</button>
+        <div class="nota">Arquivo .csv na ordem do di&aacute;rio (nome), com Matr&iacute;cula e Nota. Quem est&aacute; sem
+        cart&atilde;o corrigido sai com a nota em branco. O lan&ccedil;amento no SUAP continua sendo seu.</div>
+      </div>
+      <div class="cartao" id="resQuestoes" hidden>
+        <h2>Por quest&atilde;o</h2>
+        <div id="tabQuestoes"></div>
+        <div class="nota">% de acerto e quantos marcaram cada letra. O <strong>distrator</strong> &eacute; a letra errada
+        mais marcada &mdash; bom ponto de partida para o Retorno Coletivo.</div>
+      </div>
+    </section>
+
+    <div class="nota" style="margin-top:1.2rem"><button class="link" onclick="sair()">sair (limpar chave deste aparelho)</button></div>
+  </div>
+</main>
+
+<div id="impressao"></div>
+
+<footer>
+  IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+
+<script src="../coleta-config.js"></script>
+<script src="lib/jsQR.js"></script>
+<script src="lib/qrcode.js"></script>
+<script src="omr.js"></script>
+<script>
+var COLETA_URL = (window.COLETA && window.COLETA.url) || '';
+var K = { chave: 'ifmg_fc1_correcao_chave', dados: 'ifmg_fc1_correcao_dados', fila: 'ifmg_fc1_correcao_fila',
+          feitos: 'ifmg_fc1_correcao_feitos', aparelho: 'ifmg_fc1_correcao_aparelho' };
+var chave = null, dados = { provas: [], alunos: [] }, porRA = {}, leitura = null, turmaCartoes = [], resAtual = null;
+
+/* ---------- utilitarios ---------- */
+function $(id) { return document.getElementById(id); }
+function lsGet(k, padrao) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function msg(id, texto) { var el = $(id); el.textContent = texto || ''; el.hidden = !texto; }
+function fmt(n) { return (Math.round(n * 100) / 100).toFixed(2).replace('.', ','); }
+function getJSON(q) {
+  return fetch(COLETA_URL + '?' + q + '&chave=' + encodeURIComponent(chave), { cache: 'no-store' }).then(function (r) { return r.json(); });
+}
+function postJSON(corpo) {
+  corpo.chave = chave;
+  return fetch(COLETA_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(corpo) })
+    .then(function (r) { return r.json(); });
+}
+function aparelho() {
+  var a = lsGet(K.aparelho, null);
+  if (!a) { a = 'AP' + Math.random().toString(36).slice(2, 8).toUpperCase(); lsSet(K.aparelho, a); }
+  return a;
+}
+function prova(id) { return dados.provas.filter(function (p) { return p.id === id; })[0] || null; }
+function versaoDe(p, ra) { return p && p.versoes > 1 ? OMR.versaoDoRA(ra) : 'A'; }
+function turmas() {
+  var t = {};
+  dados.alunos.forEach(function (a) { if (a.turma) t[a.turma] = (t[a.turma] || 0) + 1; });
+  return t;
+}
+
+/* ---------- acesso ---------- */
+function entrar() {
+  var v = $('inChave').value.trim();
+  if (!v) return;
+  chave = v;
+  msg('chaveErro', '');
+  carregarDados(true);
+}
+function sair() {
+  if (lsGet(K.fila, []).length && !confirm('Há correções ainda não enviadas à planilha. Sair assim mesmo? (elas continuam guardadas neste aparelho)')) return;
+  try { localStorage.removeItem(K.chave); } catch (e) {}
+  location.reload();
+}
+function carregarDados(primeira) {
+  return getJSON('correcao=1').then(function (res) {
+    if (!res.ok) {
+      if (primeira) msg('chaveErro', res.erro || 'Chave inválida.');
+      return;
+    }
+    lsSet(K.chave, chave);
+    dados = { provas: res.provas || [], alunos: res.alunos || [], quando: new Date().toISOString() };
+    lsSet(K.dados, dados);
+    abrirApp();
+  }).catch(function () {
+    var cache = lsGet(K.dados, null);
+    if (cache && lsGet(K.chave, null) === chave) { dados = cache; abrirApp(); }
+    else if (primeira) msg('chaveErro', 'Sem conexão. Entre uma vez com internet para baixar provas e turmas.');
+  });
+}
+function abrirApp() {
+  porRA = {};
+  dados.alunos.forEach(function (a) { porRA[a.ra] = a; });
+  $('cartaoChave').hidden = true;
+  $('app').hidden = false;
+  preencherProvas();
+  preencherTurmas();
+  atualizarStatus();
+  sincronizar(false);
+}
+
+/* ---------- abas ---------- */
+document.querySelectorAll('.abas button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.abas button').forEach(function (x) { x.classList.toggle('ativa', x === b); });
+    ['corrigir', 'provas', 'cartoes', 'resultados'].forEach(function (a) { $('aba-' + a).hidden = a !== b.dataset.aba; });
+  });
+});
+
+function preencherProvas() {
+  var ordem = dados.provas.slice().sort(function (a, b) { return a.data < b.data ? 1 : -1; });
+  ['selProvaC', 'selProvaR'].forEach(function (id) {
+    var sel = $(id), atual = sel.value;
+    sel.innerHTML = ordem.length ? '' : '<option value="">(cadastre uma prova na aba Provas)</option>';
+    ordem.forEach(function (p) {
+      var o = document.createElement('option');
+      o.value = p.id; o.textContent = p.nome + (p.data ? ' · ' + p.data.split('-').reverse().join('/') : '');
+      sel.appendChild(o);
+    });
+    if (atual && prova(atual)) sel.value = atual;
+  });
+  var se = $('selProvaE'), ae = se.value;
+  se.innerHTML = '<option value="">— nova prova —</option>';
+  ordem.forEach(function (p) { var o = document.createElement('option'); o.value = p.id; o.textContent = p.nome; se.appendChild(o); });
+  if (ae && prova(ae)) se.value = ae;
+  infoProva();
+}
+function infoProva() {
+  var p = prova($('selProvaC').value);
+  $('provaInfo').textContent = p ? p.n + ' questões · ' + (p.versoes > 1 ? '3 cadernos' : '1 caderno') + ' · vale ' + fmt(p.total) : '';
+  $('btnFoto').classList.toggle('btn-desab', !p);
+  $('inFoto').disabled = !p;
+}
+$('selProvaC').addEventListener('change', infoProva);
+function preencherTurmas() {
+  var t = turmas(), nomes = Object.keys(t).sort();
+  ['selTurmaK', 'selTurmaR'].forEach(function (id) {
+    var sel = $(id);
+    sel.innerHTML = '';
+    nomes.forEach(function (n) { var o = document.createElement('option'); o.value = n; o.textContent = n + ' (' + t[n] + ')'; sel.appendChild(o); });
+  });
+}
+
+/* ---------- fila de envio (funciona sem internet) ---------- */
+function atualizarStatus() {
+  var n = lsGet(K.fila, []).length, on = navigator.onLine;
+  $('status').classList.toggle('off', !on);
+  $('stTexto').textContent = (on ? 'Conectado' : 'Sem internet — corrigindo neste aparelho') +
+    (n ? ' · ' + n + ' correç' + (n > 1 ? 'ões' : 'ão') + ' aguardando envio' : ' · tudo enviado à planilha');
+  $('stEnviar').hidden = !(n && on);
+}
+var enviando = false;
+function sincronizar(manual) {
+  var fila = lsGet(K.fila, []);
+  if (enviando || !fila.length || !navigator.onLine) { atualizarStatus(); return Promise.resolve(); }
+  enviando = true;
+  return postJSON({ tipo: 'CORRECAO_RESULTADOS', itens: fila.slice(0, 50) }).then(function (res) {
+    if (!res.ok) throw new Error(res.erro || 'recusado');
+    var ok = {};
+    (res.gravados || []).forEach(function (g) { ok[g.id] = true; });
+    (res.recusados || []).forEach(function (g) { ok[g.id] = true; });
+    lsSet(K.fila, lsGet(K.fila, []).filter(function (it) { return !ok[it.id]; }));
+    if ((res.recusados || []).length) alert(res.recusados.length + ' correção(ões) recusada(s) pela planilha (prova ou RA desconhecido). Corrija de novo esses cartões.');
+  }).catch(function (e) {
+    if (manual) alert('Não foi possível enviar agora (' + e.message + '). As correções continuam guardadas neste aparelho.');
+  }).then(function () {
+    enviando = false; atualizarStatus();
+    if (lsGet(K.fila, []).length && navigator.onLine && !manual) setTimeout(function () { sincronizar(false); }, 30000);
+  });
+}
+window.addEventListener('online', function () { sincronizar(false); });
+window.addEventListener('offline', atualizarStatus);
+
+/* ---------- correcao ---------- */
+function carregarFoto(file) {
+  var MAX = 1600;
+  var fonte = window.createImageBitmap
+    ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return createImageBitmap(file); })
+    : new Promise(function (ok, erro) { var im = new Image(); im.onload = function () { ok(im); }; im.onerror = erro; im.src = URL.createObjectURL(file); });
+  return fonte.then(function (im) {
+    var w = im.width, h = im.height, f = Math.min(1, MAX / Math.max(w, h));
+    var c = document.createElement('canvas'); c.width = Math.round(w * f); c.height = Math.round(h * f);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    return c.getContext('2d').getImageData(0, 0, c.width, c.height);
+  });
+}
+function aoEscolherFoto(ev) {
+  var file = ev.target.files && ev.target.files[0];
+  ev.target.value = '';
+  if (!file) return;
+  var p = prova($('selProvaC').value);
+  if (!p) return;
+  msg('fotoErro', '');
+  $('cartaoSalvo').hidden = true;
+  $('btnFoto').firstChild.textContent = 'Lendo o cartão...';
+  carregarFoto(file).then(function (img) {
+    var g = OMR.cinza(img);
+    var r = OMR.ler(g, { n: p.n, jsQR: window.jsQR });
+    if (!r.ok) { msg('fotoErro', r.erro); $('cartaoLeitura').hidden = true; return; }
+    montarLeitura(p, g, r);
+  }).catch(function () {
+    msg('fotoErro', 'Não foi possível abrir a foto. Tente de novo.');
+  }).then(function () { $('btnFoto').firstChild.textContent = 'Fotografar cartão'; });
+}
+$('inFoto').addEventListener('change', aoEscolherFoto);
+$('inFoto2').addEventListener('change', aoEscolherFoto);
+
+function montarLeitura(p, g, r) {
+  leitura = {
+    prova: p, r: r, g: g, ra: r.ra, versao: r.versao,
+    resp: r.respostas.map(function (x) { return x.status === 'ok' ? x.letra : ''; }),
+    pend: r.respostas.map(function (x) { return x.status !== 'ok'; }),
+    revisado: false
+  };
+  var avisos = r.avisos.slice();
+  if (r.ra && !porRA[r.ra]) avisos.push('O RA ' + r.ra + ' do QR não está na lista de estudantes baixada. Confira o RA abaixo.');
+  $('leituraAvisos').innerHTML = avisos.map(function (a) { return '<div class="aviso">' + esc(a) + '</div>'; }).join('');
+  var manual = !r.ra || !porRA[r.ra];
+  $('raManual').hidden = !manual;
+  $('boxVersao').hidden = p.versoes < 2;
+  $('inRA').value = r.ra || '';
+  if (manual) leitura.revisado = true;
+  atualizarAluno();
+  desenharRetificado();
+  montarGrade();
+  $('cartaoLeitura').hidden = false;
+  $('cartaoLeitura').scrollIntoView({ behavior: 'smooth' });
+}
+$('inRA').addEventListener('input', function () {
+  var ra = this.value.replace(/\D/g, '').slice(0, 7);
+  this.value = ra;
+  if (leitura) { leitura.ra = ra; if (ra.length === 7) { leitura.versao = versaoDe(leitura.prova, ra); $('selVersao').value = leitura.versao; } atualizarAluno(); }
+});
+$('selVersao').addEventListener('change', function () { if (leitura) { leitura.versao = this.value; atualizarAluno(); montarGrade(); } });
+
+function atualizarAluno() {
+  var a = porRA[leitura.ra], p = leitura.prova, v = p.versoes > 1 ? leitura.versao : '';
+  var feitos = lsGet(K.feitos, {}), ja = feitos[p.id] && feitos[p.id][leitura.ra];
+  $('alunoInfo').innerHTML = a
+    ? '<strong>' + esc(a.nome) + '</strong> · ' + esc(a.turma) + ' · RA ' + esc(leitura.ra) +
+      (v ? ' · caderno ' + OMR.SIMBOLO[v] + ' ' + v : '') +
+      (ja ? '<div class="aviso">Este cartão já foi corrigido nesta prova (nota ' + fmt(ja) + '). Salvar de novo substitui.</div>' : '')
+    : '<span style="color:var(--vermelho)">Estudante não identificado — digite o RA.</span>';
+  verificarPronto();
+}
+
+function desenharRetificado() {
+  var cv = $('cvRet'), largura = Math.min(900, Math.max(600, cv.clientWidth * (window.devicePixelRatio || 1)));
+  var ret = OMR.retificar(leitura.g, leitura.r.H, Math.round(largura));
+  cv.width = ret.largura; cv.height = ret.altura;
+  var ctx = cv.getContext('2d');
+  ctx.putImageData(new ImageData(ret.dados, ret.largura, ret.altura), 0, 0);
+  leitura.ret = ret;
+  pintarMarcas();
+}
+function pintarMarcas() {
+  var ret = leitura.ret, ctx = $('cvRet').getContext('2d');
+  ctx.putImageData(new ImageData(ret.dados, ret.largura, ret.altura), 0, 0);
+  ctx.lineWidth = Math.max(2, ret.esc * 0.5);
+  for (var q = 0; q < leitura.prova.n; q++) for (var a = 0; a < 5; a++) {
+    var c = OMR.centroBolha(q, a), x = (c[0] + ret.margem) * ret.esc, y = (c[1] + ret.margem) * ret.esc;
+    var marcada = leitura.resp[q] === 'ABCDE'[a];
+    if (!marcada && !leitura.pend[q]) continue;
+    ctx.strokeStyle = leitura.pend[q] ? '#E0A33B' : '#1F9D5B';
+    if (!marcada && leitura.pend[q] && a !== 0) continue;
+    ctx.beginPath();
+    if (marcada) ctx.arc(x, y, (OMR.L.R + 0.9) * ret.esc, 0, 7);
+    else ctx.rect(x - (OMR.L.R + 1.4) * ret.esc, y - (OMR.L.R + 1.4) * ret.esc, (4 * OMR.L.DX + 2 * OMR.L.R + 2.8) * ret.esc, (2 * OMR.L.R + 2.8) * ret.esc);
+    ctx.stroke();
+  }
+}
+
+function montarGrade() {
+  var r = leitura.r, html = '';
+  for (var q = 0; q < leitura.prova.n; q++) {
+    var info = r.respostas[q], cls = 'q' + (leitura.pend[q] ? ' duvida' : (info.status !== 'ok' ? ' resolvida' : ''));
+    html += '<div class="q-bloco"><div class="' + cls + '" id="q' + q + '"><span class="num">' + (q + 1) + '</span>';
+    ['A', 'B', 'C', 'D', 'E', ''].forEach(function (l) {
+      var sel = !leitura.pend[q] && leitura.resp[q] === l;
+      html += '<button type="button" class="' + (sel ? 'sel' : '') + '" onclick="escolher(' + q + ',\'' + l + '\')">' + (l || '–') + '</button>';
+    });
+    html += '</div>';
+    if (info.status !== 'ok') html += '<span class="motivo">' +
+      (info.status === 'branco' ? 'em branco? confirme' : esc(info.motivo) + (info.letra ? ' (mais escura: ' + info.letra + ')' : '')) + '</span>';
+    html += '</div>';
+  }
+  $('grade').innerHTML = html;
+  verificarPronto();
+}
+function escolher(q, l) {
+  leitura.resp[q] = l;
+  leitura.pend[q] = false;
+  leitura.revisado = true;
+  montarGrade();
+  pintarMarcas();
+}
+function notaLocal(p, versao, resp) {
+  var gab = p.gab[p.versoes > 1 ? versao : 'A'] || '', ac = 0, nota = 0, erradas = [];
+  for (var q = 0; q < p.n; q++) {
+    var valor = p.valores && p.valores.length === p.n ? p.valores[q] : p.total / p.n;
+    if (gab[q] === '*' || (resp[q] && resp[q] === gab[q])) { ac++; nota += valor; }
+    else erradas.push('Q' + (q + 1) + ' (marcou ' + (resp[q] || '–') + ', gabarito ' + gab[q] + ')');
+  }
+  return { acertos: ac, nota: nota, erradas: erradas };
+}
+function verificarPronto() {
+  if (!leitura) return;
+  var faltam = leitura.pend.filter(Boolean).length, aluno = porRA[leitura.ra];
+  var ok = !faltam && aluno && (leitura.prova.versoes < 2 || /^[ABC]$/.test(leitura.versao));
+  $('btnConfirmar').disabled = !ok;
+  msg('pendentes', faltam ? 'Falta decidir ' + faltam + ' questão(ões) em âmbar.' : (!aluno ? 'Falta identificar o estudante (RA).' : ''));
+}
+function confirmar() {
+  var p = leitura.prova, ra = leitura.ra, v = p.versoes > 1 ? leitura.versao : 'A';
+  var resp = leitura.resp.map(function (l) { return l || '-'; }).join('');
+  var n = notaLocal(p, v, leitura.resp);
+  var item = { id: p.id + '-' + ra + '-' + Date.now().toString(36), prova: p.id, ra: ra, versao: v, respostas: resp,
+               revisado: leitura.revisado, corrigido_em: new Date().toISOString(), aparelho: aparelho() };
+  var fila = lsGet(K.fila, []).filter(function (it) { return !(it.prova === p.id && it.ra === ra); });
+  fila.push(item);
+  lsSet(K.fila, fila);
+  var feitos = lsGet(K.feitos, {});
+  feitos[p.id] = feitos[p.id] || {};
+  feitos[p.id][ra] = n.nota;
+  lsSet(K.feitos, feitos);
+  var a = porRA[ra], qtd = Object.keys(feitos[p.id]).length;
+  $('salvoTexto').innerHTML = '<div class="aluno"><strong>' + esc(a.nome) + '</strong> · ' + esc(a.turma) + '</div>' +
+    '<div class="placar">' + fmt(n.nota) + ' <span style="font-size:1rem;color:var(--texto-dim)">de ' + fmt(p.total) +
+    ' · ' + n.acertos + '/' + p.n + ' acertos</span></div>' +
+    (n.erradas.length ? '<div class="nota">Erradas: ' + esc(n.erradas.join(' · ')) + '</div>' : '<div class="nota">Gabaritou!</div>') +
+    '<div class="nota">' + qtd + ' cartão(ões) corrigido(s) nesta prova neste aparelho.</div>';
+  leitura = null;
+  $('cartaoLeitura').hidden = true;
+  $('cartaoSalvo').hidden = false;
+  $('cartaoSalvo').scrollIntoView({ behavior: 'smooth' });
+  atualizarStatus();
+  sincronizar(false);
+}
+function descartar() {
+  leitura = null;
+  $('cartaoLeitura').hidden = true;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ---------- provas ---------- */
+function mostrarGabBC() {
+  var tres = $('pVersoes').value === '3';
+  $('boxGabBC').hidden = !tres;
+  $('rotGabA').textContent = tres ? '● A' : '';
+}
+$('pVersoes').addEventListener('change', mostrarGabBC);
+['pGabA', 'pGabB', 'pGabC'].forEach(function (id) {
+  $(id).addEventListener('input', function () { this.value = this.value.toUpperCase().replace(/[^A-E*]/g, ''); });
+});
+$('selProvaE').addEventListener('change', function () {
+  var p = prova(this.value);
+  $('pNome').value = p ? p.nome : '';
+  $('pData').value = p ? p.data : '';
+  $('pN').value = p ? p.n : 10;
+  $('pTotal').value = p ? p.total : 10;
+  $('pVersoes').value = p ? String(p.versoes) : '1';
+  $('pGabA').value = p ? p.gab.A : '';
+  $('pGabB').value = p ? p.gab.B : '';
+  $('pGabC').value = p ? p.gab.C : '';
+  $('pValores').value = p && p.valores.length ? p.valores.join(';') : '';
+  mostrarGabBC();
+  $('btnExcluirProva').hidden = !p;
+  msg('provaErro', ''); msg('provaOk', '');
+});
+function excluirProva() {
+  var p = prova($('selProvaE').value);
+  if (!p || !confirm('Excluir a prova "' + p.nome + '"?')) return;
+  postJSON({ tipo: 'CORRECAO_EXCLUIR', id: p.id }).then(function (res) {
+    if (!res.ok) throw new Error(res.erro);
+    dados.provas = res.provas; lsSet(K.dados, dados);
+    $('selProvaE').value = '';
+    $('selProvaE').dispatchEvent(new Event('change'));
+    preencherProvas();
+    msg('provaOk', 'Prova excluída.');
+  }).catch(function (e) { msg('provaErro', e.message || 'Falha ao excluir.'); });
+}
+function salvarProva() {
+  var n = parseInt($('pN').value, 10), tres = $('pVersoes').value === '3';
+  var gabs = { A: $('pGabA').value, B: tres ? $('pGabB').value : '', C: tres ? $('pGabC').value : '' };
+  var erro = '';
+  if (!$('pNome').value.trim()) erro = 'Informe o nome da prova.';
+  else if (!(n >= 1 && n <= 20)) erro = 'Número de questões: de 1 a 20.';
+  else ['A'].concat(tres ? ['B', 'C'] : []).forEach(function (v) {
+    if (!erro && gabs[v].length !== n) erro = 'O gabarito ' + v + ' tem ' + gabs[v].length + ' letra(s); a prova tem ' + n + ' questões.';
+  });
+  var valores = $('pValores').value.trim() ? $('pValores').value.split(/[;\s]+/).filter(String).map(function (x) { return Number(x.replace(',', '.')); }) : [];
+  if (!erro && valores.length && valores.length !== n) erro = 'Informe um valor por questão (' + n + '), ou deixe em branco.';
+  msg('provaErro', erro); msg('provaOk', '');
+  if (erro) return;
+  var btn = $('btnSalvarProva'); btn.disabled = true; btn.textContent = 'Salvando...';
+  postJSON({ tipo: 'CORRECAO_PROVA', por: 'pagina-correcao-' + aparelho(), prova: {
+    id: $('selProvaE').value, nome: $('pNome').value.trim(), data: $('pData').value, n: n,
+    versoes: tres ? 3 : 1, gab: gabs, valores: valores, total: Number(String($('pTotal').value).replace(',', '.'))
+  } }).then(function (res) {
+    if (!res.ok) throw new Error(res.erro);
+    dados.provas = res.provas; lsSet(K.dados, dados);
+    preencherProvas();
+    $('selProvaE').value = res.id;
+    msg('provaOk', 'Prova salva na planilha. Já aparece na aba Corrigir.');
+  }).catch(function (e) {
+    msg('provaErro', navigator.onLine ? (e.message || 'Falha ao salvar.') : 'Sem internet: o cadastro da prova precisa de conexão.');
+  }).then(function () { btn.disabled = false; btn.textContent = 'Salvar prova'; });
+}
+
+/* ---------- cartoes ---------- */
+function modulosQR(txt) {
+  var qr = qrcode(0, 'M'); qr.addData(txt); qr.make();
+  var n = qr.getModuleCount(), m = [];
+  for (var r = 0; r < n; r++) { m.push([]); for (var c = 0; c < n; c++) m[r].push(qr.isDark(r, c)); }
+  return m;
+}
+function gerarCartoes() {
+  var turma = $('selTurmaK').value, btn = $('btnGerar');
+  msg('cartaoErro', '');
+  btn.disabled = true; btn.textContent = 'Buscando a turma...';
+  getJSON('correcao_cartoes=1&turma=' + encodeURIComponent(turma)).then(function (res) {
+    if (!res.ok) throw new Error(res.erro);
+    turmaCartoes = res.alunos;
+    $('corpoCartoes').innerHTML = turmaCartoes.map(function (a, i) {
+      var v = OMR.versaoDoRA(a.ra);
+      return '<tr><td><input type="checkbox" checked data-i="' + i + '" style="width:auto"></td><td>' + esc(a.nome) +
+        '</td><td>' + esc(a.ra) + '</td><td>' + OMR.SIMBOLO[v] + ' ' + v + '</td></tr>';
+    }).join('');
+    $('listaCartoes').hidden = false;
+  }).catch(function (e) {
+    msg('cartaoErro', navigator.onLine ? (e.message || 'Falha ao buscar a turma.') : 'Sem internet: gerar cartões precisa de conexão.');
+  }).then(function () { btn.disabled = false; btn.textContent = 'Gerar cartões'; });
+}
+function marcarTodos(v) { document.querySelectorAll('#corpoCartoes input').forEach(function (c) { c.checked = v; }); }
+function imprimir() {
+  var sel = [];
+  document.querySelectorAll('#corpoCartoes input').forEach(function (c) { if (c.checked) sel.push(turmaCartoes[+c.dataset.i]); });
+  if (!sel.length) return;
+  var html = '';
+  for (var i = 0; i < sel.length; i += 2) {
+    html += '<div class="folha">';
+    for (var j = i; j < Math.min(i + 2, sel.length); j++) {
+      var a = sel[j], v = OMR.versaoDoRA(a.ra);
+      html += OMR.cartaoSVG({ nome: a.nome, turma: a.turma, ra: a.ra, versao: v }, modulosQR('FC1|' + a.ra + '|' + v));
+    }
+    html += '<div class="corte"></div></div>';
+  }
+  $('impressao').innerHTML = html;
+  setTimeout(function () { window.print(); }, 150);
+}
+
+/* ---------- resultados ---------- */
+function verResultados() {
+  var id = $('selProvaR').value, turma = $('selTurmaR').value;
+  msg('resErro', '');
+  if (!id) return;
+  Promise.all([getJSON('correcao_resultados=1&prova=' + encodeURIComponent(id)),
+               getJSON('correcao_cartoes=1&turma=' + encodeURIComponent(turma))]).then(function (rs) {
+    if (!rs[0].ok) throw new Error(rs[0].erro);
+    if (!rs[1].ok) throw new Error(rs[1].erro);
+    var p = rs[0].prova, porRa = {};
+    rs[0].resultados.forEach(function (r) { porRa[r.ra] = r; });
+    var linhas = rs[1].alunos.map(function (a) { return { a: a, r: porRa[a.ra] || null }; });
+    resAtual = { prova: p, turma: turma, linhas: linhas };
+    var feitos = linhas.filter(function (l) { return l.r; }), soma = 0;
+    feitos.forEach(function (l) { soma += l.r.nota; });
+    $('resResumo').textContent = '· ' + feitos.length + '/' + linhas.length + ' corrigidos' +
+      (feitos.length ? ' · média ' + fmt(soma / feitos.length) + ' de ' + fmt(p.total) : '');
+    $('corpoNotas').innerHTML = linhas.map(function (l) {
+      return '<tr><td>' + esc(l.a.nome) + '</td><td>' + esc(l.a.ra) + '</td><td>' + (l.r ? esc(l.r.versao) : '') +
+        '</td><td class="num-dir">' + (l.r ? fmt(l.r.nota) : '<span style="color:var(--texto-dim)">sem cartão</span>') + '</td></tr>';
+    }).join('');
+    $('resBox').hidden = false;
+    tabelaQuestoes(p, feitos.map(function (l) { return l.r; }));
+  }).catch(function (e) {
+    msg('resErro', navigator.onLine ? (e.message || 'Falha ao buscar resultados.') : 'Sem internet: os resultados vêm da planilha.');
+  });
+}
+function tabelaQuestoes(p, res) {
+  var html = '', versoes = p.versoes > 1 ? ['A', 'B', 'C'] : ['A'];
+  versoes.forEach(function (v) {
+    var grupo = res.filter(function (r) { return p.versoes < 2 || r.versao === v; });
+    if (!grupo.length) return;
+    var gab = p.gab[v];
+    html += (p.versoes > 1 ? '<div class="nota" style="color:var(--ouro)">Caderno ' + OMR.SIMBOLO[v] + ' ' + v + ' · ' + grupo.length + ' cartões</div>' : '') +
+      '<table><thead><tr><th style="width:2.4rem">Q</th><th style="width:2.4rem">Gab.</th><th style="width:3.6rem">Acerto</th><th>A · B · C · D · E · –</th><th style="width:4.2rem">Distrator</th></tr></thead><tbody>';
+    for (var q = 0; q < p.n; q++) {
+      var cont = { A: 0, B: 0, C: 0, D: 0, E: 0, '-': 0 }, ac = 0;
+      grupo.forEach(function (r) {
+        var l = r.respostas.charAt(q) || '-';
+        cont[l] = (cont[l] || 0) + 1;
+        if (gab[q] === '*' || l === gab[q]) ac++;
+      });
+      var dis = '', max = 0;
+      'ABCDE'.split('').forEach(function (l) { if (l !== gab[q] && cont[l] > max) { max = cont[l]; dis = l; } });
+      html += '<tr><td>' + (q + 1) + '</td><td>' + gab[q] + '</td><td>' + Math.round(100 * ac / grupo.length) + '%</td><td>' +
+        ['A', 'B', 'C', 'D', 'E', '-'].map(function (l) { return cont[l]; }).join(' · ') + '</td><td>' + (dis ? dis + ' (' + max + ')' : '—') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+  });
+  $('tabQuestoes').innerHTML = html || '<div class="nota">Nenhum cartão corrigido nesta turma.</div>';
+  $('resQuestoes').hidden = !html;
+}
+function linhasSUAP() {
+  var ord = resAtual.linhas.slice().sort(function (a, b) { return a.a.nome.localeCompare(b.a.nome, 'pt-BR'); });
+  return ord.map(function (l, i) { return [i + 1, l.a.ra, l.a.nome, l.r ? fmt(l.r.nota) : '']; });
+}
+function baixarSUAP() {
+  if (!resAtual) return;
+  var cab = ['#', 'Matrícula', 'Nome', 'Nota ' + resAtual.prova.nome];
+  var csv = '﻿' + [cab].concat(linhasSUAP()).map(function (l) {
+    return l.map(function (c) { return /[;"]/.test(String(c)) ? '"' + String(c).replace(/"/g, '""') + '"' : c; }).join(';');
+  }).join('\r\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'FC1-notas-' + resAtual.turma + '-' + resAtual.prova.id + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function copiarSUAP() {
+  if (!resAtual) return;
+  var txt = linhasSUAP().map(function (l) { return l.join('\t'); }).join('\n');
+  navigator.clipboard.writeText(txt).then(function () { alert('Notas copiadas (#, matrícula, nome, nota).'); },
+    function () { alert('Não foi possível copiar neste navegador — use o arquivo.'); });
+}
+
+/* ---------- inicio ---------- */
+(function () {
+  if (!COLETA_URL) { $('cartaoChave').innerHTML = '<div class="erro">Endpoint de coleta não configurado.</div>'; return; }
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+  mostrarGabBC();
+  var c = lsGet(K.chave, null);
+  if (c) { chave = c; carregarDados(false); }
+})();
+</script>
+</body>
+</html>
