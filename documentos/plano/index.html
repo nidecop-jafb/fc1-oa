@@ -68,6 +68,12 @@ p code, li code, td code { background: #17171a; padding: 1px 5px; font-size: .84
 h1 { font-size: 1.12rem; }
 table { font-size: .82rem; }
 
+.tabela-rolagem { overflow-x: visible; }
+.tabela-rolagem table { table-layout: fixed; width: 100%; }
+.tabela-rolagem col { width: auto !important; }
+.tabela-rolagem th, .tabela-rolagem td { padding: 6px 5px; overflow-wrap: anywhere; hyphens: auto; }
+.wrap p, .wrap li, .wrap a { overflow-wrap: anywhere; } 
+
 pre code { font-size: .58rem; }
 }
 
@@ -96,12 +102,6 @@ table, pre, figure { page-break-inside: avoid; }
 .fc1-rodape-texto { max-width: 960px; margin: 0 auto; }
 @media print { .fc1-agr { display: none !important; } }
 .wrap a.uri, .wrap > p, .wrap > ul > li, .wrap > ol > li, .wrap > blockquote p { overflow-wrap: anywhere; }
-@media (max-width: 560px) {
-  .tabela-rolagem { overflow-x: visible; }
-  .tabela-rolagem table { table-layout: fixed; width: 100%; }
-  .tabela-rolagem col { width: auto !important; }
-  .tabela-rolagem th, .tabela-rolagem td { padding: 6px 5px; overflow-wrap: anywhere; hyphens: auto; }
-}
 </style>
 <style>
 
