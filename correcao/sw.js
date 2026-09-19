@@ -3,9 +3,9 @@
    devolveria o HTML velho — licao de 2026-09-16), e o cache so quando cai.
    So arquivos do proprio site; as chamadas ao Apps Script passam direto.
    CACHE e carimbado pelo gerar_correcao.py a cada publicacao. */
-var CACHE = 'fc1-correcao-89f07a1a43';
+var CACHE = 'fc1-correcao-48cf70ec82';
 var ARQUIVOS = ['./', 'index.html', 'omr.js', 'lib/jsQR.js', 'lib/qrcode.js', 'manifest.webmanifest',
-  '../coleta-config.js', '../_icones/app-professor-192.png', '../_icones/app-professor-512.png'];
+  '../coleta-config.js', '../_icones/app-rap-192.png', '../_icones/app-rap-512.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ARQUIVOS); }).then(function () { return self.skipWaiting(); }));
