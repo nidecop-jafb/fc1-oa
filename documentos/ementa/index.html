@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ementa</title>
+<meta name="description" content="Ementa em vigor e proposta de nova ementa da Física I (OPIMINE.0105).">
+<style>
+:root { --cor: #C8A84B; --acento: #4CAF7D;
+--fundo: #0d0d0d; --texto: #e8e8e8; --cinza: #999; --linha: #444; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--fundo); color: var(--texto); font-family: Georgia, 'Times New Roman', serif; line-height: 1.65; }
+.wrap { max-width: 820px; margin: 0 auto; padding: 40px 20px 64px; }
+
+.capa { text-align: center; border: 1px solid var(--linha); padding: 30px 26px 34px; margin-bottom: 40px; }
+.capa img { width: 100%; max-width: 620px; height: auto; display: block; margin: 0 auto 26px; border: 1px solid var(--linha); }
+.capa p { margin: 0 0 10px; color: #c4c4c4; font-size: .95rem; }
+
+.capa p:nth-of-type(2) strong { display: block; font-family: 'Courier New', monospace; font-size: .9rem; letter-spacing: .18em; color: var(--acento); text-transform: uppercase; font-weight: normal; }
+.capa p:nth-of-type(3) strong { display: block; font-family: 'Courier New', monospace; font-size: 1.5rem; letter-spacing: .04em; color: var(--cor); text-transform: uppercase; margin: 6px 0 4px; }
+.capa p:nth-of-type(4) strong { display: block; font-family: 'Courier New', monospace; font-size: .82rem; letter-spacing: .1em; color: #c4c4c4; text-transform: uppercase; font-weight: normal; margin-bottom: 18px; }
+
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 38px; }
+.acoes a { flex: 1 1 220px; display: block; padding: 13px 16px; border: 1px solid var(--linha); color: var(--texto); text-decoration: none; font-family: 'Courier New', monospace; font-size: .86rem; text-align: center; }
+.acoes a:hover { border-color: var(--cor); color: var(--cor); }
+.acoes a.destaque { border-style: dashed; }
+
+h1 { font-family: 'Courier New', monospace; font-size: 1.35rem; color: var(--cor); text-transform: uppercase; letter-spacing: .03em; border-bottom: 2px solid var(--cor); padding-bottom: 10px; margin: 48px 0 18px; scroll-margin-top: 20px; }
+h2 { font-family: 'Courier New', monospace; font-size: 1.02rem; color: var(--acento); margin: 32px 0 12px; letter-spacing: .02em; }
+h3 { font-family: 'Courier New', monospace; font-size: .92rem; color: #fff; margin: 24px 0 10px; }
+p { margin-bottom: 13px; }
+strong { color: #fff; }
+em { color: #ddd; }
+a { color: var(--cor); }
+ul, ol { margin: 0 0 14px 22px; }
+li { margin-bottom: 7px; }
+hr { border: none; border-top: 1px solid var(--linha); margin: 34px 0; }
+blockquote { border-left: 3px solid var(--cor); padding-left: 16px; margin: 0 0 14px; color: #c4c4c4; }
+
+#TOC { border: 1px solid var(--linha); padding: 20px 24px; margin-bottom: 40px; }
+#TOC::before { content: 'Sumário'; display: block; font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .18em; color: var(--cor); border-bottom: 1px solid var(--linha); padding-bottom: 8px; margin-bottom: 14px; }
+#TOC ul { list-style: none; margin: 0; }
+#TOC li { margin-bottom: 8px; }
+#TOC a { color: var(--texto); text-decoration: none; font-family: 'Courier New', monospace; font-size: .84rem; }
+#TOC a:hover { color: var(--cor); }
+
+.tabela-rolagem { overflow-x: auto; margin-bottom: 20px; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { border: 1px solid var(--linha); padding: 9px 11px; text-align: left; vertical-align: top; }
+th { font-family: 'Courier New', monospace; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--cor); background: #17171a; font-weight: normal; }
+tbody tr:nth-child(even) { background: #131316; }
+caption { caption-side: bottom; font-size: .78rem; color: var(--cinza); padding-top: 6px; }
+
+table.cip, table.cip td { border-color: var(--linha); }
+table.cip td { border-left: none; border-right: none; border-top: none; border-bottom: none; padding: 2px 14px; font-size: .84rem; }
+table.cip { border: 1px solid var(--linha); padding: 12px 0; }
+table.cip tbody tr { background: none; }
+
+pre { background: #131316; border: 1px solid var(--linha); padding: 14px 16px; overflow-x: auto; margin-bottom: 20px; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: .78rem; color: #c4c4c4; }
+p code, li code, td code { background: #17171a; padding: 1px 5px; font-size: .84rem; color: var(--acento); }
+
+.rodape { margin-top: 56px; padding-top: 16px; border-top: 1px solid #333; font-size: .76rem; color: #888; font-family: 'Courier New', monospace; text-align: center; line-height: 1.7; }
+@media (max-width: 560px) {
+.wrap { padding: 24px 14px 48px; }
+.capa { padding: 20px 16px 24px; }
+.capa p:nth-of-type(3) strong { font-size: 1.15rem; }
+h1 { font-size: 1.12rem; }
+table { font-size: .82rem; }
+
+pre code { font-size: .58rem; }
+}
+
+@media print {
+body { background: #fff; color: #000; }
+.acoes, #TOC { display: none; }
+.wrap { max-width: none; padding: 0; }
+h1 { color: #000; border-bottom-color: #000; page-break-after: avoid; }
+h2, h3 { color: #000; page-break-after: avoid; }
+th { color: #000; background: #eee; }
+tbody tr:nth-child(even) { background: #f6f6f6; }
+pre { background: #f6f6f6; border-color: #999; }
+.capa { page-break-after: always; border-color: #999; }
+table, pre, figure { page-break-inside: avoid; }
+.rodape { color: #444; }
+}
+/* FC1-ICONES */
+.fc1-cab { display: flex; justify-content: center; margin-bottom: 14px; }
+.fc1-cab svg { width: 60px; height: 60px; display: block; }
+.fc1-rodape { text-align: center; padding: 22px 16px 26px; font-size: .82rem; line-height: 1.6;
+  color: #8a8f98; border-top: 1px solid #333; margin-top: 40px; }
+.fc1-rodape a { color: inherit; }
+.fc1-marcas { display: flex; gap: 14px; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.fc1-marcas a { display: flex; }
+.fc1-marcas svg { width: 30px; height: 30px; display: block; }
+.fc1-rodape-texto { max-width: 960px; margin: 0 auto; }
+@media print { .fc1-agr { display: none !important; } }
+.wrap a.uri, .wrap > p, .wrap > ul > li, .wrap > ol > li, .wrap > blockquote p { overflow-wrap: anywhere; }
+</style>
+<style>
+
+:root {
+--mono: 'Courier New', Courier, monospace;
+--sup1: #131417; 
+--sup2: #191b1f; 
+--sup3: #1f2328; 
+}
+
+body, .capa p, p, li, td, th, blockquote, figcaption, caption,
+h1, h2, h3, .acoes a, .rodape, #TOC a { font-family: var(--mono); }
+/* --- capa: o icones_{ilb,lme}.py troca o <p> da imagem por uma <div> de marcas,
+         e as tres linhas de titulo deslizam de nth-of-type 2..4 para 1..3 --- */
+  .capa { background: var(--sup1); border-color: #555; }
+  .capa p:nth-of-type(1) strong {
+    display: block; font-size: .9rem; letter-spacing: .14em; color: var(--acento);
+    text-transform: uppercase; font-weight: normal;
+  }
+  .capa p:nth-of-type(2) strong {
+    display: block; font-size: clamp(1rem, 4.6vw, 1.4rem); letter-spacing: .04em;
+    color: var(--cor); text-transform: uppercase; margin: 8px 0 6px; font-weight: bold;
+  }
+  .capa p:nth-of-type(3) strong {
+    display: block; font-size: .82rem; letter-spacing: .1em; color: #c4c4c4;
+    text-transform: uppercase; font-weight: normal; margin-bottom: 4px;
+  }
+
+  /* --- metrica de leitura do paragrafo corrido --- */
+  body { font-size: 1.05rem; line-height: 1.85; letter-spacing: .005em; }
+  .wrap { max-width: 780px; }
+  p, li { max-width: 68ch; }
+  p { margin-bottom: 16px; }
+  li { margin-bottom: 9px; }
+  ul, ol { margin: 0 0 18px 24px; }
+
+  /* --- faixa de fundo por secao (sem numerar: os titulos ja vem
+         numerados do proprio .md) --- */
+  h1 {
+    background: linear-gradient(90deg, rgba(200,168,75,.22), rgba(200,168,75,0) 78%);
+    border-bottom: 2px solid var(--cor);
+    border-left: 4px solid var(--cor);
+    padding: 14px 16px 12px; margin: 52px 0 22px;
+    font-size: 1.22rem; line-height: 1.35;
+  }
+  h2 { border-left: 3px solid var(--acento); padding-left: 11px; }
+
+  /* --- Sumario: fica como esta (autor, 2026-09-17) --- */
+  #TOC li { max-width: none; }
+
+  /* --- caixas de destaque --- */
+  blockquote {
+    background: var(--sup2); border-left: 4px solid var(--acento);
+    padding: 14px 18px; margin: 0 0 18px; color: #d4d4d4;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+
+  /* --- tabelas com preenchimento --- */
+  th { background: var(--sup3); color: var(--cor); border-color: #555; font-size: .8rem; }
+  tbody tr:nth-child(even) { background: var(--sup1); }
+  tbody tr:hover { background: #1b1d21; }
+  td, th { padding: 10px 12px; }
+  table.cip tbody tr, table.cip tbody tr:hover { background: none; }
+
+  /* --- botoes com fundo --- */
+  .acoes a {
+    background: var(--sup2); border-color: #555;
+    padding: 14px 16px; letter-spacing: .02em;
+  }
+  .acoes a:hover { background: var(--cor); border-color: var(--cor); color: #0d0d0d; }
+  .acoes a.destaque { background: transparent; border-style: dashed; }
+  .acoes a.destaque:hover { background: var(--cor); color: #0d0d0d; }
+
+  /* --- rodape --- */
+  .rodape { font-size: .78rem; line-height: 1.8; }
+
+  @media (max-width: 560px) {
+    body { font-size: .98rem; line-height: 1.75; }
+    h1 { font-size: 1.05rem; padding: 11px 12px 10px; }
+    #TOC { padding: 16px 16px 14px; }
+  }
+
+  @media print {
+    body { font-size: 11pt; line-height: 1.55; }
+    h1 { background: none; border-left-color: #000; color: #000; }
+    h1::before { color: #444; }
+    h2 { border-left-color: #999; }
+    blockquote { background: #f2f2f2; border-left-color: #999; color: #000; }
+    th { background: #e8e8e8; color: #000; }
+    tbody tr:nth-child(even) { background: #f6f6f6; }
+    tbody tr:hover { background: #f6f6f6; }
+    .acoes a { background: none; }
+  }
+
+
+  /* ===== navegacao: barra fixa, painel do Sumario e cartao do contador =====
+     (autor, 2026-09-17, briefing PRE-site-navegacao-paginas-documentos) */
+  .doc-barra {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--fundo); border-bottom: 1px solid var(--cor);
+    transform: translateY(-100%); transition: transform .18s ease;
+  }
+  .doc-barra.vis { transform: none; }
+  .doc-barra-in {
+    max-width: 780px; margin: 0 auto; padding: 8px 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .doc-barra-marca { display: flex; gap: 6px; flex: 0 0 auto; align-items: center; }
+  /* as marcas podem vir embrulhadas num <p> (capa do Projeto Executivo, onde o
+     pandoc junta as duas imagens num paragrafo so): sem isto elas empilham na
+     barra em vez de ficarem lado a lado (autor, 2026-09-17) */
+  .doc-barra-marca > p, .doc-barra-marca > div, .doc-barra-marca > span {
+    display: flex; gap: 6px; align-items: center; margin: 0; padding: 0;
+    max-width: none; flex: 0 0 auto;
+  }
+  /* marcas um pouco maiores na barra (autor, 2026-09-17) */
+  .doc-barra-marca svg, .doc-barra-marca img {
+    width: 32px; height: 32px; display: block; flex: 0 0 auto;
+  }
+  .doc-barra-nome {
+    flex: 1 1 auto; min-width: 0; color: var(--cor); font-size: .82rem;
+    letter-spacing: .04em; text-transform: uppercase;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .doc-barra-acoes { display: flex; gap: 6px; flex: 0 0 auto; }
+  .doc-bt {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--sup2); border: 1px solid #555; color: var(--texto);
+    font: inherit; font-size: .76rem; padding: 6px 10px; cursor: pointer;
+    text-decoration: none; white-space: nowrap;
+  }
+  .doc-bt:hover, .doc-bt[aria-expanded="true"] { background: var(--cor); border-color: var(--cor); color: #0d0d0d; }
+  .doc-bt svg { width: 14px; height: 14px; flex: 0 0 auto; }
+
+  .doc-toc-painel {
+    max-width: 780px; margin: 0 auto; padding: 0 20px 18px;
+    max-height: 62vh; overflow-y: auto;
+  }
+  .doc-toc-painel[hidden] { display: none; }
+  .doc-toc-painel ul { list-style: none; margin: 0; }
+  .doc-toc-painel li { margin: 0; max-width: none; }
+  .doc-toc-painel a {
+    display: block; padding: 8px 10px; color: var(--texto);
+    text-decoration: none; font-size: .84rem; border-bottom: 1px solid #262626;
+  }
+  .doc-toc-painel a:hover { background: var(--sup2); color: var(--cor); }
+
+  /* a barra nao pode cobrir o titulo quando o leitor salta para uma secao */
+  h1 { scroll-margin-top: 64px; }
+
+  /* --- cartao do contador, acima do rodape --- */
+  .doc-contador[hidden] { display: none; }
+  .doc-contador {
+    max-width: 780px; margin: 40px auto 0; padding: 14px 18px;
+    background: var(--sup1); border: 1px solid #555; border-left: 4px solid var(--cor);
+    display: flex; align-items: baseline; gap: 10px; justify-content: center;
+  }
+  .doc-contador-rot { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--cinza); }
+  .doc-contador #seloAcessos { color: var(--cor); font-size: 1rem; letter-spacing: .02em; }
+
+  @media (max-width: 620px) {
+    .doc-barra-in { padding: 7px 14px; gap: 8px; }
+    .doc-bt span { display: none; }              /* no celular, so os icones */
+    .doc-bt { padding: 7px 9px; }
+    .doc-barra-nome { font-size: .72rem; }
+    .doc-barra-marca svg, .doc-barra-marca img { width: 30px; height: 30px; }
+    .doc-toc-painel { padding: 0 14px 14px; }
+    h1 { scroll-margin-top: 56px; }
+  }
+
+  @media print {
+    .doc-barra { display: none !important; }
+    .doc-contador { display: none !important; }
+  }
+</style><script>
+(function () {
+  function pronto(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  var IC = {
+    toc:  '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h8"/></svg>',
+    docs: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4.5h4l1.2 1.5H14v6.5H2z"/></svg>',
+    casa: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5 8 2.5l6 5V14H2z"/></svg>'
+  };
+
+  function botao(tag, icone, rotulo) {
+    var e = document.createElement(tag);
+    e.className = 'doc-bt';
+    e.innerHTML = icone + '<span>' + rotulo + '</span>';
+    return e;
+  }
+
+  function barra() {
+    // `.capa` nas paginas de documento e no Projeto Executivo; `[data-barra]` em
+    // paginas com cabecalho proprio, como a de instalar o site
+    var capa = document.querySelector('.capa, [data-barra]');
+    if (!capa) { return; }
+
+    // `.capa-doc` e `.capa-marcas`: capa do Projeto Executivo da ILB, que nao usa
+    // os mesmos ganchos das paginas de documento
+    var nome = capa.querySelector('p:nth-of-type(2) strong, .capa-doc');
+    var rotulo = capa.getAttribute('data-barra-nome');
+    // as marcas podem estar fora da ancora (pagina de instalar: cabecalho proprio)
+    var marcas = capa.querySelector('[class$="-cab-marcas"], .capa-marcas')
+               || document.querySelector('[class$="-cab-marcas"], .capa-marcas');
+    var toc = document.querySelector('#TOC ul');
+
+    var el = document.createElement('div');
+    el.className = 'doc-barra';
+    var linha = document.createElement('div');
+    linha.className = 'doc-barra-in';
+
+    if (marcas) {
+      var m = document.createElement('span');
+      m.className = 'doc-barra-marca';
+      m.innerHTML = marcas.innerHTML;
+      linha.appendChild(m);
+    }
+
+    var tit = document.createElement('span');
+    tit.className = 'doc-barra-nome';
+    tit.textContent = rotulo || (nome ? nome.textContent : (document.title || ''));
+    linha.appendChild(tit);
+
+    var acoes = document.createElement('nav');
+    acoes.className = 'doc-barra-acoes';
+
+    var painel = null;
+    if (toc) {
+      var bt = botao('button', IC.toc, 'Sumário');
+      bt.setAttribute('aria-expanded', 'false');
+      bt.type = 'button';
+      painel = document.createElement('div');
+      painel.className = 'doc-toc-painel';
+      painel.hidden = true;
+      painel.innerHTML = '<ul>' + toc.innerHTML + '</ul>';
+      function fecha() { painel.hidden = true; bt.setAttribute('aria-expanded', 'false'); }
+      bt.addEventListener('click', function () {
+        painel.hidden = !painel.hidden;
+        bt.setAttribute('aria-expanded', painel.hidden ? 'false' : 'true');
+      });
+      painel.addEventListener('click', function (ev) {
+        if (ev.target.closest('a')) { fecha(); }
+      });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') { fecha(); }
+      });
+      acoes.appendChild(bt);
+    }
+
+    // os dois "voltar" ja existem no fim da pagina: no bloco `.acoes` das paginas de
+    // documento, ou como links soltos em paginas de cabecalho proprio
+    var links = document.querySelectorAll('.acoes a');
+    if (!links.length) { links = document.querySelectorAll('.wrap a'); }
+    var temDocs = false, temCasa = false;
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i], txt = (a.textContent || '').trim();
+      if (/^(Todos os documentos|Os documentos)/.test(txt) && !temDocs) {
+        temDocs = true;
+        var d = botao('a', IC.docs, 'Documentos'); d.href = a.getAttribute('href'); acoes.appendChild(d);
+      } else if (/voltar/i.test(txt) && !temCasa) {
+        temCasa = true;
+        var c = botao('a', IC.casa, 'Trilhas'); c.href = a.getAttribute('href'); acoes.appendChild(c);
+      }
+    }
+
+    linha.appendChild(acoes);
+    el.appendChild(linha);
+    if (painel) { el.appendChild(painel); }
+    document.body.insertBefore(el, document.body.firstChild);
+
+    function mostra() {
+      var passou = (capa.getBoundingClientRect().bottom < 8);
+      el.classList.toggle('vis', passou);
+      if (!passou && painel && !painel.hidden) {
+        painel.hidden = true;
+        var b = acoes.querySelector('button');
+        if (b) { b.setAttribute('aria-expanded', 'false'); }
+      }
+    }
+    window.addEventListener('scroll', mostra, { passive: true });
+    window.addEventListener('resize', mostra);
+    mostra();
+  }
+
+  function contador() {
+    var selo = document.getElementById('seloAcessos');
+    var rodape = document.querySelector('[class$="-rodape"]');
+    if (!selo || !rodape) { return; }
+    var cartao = document.createElement('div');
+    cartao.className = 'doc-contador';
+    var rot = document.createElement('span');
+    rot.className = 'doc-contador-rot';
+    rot.textContent = 'Esta página';
+    cartao.appendChild(rot);
+    cartao.appendChild(selo);          // o mesmo elemento: o acessos.js segue achando o id
+    rodape.parentNode.insertBefore(cartao, rodape);
+
+    // o selo so aparece quando o numero chega; sem ele, o cartao nao fica vazio
+    function sincroniza() {
+      var vazio = !(selo.textContent || '').trim();
+      cartao.hidden = vazio;
+    }
+    sincroniza();
+    if (window.MutationObserver) {
+      new MutationObserver(sincroniza).observe(selo, {
+        attributes: true, attributeFilter: ['style', 'class'], childList: true, characterData: true, subtree: true
+      });
+    }
+  }
+
+  pronto(function () {
+    try { barra(); } catch (e) { /* sem barra, a pagina continua inteira */ }
+    try { contador(); } catch (e) { /* idem */ }
+  });
+})();
+</script>
+</head>
+<body>
+<div class="wrap">
+
+
+
+<div class="capa">
+<!-- CAB-FC1:INICIO --><div class="fc1-cab"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Curso Tecnico em Mineracao - Vagoneta (mono)"> <defs> <filter id="cab-shVm" x="-20%" y="-20%" width="140%" height="140%"> <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.2"/> </filter> <pattern id="cab-hatchV" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)"> <line x1="0" y1="0" x2="0" y2="6" stroke="#5E5E5E" stroke-width="1.2"/> </pattern> </defs> <circle cx="256" cy="256" r="240" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="6"/> <circle cx="256" cy="256" r="222" fill="none" stroke="#5E5E5E" stroke-width="1.5" stroke-dasharray="4 6"/> <g fill="#5E5E5E"> <circle cx="130" cy="140" r="2"/> <circle cx="155" cy="175" r="1.5"/> <circle cx="390" cy="150" r="2"/> <circle cx="365" cy="120" r="1.5"/> <circle cx="100" cy="290" r="1.8"/> </g> <g filter="url(#cab-shVm)"> <polygon points="155,195 175,168 198,186 175,200" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="2"/> <polygon points="198,186 220,156 244,176 220,194" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="2"/> <polygon points="244,176 268,148 294,170 268,190" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="2"/> <polygon points="294,170 318,156 344,178 318,194" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="2"/> <polygon points="344,178 362,166 384,192 358,200" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="2"/> </g> <g filter="url(#cab-shVm)"> <polygon points="132,200 380,200 350,305 162,305" fill="url(#cab-hatchV)" stroke="#1A1A1A" stroke-width="3.5"/> <polygon points="126,186 386,186 380,206 132,206" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/> <polygon points="380,200 398,188 368,303 350,305" fill="#B0B0B0" stroke="#1A1A1A" stroke-width="3"/> <polygon points="386,186 398,188 380,206" fill="#1A1A1A"/> <g stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round"> <line x1="198" y1="212" x2="194" y2="298"/> <line x1="256" y1="212" x2="256" y2="298"/> <line x1="314" y1="212" x2="318" y2="298"/> </g> <g fill="#1A1A1A"> <circle cx="148" cy="215" r="3"/> <circle cx="148" cy="290" r="3"/> <circle cx="364" cy="215" r="3"/> <circle cx="364" cy="290" r="3"/> </g> <rect x="150" y="305" width="210" height="8" fill="#1A1A1A"/> </g> <g filter="url(#cab-shVm)"> <circle cx="196" cy="338" r="26" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/> <circle cx="196" cy="338" r="17" fill="none" stroke="#1A1A1A" stroke-width="2"/> <circle cx="196" cy="338" r="5" fill="#1A1A1A"/> <g stroke="#1A1A1A" stroke-width="2"> <line x1="196" y1="317" x2="196" y2="359"/> <line x1="175" y1="338" x2="217" y2="338"/> </g> <circle cx="316" cy="338" r="26" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/> <circle cx="316" cy="338" r="17" fill="none" stroke="#1A1A1A" stroke-width="2"/> <circle cx="316" cy="338" r="5" fill="#1A1A1A"/> <g stroke="#1A1A1A" stroke-width="2"> <line x1="316" y1="317" x2="316" y2="359"/> <line x1="295" y1="338" x2="337" y2="338"/> </g> </g> <g> <g fill="#1A1A1A"> <rect x="120" y="370" width="14" height="8" rx="1"/> <rect x="156" y="370" width="14" height="8" rx="1"/> <rect x="192" y="370" width="14" height="8" rx="1"/> <rect x="228" y="370" width="14" height="8" rx="1"/> <rect x="264" y="370" width="14" height="8" rx="1"/> <rect x="300" y="370" width="14" height="8" rx="1"/> <rect x="336" y="370" width="14" height="8" rx="1"/> <rect x="372" y="370" width="14" height="8" rx="1"/> </g> <rect x="110" y="364" width="292" height="4" fill="#1A1A1A"/> </g> </svg></div><!-- CAB-FC1:FIM --><p>
+<strong>Técnico em Mineração · Física I (FC1)</strong>
+</p>
+<p>
+<strong>Ementa</strong>
+</p>
+<p>
+<strong>IFMG campus Ouro Preto · 2026</strong>
+</p>
+</div>
+
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#ementa-em-vigor-ppc" id="toc-ementa-em-vigor-ppc">Ementa
+em vigor (PPC)</a></li>
+<li><a href="#proposta-de-nova-ementa-v2" id="toc-proposta-de-nova-ementa-v2">Proposta de nova ementa
+(v2)</a></li>
+<li><a href="#quadro-da-ementa-proposta" id="toc-quadro-da-ementa-proposta">1. Quadro da ementa proposta</a></li>
+<li><a href="#justificativa-da-bibliografia" id="toc-justificativa-da-bibliografia">2. Justificativa da
+bibliografia</a></li>
+<li><a href="#obras-que-saem" id="toc-obras-que-saem">2.1 Obras que
+saem</a></li>
+<li><a href="#obras-que-entram" id="toc-obras-que-entram">2.2 Obras que
+entram</a></li>
+<li><a href="#critérios-e-procedimentos-de-avaliação" id="toc-critérios-e-procedimentos-de-avaliação">3. Critérios e
+procedimentos de avaliação</a></li>
+<li><a href="#anexo-temas-e-trilhas-base-do-plano-de-ensino" id="toc-anexo-temas-e-trilhas-base-do-plano-de-ensino">4. Anexo — Temas
+e trilhas (base do plano de ensino)</a></li>
+<li><a href="#encaminhamento-e-coordenação" id="toc-encaminhamento-e-coordenação">5. Encaminhamento e
+coordenação</a></li>
+</ul>
+</nav>
+<p>Duas versões, uma depois da outra: a <strong>ementa em
+vigor</strong>, texto oficial do PPC, e a <strong>proposta de nova
+ementa</strong>, que segue para a Coordenadoria da Área de Física
+(CODAFIS) e, em seguida, para a Coordenadoria da Área de Mineração
+(CODAMIN).</p>
+<h1 id="ementa-em-vigor-ppc">Ementa em vigor (PPC)</h1>
+<p><strong>Código:</strong> OPIMINE.0105 · <strong>Física I</strong> ·
+Carga horária total: 60 h (CH teórica 60, CH prática 0) · Abordagem
+teórica · Obrigatória</p>
+<p><strong>Ementa:</strong> Introdução à Física. O conhecimento
+científico. As unidades de medida padrão e suas ordens de grandeza.
+Introdução a medidas. Cinemática. Grandezas escalares e vetoriais. Leis
+de Newton. Estática dos corpos. Impulso e quantidade de movimento.
+Trabalho e Energia. Hidrostática. Noções básicas de Gravitação.</p>
+<p><strong>Objetivo(s):</strong></p>
+<ul>
+<li>Introduzir e contextualizar a Física no mundo atual.</li>
+<li>Desenvolver a compreensão e aplicação da cinemática, das leis de
+Newton, leis de conservação de energia e momento, estática ao estudante
+para aplicação no seu dia a dia e para construir estratégias de
+enfrentamento de problemas relacionados com as tecnologias.</li>
+<li>Familiarizar os alunos com a cinemática e leis de Newton com
+formalização matemática dada pela álgebra vetorial. Simultaneamente,
+buscar enfatizar o aprofundamento conceitual, apresentando aspectos
+ligados à aplicação cotidiana e contextualização histórica.</li>
+<li>Desenvolver a capacidade de investigar.</li>
+<li>Articular a Física com ensino profissional.</li>
+<li>Compreender a Física na vida cotidiana.</li>
+<li>Desenvolver a capacidade de utilizar tabelas, gráficos, equações
+para expressão do saber físico e de elaborar sínteses.</li>
+<li>Compreender códigos, símbolos e unidades de medida.</li>
+</ul>
+<p><strong>Bibliografia básica:</strong> Alvarenga; Máximo. <em>Curso de
+Física</em>, v. 1 · Guimarães; Boa. <em>Física para o 2º grau</em>, v. 1
+· Helou; Gualter; Newton. <em>Tópicos da Física</em>, v. 1.</p>
+<p><strong>Bibliografia complementar:</strong> Anjos. <em>Física para o
+Ensino Médio</em> · Fuke; Kazuhito. <em>Física para o Ensino Médio</em>
+· Nicolau et al. <em>Física Ciência e Tecnologia</em> · Paraná.
+<em>Série Novo Ensino Médio</em> · Ramalho; Nicolau; Toledo. <em>Os
+Fundamentos da Física</em> · Amabis et al. <em>Moderna Plus — Ciências
+da Natureza e suas Tecnologias</em>, v. 1-3.</p>
+<p><em>Fonte: Projeto Pedagógico do Curso Técnico em Mineração Integrado
+(PPC), p. 31-32.</em></p>
+<h1 id="proposta-de-nova-ementa-v2">Proposta de nova ementa (v2)</h1>
+<blockquote>
+<p><strong>Proposta.</strong> Proponente: Julio Azevedo, 18/09/2026. Até
+a aprovação, vale a ementa em vigor.</p>
+</blockquote>
+<h1 id="quadro-da-ementa-proposta">1. Quadro da ementa proposta</h1>
+<div class="tabela-rolagem"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>1ª série</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Código:</strong> OPIMINE.0105</td>
+<td><strong>Nome da disciplina:</strong> Física I</td>
+</tr>
+<tr>
+<td><strong>Carga horária total:</strong> 60 h</td>
+<td><strong>Abordagem metodológica:</strong> Teórica ·
+<strong>Natureza:</strong> Obrigatória</td>
+</tr>
+<tr>
+<td><strong>CH teórica:</strong> 60</td>
+<td><strong>CH prática:</strong> 0</td>
+</tr>
+<tr>
+<td><strong>Pré-requisitos:</strong> nenhum</td>
+<td><strong>Co-requisito:</strong> Física Experimental I
+(OPIMINE.0106)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ementa:</strong> O conhecimento científico e a Física no
+mundo atual. As unidades de medida padrão, suas ordens de grandeza e a
+introdução a medidas. Cinemática: grandezas escalares e vetoriais,
+movimento e suas descrições. Leis de Newton e suas aplicações. Estática
+dos corpos. Impulso e quantidade de movimento. Trabalho e Energia, com
+suas leis de conservação. Hidrostática. Noções básicas de Gravitação.
+Todo conteúdo é construído a partir do conceito e do modelo mental
+(Hewitt), articulado aos experimentos de Física Experimental I,
+contextualizado simultaneamente nos processos da mineração, no
+patrimônio histórico-científico de Ouro Preto e no cotidiano do
+estudante.</p>
+<p><strong>Objetivo(s):</strong> - Introduzir e contextualizar a Física
+no mundo atual; - Compreender códigos, símbolos e unidades de medida do
+Sistema Internacional; - Desenvolver a compreensão e aplicação da
+cinemática, das leis de Newton, leis de conservação de energia e
+momento, estática ao estudante para aplicação no seu dia a dia e para
+construir estratégias de enfrentamento de problemas relacionados com as
+tecnologias; - Familiarizar os alunos com a cinemática e leis de Newton
+com formalização matemática dada pela álgebra vetorial, simultaneamente
+buscando enfatizar o aprofundamento conceitual, com aspectos ligados à
+aplicação cotidiana e contextualização histórica; - Desenvolver a
+capacidade de investigar, partindo do conceito e do modelo mental antes
+da fórmula (Hewitt primeiro); - Articular a Física com o ensino
+profissional em Mineração; - Compreender a Física na vida cotidiana; -
+Desenvolver a capacidade de utilizar tabelas, gráficos, equações para
+expressão do saber físico e de elaborar sínteses; - Redigir a resolução
+de problemas segundo o protocolo formal de modelagem científica
+(Resolução Científica do Problema — Protocolo C5, 8 etapas), aplicado
+autonomamente pelo estudante no Trabalho (TR) de cada trilha; -
+Articular cada conceito teórico com o experimento correspondente de
+Física Experimental I; - Priorizar, em toda atividade, os níveis L4
+(Analisar), L5 (Avaliar) e L6 (Criar) da Taxonomia de Bloom.</p>
+<p><strong>Bibliografia básica:</strong> 1. BONJORNO, J. R.
+<strong>Identidade Saraiva: Física</strong>. São Paulo: Saraiva, 2024.
+2. HEWITT, P. G. <strong>Física conceitual</strong>. 12. ed. Porto
+Alegre: Bookman, 2015. 3. ALVARENGA, B.; MÁXIMO, A. <strong>Curso de
+Física</strong>. São Paulo: Ed. Scipione, v. 1, 2000.</p>
+<p><strong>Bibliografia complementar:</strong> 1. UNIVERSIDADE FEDERAL
+DO CEARÁ. <strong>Laboratório virtual de física</strong>: mecânica.
+Fortaleza: UFC, 2020. Disponível em:
+https://www.laboratoriovirtual.fisica.ufc.br/. Acesso em: 18 set. 2026.
+2. VAŠČÁK, V. <strong>Physics at school</strong>: I. Mechanics. Morávia:
+Vladimír Vaščák, [20–]. Disponível em:
+https://www.vascak.cz/?id=1&amp;language=it#kapitola3. Acesso em: 18
+set. 2026. 3. UNIVERSITY OF COLORADO BOULDER. <strong>PhET Interactive
+Simulations</strong>: movimento; trabalho, energia e potência; fenômenos
+quânticos; matemática e estatística. Boulder: University of Colorado
+Boulder, 2002-. Disponível em:
+https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,quantum-phenomena,math-and-statistics&amp;type=html.
+Acesso em: 18 set. 2026.</p>
+<p><strong>Bibliografia pedagógica e científica</strong> (fundamenta o
+método da disciplina, não o conteúdo de Física): 1. BLOOM, B. S. (org.).
+<strong>O desenvolvimento de talentos na juventude</strong>. Porto
+Alegre: Globo, 1988. 2. PIAZZI, P. <strong>Aprendendo
+inteligência</strong>: manual de instruções do cérebro para estudantes
+em geral. São Paulo: Aleph, 2008. 3. PIAZZI, P. <strong>Inteligência em
+concursos</strong>: manual de instruções do cérebro para concurseiros e
+universitários. São Paulo: Aleph, 2013. 4. NICOLELIS, M. <strong>O
+verdadeiro criador de tudo</strong>: como o cérebro humano esculpiu o
+universo que conhecemos. São Paulo: Planeta, 2020.</p>
+<h1 id="justificativa-da-bibliografia">2. Justificativa da
+bibliografia</h1>
+<p><strong>Diagnóstico.</strong> A bibliografia vigente do PPC para
+OPIMINE.0105 (básica: Alvarenga/Máximo, Guimarães/Boa,
+Helou/Gualter/Newton; complementar: Anjos, Fuke/Kazuhito, Nicolau <em>et
+al.</em>, Paraná, Ramalho/Nicolau/Toledo, Moderna Plus v. 1-3) é toda
+formada por livros-texto generalistas de Física do Ensino Médio, sem
+nenhuma referência que sustente o método próprio do projeto — conceito
+antes da fórmula (Hewitt), estudo ativo (Piazzi) e a notação do material
+didático oficial adotado pela rede (PNLD). O alinhamento com a ementa da
+FE1 (co-requisito, 2026-09-18) pede a mesma bibliografia-tronco nas duas
+disciplinas.</p>
+<h1 id="obras-que-saem">2.1 Obras que saem</h1>
+<div class="tabela-rolagem"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Obra</th>
+<th>Onde estava</th>
+<th>Por que sai</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GUIMARÃES; BOA. <em>Física para o 2º grau</em>, v. 1</td>
+<td>Básica</td>
+<td>Generalista de Ensino Médio, redundante com Alvarenga/Máximo, que
+permanece</td>
+</tr>
+<tr>
+<td>HELOU; GUALTER; NEWTON. <em>Tópicos da Física</em>, v. 1</td>
+<td>Básica</td>
+<td>Substituído por HEWITT — sequência conceito-antes-da-fórmula, pilar
+1 do projeto</td>
+</tr>
+<tr>
+<td>ANJOS. <em>Física para o Ensino Médio</em></td>
+<td>Complementar</td>
+<td>Generalista, sem uso didático diferenciado no projeto</td>
+</tr>
+<tr>
+<td>FUKE; KAZUHITO. <em>Física para o Ensino Médio</em></td>
+<td>Complementar</td>
+<td>Idem</td>
+</tr>
+<tr>
+<td>NICOLAU <em>et al.</em> <em>Física Ciência e Tecnologia</em></td>
+<td>Complementar</td>
+<td>Idem</td>
+</tr>
+<tr>
+<td>PARANÁ. <em>Série Novo Ensino Médio</em></td>
+<td>Complementar</td>
+<td>Idem</td>
+</tr>
+<tr>
+<td>RAMALHO; NICOLAU; TOLEDO. <em>Os Fundamentos da Física</em></td>
+<td>Complementar</td>
+<td>Idem</td>
+</tr>
+<tr>
+<td>AMABIS <em>et al.</em> Moderna Plus — Ciências da Natureza, v.
+1-3</td>
+<td>Complementar</td>
+<td>Livro-texto de Ciências da Natureza integrado, não específico de
+Física; sem uso didático diferenciado no projeto</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="obras-que-entram">2.2 Obras que entram</h1>
+<p><strong>Básica 1 — BONJORNO. <em>Identidade Saraiva: Física</em>
+(2024). Entra.</strong> Livro didático oficial (PNLD 2026) adotado pela
+rede e pela FC1; fixa a simbologia (s, Δs, s₀, t₀) usada a partir da
+Trilha T08, evitando que o estudante veja notação divergente entre o
+material didático institucional e o material do projeto — mesma obra da
+básica 1 da ementa da FE1.</p>
+<p><strong>Básica 2 — HEWITT. <em>Física conceitual</em> (2015).
+Entra.</strong> Fundamenta diretamente o Pilar 1 do método FC1 (“Hewitt
+primeiro” — o conceito e o modelo mental precedem qualquer fórmula,
+regra invioável do CLAUDE.md). Substitui HELOU/GUALTER/NEWTON, que
+cobria o mesmo papel de livro-texto de referência sem essa ancoragem
+conceitual.</p>
+<p><strong>Básica 3 — ALVARENGA; MÁXIMO. <em>Curso de Física</em>
+(2000). Mantém.</strong> Único livro-texto generalista do PPC preservado
+na básica, como referência formal de conteúdo (fórmulas, nomenclatura
+clássica) que complementa a abordagem conceitual de Hewitt e a notação
+PNLD de Bonjorno.</p>
+<p><strong>Complementares 1-3 — laboratórios virtuais da UFC, de Vaščák
+e PhET. Entram.</strong> Mesmos 3 recursos digitais adotados na ementa
+da FE1 (co-requisito): acesso gratuito, sem cadastro; simulações de
+Cinemática, leis de Newton, Trabalho e Energia e Hidrostática — os
+mesmos temas da FC1 — utilizáveis no Pré-aula e no Pós-aula do método
+Piazzi; PhET roda em português e em HTML5, inclusive no celular,
+compatível com o público de 15-16 anos do curso técnico integrado.</p>
+<p><strong>Bibliografia pedagógica e científica — categoria nova, sem
+equivalente na ementa vigente do PPC.</strong> O PPC lista só
+bibliografia de conteúdo; esta categoria referencia a origem de cada
+regra pedagógica invioável fixada no CLAUDE.md da FC1: BLOOM fundamenta
+a priorização dos níveis L4-L6 (Analisar, Avaliar, Criar) em toda
+atividade; PIAZZI (as duas obras) fundamenta os 3 atos do método
+(Pré-aula 20 min → Aula 45 min → Pós-aula 20 min, “Piazzi sempre”);
+NICOLELIS soma o argumento de neurociência para a opção pelo conceito
+antes da fórmula. HEWITT não se repete aqui — já está na bibliografia
+básica, cumprindo o duplo papel de livro-texto de referência e
+fundamento pedagógico do Pilar 1.</p>
+<h1 id="critérios-e-procedimentos-de-avaliação">3. Critérios e
+procedimentos de avaliação</h1>
+<p>Regime institucional do IFMG (PPC, seção 8.3; Regulamento de Ensino,
+Resolução 01/2026, Art. 116-118), comum a todas as disciplinas do curso
+— não há peso específico de FC1 a definir nesta ementa:</p>
+<ul>
+<li>Avaliação contínua e cumulativa, em 3 etapas por série: 30 pontos
+(1ª etapa), 35 (2ª) e 35 (3ª).</li>
+<li>Nenhum instrumento avaliativo isolado ultrapassa 40% do total da
+etapa; no mínimo 2 tipos diversificados de instrumento por etapa (prova,
+trabalho, relatório, seminário, portfólio etc.).</li>
+<li>Frequência mínima de 75% da carga horária e rendimento mínimo de 60%
+para aprovação.</li>
+<li>Recuperação: 2 parciais (ao fim da 1ª e da 2ª etapa) + 1 final, para
+quem não atingir 60%.</li>
+<li>Revisão de avaliação: até 2 dias úteis após o lançamento da nota,
+por professor diferente do titular.</li>
+</ul>
+<p><strong>Nota sobre carga horária:</strong> os dias de Provas Escritas
+(Etapa 1 e 2) e do Exame Final são dias letivos, mas SEM aula regular de
+nenhuma disciplina — Art. 41 (caput) do Regulamento de Ensino exige que
+componentes em formato de disciplina, caso da FC1, sejam organizados em
+semanas letivas regulares; a exceção do §2º do mesmo artigo vale só para
+componentes em formato distinto de disciplina. Essas datas não contam
+como carga horária letiva regular da FC1.</p>
+<p>O Plano de Ensino da FC1 detalha como os instrumentos de FC1 — Texto
+Temático, Provinha, Trabalho (TR), etc. — se distribuem nessas 3
+etapas.</p>
+<h1 id="anexo-temas-e-trilhas-base-do-plano-de-ensino">4. Anexo — Temas
+e trilhas (base do plano de ensino)</h1>
+<p>9 Temas, <strong>25 trilhas ativas na 1ª edição</strong> (de um total
+de 60 + 3 de orientação na matriz completa), 45 min/encontro:</p>
+<div class="tabela-rolagem"><table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tema</th>
+<th>Nome</th>
+<th>Trilhas ativas (1ª edição)</th>
+<th>Quant.</th>
+<th>Reserva (2ª edição)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A Régua do Mundo</td>
+<td>T01–T06</td>
+<td>6</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>O Ritmo das Máquinas</td>
+<td>T07–T12</td>
+<td>6</td>
+<td>—</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A Força que Move o Minério</td>
+<td>T13 · T17</td>
+<td>2</td>
+<td>T14, T15, T16, T18</td>
+</tr>
+<tr>
+<td>4</td>
+<td>A Direção do Movimento</td>
+<td>T20</td>
+<td>1</td>
+<td>T19, T21–T24</td>
+</tr>
+<tr>
+<td>5</td>
+<td>O Diálogo das Forças</td>
+<td>T26 · T27 · T28 · T31</td>
+<td>4</td>
+<td>T25, T29, T30, T32–T34</td>
+</tr>
+<tr>
+<td>6</td>
+<td>A Ciência do Repouso</td>
+<td>T35</td>
+<td>1</td>
+<td>T36–T40</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Energia, a Moeda na Transformação</td>
+<td>T41 · T45 · T46 · T47</td>
+<td>4</td>
+<td>T42–T44, T48</td>
+</tr>
+<tr>
+<td>8</td>
+<td>O Peso das Águas</td>
+<td>T54</td>
+<td>1</td>
+<td>T49–T53</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Os Movimentos Celestes</td>
+<td><em>(nenhuma)</em></td>
+<td>0</td>
+<td>T55–T60 (tema inteiro)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Orientação (fora da numeração)</td>
+<td>T0A · T0B</td>
+<td>2</td>
+<td>T0C</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>25</strong> <em>(+ T0A/T0B)</em></td>
+<td>35 numeradas + T0C</td>
+</tr>
+</tbody>
+</table></div>
+<p>Cada trilha ativa segue os 3 atos do método (Pré-aula 20 min → Aula
+45 min → Pós-aula 20 min) e integra os 3 eixos obrigatórios: mineração,
+histórico-cultural (Ouro Preto) e cotidiano do estudante. O Protocolo C5
+(Resolução Científica do Problema, 8 etapas) é aplicado no Tipo 7 (Texto
+Temático) e no Trabalho (TR) de cada trilha.</p>
+<p><strong>Critério de escolha (Temas 3-8):</strong> a 1ª Lei de Newton
+já é coberta em T13; prioridade às leis de Newton (2ª e 3ª), aos
+conceitos com aplicação direta em mineração (atrito em correia
+transportadora, empuxo em flotação, peso/massa em NR-22) e à sequência
+completa de energia mecânica (Trabalho → Energia Potencial Gravitacional
+→ Energia Potencial Elástica → Conservação). O Tema 9 (Gravitação) fica
+reserva integral nesta edição.</p>
+<h1 id="encaminhamento-e-coordenação">5. Encaminhamento e
+coordenação</h1>
+<p><strong>Fluxo de aprovação:</strong> 1º <strong>Coordenadoria da Área
+de Física (CODAFIS)</strong> — área de origem da proposta — depois 2º
+<strong>Coordenadoria da Área de Mineração (CODAMIN)</strong> — área que
+detém o curso Técnico em Mineração Integrado.</p>
+<p>O(A) Coordenador(a) do Curso Técnico em Mineração Integrado ao Ensino
+Médio (vinculado à CODAMIN) é eleito(a) pelos docentes da área de
+Mineração do campus, com mandato de 2 anos. <strong>Coordenador
+atual:</strong> Salatiel Assis Resende.</p>
+
+<div class="acoes" style="margin-top:44px">
+  <a href="FC1-Ementa.pdf">Baixar em PDF (4 páginas)</a>
+  <a href="_qr/">QR desta página · projetar ou imprimir</a>
+  <a href="../../#abaDocumentos">Todos os documentos</a>
+  <a class="destaque" href="../../">Voltar ao índice das Trilhas</a>
+</div>
+
+<!-- RODAPE-FC1:INICIO --><div class="fc1-rodape"><div class="fc1-marcas"><a href="https://ouropreto.ifmg.edu.br/ouropreto" target="_blank" rel="noopener" title="IFMG — Campus Ouro Preto (abre em nova aba)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-36.75 -4 258.5 258.5" role="img" aria-label="Instituto Federal de Minas Gerais"> <title>Instituto Federal de Minas Gerais</title> <circle cx="27" cy="27" r="30" fill="#C8191E"/> <g fill="#32A041"> <rect x="65.5" y="0" width="54" height="54"/> <rect x="131" y="0" width="54" height="54"/> <rect x="0" y="65.5" width="54" height="54"/> <rect x="65.5" y="65.5" width="54" height="54"/> <rect x="0" y="131" width="54" height="54"/> <rect x="65.5" y="131" width="54" height="54"/> <rect x="131" y="131" width="54" height="54"/> <rect x="0" y="196.5" width="54" height="54"/> <rect x="65.5" y="196.5" width="54" height="54"/> </g> </svg></a><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="NIDEC — Núcleo de Inovação e Desenvolvimento de Experimentos Científicos"> <title>NIDEC — Núcleo de Inovação e Desenvolvimento de Experimentos Científicos</title> <defs> <linearGradient id="nidec-o1" gradientUnits="userSpaceOnUse" x1="8" y1="100" x2="192" y2="100" gradientTransform="rotate(-30 100 100)"> <stop offset="0" stop-color="#4A1F95"/><stop offset=".38" stop-color="#2C5AA4"/> <stop offset=".70" stop-color="#2CC2A2"/><stop offset="1" stop-color="#2C9E41"/> </linearGradient> <linearGradient id="nidec-o2" gradientUnits="userSpaceOnUse" x1="8" y1="100" x2="192" y2="100" gradientTransform="rotate(-90 100 100)"> <stop offset="0" stop-color="#4A1F95"/><stop offset=".38" stop-color="#2C5AA4"/> <stop offset=".70" stop-color="#2CC2A2"/><stop offset="1" stop-color="#2C9E41"/> </linearGradient> <linearGradient id="nidec-o3" gradientUnits="userSpaceOnUse" x1="8" y1="100" x2="192" y2="100" gradientTransform="rotate(-150 100 100)"> <stop offset="0" stop-color="#4A1F95"/><stop offset=".38" stop-color="#2C5AA4"/> <stop offset=".70" stop-color="#2CC2A2"/><stop offset="1" stop-color="#2C9E41"/> </linearGradient> <radialGradient id="nidec-nucleo" cx="40%" cy="36%" r="70%"> <stop offset="0" stop-color="#A0EBE1"/> <stop offset=".45" stop-color="#2CC8C2"/> <stop offset="1" stop-color="#1E5DA5"/> </radialGradient> </defs> <g fill="none" stroke-width="8"> <g transform="rotate(30 100 100)" stroke="url(#nidec-o1)"> <ellipse cx="100" cy="100" rx="88" ry="31"/> <circle cx="188" cy="100" r="8" fill="url(#nidec-o1)" stroke="none"/> </g> <g transform="rotate(90 100 100)" stroke="url(#nidec-o2)"> <ellipse cx="100" cy="100" rx="88" ry="31"/> <circle cx="12" cy="100" r="8" fill="url(#nidec-o2)" stroke="none"/> </g> <g transform="rotate(150 100 100)" stroke="url(#nidec-o3)"> <ellipse cx="100" cy="100" rx="88" ry="31"/> <circle cx="188" cy="100" r="8" fill="url(#nidec-o3)" stroke="none"/> </g> </g> <circle cx="100" cy="100" r="23" fill="url(#nidec-nucleo)"/> </svg><a class="fc1-agr" href="https://nidecop-jafb.github.io/fc1-oa/agradecimentos/" title="Agradecimentos · Física e Poesia"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Agradecimentos — Física e Poesia"> <g fill="none" stroke="#7FB2D6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"> <path d="M 60 44 C 46 36 28 36 12 40 L 12 104 C 28 100 46 100 60 108 C 74 100 92 100 108 104 L 108 40 C 92 36 74 36 60 44 Z"/> <line x1="60" y1="44" x2="60" y2="108"/> </g> <g stroke="#7FB2D6" stroke-width="2" stroke-linecap="round" opacity=".7"> <line x1="22" y1="58" x2="50" y2="56"/><line x1="22" y1="70" x2="50" y2="68"/><line x1="22" y1="82" x2="44" y2="81"/> </g> <path d="M 68 70 C 72 62 76 62 80 70 S 88 78 92 70 S 98 62 100 66" fill="none" stroke="#C8A84B" stroke-width="2.5" stroke-linecap="round"/> <path d="M 104 8 C 86 12 72 24 66 44 C 80 40 94 28 104 8 Z" fill="none" stroke="#C8A84B" stroke-width="3" stroke-linejoin="round"/> <line x1="100" y1="13" x2="62" y2="56" stroke="#C8A84B" stroke-width="3" stroke-linecap="round"/> </svg></a></div><div class="fc1-rodape-texto">IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026</div></div><!-- RODAPE-FC1:FIM -->
+
+</div>
+</body>
+</html>

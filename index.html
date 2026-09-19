@@ -53,10 +53,11 @@
 .aba-toggle:hover { color: #C8A84B; }
 #abaSiteT { top: 56px; }
 #abaMetodoT { top: 120px; }
-#abaMusicaT { top: 208px; }
-#abaIneditismoT { top: 296px; }
-#abaProjetoT { top: 432px; }
-#abaCreditosT { top: 532px; }
+#abaDocumentosT { top: 208px; }
+#abaMusicaT { top: 344px; }
+#abaIneditismoT { top: 432px; }
+#abaProjetoT { top: 568px; }
+#abaCreditosT { top: 668px; }
 .aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 380px; max-width: 88vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
 .aba-painel.open { transform: translateX(0); }
 .aba-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 14px; }
@@ -199,6 +200,19 @@
     <li><b>Trabalho (TR)</b> — vale nota · até 6 dias após a aula · peso 20%<br><span class="aba-nota">Segundo intervalo de espaçamento, agora com transferência: aplicar o conceito a um problema novo é o que transforma memória em competência.</span></li>
   </ol>
   <div class="regra"><strong>Não pule nenhum objeto de aprendizagem. Se pulou, volte.</strong><br>Cada passo prepara o terreno do seguinte: sem o Ponto de Partida o texto não encontra pergunta; sem o texto a aula vira cópia; sem a Pós-Aula do mesmo dia o que foi construído se dissolve. Pular um objeto de aprendizagem não adianta a trilha — atrasa. Se você pulou, volte ao passo que ficou para trás e siga dali.</div>
+</aside>
+
+<button class="aba-toggle" id="abaDocumentosT">Documentos</button>
+<aside class="aba-painel" id="abaDocumentos">
+  <h3>Documentos</h3>
+  <p>Os documentos que regem o seu curso e a Física I — em HTML, para ler no celular, cada um com PDF e QR próprios.</p>
+  <a class="aba-btn" href="documentos/ppc/">Projeto Pedagógico do Curso (PPC) · guia + PDF integral</a>
+  <a class="aba-btn" href="documentos/matriz/">Matriz Curricular · guia + PDF</a>
+  <a class="aba-btn" href="documentos/ementa/">Ementa · em vigor (PPC) e proposta</a>
+  <a class="aba-btn" href="documentos/plano/">Plano de Ensino · 2026 · proposta</a>
+  <a class="aba-btn" href="documentos/regulamento/">Regulamento de Ensino · resumo + PDF oficial</a>
+  <a class="aba-btn" href="https://ouropreto.ifmg.edu.br/ouropreto/ensino/legislacao-e-normas-de-ensino" target="_blank" rel="noopener">Legislação e Normas de Ensino · página oficial do IFMG</a>
+  <p class="aba-nota">A proposta de nova ementa e o Plano de Ensino seguem para a Coordenadoria da Área de Física (CODAFIS) e, em seguida, para a Coordenadoria da Área de Mineração (CODAMIN); até a aprovação, vale a ementa em vigor.</p>
 </aside>
 
 <button class="aba-toggle" id="abaMusicaT">Música</button>
@@ -683,6 +697,7 @@ if (location.protocol === 'file:') {
 (function () {
   var pares = [['abaSiteT', 'abaSite'],
                ['abaMetodoT', 'abaMetodo'],
+               ['abaDocumentosT', 'abaDocumentos'],
                ['abaMusicaT', 'abaMusica'],
                ['abaIneditismoT', 'abaIneditismo'],
                ['abaProjetoT', 'abaProjeto'],
