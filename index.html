@@ -693,7 +693,9 @@ if (location.protocol === 'file:') {
 </script>
 <!-- ABAS-JS:INICIO -->
 <script>
-/* Abas laterais: uma aberta por vez; clique fora fecha. */
+/* Abas laterais: uma aberta por vez; com a aba aberta, UM clique em qualquer
+   regiao fecha (celular e PC) — dentro do painel so link e botao agem; fora
+   dele o clique so fecha, nao aciona o que estiver embaixo. */
 (function () {
   var pares = [['abaSiteT', 'abaSite'],
                ['abaMetodoT', 'abaMetodo'],
@@ -722,13 +724,27 @@ if (location.protocol === 'file:') {
       });
     });
   });
+  function aberta() {
+    for (var i = 0; i < abas.length; i++) { if (abas[i][1].classList.contains('open')) { return abas[i]; } }
+    return null;
+  }
   document.addEventListener('click', function (e) {
-    abas.forEach(function (par) {
-      if (!par[1].contains(e.target) && e.target !== par[0]) {
-        par[1].classList.remove('open');
-      }
-    });
-  });
+    var par = aberta();
+    if (!par) { return; }
+    var t = e.target;
+    for (var i = 0; i < abas.length; i++) {
+      if (abas[i][0].contains(t)) { return; }            /* lingueta: troca ou fecha no proprio botao */
+    }
+    if (par[1].contains(t)) {
+      if (t.closest('a, button, input, select, textarea, audio, video, summary, label')) { return; }
+      var sel = window.getSelection && String(window.getSelection());
+      if (sel) { return; }                               /* arrastou para selecionar texto: nao fecha */
+    } else {
+      e.preventDefault();                                /* fora do painel: so fecha */
+      e.stopPropagation();
+    }
+    par[1].classList.remove('open');
+  }, true);
 
   /* Um link de fora pode pedir uma aba: .../#abaDocumentos ja chega com ela
      aberta. Sem hash, nada muda. */
