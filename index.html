@@ -84,6 +84,14 @@
 .aba-painel .aba-cargo { font-family: 'Courier New', monospace; font-size: .8rem; font-weight: 700; letter-spacing: 1px; color: #4CAF7D; border-bottom: 1px solid #444; padding-bottom: 3px; margin: 14px 0 4px; }
 .aba-painel .aba-nome { margin-bottom: 0; color: #ddd; }
 .aba-painel .regra { border: 1px solid #C8A84B; padding: 12px 14px; margin: 14px 0 4px; font-size: .88rem; }
+.aba-painel .rcp-ramo { border-left: 3px solid #C8A84B; padding: 2px 0 2px 12px; margin: 0 0 14px; }
+.aba-painel .rcp-qual { border-left-color: #4CAF7D; }
+.aba-painel .rcp-t { font-family: 'Courier New', monospace; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #C8A84B; margin: 0 0 2px; }
+.aba-painel .rcp-qual .rcp-t { color: #4CAF7D; }
+.aba-painel .rcp-l { font-size: .82rem; color: #aaa; font-style: italic; margin: 0 0 8px; }
+.aba-painel .rcp-ramo ol { margin-bottom: 4px; }
+.aba-painel .rcp-c { font-size: .88rem; }
+.aba-painel .rcp-f { font-size: .88rem; color: #ddd; font-style: italic; }
 @media (max-width: 800px) {
   /* gutter: as abas fixas nao cobrem o conteudo em tela estreita */
   .wrap { padding-left: 46px; }
@@ -189,7 +197,7 @@
   <p class="parada-porque">Construir o conhecimento junto: é aqui que o professor sustenta o raciocínio no ponto em que você ainda não anda sozinho.</p>
   <ol>
     <li><b>Folha de Atividades (FA)</b> — impressa · escrever à mão e entregar na monitoria de Física — Pavilhão de Física<br><span class="aba-nota">Escrever à mão obriga a traduzir com as próprias palavras em vez de copiar: o que a gente gera fica mais do que o que a gente transcreve.</span></li>
-    <li><b>Apresentação da Aula (AP)</b> — slides da aula · rever depois<br><span class="aba-nota">Atenção conjunta e fio condutor. O professor é o andaime: sustenta o passo que você ainda não dá sozinho — e o andaime sai quando a estrutura para em pé.</span></li>
+    <li><b>Apresentação da Aula (AP)</b> — slides da aula · rever depois<br><span class="aba-nota">Atenção conjunta e fio condutor. O professor é o andaime: sustenta o que você ainda não faz sozinho — e o andaime sai quando a estrutura para em pé.</span></li>
     <li><b>Provinha (PR)</b> — vale nota · nos últimos minutos da aula<br><span class="aba-nota">Teste curto logo após a construção: consolida enquanto o traço ainda está fresco e mostra, ali mesmo, o que precisa voltar.</span></li>
   </ol>
   <p class="parada-t"><span class="parada-n">Pós-Aula</span> · <span class="parada-q">a partir do mesmo dia da aula</span></p>
@@ -199,7 +207,32 @@
     <li><b>Tarefa Complementar (TC)</b> — até 3 dias após a aula<br><span class="aba-nota">Repetição espaçada: voltar quando a lembrança já começou a cair rende muito mais do que repetir tudo no mesmo dia. É a resposta direta à curva do esquecimento.</span></li>
     <li><b>Trabalho (TR)</b> — vale nota · até 6 dias após a aula · peso 20%<br><span class="aba-nota">Segundo intervalo de espaçamento, agora com transferência: aplicar o conceito a um problema novo é o que transforma memória em competência.</span></li>
   </ol>
-  <div class="regra"><strong>Não pule nenhum objeto de aprendizagem. Se pulou, volte.</strong><br>Cada passo prepara o terreno do seguinte: sem o Ponto de Partida o texto não encontra pergunta; sem o texto a aula vira cópia; sem a Pós-Aula do mesmo dia o que foi construído se dissolve. Pular um objeto de aprendizagem não adianta a trilha — atrasa. Se você pulou, volte ao passo que ficou para trás e siga dali.</div>
+  <div class="aba-sec">Resolução Científica do Problema (RCP) — os 5 passos</div>
+  <div class="rcp-ramo rcp-quant">
+    <p class="rcp-t">Pensamento Quantitativo</p>
+    <p class="rcp-l">Problema com grandeza, equação e unidade.</p>
+    <ol>
+      <li><b>O que a questão quer?</b><br><span class="aba-nota">Reescrever o que a questão quer que eu responda</span></li>
+      <li><b>O que eu tenho?</b><br><span class="aba-nota">Separar dados: números, medidas e unidades</span></li>
+      <li><b>Qual é o desenho?</b><br><span class="aba-nota">Escolher estratégia ou estimar o resultado</span></li>
+      <li><b>Minha solução</b><br><span class="aba-nota">Equacionar, calcular e comparar com as alternativas</span></li>
+      <li><b>Confiro e respondo</b><br><span class="aba-nota">Conferir se o número faz sentido, comparar e marcar uma ou mais alternativas</span></li>
+    </ol>
+  </div>
+  <div class="rcp-ramo rcp-qual">
+    <p class="rcp-t">Pensamento Qualitativo</p>
+    <p class="rcp-l">Questão conceitual ou de leitura, sem conta.</p>
+    <ol>
+      <li><b>O que a questão quer?</b><br><span class="aba-nota">Reescrever o que a questão quer que eu interprete</span></li>
+      <li><b>O que eu tenho?</b><br><span class="aba-nota">Separar evidências do texto, da imagem e da fonte</span></li>
+      <li><b>Como eu separo as afirmações?</b><br><span class="aba-nota">Propor uma leitura com base nas evidências</span></li>
+      <li><b>Julgo uma por uma</b><br><span class="aba-nota">Confrontar cada alternativa com as evidências</span></li>
+      <li><b>Confiro e respondo</b><br><span class="aba-nota">Marcar e justificar em uma frase</span></li>
+    </ol>
+  </div>
+  <p class="rcp-c"><strong>A resolução condensada.</strong> É o caminho dos 5 passos em poucas linhas, do tamanho que cabe no tempo da Pré-Aula, Aula e Pós-Aula.</p>
+  <p class="rcp-f">Errar faz parte: cada erro anotado vira o degrau da próxima trilha.</p>
+  <div class="regra"><strong>Não pule nenhum objeto de aprendizagem. Se pulou, volte.</strong><br>Cada objeto de aprendizagem prepara o terreno do seguinte: sem o Ponto de Partida o texto não encontra pergunta; sem o texto a aula vira cópia; sem a Pós-Aula do mesmo dia o que foi construído se dissolve. Pular um objeto de aprendizagem não adianta a trilha — atrasa. Se você pulou, volte ao que ficou para trás e siga dali.</div>
 </aside>
 
 <button class="aba-toggle" id="abaDocumentosT">Documentos</button>
