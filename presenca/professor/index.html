@@ -362,6 +362,11 @@ function fecharChamada() {
       '<div class="erro">Endpoint de coleta não configurado.</div>';
     return;
   }
+  /* 1.o acesso pelo instalador do pen drive: #chave=... (o fragmento nao vai ao servidor); limpa o endereco */
+  var hc = (location.hash.match(/[#&]chave=([^&]+)/) || [])[1];
+  if (hc) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    try { chave = decodeURIComponent(hc).trim(); } catch (e) { chave = null; }
+    if (chave) { consultarAdmin(true); return; } }
   var c = null;
   try { c = localStorage.getItem(CHAVE_KEY); } catch (e) {}
   if (c) { chave = c; consultarAdmin(true); }
