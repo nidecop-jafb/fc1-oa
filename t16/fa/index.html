@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../../_icones/app-site-192.png">
+<title>Folha de Atividades · Tema 10</title>
+<style>/* Folha de Atividades da Oficina IA — gerada por gerar_site_oia.py. Tela: folha branca; impressao: A4, 2 folhas. */
+:root { --tinta: #1A1A1A; --azul: #1F3864; --azul2: #4D6A96; --cinza: #6B7280; --linha: #C9CED6; --fundo: #E9ECF1; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fundo); color: var(--tinta); font: 15px/1.45 "Century Gothic", "Segoe UI", system-ui, sans-serif; }
+.folha { max-width: 210mm; margin: 0 auto; padding: 12px; }
+.pagina { background: #fff; padding: 22px 20px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.12);
+  display: flex; flex-direction: column; }
+.cab { display: flex; justify-content: space-between; gap: 12px; border-top: 4px solid var(--azul); border-bottom: 1px solid var(--linha);
+  padding: 8px 0; margin-bottom: 10px; flex-wrap: wrap; }
+.cab h1 { margin: 0; font-size: 1.15rem; color: var(--azul); }
+.cab .sub, .cab .dir { font-size: .8rem; color: var(--azul2); }
+.cab .dir { text-align: right; } .cab .dir b { color: var(--azul); font-size: .95rem; display: block; }
+.ident { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+.ident span { border-bottom: 1px solid var(--linha); font-size: .8rem; font-weight: 700; color: var(--azul); padding: 10px 0 2px; }
+.instr { font-size: .85rem; background: #F3F5F8; border-left: 4px solid var(--azul); padding: 7px 10px; margin: 0 0 10px; }
+.q { display: flex; flex-direction: column; }
+.q h2 { font-size: .98rem; color: var(--azul); margin: 4px 0 2px; }
+.q .meta { font-size: .78rem; color: var(--cinza); margin: 0 0 6px; }
+.passo { border: 1px solid var(--linha); border-left: 4px solid var(--azul); padding: 4px 8px; margin-bottom: 6px;
+  display: flex; flex-direction: column; }
+.passo b { font-size: .8rem; color: var(--azul); }
+.passo .n { display: inline-block; min-width: 1.4em; height: 1.4em; line-height: 1.4em; text-align: center; background: var(--azul);
+  color: #fff; margin-right: 6px; font-size: .75rem; }
+/* linhas de escrita reais (gradiente em fundo nao sai no PDF): .esc corta as que nao cabem */
+.passo .esc { height: 79px; overflow: hidden; }
+.passo .esc i { display: block; height: 26px; border-bottom: 1px solid var(--linha); }
+.passo.cond { border-left-color: var(--azul2); }
+.enun { display: flex; gap: 10px; align-items: flex-start; font-size: .82rem; background: #F7F4EC; border-left: 4px solid #B7791F;
+  padding: 5px 8px; margin: 0 0 6px; }
+.enun > div:first-child { flex: 1 1 auto; }
+.enun .fig { flex: 0 0 34%; color: #1A1A1A; } .enun .fig svg { width: 100%; height: auto; max-height: 34mm; display: block; }
+.enun ol.alts { margin: 2px 0 0; padding-left: 20px; columns: 2; }
+.prompt-ia { border: 1px dashed var(--azul2); padding: 6px 10px; margin: 6px 0; font-size: .8rem; }
+.prompt-ia p { margin: 4px 0; }
+.entrega { border: 2px solid var(--azul); padding: 6px 10px; font-size: .85rem; margin-top: 6px; }
+.entrega .visto { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 8px; }
+.entrega .visto span { border-bottom: 1px solid var(--linha); font-size: .78rem; color: var(--azul); padding-top: 12px; }
+.rodape-print { display: none; }
+.barra-tela { text-align: center; padding: 6px 0 24px; }
+.barra-tela button, .barra-tela a { display: inline-block; margin: 4px; padding: 11px 20px; min-height: 44px; border: 2px solid var(--azul);
+  background: var(--azul); color: #fff; font: 700 .9rem/1.2 inherit; cursor: pointer; text-decoration: none; }
+.barra-tela .sec { background: #fff; color: var(--azul); }
+.barra-tela .nota { font-size: .8rem; color: var(--cinza); }
+@media (max-width: 560px) { .ident { grid-template-columns: 1fr; } .pagina { padding: 16px 12px; } .cab .dir { text-align: left; } }
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  body { background: #fff; font-size: 9pt; line-height: 1.32; }
+  .folha { max-width: none; padding: 0; }
+  .pagina { box-shadow: none; margin: 0; padding: 11mm 13mm 8mm; height: 297mm; break-after: page; page-break-after: always; overflow: hidden; }
+  .pagina:last-of-type { break-after: auto; page-break-after: auto; }
+  /* a folga da folha vira linha de escrita: caixas crescem por igual ate a base */
+  .q { flex: 1 1 0; min-height: 0; }
+  .passo { flex: 1 1 0; min-height: 64px; }
+  .passo .esc { flex: 1 1 0; height: auto; min-height: 40px; }
+  .barra-tela { display: none; }
+  .copiar-q { display: none; }
+  .rodape-print { display: block; margin-top: auto; text-align: center; font-size: 6.8pt; color: #808080;
+    border-top: .5pt solid #D0D0D0; padding-top: 3pt; }
+  .cab h1 { font-size: 12pt; } .instr { font-size: 8.4pt; } .passo b { font-size: 8pt; }
+  .passo .n, .cab, .instr, .entrega { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+<!-- CELULAR:INICIO --><style>
+@media (max-width: 560px) {
+  table { table-layout: fixed; width: 100% !important; max-width: 100%; min-width: 0 !important; }
+  table col { width: auto !important; }
+  th, td { overflow-wrap: anywhere; hyphens: auto; min-width: 0 !important; white-space: normal;
+           padding-left: 5px; padding-right: 5px; }
+  .tabela-rolagem, .quadro { overflow-x: visible; }
+  p, li, a, span, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: anywhere; }
+  .fase, .fase-oas, .oa-item { flex-wrap: wrap; min-width: 0; }
+  .campo-resultado { flex-wrap: wrap; }
+  .campo-resultado > .rot { flex: 1 1 100%; min-width: 0; }
+}
+</style><!-- CELULAR:FIM -->
+</head>
+<body data-pagina="t16:fa">
+<div class="folha">
+<section class="pagina"><div class="cab"><div><h1>Tema 10 — Hidrostática e Hidrodinâmica</h1><div class="sub">Física I (FC1) · T16 · IFMG <em>Campus</em> Ouro Preto</div></div><div class="dir"><b>Folha de Atividades (FA)</b>Atividade final · 2 questões · 2 páginas</div></div><div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div><p class="instr">Abra o livro impresso nas páginas indicadas. Resolva cada questão pelos 5 passos da Resolução Científica do Problema e, no fim, escreva a resolução condensada. Use o celular só para o prompt da IA, depois de tentar sozinho.</p><div class="q"><h2>Questão 1 · livro, página 162, questão 9</h2><p class="meta">quantitativa · L3 Aplicar · Pensamento Quantitativo</p><div class="enun"><div><b>Sem o livro?</b> Resolva esta versão: Um estudante de 63 kg tem volume corporal de cerca de 0,060 m³. Qual é a densidade média do corpo dele, em g/cm³? Ele tende a afundar ou a flutuar em água doce?</div></div><div class="passo"><b><span class="n">1</span>O que a questão quer?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">2</span>O que eu tenho?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">3</span>Qual é o desenho?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">4</span>Minha solução</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">5</span>Confiro e respondo</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo cond"><b>Resolução condensada</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="rodape-print">Tema 10 — Hidrostática e Hidrodinâmica · FA · página 1 de 2 · Física I (FC1) · T16 · IFMG Campus Ouro Preto</div></section>
+<section class="pagina"><div class="q"><h2>Questão 2 · livro, página 161, questão 3</h2><p class="meta">qualitativa · L4 Analisar · Pensamento Qualitativo</p><div class="enun"><div><b>Sem o livro?</b> Resolva esta versão: Quando a água de uma forminha congela no freezer, o gelo fica ‘estufado’ para fora da forma. O que acontece com a massa e com o volume da água ao virar gelo? Por que o gelo flutua na água?</div></div><div class="passo"><b><span class="n">1</span>O que a questão quer?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">2</span>O que eu tenho?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">3</span>Como eu separo as afirmações?</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">4</span>Julgo uma por uma</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo"><b><span class="n">5</span>Confiro e respondo</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="passo cond"><b>Resolução condensada</b><div class="esc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="prompt-ia"><b>Prompt para a IA</b> (depois de tentar sozinho; a IA não dá a resposta, só aponta o passo errado)<p><b>Questão 1:</b> Sou estudante do Ensino Médio técnico e resolvi a questão 9 da página 162 do livro Física Identidade (Bonjorno), ou a versão &quot;sem o livro&quot; dela que está na Folha de Atividades, sobre Tema 10 — Hidrostática e Hidrodinâmica, pelos 5 passos da Resolução Científica do Problema (1 O que a questão quer?; 2 O que eu tenho?; 3 Qual é o desenho?; 4 Minha solução; 5 Confiro e respondo) e também em resolução condensada. Vou te mandar a foto ou o texto da minha resolução. Não me dê a resposta nem resolva por mim. Diga só em que passo está o primeiro erro e me faça uma pergunta que me ajude a corrigir sozinho. Se estiver tudo certo, diga &quot;certo&quot; e me peça para conferir as unidades. <button type="button" class="copiar-q" data-p="Sou estudante do Ensino Médio técnico e resolvi a questão 9 da página 162 do livro Física Identidade (Bonjorno), ou a versão &quot;sem o livro&quot; dela que está na Folha de Atividades, sobre Tema 10 — Hidrostática e Hidrodinâmica, pelos 5 passos da Resolução Científica do Problema (1 O que a questão quer?; 2 O que eu tenho?; 3 Qual é o desenho?; 4 Minha solução; 5 Confiro e respondo) e também em resolução condensada. Vou te mandar a foto ou o texto da minha resolução. Não me dê a resposta nem resolva por mim. Diga só em que passo está o primeiro erro e me faça uma pergunta que me ajude a corrigir sozinho. Se estiver tudo certo, diga &quot;certo&quot; e me peça para conferir as unidades.">Copiar</button></p><p><b>Questão 2:</b> Sou estudante do Ensino Médio técnico e resolvi a questão 3 da página 161 do livro Física Identidade (Bonjorno), ou a versão &quot;sem o livro&quot; dela que está na Folha de Atividades, sobre Tema 10 — Hidrostática e Hidrodinâmica, pelos 5 passos da Resolução Científica do Problema (1 O que a questão quer?; 2 O que eu tenho?; 3 Como eu separo as afirmações?; 4 Julgo uma por uma; 5 Confiro e respondo) e também em resolução condensada. Vou te mandar a foto ou o texto da minha resolução. Não me dê a resposta nem resolva por mim. Diga só em que passo está o primeiro erro e me faça uma pergunta que me ajude a corrigir sozinho. Se estiver tudo certo, diga &quot;certo&quot; e me peça para conferir as unidades. <button type="button" class="copiar-q" data-p="Sou estudante do Ensino Médio técnico e resolvi a questão 3 da página 161 do livro Física Identidade (Bonjorno), ou a versão &quot;sem o livro&quot; dela que está na Folha de Atividades, sobre Tema 10 — Hidrostática e Hidrodinâmica, pelos 5 passos da Resolução Científica do Problema (1 O que a questão quer?; 2 O que eu tenho?; 3 Como eu separo as afirmações?; 4 Julgo uma por uma; 5 Confiro e respondo) e também em resolução condensada. Vou te mandar a foto ou o texto da minha resolução. Não me dê a resposta nem resolva por mim. Diga só em que passo está o primeiro erro e me faça uma pergunta que me ajude a corrigir sozinho. Se estiver tudo certo, diga &quot;certo&quot; e me peça para conferir as unidades.">Copiar</button></p></div><div class="entrega"><b>Entrega.</b> Entregue esta folha, com a resolução escrita à mão, na monitoria do Pavilhão de Física.<div class="visto"><span>Visto do(a) monitor(a):</span><span>Data:</span></div></div><div class="rodape-print">Tema 10 — Hidrostática e Hidrodinâmica · FA · página 2 de 2 · Física I (FC1) · T16 · IFMG Campus Ouro Preto</div></section>
+<div class="barra-tela"><button type="button" onclick="window.print()">Imprimir A4</button><a class="sec" href="../../index.html#t16">Voltar ao site</a><p class="nota">Imprime em 2 folhas A4. Sem impressora, copie a folha no caderno, na mesma ordem.</p></div>
+</div>
+<script>document.addEventListener('click', function (e) {
+  var b = e.target.closest('.copiar-q'); if (!b) { return; }
+  var t = b.getAttribute('data-p'), ok = function () { b.textContent = 'Copiado!'; setTimeout(function () { b.textContent = 'Copiar'; }, 1800); };
+  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(ok, function () { b.textContent = 'Selecione e copie'; }); }
+  else { b.textContent = 'Selecione e copie'; }
+});</script>
+<!-- CONTADOR:INICIO -->
+<script src="../../contador-config.js"></script>
+<script src="../../acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>

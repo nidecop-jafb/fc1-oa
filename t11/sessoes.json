@@ -1,0 +1,31 @@
+{
+ "trilha": "T11",
+ "semana": "26/10/2026",
+ "tema": 6,
+ "titulo": "Leis de Newton e força",
+ "aula": {
+  "tema": 6,
+  "titulo": "Leis de Newton e força",
+  "ini": 84,
+  "fim": 99
+ },
+ "pre": {
+  "id": "T06-S1",
+  "sess": 1,
+  "total": 3,
+  "ini": 84,
+  "fim": 91,
+  "mts": "Tipos de força",
+  "tema": 6
+ },
+ "pos": {
+  "id": "T06-S2",
+  "sess": 2,
+  "total": 3,
+  "ini": 92,
+  "fim": 99,
+  "mts": "Leis de Newton e movimento; Aplicações das leis de Newton na resolução de sistemas mecânicos; Pêndulo simples; Máquinas simples",
+  "tema": 6
+ },
+ "fa": null
+}

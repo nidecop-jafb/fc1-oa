@@ -1,0 +1,815 @@
+/* oia.css — gerado por _scripts/gerar_site_oia.py (OIA, PRJ-0004). Nao editar a mao.
+   Molde: rif-oa. Paleta do icone da Oficina IA: azul-noite, ciano e verde. */
+:root { color-scheme: dark; --azul: #2E86C1; --azul-esc: #1B2A41; --verde: #3E8E5A; --fundo: #0d0d0d; --texto: #e8e8e8; --forte: #fff; --t-ddd: #ddd; --t-c4: #c4c4c4; --t-aaa: #aaa; --t-9a: #9a9a9a; --t-888: #888; --b-555: #555; --b-444: #444; --b-333: #333; --caixa: #1b2a41; --caixa2: #16202f; --painel: #1a1b1f; --bloco: #26272c; --ciano: #8FE0FF; --verde-claro: #7BE495; }
+[data-tema="claro"] { color-scheme: light; --fundo: #ffffff; --texto: #1c1c1c; --forte: #000000; --t-ddd: #2a2a2a; --t-c4: #3a3a3a; --t-aaa: #505050; --t-9a: #5a5a5a; --t-888: #5f5f5f; --b-555: #8c8c8c; --b-444: #c8c8c8; --b-333: #dddddd; --caixa: #eef2f7; --caixa2: #f6f8fb; --painel: #f3f4f6; --bloco: #e4e6ea; --ciano: #1B5E8C; --verde-claro: #2D6E45; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 112.5%; }
+html[data-letra="g"] { font-size: 125%; }
+html[data-letra="gg"] { font-size: 137.5%; }
+body { background: var(--fundo); color: var(--texto); font-family: Calibri, Carlito, 'Segoe UI', Roboto, Arial, sans-serif;
+       font-size: 1.125rem; line-height: 1.7; overflow-wrap: anywhere; }
+h1, h2, h3, .intro-t, .aba-toggle, .aba-painel h3, .aba-painel .aba-cargo, .letra-btn {
+       font-family: 'Courier New', Courier, monospace; }
+p, li { max-width: 68ch; }
+button, input, select, textarea { font-family: inherit; font-size: 1rem; }
+a { color: var(--ciano); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 56px 20px 48px; }
+h1 { font-size: 1.6rem; color: var(--ciano); text-transform: uppercase; letter-spacing: .04em; line-height: 1.3;
+     border-bottom: 2px solid var(--azul); padding-bottom: 12px; margin-bottom: 8px; overflow-wrap: normal; }
+h2 { font-size: 1.1rem; color: var(--forte); margin: 32px 0 12px; }
+section > p { margin-bottom: 12px; }
+.cabeca { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; }
+.cabeca img { width: 72px; height: 72px; display: block; flex: none; }
+.cabeca .ifmg { background: white; border-radius: 10px; padding: 8px; }
+.cabeca .sub-t { font-size: 1.05rem; color: var(--t-c4); margin: 4px 0 0; }
+.intro { border: 1px solid var(--b-444); padding: 22px 24px; margin: 20px 0 32px; color: var(--t-c4); }
+.intro p { margin-bottom: 11px; }
+.intro strong { color: var(--ciano); font-weight: normal; }
+.intro-t { font-size: 1rem; color: var(--verde-claro); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 12px; }
+ol.num { margin: 0 0 14px 1.6em; }
+ol.num li { margin-bottom: 6px; }
+
+/* abas laterais (molde rif-oa/lme-oa); 8 abas: o JS compacta se nao couberem na altura */
+.aba-toggle { position: fixed; left: 0; z-index: 998; background: var(--painel); border: 1px solid var(--b-444); border-left: none;
+              color: var(--t-aaa); font-size: 17px; padding: 9px 10px; cursor: pointer; writing-mode: vertical-rl;
+              text-orientation: mixed; letter-spacing: 1px; text-transform: uppercase; }
+body.abas-compactas .aba-toggle { font-size: 14px; padding: 5px 6px; letter-spacing: 0; }
+.aba-toggle:hover { color: var(--ciano); }
+.aba-toggle.aqui { color: white; background: var(--azul); border-color: var(--azul); }
+.aba-toggle.ativa { color: rgb(13,13,13); background: rgb(143,224,255); border-color: rgb(143,224,255); font-weight: 700; }
+.aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 400px; max-width: 88vw; height: 100vh;
+              overflow-y: auto; background: var(--painel); border-right: 1px solid var(--b-444); padding: 24px 22px 24px 42px;
+              transform: translateX(-100%); transition: transform .25s; font-size: .95rem; color: var(--t-c4); line-height: 1.6; }
+.aba-painel.open { transform: translateX(0); }
+.aba-painel h3 { font-size: 1.25rem; text-transform: uppercase; letter-spacing: 2px; color: var(--ciano);
+                 border-bottom: 1px solid var(--b-444); padding-bottom: 8px; margin-bottom: 14px; }
+.aba-painel p { margin-bottom: 11px; }
+.aba-painel a.aba-btn { display: block; margin: 10px 0; padding: 11px 14px; border: 1px solid var(--b-444); color: var(--texto);
+                        text-decoration: none; }
+.aba-painel a.aba-btn:hover { border-color: var(--azul); color: var(--ciano); }
+.aba-painel .aba-nota { font-size: .95rem; color: var(--t-888); }
+.aba-painel .construcao { border-left: 4px solid var(--verde); padding: 6px 12px; color: var(--t-ddd); }
+.aba-painel .aba-cargo { font-size: .95rem; font-weight: 700; letter-spacing: 1px; color: var(--ciano);
+                         border-bottom: 1px solid var(--b-444); padding-bottom: 3px; margin: 14px 0 4px; }
+.aba-painel .aba-nome { color: var(--t-ddd); }
+.aba-painel .disc-ic { width: 72px; height: 72px; display: block; margin: 0 0 10px; }
+.aba-painel ol.temas { list-style: none; margin: 0 0 14px; }
+.aba-painel ol.temas li { border-bottom: 1px solid var(--b-333); padding: 6px 0; }
+.aba-painel ol.temas .t-num { font-family: 'Courier New', Courier, monospace; color: var(--ciano); }
+.aba-painel ol.temas .t-pag { color: var(--t-888); white-space: nowrap; }
+.aba-painel .aba-ref { font-size: .85rem; color: var(--t-888); }
+.aba-painel .aba-nota { font-size: .85rem; color: var(--t-888); }
+.aba-painel ol.temas summary { cursor: pointer; overflow-wrap: anywhere; }
+.aba-painel ol.temas .t-tempo { color: var(--ciano); white-space: nowrap; }
+.aba-painel ul.marc { list-style: none; margin: 6px 0 4px 14px; padding: 0; font-size: .9rem; }
+.aba-painel ul.marc li { padding: 2px 0; overflow-wrap: anywhere; }
+.aba-painel ul.marc .m-n1 { font-weight: bold; }
+.aba-painel ul.marc .m-n2 { padding-left: 14px; }
+.aba-painel ul.marc .m-sess { font-family: 'Courier New', Courier, monospace; color: var(--ciano); margin-top: 6px; }
+/* abas Fisica 1/2/3: letra maior na abertura (autor, 2026-10-04) */
+.aba-painel[id^="abaFisica"] { font-size: 1.1rem; }
+.aba-painel[id^="abaFisica"] .aba-nota { font-size: 1rem; }
+.aba-painel .fis-intro { font-size: 1.3rem; line-height: 1.5; color: var(--texto); }
+.aba-painel .fis-nota { font-size: 1.12rem; color: var(--t-aaa); }
+/* respiro a direita e tema em 2 linhas (titulo; paginas, folhas, tempo) sem corte no celular */
+.aba-painel[id^="abaFisica"] { padding-right: 34px; }
+.aba-painel[id^="abaFisica"] ol.temas li { padding: 10px 0; }
+.aba-painel ol.temas .t-meta { display: block; margin: 2px 0 0 1.1em; font-size: .88em; color: var(--t-888); }
+.aba-painel ol.temas .t-meta .t-tempo { white-space: normal; }
+.aba-painel[id^="abaFisica"] .aba-ref { font-size: .95rem; }
+/* temas em cartoes; ao abrir: marcadores em lista limpa e cada sessao com cabecalho e botao Comecar cheio */
+.aba-painel[id^="abaFisica"] ol.temas > li { background: var(--bloco); border: none; border-left: 4px solid var(--azul);
+                                             padding: 10px 12px; margin: 0 0 10px; }
+.aba-painel[id^="abaFisica"] ol.temas > li:has(details[open]) { border-left-color: var(--verde); }
+.aba-painel[id^="abaFisica"] ol.temas summary { list-style: none; font-weight: 700; color: var(--texto); }
+.aba-painel[id^="abaFisica"] ol.temas summary::-webkit-details-marker { display: none; }
+.aba-painel[id^="abaFisica"] ol.temas summary::before { content: '▸'; color: var(--ciano); margin-right: 6px; }
+.aba-painel[id^="abaFisica"] ol.temas details[open] > summary::before { content: '▾'; }
+.aba-painel[id^="abaFisica"] ol.temas .t-meta { font-weight: 400; margin-left: 0; }
+.aba-painel[id^="abaFisica"] ol.temas .t-tit { display: block; margin: 2px 0 0; }
+.aba-painel[id^="abaFisica"] ol.temas .t-meta .t-tempo { display: block; white-space: nowrap; font-weight: 700; }
+.aba-painel[id^="abaFisica"] ul.marc li.m-uni { font-size: .85rem; color: var(--verde-claro); text-transform: none; letter-spacing: .03em; }
+.aba-painel[id^="abaFisica"] ol.temas ul.marc { margin: 10px 0 0; }
+.aba-painel[id^="abaFisica"] ol.temas ul.marc li { border: none; padding: 3px 0; }
+.aba-painel[id^="abaFisica"] ul.marc .m-n1 { color: var(--texto); }
+.aba-painel[id^="abaFisica"] ul.marc .m-n2 { color: var(--t-c4); }
+.aba-painel[id^="abaFisica"] ul.marc .m-sess { border-top: 1px solid var(--b-444); padding-top: 10px; margin-top: 10px; font-weight: 700;
+  font-family: Calibri, Carlito, 'Segoe UI', Roboto, Arial, sans-serif; }
+.aba-painel[id^="abaFisica"] ul.marc li.m-sess:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+.aba-painel[id^="abaFisica"] ul.marc .comecar { display: block; width: 100%; margin: 8px 0 4px; padding: 10px; background: var(--azul);
+  border-color: var(--azul); color: white; font-weight: 700; font-family: inherit; font-size: 1rem; }
+.aba-painel[id^="abaFisica"] ul.marc { font-size: 1.02rem; }
+.aba-painel ul.marc a.comecar { text-align: center; text-decoration: none; border: 1px solid var(--azul); }
+/* blocos dentro dos paineis: cinza neutro (sem o azulado), como o painel da LME */
+/* (prefixo body: estas regras vem antes das originais no arquivo e precisam vencer) */
+body .aba-painel ul.dims li, body #abaMetodo .met-bloco, body #abaSite .site-end, #abaCreditos .cred-card { background: var(--bloco); }
+body #abaMetodo .prompt { background: var(--painel); }
+body .aba-painel ul.marc .comecar, body .aba-painel .prompt .copiar { background: var(--bloco); }
+/* painel Creditos: equipe em blocos, instituicao em lista compacta, botao cheio no fim */
+#abaCreditos { font-size: 1.1rem; padding-right: 34px; }
+#abaReferencias { font-size: 1.05rem; padding-right: 34px; }
+#abaReferencias .cred-sec { color: var(--verde-claro); font-size: .95rem; letter-spacing: .04em; margin: 18px 0 10px; }
+#abaReferencias .ref-lista { margin: 0 0 6px; padding-left: 1.4em; }
+#abaReferencias .ref-lista li { margin-bottom: 10px; line-height: 1.45; overflow-wrap: anywhere; }
+#abaReferencias .ref-lista a { color: var(--ciano); word-break: break-all; }
+[data-tema="claro"] #abaReferencias .cred-sec { color: #2D6E45; }
+[data-tema="claro"] #abaReferencias .ref-lista li { color: #1c1c1c; }
+[data-tema="claro"] #abaReferencias .ref-lista a { color: #1B5E8C; }
+#abaCreditos .cred-sec { color: var(--verde-claro); font-size: .95rem; letter-spacing: .04em; margin: 18px 0 10px; }
+#abaCreditos .cred-card { border-left: 4px solid var(--azul); padding: 8px 12px 2px; margin: 0 0 10px; }
+#abaCreditos .cred-card .aba-cargo { border: none; margin: 0 0 2px; padding: 0; font-size: .85rem; }
+#abaCreditos .cred-card p { margin-bottom: 6px; }
+#abaCreditos .cred-desc { font-size: .95rem; color: var(--t-aaa); }
+#abaCreditos .aba-nome strong { color: var(--texto); }
+#abaCreditos > .aba-cargo { font-size: .8rem; margin: 10px 0 0; padding-bottom: 0; border-bottom: none; }
+#abaCreditos > .aba-nome { margin-bottom: 0; padding-bottom: 10px; border-bottom: 1px solid var(--b-333); }
+#abaCreditos .cred-ed { font-size: .9rem; color: var(--t-888); margin: 18px 0 6px; }
+#abaCreditos a.aba-btn { background: var(--azul); border-color: var(--azul); color: white; font-weight: 700; text-align: center; }
+/* paineis Site e Instalar: mesma letra e respiro das demais; endereco em destaque, QR centrado e botao cheio */
+#abaSite, #abaInstalar { font-size: 1.1rem; padding-right: 34px; }
+#abaInstalar .fis-intro { font-size: 1.2rem; }
+#abaInstalar .qr-box { flex-direction: column; align-items: center; text-align: center; margin: 18px 0 6px; }
+#abaInstalar .qr-box > div { flex: none; }
+#abaInstalar .qr-box img { width: 200px; height: 200px; }
+#abaInstalar .qr-box .qr-end { display: none; }  /* o botao abaixo ja leva ao passo a passo */
+#abaInstalar a.aba-btn { background: var(--azul); border-color: var(--azul); color: white; font-weight: 700; text-align: center; }
+#abaSite .site-end { font-family: 'Courier New', Courier, monospace; font-size: .9rem; color: var(--ciano);
+                     border-left: 4px solid var(--azul); background: var(--caixa2); padding: 8px 12px; overflow-wrap: normal; }
+#abaSite .site-end span { white-space: nowrap; }  /* quebra so na barra, nunca no hifen */
+#abaSite .fis-intro { font-size: 1.2rem; }
+#abaSite .qr-box { flex-direction: column; align-items: center; text-align: center; margin: 18px 0 6px; }
+#abaSite .qr-box > div { flex: none; }
+#abaSite .qr-box img { width: 200px; height: 200px; }
+#abaSite .qr-box .qr-end { display: none; }  /* o endereco ja esta acima */
+#abaSite a.aba-btn { background: var(--azul); border-color: var(--azul); color: white; font-weight: 700; text-align: center; }
+/* QR preto no branco tambem no tema escuro (senao nao escaneia) */
+.qr-box { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin: 12px 0 16px; }
+.qr-box img { width: 170px; height: 170px; background: white; padding: 8px; border-radius: 6px; flex: none; }
+.qr-box > div { flex: 1 1 140px; }
+.qr-box p { margin: 0 0 6px; }
+.qr-box .qr-end { font-family: 'Courier New', Courier, monospace; color: var(--ciano); overflow-wrap: anywhere; }
+
+/* topo: casinha + A-/A+ + sol/lua, fixos no canto superior direito */
+.topo-btns { position: fixed; top: 8px; right: 8px; z-index: 996; display: flex; gap: 6px; }
+.tema-btn, .inicio-btn, .letra-btn, .crono-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+            padding: 0; background: var(--caixa); color: var(--ciano); border: 1px solid var(--b-555); cursor: pointer; }
+.tema-btn:hover, .inicio-btn:hover, .letra-btn:hover, .crono-btn:hover { border-color: var(--azul); }
+.tema-btn svg, .inicio-btn svg, .crono-btn svg { width: 20px; height: 20px; display: block; }
+/* cronometro do topo (ao lado da casinha, como no rif-oa): abre a janela do Resumo em Audio do metodo */
+dialog.crono-dlg { margin: auto; width: min(92vw, 430px); max-height: 92vh; overflow-y: auto; background: var(--painel);
+  color: var(--texto); border: 1px solid var(--b-444); border-top: 3px solid var(--azul); padding: 18px 18px 14px; }
+dialog.crono-dlg::backdrop { background: rgba(0, 0, 0, .6); }
+dialog.crono-dlg h2 { margin: 0 0 10px; font-size: 1.1rem; color: var(--ciano); }
+dialog.crono-dlg p { margin: 0 0 12px; }
+dialog.crono-dlg .crono-audio p { margin: 0 0 4px; font-weight: bold; color: var(--ciano); }
+dialog.crono-dlg .crono-audio audio { width: 100%; margin: 0 0 12px; }
+dialog.crono-dlg .acoes { display: flex; justify-content: flex-end; }
+dialog.crono-dlg button { padding: 10px 16px; background: var(--azul); border: 1px solid var(--azul); color: white;
+  font: inherit; font-weight: bold; cursor: pointer; }
+.letra-btn { font-size: 18px; font-weight: bold; line-height: 1; letter-spacing: 0; }
+.letra-btn:disabled { opacity: .4; cursor: default; }
+.tema-btn .lua, [data-tema="claro"] .tema-btn .sol { display: none; }
+[data-tema="claro"] .tema-btn .lua { display: block; }
+
+/* rodape padrao */
+.footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--b-333); font-size: .95rem; color: var(--t-888); }
+.footer-marcas { display: flex; gap: 14px; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.footer-marcas svg { width: 30px; height: 30px; display: block; }
+.footer-marcas a { display: flex; }
+.footer p { max-width: none; text-align: center; }
+.footer-links { margin-bottom: 6px; }
+/* painel Estilo no tema escuro: abertura em destaque, dimensoes com os dois polos em ciano e verde, botoes no fim */
+:root:not([data-tema="claro"]) #abaEstilo .est-lead { font-size: 1.2rem; color: var(--texto); line-height: 1.5; }
+:root:not([data-tema="claro"]) #abaEstilo ul.dims li { background: var(--bloco); border-left-color: var(--azul); padding: 10px 12px; }
+:root:not([data-tema="claro"]) #abaEstilo ul.dims li strong { font-size: 1.05rem; margin-bottom: 2px; }
+:root:not([data-tema="claro"]) #abaEstilo > p:not(.est-lead):not(.aba-ref) { color: var(--t-c4); }
+:root:not([data-tema="claro"]) #abaEstilo a.aba-btn { padding: 13px 14px; }
+:root:not([data-tema="claro"]) #abaEstilo a.aba-btn:not(:first-of-type) { background: var(--bloco); }
+#abaEstilo .aba-ref { border-top: 1px solid var(--b-444); padding-top: 10px; margin-top: 14px; }
+/* icone Estilo no topo (lampada, depois do sol/lua): abre o painel Estilo */
+.estilo-btn, .instalar-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0;
+              background: var(--bloco); color: var(--ciano); border: 1px solid var(--b-555); cursor: pointer; }
+.estilo-btn svg, .instalar-btn svg { width: 20px; height: 20px; display: block; }
+.estilo-btn:hover, .instalar-btn:hover { border-color: var(--azul); }
+.estilo-btn.aqui, .instalar-btn.aqui { border-color: var(--azul); color: white; }
+.estilo-btn.ativa, .instalar-btn.ativa { background: var(--azul); border-color: var(--azul); color: white; }
+[data-tema="claro"] .estilo-btn, [data-tema="claro"] .instalar-btn { background: white; color: #1B5E8C; border-color: #c8c8c8; }
+[data-tema="claro"] .estilo-btn.ativa, [data-tema="claro"] .instalar-btn.ativa { background: var(--azul); color: white; border-color: var(--azul); }
+/* icone Avaliacao no topo (depois do sol/lua) e o menu que ele abre */
+.ava-menu-box { position: relative; }
+.ava-menu-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0;
+                background: var(--caixa); color: var(--ciano); border: 1px solid var(--b-555); cursor: pointer; }
+.ava-menu-btn svg { width: 20px; height: 20px; display: block; }
+.ava-menu-btn:hover, .ava-menu-btn.ativo { border-color: var(--azul); }
+.ava-menu-btn.ativo { background: var(--azul); color: white; }
+.ava-menu { position: absolute; top: 44px; right: 0; min-width: 230px; background: var(--painel); border: 1px solid var(--b-444);
+            border-top: 3px solid var(--azul); box-shadow: 0 6px 18px rgba(0,0,0,.35); padding: 6px 0; z-index: 1001; }
+.ava-menu[hidden] { display: none; }
+.ava-menu a { display: block; padding: 11px 16px; color: var(--texto); text-decoration: none; font-size: 1rem; }
+.ava-menu a:first-child { color: var(--ciano); font-weight: 700; }
+.ava-menu a + a { border-top: 1px solid var(--b-333); }
+.ava-menu a:hover { background: var(--bloco); color: var(--ciano); }
+[data-tema="claro"] .ava-menu { box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+/* menu Avaliacao no tema claro: mesmo desenho do escuro (1.o item azul, setas, item da equipe separado), caixa branca */
+[data-tema="claro"] .ava-menu { background: white; border-color: #d5d8dd; box-shadow: 0 10px 28px rgba(0,0,0,.18);
+  min-width: 270px; padding: 8px; }
+[data-tema="claro"] .ava-menu a { position: relative; padding: 12px 34px 12px 14px; border-top: none; color: #1c1c1c; }
+[data-tema="claro"] .ava-menu a::after { content: '›'; position: absolute; right: 14px; top: 50%;
+  transform: translateY(-52%); color: var(--azul); font-size: 1.3rem; }
+[data-tema="claro"] .ava-menu a:first-child { background: var(--azul); color: white; margin-bottom: 6px; }
+[data-tema="claro"] .ava-menu a:first-child::after { color: white; }
+[data-tema="claro"] .ava-menu a:nth-child(2) { border-bottom: 1px solid #e0e2e6; margin-bottom: 4px; }
+[data-tema="claro"] .ava-menu a:hover { background: #eef2f7; color: #1B5E8C; }
+[data-tema="claro"] .ava-menu a:first-child:hover { background: #2775aa; color: white; }
+[data-tema="claro"] .ava-menu-btn { background: white; color: #1B5E8C; border-color: #c8c8c8; }
+[data-tema="claro"] .ava-menu-btn.ativo { background: var(--azul); color: white; border-color: var(--azul); }
+/* menu Avaliacao no tema escuro: caixa mais clara que a pagina, 1.o item como botao azul, setas e separacao do item da equipe */
+:root:not([data-tema="claro"]) .ava-menu { background: var(--bloco); border-color: var(--b-555); box-shadow: 0 10px 28px rgba(0,0,0,.6);
+  min-width: 270px; padding: 8px; }
+.ava-menu a { white-space: nowrap; }
+:root:not([data-tema="claro"]) .ava-menu a { position: relative; padding: 12px 34px 12px 14px; border-top: none; color: var(--texto); }
+:root:not([data-tema="claro"]) .ava-menu a::after { content: '›'; position: absolute; right: 14px; top: 50%;
+  transform: translateY(-52%); color: var(--ciano); font-size: 1.3rem; }
+:root:not([data-tema="claro"]) .ava-menu a:first-child { background: var(--azul); color: white; margin-bottom: 6px; }
+:root:not([data-tema="claro"]) .ava-menu a:first-child::after { color: white; }
+:root:not([data-tema="claro"]) .ava-menu a:nth-child(2) { border-bottom: 1px solid var(--b-444); margin-bottom: 4px; }
+:root:not([data-tema="claro"]) .ava-menu a:hover { background: var(--painel); color: var(--ciano); }
+:root:not([data-tema="claro"]) .ava-menu a:first-child:hover { background: #3a96d1; color: white; }
+:root:not([data-tema="claro"]) .ava-menu-btn { background: var(--bloco); }
+:root:not([data-tema="claro"]) .ava-menu-btn.ativo { background: var(--azul); }
+.footer-selo { text-align: center; margin-top: 8px; color: var(--t-9a); }
+
+/* sugestoes e agradecimentos */
+.form-sug { border: 1px solid var(--b-444); background: var(--caixa2); padding: 16px; margin: 10px 0 18px; }
+.form-sug label { display: block; font-size: .95rem; color: var(--t-aaa); margin: 12px 0 4px; }
+.form-sug textarea { width: 100%; background: var(--fundo); color: var(--texto); border: 1px solid var(--b-555);
+                     padding: 8px; min-height: 120px; resize: vertical; }
+.form-sug button { background: var(--caixa); color: var(--texto); border: 1px solid var(--b-555); padding: 9px 14px;
+                   cursor: pointer; margin: 8px 8px 0 0; }
+.form-sug button.forte { border-color: var(--azul); color: var(--ciano); }
+.form-sug button:disabled { opacity: .45; cursor: default; }
+.form-sug .chk { display: flex; gap: 8px; align-items: flex-start; color: var(--t-ddd); }
+.form-sug .chk input { width: 20px; height: 20px; flex: 0 0 20px; accent-color: var(--verde); margin-top: 5px; }
+.form-sug audio { width: 100%; margin-top: 8px; }
+.form-sug .hp { position: absolute; left: -9999px; top: -9999px; }
+.nota { color: var(--t-888); }
+.msg-erro { border-left: 4px solid #c65b5b; background: rgba(198,91,91,.12); padding: 8px 12px; margin: 10px 0; }
+.msg-ok { border-left: 4px solid var(--verde); background: rgba(62,142,90,.14); padding: 10px 14px; margin: 10px 0; }
+.msg-erro[hidden], .msg-ok[hidden] { display: none; }
+
+/* estilo de aprendizagem (questionario, resultado e painel do grupo) */
+/* 4 dimensoes em blocos: polo em destaque na 1.a linha, explicacao embaixo */
+ul.dims { list-style: none; margin: 4px 0 16px; padding: 0; }
+ul.dims li { border-left: 4px solid var(--azul); background: var(--caixa2); padding: 8px 12px; margin-bottom: 8px; }
+ul.dims li strong { display: block; color: var(--ciano); font-weight: 700; }
+/* painel Estilo: mesma letra e respiro das abas Metodo e Fisica */
+#abaEstilo { font-size: 1.1rem; padding-right: 34px; }
+#abaEstilo a.aba-btn { border-color: var(--azul); color: var(--ciano); font-weight: 700; text-align: center; }
+#abaEstilo a.aba-btn:first-of-type { background: var(--azul); color: white; }
+.form-sug input[type="text"], .form-sug select { width: 100%; background: var(--fundo); color: var(--texto);
+                                                 border: 1px solid var(--b-555); padding: 8px; }
+.form-sug .duas { display: flex; gap: 10px; flex-wrap: wrap; }
+.form-sug .duas > div { flex: 1 1 150px; }
+fieldset.questao { border: 1px solid var(--b-444); padding: 10px 14px 8px; margin: 0 0 12px; }
+fieldset.questao.ok { border-color: var(--verde); }
+fieldset.questao legend { color: var(--forte); padding: 0 6px; }
+fieldset.questao .q-num { font-family: 'Courier New', Courier, monospace; color: var(--ciano); }
+fieldset.questao label { display: flex; gap: 10px; align-items: flex-start; padding: 5px 2px; cursor: pointer; }
+fieldset.questao input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 5px; accent-color: var(--azul); }
+.progresso { position: sticky; bottom: 0; z-index: 5; background: var(--caixa2); border: 1px solid var(--b-444);
+             padding: 10px 12px; display: flex; gap: 10px; align-items: center; justify-content: space-between;
+             flex-wrap: wrap; }
+.progresso button { background: var(--caixa); color: var(--ciano); border: 1px solid var(--azul); padding: 9px 14px; cursor: pointer; }
+.progresso button:disabled { opacity: .45; cursor: default; }
+.dim { margin: 14px 0 18px; }
+.dim-polos { display: flex; justify-content: space-between; gap: 8px; color: var(--t-c4); font-size: .95rem; }
+.dim-barra { position: relative; height: 16px; background: var(--caixa2); border: 1px solid var(--b-444); margin: 4px 0; }
+.dim-barra::after { content: ''; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; background: var(--t-aaa); }
+.dim-barra span { position: absolute; top: 0; bottom: 0; background: var(--ciano); }
+.dim-barra span.b { background: var(--verde-claro); }
+.dim-grau { color: var(--t-ddd); font-size: .95rem; }
+.regras { border-left: 4px solid var(--verde); background: var(--caixa2); padding: 10px 14px; margin: 10px 0 16px; }
+.regras ol { margin: 0 0 0 1.3em; }
+.regras li { margin-bottom: 4px; }
+.p-rot { color: var(--ciano); margin: 12px 0 6px; }
+h3.p-dim { font-family: 'Courier New', Courier, monospace; font-size: 1rem; color: var(--forte); margin: 22px 0 4px;
+           border-bottom: 1px solid var(--b-444); padding-bottom: 4px; }
+h3.p-dim span { color: var(--t-aaa); font-weight: normal; }
+.prompt { border: 1px solid var(--b-444); background: var(--caixa2); padding: 10px 12px; margin: 0 0 10px; }
+.prompt p { margin: 0 0 8px; max-width: none; }
+.prompt .copiar { background: var(--caixa); color: var(--ciano); border: 1px solid var(--azul); padding: 6px 12px; cursor: pointer; }
+.aba-painel .met-etapa { color: var(--ciano); margin: 14px 0 4px; }
+.aba-painel ol.met-perg { margin: 0 0 10px; padding-left: 22px; }
+/* aba Metodo: mesma letra e respiro das abas Fisica; cada etapa num bloco proprio */
+#abaMetodo { font-size: 1.1rem; padding-right: 34px; }
+#abaMetodo ul.met-lista { margin: 0 0 14px; padding-left: 22px; }
+#abaMetodo ul.met-lista li, #abaMetodo ol.met-perg li { margin-bottom: 6px; }
+#abaMetodo .met-bloco { border-left: 4px solid var(--azul); background: var(--caixa2); padding: 12px 14px 4px; margin: 22px 0; }
+#abaMetodo .met-bloco .met-etapa { font-size: 1.2rem; margin: 0 0 8px; }
+/* Os 5 passos: azul = Pensamento Quantitativo, verde = Qualitativo (molde .ramo do rif-oa); uma coluna, a aba e estreita */
+#abaMetodo .met-ramos { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 12px 0 14px; }
+#abaMetodo .met-ramo { border: 1px solid var(--b-444); border-top: 5px solid var(--azul); background: var(--painel); padding: 10px 12px 2px; }
+#abaMetodo .met-ramo.qual { border-top-color: var(--verde); }
+#abaMetodo .met-bloco .met-ramos .met-ramo p.met-ramo-t { margin: 0; font-weight: 700; color: var(--ciano); text-transform: uppercase; letter-spacing: .04em; font-size: .95rem; }
+#abaMetodo .met-bloco .met-ramos .met-ramo.qual p.met-ramo-t { color: var(--verde-claro); }
+#abaMetodo .met-bloco .met-ramos .met-ramo p.met-ramo-a { margin: 2px 0 10px; font-size: .9rem; color: var(--t-9a); }
+#abaMetodo .met-ramo ol { margin: 0 0 6px; padding-left: 22px; }
+#abaMetodo .met-ramo li { margin-bottom: 8px; }
+#abaMetodo .met-bloco .met-ramo li b { display: block; color: var(--forte); }
+#abaMetodo .met-bloco .met-ramo li span { color: var(--t-c4); font-size: .95rem; }
+.aba-painel .met-estilo { font-size: .85rem; color: var(--verde-claro); }
+.aba-painel ul.marc .comecar { background: var(--caixa); color: var(--ciano); border: 1px solid var(--azul); padding: 4px 10px;
+  margin: 2px 0 2px 6px; cursor: pointer; font: inherit; font-size: .85rem; }
+/* pagina da sessao da Fisica 1, molde da trilha do RIF (PRE-metodo-prj0004-sessao-pagina-rif-fisica1-2026-10-06):
+   ambar = Fase 1 (aquecimento, A no cronometro), azul = Fase 2 (estudo, E) */
+.sessao .s-volta { font-size: .95rem; }
+.sessao h1 { font-size: 1.35rem; color: var(--ciano); margin: 10px 0 4px; line-height: 1.35; }
+.sessao .s-sub { color: var(--t-aaa); margin: 0 0 16px; }
+.sessao .s-mat { margin: 0 0 14px; }
+.sessao .fase-t { font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 1.05rem; text-transform: uppercase;
+  letter-spacing: .03em; color: #E3B35C; border: 2px solid #E3B35C; background: rgba(227,179,92,.12); padding: 10px 14px;
+  margin: 8px 0 14px; max-width: none; }
+.sessao .fase-t .fase-n { display: inline-block; background: #E3B35C; color: var(--fundo); padding: 0 8px; margin-right: 6px; }
+.sessao .fase-2 > .fase-t { color: var(--ciano); border-color: var(--azul); background: rgba(74,127,193,.14); margin-top: 34px; }
+.sessao .fase-2 > .fase-t .fase-n { background: var(--azul); color: white; }
+.sessao .fase-3 > .fase-t { color: var(--verde-claro); border-color: var(--verde); background: rgba(45,110,69,.18); margin-top: 34px; }
+.sessao .fase-3 > .fase-t .fase-n { background: var(--verde); color: white; }
+.sessao .s-sucesso { font-size: 1.1rem; margin: 6px 0 14px; }
+.sessao .s-prompt { display: block; margin: 10px 0; padding: 10px 12px; background: var(--painel); border: 1px solid var(--b-444); font-weight: normal; }
+.sessao .s-prompt-t { display: block; color: var(--t-c4); font-size: .98rem; }
+.sessao .s-copiar { margin-top: 8px; padding: 9px 14px; min-height: 44px; background: var(--bloco); color: var(--ciano);
+  border: 1px solid var(--azul); cursor: pointer; font: inherit; }
+.sessao .etapa { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 10px; }
+.sessao .etapa-n { flex: none; width: 1.7em; height: 1.7em; line-height: 1.7em; border-radius: 50%; text-align: center;
+  background: var(--verde); color: white; font-weight: bold; }
+.sessao .etapa.fim { font-weight: bold; color: var(--verde-claro); }
+.sessao .grad-g { scroll-margin-top: 64px; }
+.sessao .grad-g[hidden] { display: none; }
+.sessao .grad-btn, .sessao .s-ex, .sessao a.s-fa { display: inline-block; margin: 10px 8px 4px 0; padding: 11px 16px; min-height: 44px;
+  border: 2px solid #E3B35C; background: #151619; color: #E3B35C; font: inherit; font-weight: bold; cursor: pointer;
+  border-radius: 6px; text-decoration: none; }
+.sessao .s-ex { border-color: var(--azul); color: var(--ciano); font-weight: normal; }
+.sessao .s-ex[aria-expanded="true"], .sessao .s-semlivro[aria-pressed="true"], .sessao a.s-fa { background: var(--azul); border-color: var(--azul); color: white; }
+.sessao .s-caixa { border-left: 4px solid var(--b-555); background: var(--painel); padding: 12px 14px; margin: 8px 0 12px; }
+.sessao .s-caixa audio { width: 100%; margin-top: 6px; }
+.sessao .s-ref { color: var(--t-888); }
+.sessao ol.s-passos { padding-left: 26px; }
+.sessao ol.s-passos li, .sessao ol.s-focado li { margin: 0 0 8px; }
+.sessao ol.s-focado { padding-left: 26px; }
+.sessao .s-errei label { display: block; padding: 6px 0; cursor: pointer; }
+.sessao .s-errei input { width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+/* versao "sem o livro" (PRE-metodo-prj0004-questoes-sem-livro-fisica1-2026-10-06): figura SVG em currentColor */
+.sessao .s-semlivro { display: inline-block; }
+.sessao .s-sl { border-left: 4px solid #E3B35C; background: #151619; padding: 10px 12px; margin: 8px 0 10px; }
+.sessao .s-sl[hidden] { display: none; }
+.sessao .s-fig { margin: 8px 0; color: var(--texto); }
+.sessao .s-fig svg { display: block; width: 100%; max-width: 360px; height: auto; }
+.sessao ol.s-alts { padding-left: 26px; margin: 6px 0 0; }
+.sessao .s-nota { margin: 10px 0 0; font-size: .95rem; }
+.sessao .c-rot { color: var(--ciano); margin: 10px 0 6px; font-weight: bold; }
+.sessao .c-q { background: var(--painel); border-left: 4px solid var(--b-555); padding: 12px 14px; margin: 0 0 10px; }
+.sessao .c-qt { margin: 0 0 8px; font-weight: 700; color: var(--forte); }
+.sessao .c-alt { display: block; width: 100%; text-align: left; margin: 0 0 6px; padding: 11px 12px; background: var(--bloco);
+  border: 1px solid var(--b-444); color: var(--t-ddd); cursor: pointer; font: inherit; }
+.sessao .c-alt[disabled] { cursor: default; color: var(--t-888); }
+.sessao .c-alt.certa { border-color: var(--verde-claro); color: var(--verde-claro); }
+.sessao .c-alt.errada { border-color: var(--t-c4); color: var(--t-c4); text-decoration: line-through; }
+.sessao .c-fb { margin: 4px 0 0; font-size: .95rem; }
+.sessao .c-fb.ok { color: var(--verde-claro); }
+.sessao .c-fb.nao { color: var(--t-c4); }
+.sessao .c-ref { color: var(--t-888); }
+.sessao .c-aviso { color: var(--ciano); font-size: .95rem; }
+.sessao .c-ra { border-left: 4px solid var(--azul); background: var(--painel); padding: 12px 14px; margin: 0 0 10px; }
+.sessao .c-ra label { display: block; margin: 0 0 6px; }
+.sessao .c-ra input { width: 10em; max-width: 60%; padding: 8px; font: inherit; background: var(--fundo); color: var(--texto); border: 1px solid var(--b-444); }
+.sessao .c-ra button, .sessao .c-gslot button { padding: 8px 12px; margin-left: 6px; background: var(--bloco); color: var(--ciano);
+  border: 1px solid var(--azul); cursor: pointer; font: inherit; min-height: 40px; }
+.sessao .c-duv { background: var(--painel); border-left: 4px solid var(--b-555); padding: 12px 14px; margin: 10px 0; }
+.sessao .c-gslot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 0 8px; }
+.sessao .c-gn { font-family: 'Courier New', Courier, monospace; color: var(--ciano); }
+.sessao .c-gslot audio { max-width: 100%; height: 36px; }
+.sessao .c-gest { color: var(--verde-claro); font-size: .9rem; }
+/* na sessao da Fisica 1 o cronometro do topo conta (A = aquecimento, E = estudo), como o rif-crono.js */
+.crono-btn.rodando, .crono-btn.aquec { width: 46px; padding: 0; font-family: 'Courier New', Courier, monospace;
+  font-weight: bold; font-size: .7rem; white-space: nowrap; letter-spacing: -.02em; }
+.crono-btn.rodando { border-color: var(--azul); color: var(--ciano); }
+.crono-btn.aquec { color: #E3B35C; border-color: #E3B35C; }
+.crono-btn.final { width: 46px; padding: 0; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: .7rem;
+  white-space: nowrap; letter-spacing: -.02em; color: var(--verde-claro); border-color: var(--verde); }
+.crono-btn.congelado { border-style: dashed; }
+dialog.sessao-dlg p.meta { font-weight: bold; color: var(--forte); }
+dialog.sessao-dlg .acoes { flex-wrap: wrap; gap: 10px; }
+dialog.sessao-dlg button { min-height: 44px; }
+dialog.sessao-dlg button:not(.principal) { background: #151619; border-color: var(--b-555); color: var(--texto); font-weight: normal; }
+/* tema claro: QR e painel com contorno (branco sobre branco some), sombra no painel aberto */
+[data-tema="claro"] .qr-box img { box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+[data-tema="claro"] .aba-painel.open { box-shadow: 4px 0 18px rgba(0,0,0,.18); }
+[data-tema="claro"] .aba-toggle.ativa { color: white; background: var(--azul); border-color: var(--azul); }
+/* tema claro nas paginas: cartoes cinza sobre branco ganham um contorno leve para nao se dissolverem no fundo */
+[data-tema="claro"] fieldset.questao, [data-tema="claro"] .form-sug, [data-tema="claro"] .intro,
+[data-tema="claro"] body[data-pagina="instalar"] section, [data-tema="claro"] .agr-vazio, [data-tema="claro"] .sug-anonima,
+[data-tema="claro"] .ava-anonima, [data-tema="claro"] #avaFechada, [data-tema="claro"] .ava-item, [data-tema="claro"] .regras,
+[data-tema="claro"] .ava-abertas li, [data-tema="claro"] .ava-p .qr-box, [data-tema="claro"] .progresso {
+  box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] .topo-btns { box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+/* painel Site no tema claro: endereco em cartao branco, QR com sombra, textos quase pretos */
+[data-tema="claro"] #abaSite .site-end { background: white; color: #1B5E8C;
+  box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] #abaSite .qr-box img { box-shadow: 0 1px 4px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.06); }
+[data-tema="claro"] #abaSite .fis-intro { color: #1c1c1c; }
+[data-tema="claro"] #abaSite p { color: #2a2a2a; }
+[data-tema="claro"] #abaSite .qr-box p { color: #3a3a3a; }
+/* painel Instalar no tema claro: QR com sombra, abertura e legenda escuras */
+[data-tema="claro"] #abaInstalar .qr-box img { box-shadow: 0 1px 4px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.06); }
+[data-tema="claro"] #abaInstalar .fis-intro { color: #1c1c1c; }
+[data-tema="claro"] #abaInstalar .qr-box p { color: #3a3a3a; }
+/* paineis Fisica no tema claro: temas em cartoes brancos com sombra; titulos quase pretos; unidade e tempo em cores escuras */
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ol.temas > li { background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ol.temas summary,
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ul.marc .m-n1 { color: #1c1c1c; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ul.marc .m-n2 { color: #3a3a3a; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ul.marc li.m-uni { color: #2D6E45; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] .t-pag { color: #5f5f5f; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] ul.marc .m-sess { border-top-color: #d5d8dd; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] .fis-intro { color: #1c1c1c; }
+[data-tema="claro"] .aba-painel[id^="abaFisica"] .fis-nota { color: #3a3a3a; }
+/* Estilo (painel) no tema claro: as 4 dimensoes em cartoes brancos com sombra, polo em azul-escuro, texto quase preto */
+[data-tema="claro"] #abaEstilo ul.dims li { background: white; color: #2a2a2a;
+                                           box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] #abaEstilo ul.dims li strong { color: #1B5E8C; }
+[data-tema="claro"] #abaEstilo > p { color: #2a2a2a; }
+[data-tema="claro"] #abaEstilo a.aba-btn:not(:first-of-type) { background: white; color: #1B5E8C; }
+[data-tema="claro"] #abaEstilo .est-lead { font-size: 1.2rem; color: #1c1c1c; line-height: 1.5; }
+[data-tema="claro"] #abaEstilo ul.dims li { padding: 10px 12px; }
+[data-tema="claro"] #abaEstilo ul.dims li strong { font-size: 1.05rem; margin-bottom: 2px; }
+[data-tema="claro"] #abaEstilo a.aba-btn { padding: 13px 14px; }
+[data-tema="claro"] #abaEstilo .aba-ref { border-top-color: #d5d8dd; color: #5f5f5f; }
+/* Metodo no tema claro: etapas em cartoes brancos com sombra; prompt em caixa cinza com contorno; rotulos em verde escuro */
+[data-tema="claro"] #abaMetodo .met-bloco { background: white; box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] #abaMetodo .prompt { background: #f3f4f6; border: 1px solid #d5d8dd; }
+[data-tema="claro"] #abaMetodo .prompt .copiar { background: white; }
+[data-tema="claro"] #abaMetodo .met-bloco p, [data-tema="claro"] #abaMetodo .met-bloco li { color: #2a2a2a; }
+[data-tema="claro"] #abaMetodo ul.met-lista li::marker { color: var(--azul); }
+[data-tema="claro"] #abaMetodo .met-ramo { background: #f7f8fa; border-right-color: #d5d8dd; border-bottom-color: #d5d8dd; border-left-color: #d5d8dd; }
+[data-tema="claro"] #abaMetodo .met-ramos .met-ramo p.met-ramo-t { color: #1B5E8C; }
+[data-tema="claro"] #abaMetodo .met-ramos .met-ramo.qual p.met-ramo-t { color: #2D6E45; }
+[data-tema="claro"] #abaMetodo .met-ramos .met-ramo p.met-ramo-a { color: #5f5f5f; }
+[data-tema="claro"] #abaMetodo .met-bloco .met-ramo li b { color: #1c1c1c; }
+[data-tema="claro"] #abaMetodo .met-bloco .met-ramo li span { color: #3a3a3a; }
+/* Site no tema escuro: endereco em cartao com faixa azul, QR em moldura clara com sombra, textos claros e legenda discreta */
+:root:not([data-tema="claro"]) #abaSite .site-end { background: var(--bloco); color: var(--ciano); padding: 10px 12px; }
+:root:not([data-tema="claro"]) #abaSite .fis-intro { color: var(--texto); }
+:root:not([data-tema="claro"]) #abaSite p { color: var(--t-c4); }
+:root:not([data-tema="claro"]) #abaSite .qr-box { background: var(--bloco); padding: 16px 12px 10px; }
+:root:not([data-tema="claro"]) #abaSite .qr-box img { box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+:root:not([data-tema="claro"]) #abaSite .qr-box p { color: var(--t-aaa); font-size: .95rem; }
+:root:not([data-tema="claro"]) #abaSite a.aba-btn { padding: 13px 14px; }
+/* Referencias no tema escuro: secao com linha embaixo, cada obra em cartao cinza com faixa azul, numero em ciano */
+:root:not([data-tema="claro"]) #abaReferencias .cred-sec { border-bottom: 1px solid var(--b-444); padding-bottom: 6px; margin-top: 22px; }
+:root:not([data-tema="claro"]) #abaReferencias .ref-lista { list-style: none; padding-left: 0; counter-reset: ref; }
+:root:not([data-tema="claro"]) #abaReferencias .ref-lista li { counter-increment: ref; position: relative; background: var(--bloco);
+  border-left: 4px solid var(--azul); padding: 10px 12px 10px 40px; color: #d8d8d8; font-size: .98rem; }
+:root:not([data-tema="claro"]) #abaReferencias .ref-lista li::before { content: counter(ref); position: absolute; left: 12px;
+  top: 10px; font-family: 'Courier New', Courier, monospace; font-weight: 700; color: var(--ciano); }
+:root:not([data-tema="claro"]) #abaReferencias .ref-lista em { color: white; }
+:root:not([data-tema="claro"]) #abaReferencias .ref-lista a { font-size: .9rem; }
+/* Referencias no tema claro: mesmo desenho do escuro, com cartoes brancos e sombra sobre o painel cinza */
+[data-tema="claro"] #abaReferencias .cred-sec { border-bottom: 1px solid #d5d8dd; padding-bottom: 6px; margin-top: 22px; }
+[data-tema="claro"] #abaReferencias .ref-lista { list-style: none; padding-left: 0; counter-reset: ref; }
+[data-tema="claro"] #abaReferencias .ref-lista li { counter-increment: ref; position: relative; background: white;
+  border-left: 4px solid var(--azul); padding: 10px 12px 10px 40px; color: #2a2a2a; font-size: .98rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] #abaReferencias .ref-lista li::before { content: counter(ref); position: absolute; left: 12px;
+  top: 10px; font-family: 'Courier New', Courier, monospace; font-weight: 700; color: #1B5E8C; }
+[data-tema="claro"] #abaReferencias .ref-lista em { color: #000; }
+[data-tema="claro"] #abaReferencias .ref-lista a { font-size: .9rem; }
+/* Metodo no tema escuro: abertura clara, lista com marcador azul, etapas em cartoes com titulo maior, prompt com contorno */
+:root:not([data-tema="claro"]) #abaMetodo .fis-intro { color: var(--texto); }
+:root:not([data-tema="claro"]) #abaMetodo > p:not(.fis-intro) { color: var(--t-c4); }
+:root:not([data-tema="claro"]) #abaMetodo ul.met-lista li::marker { color: var(--azul); }
+:root:not([data-tema="claro"]) #abaMetodo .met-bloco { background: var(--bloco); padding: 14px 14px 6px; }
+:root:not([data-tema="claro"]) #abaMetodo .met-bloco .met-etapa { font-size: 1.25rem; border-bottom: 1px solid var(--b-444); padding-bottom: 6px; }
+:root:not([data-tema="claro"]) #abaMetodo .met-bloco p, :root:not([data-tema="claro"]) #abaMetodo .met-bloco li { color: #d8d8d8; }
+:root:not([data-tema="claro"]) #abaMetodo .prompt { background: var(--painel); border: 1px solid var(--b-444); }
+:root:not([data-tema="claro"]) #abaMetodo .prompt p { color: var(--t-c4); font-size: .98rem; }
+:root:not([data-tema="claro"]) #abaMetodo .prompt .copiar { background: var(--bloco); padding: 8px 16px; }
+:root:not([data-tema="claro"]) #abaMetodo .aba-nota { border-top: 1px solid var(--b-444); padding-top: 10px; }
+/* Instalar no tema escuro: mesmo desenho do painel Site (QR em moldura cinza com sombra, textos claros, botao mais alto) */
+:root:not([data-tema="claro"]) #abaInstalar .fis-intro { color: var(--texto); }
+:root:not([data-tema="claro"]) #abaInstalar .qr-box { background: var(--bloco); padding: 16px 12px 10px; }
+:root:not([data-tema="claro"]) #abaInstalar .qr-box img { box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+:root:not([data-tema="claro"]) #abaInstalar .qr-box p { color: var(--t-aaa); font-size: .95rem; }
+:root:not([data-tema="claro"]) #abaInstalar a.aba-btn { padding: 13px 14px; }
+/* Creditos no tema escuro: equipe em cartoes com nome em branco; instituicao em cartoes compactos (sem linhas soltas) */
+:root:not([data-tema="claro"]) #abaCreditos .cred-card { background: var(--bloco); padding: 10px 14px 4px; margin-bottom: 12px; }
+:root:not([data-tema="claro"]) #abaCreditos .aba-nome strong { color: white; font-size: 1.05rem; }
+:root:not([data-tema="claro"]) #abaCreditos .cred-desc { color: #b8b8b8; }
+:root:not([data-tema="claro"]) #abaCreditos .cred-sec { border-bottom: 1px solid var(--b-444); padding-bottom: 6px; margin-top: 22px; }
+:root:not([data-tema="claro"]) #abaCreditos > .aba-cargo { background: var(--bloco); margin: 0; padding: 10px 12px 0;
+  border-left: 4px solid var(--b-555); }
+:root:not([data-tema="claro"]) #abaCreditos > .aba-nome { background: var(--bloco); color: var(--texto); padding: 2px 12px 10px;
+  margin: 0 0 8px; border-bottom: none; border-left: 4px solid var(--b-555); }
+:root:not([data-tema="claro"]) #abaCreditos .cred-ed { border-top: 1px solid var(--b-444); padding-top: 12px; }
+/* Creditos no tema claro: cartoes brancos com sombra sobre o painel cinza; instituicao em lista com fundo branco */
+[data-tema="claro"] #abaCreditos .cred-card { background: white; box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] #abaCreditos .cred-sec { color: #2D6E45; }
+[data-tema="claro"] #abaCreditos .cred-desc { color: #505050; }
+[data-tema="claro"] #abaCreditos .aba-nome strong { color: #000; }
+[data-tema="claro"] #abaCreditos > .aba-cargo { background: white; margin: 0; padding: 10px 12px 0; }
+[data-tema="claro"] #abaCreditos > .aba-nome { background: white; padding: 2px 12px 10px; margin: 0 0 6px;
+                                               border-bottom: none; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+/* endereco sob o QR: quebra so nas barras, nunca no hifen */
+.qr-end span { white-space: nowrap; }
+.qr-box .qr-end { overflow-wrap: normal; }
+table.hist { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: .9rem; margin: 6px 0 10px; }
+table.hist th, table.hist td { border-bottom: 1px solid var(--b-333); padding: 4px; text-align: left; overflow-wrap: anywhere; }
+table.hist th { color: var(--t-aaa); font-weight: normal; }
+.grupo-barra { display: flex; height: 22px; border: 1px solid var(--b-444); background: var(--caixa2); margin: 4px 0; }
+.grupo-barra span { display: block; height: 100%; }
+.grupo-barra .fa, .grupo-barra .ma { background: var(--ciano); }
+.grupo-barra .fb, .grupo-barra .mb { background: var(--verde-claro); }
+.grupo-barra .ma, .grupo-barra .mb { opacity: .5; }
+.grupo-barra .eq { background: var(--t-888); }
+.grupo-leg { color: var(--t-aaa); font-size: .9rem; }
+.ref { font-size: .85rem; color: var(--t-888); margin-top: 18px; }
+/* Avaliacao da oficina: escala 1-5 em caixas tocaveis; painel ao vivo legivel no projetor */
+.likert { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 2px; }
+fieldset.questao .likert label { flex: 1 1 0; min-width: 44px; display: flex; justify-content: center; text-align: center; border: 1px solid var(--b-555);
+  background: var(--caixa2); padding: 8px 2px; cursor: pointer; }
+fieldset.questao .likert label.nu { flex: 2 1 0; min-width: 88px; }
+fieldset.questao .likert input { position: absolute; margin: 0; opacity: 0; width: 1px; height: 1px; }
+fieldset.questao .likert label:has(input:checked) { border-color: var(--azul); background: var(--caixa); color: var(--ciano); font-weight: bold; }
+fieldset.questao .likert label:has(input:focus-visible) { outline: 2px solid var(--ciano); outline-offset: 2px; }
+.likert-leg { display: flex; justify-content: space-between; gap: 8px; color: var(--t-888); font-size: .85rem; }
+fieldset.questao textarea { width: 100%; min-height: 70px; background: var(--fundo); color: var(--texto); border: 1px solid var(--b-555);
+  padding: 8px; }
+.ava-p { font-size: 1.1rem; }
+.ava-p .ava-n { font-size: 2.6rem; font-family: 'Courier New', Courier, monospace; color: var(--ciano); }
+.ava-item { margin: 10px 0 14px; }
+.ava-item p { margin: 0 0 2px; max-width: none; }
+.ava-bar { height: 22px; background: var(--caixa2); border: 1px solid var(--b-444); }
+.ava-bar span { display: block; height: 100%; background: var(--ciano); }
+.ava-bar.b span { background: var(--verde-claro); }
+.ava-sub { color: var(--t-aaa); font-size: .9rem; }
+.ava-p .qr-box img { width: min(320px, 80vw); height: auto; aspect-ratio: 1; }
+.ava-abertas li { margin: 0 0 6px; overflow-wrap: anywhere; }
+.ava-p .form-sug input[type="password"] { width: 100%; background: var(--fundo); color: var(--texto); border: 1px solid var(--b-555); padding: 8px; }
+
+/* pagina Instalar: frase de abertura grande, um cartao por aparelho, passos numerados em circulo */
+body[data-pagina="instalar"] .inst-lead { font-size: 1.25rem; color: var(--forte); line-height: 1.5; margin: 14px 0 8px; }
+body[data-pagina="instalar"] section { background: var(--painel); border-left: 4px solid var(--azul); padding: 4px 16px 10px; margin: 20px 0; }
+body[data-pagina="instalar"] section h2 { color: var(--ciano); margin: 12px 0 12px; }
+body[data-pagina="instalar"] ol.num { list-style: none; counter-reset: passo; margin: 0; padding: 0; }
+body[data-pagina="instalar"] ol.num li { counter-increment: passo; position: relative; padding: 2px 0 0 44px;
+                                         min-height: 32px; margin-bottom: 12px; }
+body[data-pagina="instalar"] ol.num li::before { content: counter(passo); position: absolute; left: 0; top: 0; width: 30px;
+  height: 30px; border-radius: 50%; background: var(--azul); color: white; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; font-size: .95rem; }
+body[data-pagina="instalar"] ol.num strong { color: var(--ciano); }
+/* painel da Avaliacao (projetado no encerramento): caixas neutras, botoes de acao cheios, resultados em cartoes */
+body[data-pagina="avaliacao-painel"] .ava-p > p:first-of-type { font-size: 1.15rem; color: var(--texto); }
+body[data-pagina="avaliacao-painel"] .form-sug { background: var(--painel); border: none; border-left: 4px solid var(--azul); }
+body[data-pagina="avaliacao-painel"] .form-sug > label { color: var(--ciano); font-weight: 700; font-size: 1.05rem; margin-top: 0; }
+body[data-pagina="avaliacao-painel"] .form-sug button { background: var(--bloco); border-color: var(--azul); color: var(--ciano);
+                                                       margin: 10px 8px 0 0; padding: 10px 16px; }
+body[data-pagina="avaliacao-painel"] .form-sug button.forte { background: var(--azul); color: white; font-weight: 700; }
+body[data-pagina="avaliacao-painel"] .form-sug .nota { margin-top: 12px; }
+body[data-pagina="avaliacao-painel"] #avaJanela { font-size: 1.15rem; margin: 0; }
+body[data-pagina="avaliacao-painel"] .qr-box { flex-direction: column; text-align: center; background: var(--painel); padding: 18px; }
+body[data-pagina="avaliacao-painel"] .qr-box > div { flex: none; }
+body[data-pagina="avaliacao-painel"] #avaRes h2 { color: var(--ciano); font-size: 1.2rem; border-bottom: 1px solid var(--b-444);
+                                                  padding-bottom: 6px; margin-top: 36px; }
+body[data-pagina="avaliacao-painel"] .ava-item { background: var(--painel); border-left: 4px solid var(--azul); padding: 10px 14px 12px; }
+body[data-pagina="avaliacao-painel"] .ava-item strong { color: var(--ciano); font-size: 1.1em; }
+body[data-pagina="avaliacao-painel"] .ava-bar { background: var(--bloco); border-color: var(--b-444); margin-top: 6px; }
+body[data-pagina="avaliacao-painel"] .ava-abertas { list-style: none; padding: 0; }
+body[data-pagina="avaliacao-painel"] .ava-abertas li { background: var(--painel); border-left: 4px solid var(--verde); padding: 8px 12px; margin: 0 0 8px; }
+/* modo Projetar (painel da Avaliacao): so o resultado e o QR, tela larga, letra grande, sem abas/controles/rodape */
+body.projetando .aba-toggle, body.projetando .aba-painel, body.projetando .topo-btns, body.projetando .footer,
+body.projetando .ava-p > p:first-of-type, body.projetando .ava-p .form-sug, body.projetando #avaChaveBox { display: none !important; }
+body.projetando .wrap { max-width: 1400px; padding: 24px 40px 40px; }
+body.projetando .ava-p { font-size: 1.45rem; }
+body.projetando .ava-p h1 { font-size: 2.2rem; }
+body.projetando #avaPainel { display: grid; grid-template-columns: 1fr; gap: 28px; }
+body.projetando #avaPainel:has(#avaQr:not([hidden])) { grid-template-columns: minmax(0, 1fr) 380px; }
+body.projetando #avaQr { order: 2; align-self: start; position: sticky; top: 24px; margin: 0; }
+body.projetando #avaQr img { width: 340px; height: 340px; }
+body.projetando #avaRes { order: 1; }
+body.projetando .ava-p .ava-n { font-size: 5rem; }
+body.projetando #avaRes h2 { font-size: 1.6rem; }
+body.projetando .ava-item { margin-bottom: 14px; }
+body.projetando .ava-bar { height: 30px; }
+.proj-sair { position: fixed; top: 12px; right: 12px; z-index: 1000; padding: 10px 16px; background: var(--bloco); color: var(--ciano);
+             border: 1px solid var(--azul); cursor: pointer; font: inherit; font-weight: 700; }
+.proj-sair[hidden] { display: none; }
+@media (max-width: 900px) { body.projetando #avaPainel:has(#avaQr:not([hidden])) { grid-template-columns: 1fr; } }
+/* pagina inicial no tema claro: subtitulo escuro, boas-vindas em cartao cinza com sombra, abas-guia em cartoes brancos */
+[data-tema="claro"] body[data-pagina="inicio"] .sub-t { color: #2a2a2a; }
+[data-tema="claro"] body[data-pagina="inicio"] .intro { color: #2a2a2a; }
+[data-tema="claro"] body[data-pagina="inicio"] .intro-t { color: #2D6E45; }
+[data-tema="claro"] body[data-pagina="inicio"] ul.ini-abas li { background: white; color: #2a2a2a;
+  box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] body[data-pagina="inicio"] .cabeca img:not(.ifmg) { box-shadow: 0 1px 4px rgba(0,0,0,.15); border-radius: 12px; }
+[data-tema="claro"] body[data-pagina="inicio"] .cabeca .ifmg { box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+/* pagina da sessao e cronometro do topo no tema claro: cartoes brancos, ambar e azul escurecidos para leitura */
+[data-tema="claro"] .sessao h1, [data-tema="claro"] .sessao .c-rot, [data-tema="claro"] .sessao .c-gn { color: #1B5E8C; }
+[data-tema="claro"] .sessao .s-sub, [data-tema="claro"] .sessao .s-ref, [data-tema="claro"] .sessao .c-ref { color: #5f5f5f; }
+[data-tema="claro"] .sessao .fase-t { color: #8A5A00; border-color: #B7791F; background: #FFF7E6; }
+[data-tema="claro"] .sessao .fase-t .fase-n { background: #B7791F; color: white; }
+[data-tema="claro"] .sessao .fase-2 > .fase-t { color: #1B5E8C; border-color: var(--azul); background: #EAF2FB; }
+[data-tema="claro"] .sessao .fase-2 > .fase-t .fase-n { background: var(--azul); color: white; }
+[data-tema="claro"] .sessao .fase-3 > .fase-t { color: #2D6E45; border-color: var(--verde); background: #EAF5EE; }
+[data-tema="claro"] .sessao .fase-3 > .fase-t .fase-n { background: var(--verde); color: white; }
+[data-tema="claro"] .sessao .grad-btn { background: white; color: #8A5A00; border-color: #B7791F; }
+[data-tema="claro"] .sessao .s-ex { background: white; color: #1B5E8C; }
+[data-tema="claro"] .sessao .s-ex[aria-expanded="true"], [data-tema="claro"] .sessao .s-semlivro[aria-pressed="true"],
+[data-tema="claro"] .sessao a.s-fa { background: var(--azul); color: white; }
+[data-tema="claro"] .sessao .s-caixa, [data-tema="claro"] .sessao .c-q, [data-tema="claro"] .sessao .c-ra,
+[data-tema="claro"] .sessao .c-duv { background: white; color: #1c1c1c; box-shadow: 0 1px 3px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05); }
+[data-tema="claro"] .sessao .c-qt { color: #1c1c1c; }
+[data-tema="claro"] .sessao .s-prompt { background: #f3f4f6; border-color: #d5d8dd; }
+[data-tema="claro"] .sessao .s-prompt-t { color: #2a2a2a; }
+[data-tema="claro"] .sessao .s-copiar { background: white; color: #1B5E8C; }
+[data-tema="claro"] .sessao .s-sl { background: #FFF7E6; border-left-color: #B7791F; color: #1c1c1c; }
+[data-tema="claro"] .sessao .s-fig { color: #1c1c1c; }
+[data-tema="claro"] .sessao .c-alt { background: #f3f4f6; color: #1c1c1c; border-color: #c8c8c8; }
+[data-tema="claro"] .sessao .c-alt.certa { color: #2D6E45; border-color: var(--verde); background: #eaf5ee; }
+[data-tema="claro"] .sessao .c-alt.errada { color: #5f5f5f; }
+[data-tema="claro"] .sessao .c-fb.ok, [data-tema="claro"] .sessao .etapa.fim, [data-tema="claro"] .sessao .c-gest { color: #2D6E45; }
+[data-tema="claro"] .sessao .c-fb.nao { color: #5f5f5f; }
+[data-tema="claro"] .sessao .c-aviso { color: #1B5E8C; }
+[data-tema="claro"] .sessao .c-ra input { background: white; color: #1c1c1c; border-color: #c8c8c8; }
+[data-tema="claro"] .sessao .c-ra button, [data-tema="claro"] .sessao .c-gslot button { background: white; color: #1B5E8C; }
+[data-tema="claro"] .crono-btn.rodando { color: #1B5E8C; border-color: var(--azul); }
+[data-tema="claro"] .crono-btn.aquec { color: #8A5A00; border-color: #B7791F; }
+[data-tema="claro"] .crono-btn.final { color: #2D6E45; border-color: var(--verde); }
+[data-tema="claro"] dialog.sessao-dlg p.meta { color: #1c1c1c; }
+[data-tema="claro"] dialog.sessao-dlg button:not(.principal) { background: #f3f4f6; color: #1c1c1c; border-color: #c8c8c8; }
+/* Projetar no tema claro: fundo branco, cartoes brancos com sombra, barras em azul forte (o ciano claro some no projetor) */
+[data-tema="claro"] body.projetando .ava-item, [data-tema="claro"] body.projetando .ava-abertas li,
+[data-tema="claro"] body.projetando #avaQr { background: white; box-shadow: 0 2px 6px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06); }
+[data-tema="claro"] body.projetando .ava-bar { background: #e4e6ea; border-color: #c8c8c8; }
+[data-tema="claro"] body.projetando .ava-bar span { background: var(--azul); }
+[data-tema="claro"] body.projetando .ava-bar.b span { background: var(--verde); }
+[data-tema="claro"] body.projetando .ava-item p, [data-tema="claro"] body.projetando .ava-abertas li { color: #1c1c1c; }
+[data-tema="claro"] body.projetando .ava-p .ava-n { color: #1B5E8C; }
+[data-tema="claro"] .proj-sair { background: white; color: #1B5E8C; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+/* pagina inicial: marcas maiores, titulo e subtitulo com mais presenca, boas-vindas em cartao */
+body[data-pagina="inicio"] .cabeca { margin: 4px 0 26px; gap: 18px; }
+body[data-pagina="inicio"] .cabeca img { width: 84px; height: 84px; }
+body[data-pagina="inicio"] h1 { font-size: 1.9rem; letter-spacing: .05em; margin-bottom: 14px; }
+body[data-pagina="inicio"] .sub-t { font-size: 1.25rem; color: var(--texto); line-height: 1.5; margin: 0 0 8px; }
+body[data-pagina="inicio"] .intro { background: var(--painel); border: none; border-left: 4px solid var(--verde);
+                                     padding: 20px 22px 12px; margin: 28px 0 36px; color: var(--t-c4); }
+body[data-pagina="inicio"] .intro-t { font-size: 1.05rem; }
+body[data-pagina="inicio"] .intro strong { color: var(--ciano); }
+body[data-pagina="inicio"] ul.ini-abas { list-style: none; margin: 4px 0 14px; padding: 0; }
+body[data-pagina="inicio"] ul.ini-abas li { background: var(--bloco); border-left: 4px solid var(--azul); padding: 8px 12px; margin-bottom: 8px; }
+body[data-pagina="inicio"] ul.ini-abas strong { display: block; font-weight: 700; }
+@media (max-width: 560px) {
+  body[data-pagina="inicio"] h1 { font-size: 1.45rem; }
+  body[data-pagina="inicio"] .sub-t { font-size: 1.1rem; }
+  body[data-pagina="inicio"] .cabeca img { width: 64px; height: 64px; }
+  body[data-pagina="inicio"] .intro { padding: 16px 16px 8px; }
+}
+/* pagina Agradecimentos: abertura grande; enquanto nao ha respostas, um cartao com o convite e o botao */
+body[data-pagina="agradecimentos"] .agr-lead { font-size: 1.2rem; color: var(--forte); line-height: 1.55; margin: 14px 0 20px; }
+body[data-pagina="agradecimentos"] .agr-vazio { background: var(--painel); border-left: 4px solid var(--verde); padding: 14px 16px 16px; }
+body[data-pagina="agradecimentos"] .agr-vazio .nota { color: var(--t-c4); margin: 0 0 14px; }
+body[data-pagina="agradecimentos"] .agr-btn { display: block; text-align: center; padding: 12px; background: var(--azul);
+  color: white; font-weight: 700; text-decoration: none; }
+body[data-pagina="agradecimentos"] .agr-btn:hover { filter: brightness(1.1); }
+/* pagina Enviar sugestao: abertura grande, aviso de anonimato em destaque, texto e audio em partes separadas */
+body[data-pagina="sugestoes"] .sug-lead { font-size: 1.2rem; color: var(--forte); line-height: 1.55; margin: 14px 0 12px; }
+body[data-pagina="sugestoes"] .sug-lead strong { color: var(--ciano); }
+body[data-pagina="sugestoes"] .sug-anonima { border-left: 4px solid var(--verde); background: var(--painel); color: var(--t-c4);
+                                            padding: 10px 14px; margin: 0 0 20px; }
+body[data-pagina="sugestoes"] .sug-anonima strong { color: var(--verde-claro); }
+body[data-pagina="sugestoes"] .form-sug { background: var(--painel); border: none; border-left: 4px solid var(--azul); padding: 16px; }
+body[data-pagina="sugestoes"] .form-sug > label, body[data-pagina="sugestoes"] .sug-audio > label {
+  color: var(--ciano); font-size: 1.1rem; font-weight: 700; margin: 4px 0 8px; }
+body[data-pagina="sugestoes"] .form-sug textarea { min-height: 140px; }
+body[data-pagina="sugestoes"] .sug-audio { border-top: 1px solid var(--b-444); margin-top: 20px; padding-top: 14px; }
+body[data-pagina="sugestoes"] .sug-audio button { background: var(--bloco); border-color: var(--azul); color: var(--ciano); margin: 6px 6px 0 0; }
+body[data-pagina="sugestoes"] #btnEnviar { display: block; width: 100%; margin-top: 20px; padding: 12px; background: var(--azul);
+  border-color: var(--azul); color: white; font-weight: 700; font-size: 1.05rem; }
+body[data-pagina="sugestoes"] .msg-ok { border-left: 4px solid var(--verde); background: var(--painel); padding: 12px 14px; }
+/* questionarios Estilo e Avaliacao: caixas em cinza neutro, perguntas em cartoes, alternativas como botoes de toque */
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .form-sug, body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .progresso, body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .regras,
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .dim-barra, body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .grupo-barra { background: var(--bloco); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) h2 { color: var(--ciano); font-size: 1.2rem; border-bottom: 1px solid var(--b-444); padding-bottom: 6px; margin-top: 40px; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .form-sug { border: none; border-left: 4px solid var(--azul); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .form-sug .nota { margin-top: 14px; font-size: .95rem; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .form-sug button { background: var(--painel); border-color: var(--azul); color: var(--ciano); margin-top: 12px; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao { background: var(--painel); border: none; border-left: 4px solid var(--b-555); padding: 14px 14px 10px; margin: 0 0 16px; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao.ok { border-left-color: var(--verde); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao legend { float: left; width: 100%; padding: 0; margin: 0 0 10px; color: var(--forte); font-weight: 700; line-height: 1.5; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao legend + * { clear: both; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao .q-num { display: inline-block; background: var(--bloco); color: var(--ciano); padding: 0 6px; margin-right: 6px;
+                          font-weight: 400; }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao > label { border: 1px solid var(--b-444); padding: 10px 12px; margin: 0 0 8px; color: var(--t-ddd); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) fieldset.questao > label:has(input:checked) { border-color: var(--azul); background: var(--bloco); color: var(--forte); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .progresso { border: none; border-top: 2px solid var(--azul); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .progresso button { background: var(--azul); color: white; font-weight: 700; border-color: var(--azul); }
+body:is([data-pagina="estilo"], [data-pagina="avaliacao"]) .progresso button:disabled { background: var(--painel); color: var(--t-888); border-color: var(--b-444); opacity: 1; }
+
+/* resultado do Estilo: cada dimensao em cartao, barra mais alta, prompts agrupados por dimensao, historico legivel */
+/* painel do grupo: total em destaque, cada dimensao em cartao como no resultado, barra mais alta */
+body[data-pagina="estilo"] #estGrupo > p:first-child { font-size: 1.1rem; margin: 6px 0 14px; }
+body[data-pagina="estilo"] #estGrupo > p:first-child strong { font-family: 'Courier New', Courier, monospace; font-size: 2.2rem;
+                                                             color: var(--ciano); margin-right: 4px; }
+body[data-pagina="estilo"] #estGrupo .dim { background: var(--painel); border-left: 4px solid var(--azul); padding: 12px 14px; margin: 0 0 12px; }
+body[data-pagina="estilo"] .grupo-barra { height: 26px; margin: 8px 0; border-color: var(--b-555); }
+body[data-pagina="estilo"] .grupo-leg { font-size: .88rem; margin: 0; line-height: 1.5; }
+body[data-pagina="estilo"] #estGrupo > .nota:last-child { font-size: .9rem; margin-top: 4px; }
+body[data-pagina="estilo"] #estRes .dim { background: var(--painel); border-left: 4px solid var(--azul); padding: 12px 14px; margin: 0 0 12px; }
+body[data-pagina="estilo"] .dim-polos { font-weight: 700; color: var(--texto); }
+body[data-pagina="estilo"] .dim-polos span:first-child { color: var(--ciano); }
+body[data-pagina="estilo"] .dim-polos span:last-child { color: var(--verde-claro); }
+body[data-pagina="estilo"] .dim-barra { height: 20px; margin: 8px 0; border-color: var(--b-555); }
+body[data-pagina="estilo"] .dim-grau { color: var(--t-c4); }
+body[data-pagina="estilo"] .regras { border-left-color: var(--verde); padding: 12px 16px; }
+body[data-pagina="estilo"] .regras .p-rot { color: var(--verde-claro); font-weight: 700; margin-top: 0; }
+body[data-pagina="estilo"] #estDicas .p-dim { color: var(--ciano); font-size: 1.15rem; border-top: 2px solid var(--azul);
+                                             padding-top: 12px; margin: 28px 0 4px; }
+body[data-pagina="estilo"] #estDicas .p-dim span { color: var(--t-aaa); font-weight: 400; font-size: .9rem; }
+body[data-pagina="estilo"] #estDicas .p-rot { color: var(--verde-claro); font-weight: 700; font-size: .95rem; margin: 14px 0 6px; }
+body[data-pagina="estilo"] #estDicas .prompt { background: var(--painel); border: none; border-left: 4px solid var(--b-555); padding: 12px 14px; }
+body[data-pagina="estilo"] #estDicas .prompt .copiar { background: var(--bloco); padding: 8px 16px; margin-top: 4px; }
+body[data-pagina="estilo"] table.hist { background: var(--painel); }
+body[data-pagina="estilo"] table.hist th { color: var(--ciano); font-weight: 700; border-bottom: 2px solid var(--azul); }
+body[data-pagina="estilo"] table.hist th, body[data-pagina="estilo"] table.hist td { padding: 8px 2px; overflow-wrap: normal; }
+body[data-pagina="estilo"] table.hist th:first-child, body[data-pagina="estilo"] table.hist td:first-child { width: 34%; padding-left: 8px; }
+body[data-pagina="estilo"] table.hist th { font-size: .8rem; }
+body[data-pagina="estilo"] table.hist td:not(:first-child), body[data-pagina="estilo"] table.hist th:not(:first-child) {
+  text-align: center; font-family: 'Courier New', Courier, monospace; }
+/* Avaliacao: abertura, aviso de anonimato e escala 1-5 no mesmo padrao */
+body[data-pagina="avaliacao"] .ava-lead { font-size: 1.2rem; color: var(--forte); line-height: 1.55; margin: 14px 0 12px; }
+body[data-pagina="avaliacao"] .ava-anonima { border-left: 4px solid var(--verde); background: var(--painel); color: var(--t-c4);
+                                            padding: 10px 14px; margin: 0 0 20px; }
+body[data-pagina="avaliacao"] .ava-anonima strong { color: var(--verde-claro); }
+body[data-pagina="avaliacao"] #avaFechada { border-left: 4px solid var(--azul); background: var(--painel); padding: 12px 14px; }
+body[data-pagina="avaliacao"] fieldset.questao .likert label { border-color: var(--b-444); background: var(--bloco); padding: 10px 2px; }
+body[data-pagina="avaliacao"] fieldset.questao .likert label:has(input:checked) { border-color: var(--azul); background: var(--azul); color: white; }
+body[data-pagina="avaliacao"] fieldset.questao .likert-leg { color: var(--t-aaa); font-size: .9rem; margin-top: 6px; }
+body[data-pagina="avaliacao"] fieldset.questao textarea { background: var(--fundo); }
+body[data-pagina="avaliacao"] section > p { color: var(--t-c4); }
+/* Avaliacao: Sim/Talvez/Nao lado a lado como botoes; barra de envio compacta em uma linha; caixas de texto maiores */
+body[data-pagina="avaliacao"] fieldset.questao > label { display: inline-flex; justify-content: center; align-items: center;
+  width: calc((100% - 28px) / 3); margin: 0 8px 0 0; padding: 12px 4px; font-weight: 700; background: var(--bloco); }
+body[data-pagina="avaliacao"] fieldset.questao > label:nth-of-type(3) { margin-right: 0; }
+body[data-pagina="avaliacao"] fieldset.questao > label input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+body[data-pagina="avaliacao"] fieldset.questao > label:has(input:checked) { background: var(--azul); border-color: var(--azul); color: white; }
+body[data-pagina="avaliacao"] fieldset.questao > label:has(input:focus-visible) { outline: 2px solid var(--ciano); outline-offset: 2px; }
+body[data-pagina="avaliacao"] fieldset.questao textarea { min-height: 96px; border-color: var(--b-555); padding: 10px; }
+body[data-pagina="avaliacao"] fieldset.questao legend .nota { font-weight: 400; font-size: .9rem; }
+body[data-pagina="avaliacao"] .progresso { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 10px 12px; }
+body[data-pagina="avaliacao"] .progresso span { flex: 1 1 auto; min-width: 0; font-size: .85rem; line-height: 1.35; }
+body[data-pagina="avaliacao"] .progresso button { white-space: nowrap; flex: none; }
+@media (max-width: 800px) {
+  .wrap { padding-left: 46px; }          /* as abas fixas nao cobrem o texto */
+}
+@media (max-width: 560px) {
+  .wrap { padding: 58px 14px 28px 40px; }      /* 58: abaixo dos botoes fixos do topo */
+  h1 { font-size: 1.3rem; }
+  .cabeca { gap: 10px; }
+  .cabeca img { width: 56px; height: 56px; }
+  .intro { padding: 16px 14px; }
+}
+
+/* ---- destino FC1 (gerar_site_oia.py, PRE-site-fc1-oa-sessoes-livro-t11-t18-2026-10-10) ---- */
+:root { --azul: #D9822B; --verde: #3FAE6A; --ciano: #F2C94C; --fundo: #101217; --caixa: #1d1b16; --caixa2: #17161a;
+        --ouro: #F2C94C; --cinza: #9a9a9a; }
+:root[data-tema="claro"] { --ciano: #7A5600; --fundo: #ffffff; --caixa: #fbf5e6; --caixa2: #fdfaf2; --ouro: #9A6B00;
+        --cinza: #5f5f5f; }
+.crono-btn.rodando { border-color: #2E86C1; color: #8FE0FF; }
+[data-tema="claro"] .crono-btn.rodando { border-color: #2E86C1; color: #1B5E8C; }
+.header { border-top: 3px solid var(--ouro); background: var(--painel); padding: 14px 16px; margin: 0 0 16px; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; }
+.sessao .header h1, [data-tema="claro"] .sessao .header h1 { font-family: inherit; font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: none;
+             color: var(--forte); border: none; padding: 0; margin: 0; line-height: 1.25; overflow-wrap: anywhere; }
+.sessao .header h1 .trilha-code { color: var(--azul); }
+.badge { display: inline-block; background: var(--azul); color: #fff; padding: 4px 12px; font-size: .68rem; font-weight: 700;
+         text-transform: uppercase; letter-spacing: 2px; }
+.header-sub { margin: 6px 0 0; font-size: .88rem; color: var(--cinza); max-width: none; }
+.piazzi-bar { display: flex; align-items: center; justify-content: center; gap: 8px 10px; flex-wrap: wrap; background: var(--painel);
+              border: 1px solid var(--b-444); padding: 10px 14px; margin: 0 0 18px; font-size: .78rem; text-align: center; }
+.piazzi-bar .piazzi-ref { color: var(--cinza); }
+.piazzi-bar .piazzi-tag { border: 1px solid var(--ouro); color: var(--ouro); padding: 2px 10px; font-size: .72rem;
+                          font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.piazzi-bar .piazzi-text { color: var(--texto); font-style: italic; font-size: .74rem; }
+.piazzi-bar .piazzi-yt { display: inline-flex; align-items: center; gap: 5px; background: #C0392B; color: #fff;
+                         padding: 4px 12px; font-size: .72rem; font-weight: 700; text-decoration: none; }
+.piazzi-bar .piazzi-yt::before { content: '\25B6'; font-size: .6rem; }
+.encerramento { border-top: 2px solid var(--ouro); text-align: center; margin: 36px 0 0; padding: 22px 8px 6px; }
+.encerramento > div { max-width: none; }
+.encerramento .fecho-frase { font-family: Georgia, Cambria, 'Times New Roman', serif; font-size: 1.02rem; line-height: 1.5; }
+.encerramento .fecho-acao { color: var(--ouro); font-size: .95rem; text-transform: uppercase; font-weight: 700; margin-top: 10px;
+                            line-height: 1.5; }
+.encerramento .fecho-nidec { color: var(--cinza); font-size: .9rem; margin-top: 14px; line-height: 1.55; }
+.fecho-marcas { display: flex; width: fit-content; gap: 14px; align-items: center; margin: 0 auto 10px; }
+.fecho-marcas svg { width: 30px; height: 30px; display: block; }
+.footer-line { text-align: center; font-size: .85rem; color: var(--cinza); padding: 16px 12px; line-height: 1.5; max-width: none; }
+@media (max-width: 560px) { .header h1 { font-size: 1.25rem; } }

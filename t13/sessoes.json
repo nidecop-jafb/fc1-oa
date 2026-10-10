@@ -1,0 +1,31 @@
+{
+ "trilha": "T13",
+ "semana": "09/11/2026",
+ "tema": 7,
+ "titulo": "Gravitação",
+ "aula": {
+  "tema": 7,
+  "titulo": "Gravitação",
+  "ini": 106,
+  "fim": 117
+ },
+ "pre": {
+  "id": "T07-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 116,
+  "fim": 117,
+  "mts": "Atividades finais",
+  "tema": 7
+ },
+ "pos": {
+  "id": "T08-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 118,
+  "fim": 125,
+  "mts": "As várias formas de energia; Fontes de energia; Trabalho; Energia cinética",
+  "tema": 8
+ },
+ "fa": "fa/"
+}

@@ -1,0 +1,31 @@
+{
+ "trilha": "T17",
+ "semana": "07/12/2026",
+ "tema": 11,
+ "titulo": "O Sistema Solar",
+ "aula": {
+  "tema": 11,
+  "titulo": "O Sistema Solar",
+  "ini": 164,
+  "fim": 174
+ },
+ "pre": {
+  "id": "T11-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 173,
+  "fim": 174,
+  "mts": "Surgimento do Sistema Solar e do planeta Terra .170 Trabalho em foco; Atividades finais",
+  "tema": 11
+ },
+ "pos": {
+  "id": "T12-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 175,
+  "fim": 184,
+  "mts": "A teoria do big bang; Ciência na prática; Modelos cosmológicos; Evolução estelar e a formação dos elementos químicos",
+  "tema": 12
+ },
+ "fa": "fa/"
+}

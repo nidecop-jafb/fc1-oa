@@ -1,0 +1,31 @@
+{
+ "trilha": "T12",
+ "semana": "02/11/2026",
+ "tema": 6,
+ "titulo": "Leis de Newton e força",
+ "aula": {
+  "tema": 6,
+  "titulo": "Leis de Newton e força",
+  "ini": 100,
+  "fim": 105
+ },
+ "pre": {
+  "id": "T06-S3",
+  "sess": 3,
+  "total": 3,
+  "ini": 100,
+  "fim": 105,
+  "mts": "Força centrípeta; Atividades finais",
+  "tema": 6
+ },
+ "pos": {
+  "id": "T07-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 106,
+  "fim": 115,
+  "mts": "Introdução ao estudo da gravitação; As leis de Kepler; Gravitação universal",
+  "tema": 7
+ },
+ "fa": "fa/"
+}

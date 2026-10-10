@@ -114,6 +114,8 @@
     a.oa.extra .tag { margin-left: 0; }
   }
   .oa .num { display: inline-block; min-width: 1.6em; color: var(--ouro); }
+  /* Trilhas do livro (T11+, Plano v3): a semana do encontro abre o cartao */
+  .semana { font-family: 'Courier New', monospace; font-size: .95rem; color: var(--verde); margin: 6px 0 0; }
   .oa.offline { display: block; padding: 14px 18px; border: 1px dashed #444; color: #9a9a9a; font-family: 'Courier New', monospace; font-size: .95rem; }
   .oa.offline .num { color: #9a9a9a; }
   .oa.offline .tag { color: #7f7f7f; font-size: .8rem; margin-left: 10px; }
@@ -207,6 +209,14 @@
     <li><b>Tarefa Complementar (TC)</b> — até 3 dias após a aula<br><span class="aba-nota">Repetição espaçada: voltar quando a lembrança já começou a cair rende muito mais do que repetir tudo no mesmo dia. É a resposta direta à curva do esquecimento.</span></li>
     <li><b>Trabalho (TR)</b> — vale nota · até 6 dias após a aula · peso 20%<br><span class="aba-nota">Segundo intervalo de espaçamento, agora com transferência: aplicar o conceito a um problema novo é o que transforma memória em competência.</span></li>
   </ol>
+  <div class="aba-sec">Da Trilha 11 em diante</div>
+  <p>Da Trilha 11 em diante, cada trilha é um encontro sobre o livro <em>Física Identidade</em> (Bonjorno), a partir do Tema 06, Leis de Newton e força. A Pré-aula e a Pós-aula são uma sessão de estudo de 30 min cada, aberta no site, com o livro impresso e o caderno; no meio, a aula presencial de 100 min.</p>
+  <ol>
+    <li><b>Fase 1 · Aquecimento — até 10 min</b><br><span class="aba-nota">Responda no celular as 3 perguntas iniciais, abra o livro na página da sessão, ouça o Resumo em Áudio e refaça o exemplo resolvido.</span></li>
+    <li><b>Fase 2 · Estudo focado — até 15 min</b><br><span class="aba-nota">Resolva no caderno 3 questões do livro pelos 5 passos, cada uma com a resolução condensada. Travou? Grave a dúvida em áudio logo abaixo da questão.</span></li>
+    <li><b>Fase 3 · Atividade final — até 5 min</b><br><span class="aba-nota">Analise e refine: refaça a questão em que mais travou e use o prompt da página para a IA apontar o primeiro erro, sem dar a resposta. Na última sessão do tema, faça também a Folha de Atividades e entregue na monitoria.</span></li>
+  </ol>
+  <p class="parada-porque">Toque no cronômetro, no alto da página da sessão, e aperte “Começar o aquecimento”. Ele passa de uma fase para a outra sozinho, avisa quando falta 1 minuto e, aos 30, é hora da pausa.</p>
   <div class="aba-sec">Resolução Científica do Problema (RCP) — os 5 passos</div>
   <div class="rcp-ramo rcp-quant">
     <p class="rcp-t">Pensamento Quantitativo</p>
@@ -362,7 +372,7 @@
 <!-- ENTREGAS:FIM -->
 
 <!-- TRILHAS:INICIO -->
-  <nav class="trilha-nav" aria-label="Ir para a trilha"><a href="#t01">T01</a> <a href="#t02">T02</a> <a href="#t03">T03</a> <a href="#t04">T04</a> <a href="#t05">T05</a> <a href="#t06">T06</a> <a href="#t07">T07</a> <a href="#t08">T08</a> <a href="#t09">T09</a> <a href="#t10">T10</a></nav>
+  <nav class="trilha-nav" aria-label="Ir para a trilha"><a href="#t01">T01</a> <a href="#t02">T02</a> <a href="#t03">T03</a> <a href="#t04">T04</a> <a href="#t05">T05</a> <a href="#t06">T06</a> <a href="#t07">T07</a> <a href="#t08">T08</a> <a href="#t09">T09</a> <a href="#t10">T10</a> <a href="#t11">T11</a> <a href="#t12">T12</a> <a href="#t13">T13</a> <a href="#t14">T14</a> <a href="#t15">T15</a> <a href="#t16">T16</a> <a href="#t17">T17</a> <a href="#t18">T18</a></nav>
 
   <details class="trilha" id="t01">
   <summary>T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</summary>
@@ -664,6 +674,173 @@
     <li><a class="oa" href="t10/tm/"><b class="num">1</b>Tarefa Mínima (TM)<span class="tag">vale nota · no mesmo dia da aula</span></a></li>
     <li><a class="oa" href="t10/tc/"><b class="num">2</b>Tarefa Complementar (TC)<span class="tag">até 3 dias após a aula</span></a></li>
     <li><a class="oa" href="t10/tr/"><b class="num">3</b>Trabalho (TR)<span class="tag">vale nota · até 6 dias após a aula · peso 20%</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t11">
+  <summary>T11 &middot; Leis de Newton e força</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 26/10/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t11/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 06 &middot; sess&atilde;o 1 de 3 &middot; p. 84&ndash;91 &middot; 30 min</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 06 &mdash; Leis de Newton e força<span class="tag">livro, p. 84&ndash;99 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t11/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 06 &middot; sess&atilde;o 2 de 3 &middot; p. 92&ndash;99 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t12">
+  <summary>T12 &middot; Leis de Newton e força</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 02/11/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t12/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 06 &middot; sess&atilde;o 3 de 3 &middot; p. 100&ndash;105 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t12/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 06 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 06 &mdash; Leis de Newton e força<span class="tag">livro, p. 100&ndash;105 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t12/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 07 &middot; sess&atilde;o 1 de 2 &middot; p. 106&ndash;115 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t13">
+  <summary>T13 &middot; Gravitação</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 09/11/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t13/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 07 &middot; sess&atilde;o 2 de 2 &middot; p. 116&ndash;117 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t13/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 07 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 07 &mdash; Gravitação<span class="tag">livro, p. 106&ndash;117 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t13/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 08 &middot; sess&atilde;o 1 de 2 &middot; p. 118&ndash;125 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t14">
+  <summary>T14 &middot; Energia, potência e trabalho</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 16/11/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t14/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 08 &middot; sess&atilde;o 2 de 2 &middot; p. 126&ndash;132 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t14/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 08 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 08 &mdash; Energia, potência e trabalho<span class="tag">livro, p. 118&ndash;132 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t14/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 09 &middot; sess&atilde;o 1 de 2 &middot; p. 133&ndash;139 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t15">
+  <summary>T15 &middot; Movimento: do impulso à conservação</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 23/11/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t15/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 09 &middot; sess&atilde;o 2 de 2 &middot; p. 140&ndash;144 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t15/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 09 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 09 &mdash; Movimento: do impulso à conservação<span class="tag">livro, p. 133&ndash;144 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t15/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 10 &middot; sess&atilde;o 1 de 2 &middot; p. 145&ndash;155 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t16">
+  <summary>T16 &middot; Hidrostática e Hidrodinâmica</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 30/11/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t16/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 10 &middot; sess&atilde;o 2 de 2 &middot; p. 156&ndash;163 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t16/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 10 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 10 &mdash; Hidrostática e Hidrodinâmica<span class="tag">livro, p. 145&ndash;163 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t16/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 11 &middot; sess&atilde;o 1 de 2 &middot; p. 164&ndash;172 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t17">
+  <summary>T17 &middot; O Sistema Solar</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 07/12/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t17/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 11 &middot; sess&atilde;o 2 de 2 &middot; p. 173&ndash;174 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t17/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 11 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 11 &mdash; O Sistema Solar<span class="tag">livro, p. 164&ndash;174 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t17/pos/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 12 &middot; sess&atilde;o 1 de 2 &middot; p. 175&ndash;184 &middot; 30 min</span></a></li>
+  </ul>
+  </div>
+  </details>
+
+  <details class="trilha" id="t18">
+  <summary>T18 &middot; O Universo</summary>
+  <div class="trilha-corpo">
+  <p class="semana">Semana de 14/12/2026 &middot; livro <em>F&iacute;sica Identidade</em> (Bonjorno)</p>
+  <p class="parada">Pr&eacute;-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><a class="oa" href="t18/pre/"><b class="num">1</b>Sess&atilde;o de estudo<span class="tag">Tema 12 &middot; sess&atilde;o 2 de 2 &middot; p. 185&ndash;191 &middot; 30 min</span></a></li>
+    <li><a class="oa" href="t18/fa/"><b class="num">2</b>Folha de Atividades (FA)<span class="tag">Tema 12 &middot; &agrave; m&atilde;o &middot; entregar na monitoria</span></a></li>
+  </ul>
+  <p class="parada">Aula <span>&middot; presencial, 100 min</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Tema 12 &mdash; O Universo<span class="tag">livro, p. 175&ndash;191 &middot; os 5 passos no quadro</span></span></li>
+    <li><span class="oa offline"><b class="num">2</b>Provinha (PR)<span class="tag">em sala &middot; em breve</span></span></li>
+  </ul>
+  <p class="parada">P&oacute;s-aula <span>&middot; sess&atilde;o de 30 min, em casa</span></p>
+  <ul>
+    <li><span class="oa offline"><b class="num">1</b>Revis&atilde;o livre<span class="tag">refa&ccedil;a as quest&otilde;es em que mais travou</span></span></li>
   </ul>
   </div>
   </details>

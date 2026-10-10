@@ -1,0 +1,31 @@
+{
+ "trilha": "T14",
+ "semana": "16/11/2026",
+ "tema": 8,
+ "titulo": "Energia, potência e trabalho",
+ "aula": {
+  "tema": 8,
+  "titulo": "Energia, potência e trabalho",
+  "ini": 118,
+  "fim": 132
+ },
+ "pre": {
+  "id": "T08-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 126,
+  "fim": 132,
+  "mts": "Energia potencial; Energia mecânica; Potência mecânica e rendimento; Atividades finais",
+  "tema": 8
+ },
+ "pos": {
+  "id": "T09-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 133,
+  "fim": 139,
+  "mts": "Impulso; Quantidade de movimento; Ciência na prática",
+  "tema": 9
+ },
+ "fa": "fa/"
+}

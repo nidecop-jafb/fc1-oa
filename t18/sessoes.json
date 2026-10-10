@@ -1,0 +1,23 @@
+{
+ "trilha": "T18",
+ "semana": "14/12/2026",
+ "tema": 12,
+ "titulo": "O Universo",
+ "aula": {
+  "tema": 12,
+  "titulo": "O Universo",
+  "ini": 175,
+  "fim": 191
+ },
+ "pre": {
+  "id": "T12-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 185,
+  "fim": 191,
+  "mts": "Zona habitável e Astrobiologia; Trabalho em foco; Atividades finais",
+  "tema": 12
+ },
+ "pos": null,
+ "fa": "fa/"
+}

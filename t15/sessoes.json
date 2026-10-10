@@ -1,0 +1,31 @@
+{
+ "trilha": "T15",
+ "semana": "23/11/2026",
+ "tema": 9,
+ "titulo": "Movimento: do impulso à conservação",
+ "aula": {
+  "tema": 9,
+  "titulo": "Movimento: do impulso à conservação",
+  "ini": 133,
+  "fim": 144
+ },
+ "pre": {
+  "id": "T09-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 140,
+  "fim": 144,
+  "mts": "Colisões mecânicas; Atividades finais",
+  "tema": 9
+ },
+ "pos": {
+  "id": "T10-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 145,
+  "fim": 155,
+  "mts": "Pressão hidrostática; Teorema de Stevin e princípio de Pascal; Princípio de Arquimedes",
+  "tema": 10
+ },
+ "fa": "fa/"
+}

@@ -1,0 +1,31 @@
+{
+ "trilha": "T16",
+ "semana": "30/11/2026",
+ "tema": 10,
+ "titulo": "Hidrostática e Hidrodinâmica",
+ "aula": {
+  "tema": 10,
+  "titulo": "Hidrostática e Hidrodinâmica",
+  "ini": 145,
+  "fim": 163
+ },
+ "pre": {
+  "id": "T10-S2",
+  "sess": 2,
+  "total": 2,
+  "ini": 156,
+  "fim": 163,
+  "mts": "Tensão superficial e capilaridade; Hidrodinâmica; Atividades finais",
+  "tema": 10
+ },
+ "pos": {
+  "id": "T11-S1",
+  "sess": 1,
+  "total": 2,
+  "ini": 164,
+  "fim": 172,
+  "mts": "A primeira das ciências; Corpos celestes do Sistema Solar",
+  "tema": 11
+ },
+ "fa": "fa/"
+}
