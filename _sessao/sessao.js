@@ -40,7 +40,8 @@
     var f = fila();
     if (enviando || !f.length || !online()) { return; }
     enviando = true;
-    fetch(S.url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(f[0]) })
+    /* item com _url: vai ao coletor da FC1 (METODO_FC1); sem _url: Apps Script da LME (METODO da OIA) */
+    fetch(f[0]._url || S.url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(f[0]) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
         var g = fila(); g.shift(); guardar(P + 'metodo-fila', JSON.stringify(g)); enviando = false;
@@ -65,8 +66,14 @@
     var ra = lerRA(), p = placar(), f;
     if (!ra) { aviso('Digite o seu RA acima para enviar as respostas.'); return; }
     f = fila();
-    f.push({ tipo_msg: 'METODO', disciplina: DISC, trilha: S.trilha || '', ra: ra, sessao: S.id, etapa: 'antes',
-             respostas: resp.map(function (x) { return LETRA.charAt(x.escolha); }).join(''), acertos: p.a });
+    if (DISC === 'FC1') {   /* FC1: coletor da propria FC1, com parada e as certas para o diagnostico (F30) */
+      f.push({ _url: S.coleta, tipo: 'METODO_FC1', ra: ra, trilha: S.trilha, sessao: S.id, parada: S.parada,
+               respostas: resp.map(function (x) { return LETRA.charAt(x.escolha); }).join(''),
+               certas: resp.map(function (x, qi) { return x.escolha === S.banco[qi].c ? '1' : '0'; }).join(''), acertos: p.a });
+    } else {
+      f.push({ tipo_msg: 'METODO', disciplina: DISC, trilha: S.trilha || '', ra: ra, sessao: S.id, etapa: 'antes',
+               respostas: resp.map(function (x) { return LETRA.charAt(x.escolha); }).join(''), acertos: p.a });
+    }
     guardar(P + 'metodo-fila', JSON.stringify(f));
     enviarFila();
   }
@@ -346,10 +353,62 @@
     if (gravar) { guardar(P + 'semlivro-' + S.id, liga ? '1' : ''); }
   }
 
+  /* ---- Analise e refine (so FC1, F30): passo do primeiro erro + foto do caderno -> coletor da FC1, tipo REFINE.
+     Fila de 1 item: em memoria e, se couber, no aparelho (a foto pode nao caber no localStorage). ---- */
+  var rfMem = null, enviandoRf = false;
+  function estadoRf(m) { var el = $('.c-rf-est'); if (el) { el.textContent = m; el.hidden = !m; } }
+  function pendenteRf() { if (rfMem) { return rfMem; } try { return JSON.parse(ler(P + 'refine-fila') || 'null'); } catch (x) { return null; } }
+  function enviarRefine() {
+    var it = pendenteRf();
+    if (enviandoRf || !it || !S.coleta || location.protocol.indexOf('http') !== 0) { return; }
+    enviandoRf = true;
+    fetch(S.coleta, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(it) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        enviandoRf = false; rfMem = null; guardar(P + 'refine-fila', '');
+        if (res.ok) { guardar(P + 'refine-' + S.id, 'enviada'); estadoRf('Foto enviada ✓'); }
+        else { estadoRf('Foto recusada: ' + (res.erro || 'tente de novo.')); }
+      })
+      .catch(function () { enviandoRf = false; estadoRf('Sem conexão: a foto vai quando a internet voltar (não feche a página).'); });
+  }
+  function reduzirFoto(arq) {   /* lado maior 1600 px, JPEG; baixa a qualidade ate caber no teto do coletor */
+    return new Promise(function (ok, falha) {
+      var url = URL.createObjectURL(arq), im = new Image();
+      im.onload = function () {
+        var k = Math.min(1, 1600 / Math.max(im.width, im.height)), c = document.createElement('canvas'), q = 0.7, d;
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        d = c.toDataURL('image/jpeg', q);
+        while (d.length > 2000000 && q > 0.3) { q -= 0.15; d = c.toDataURL('image/jpeg', q); }
+        ok(d.split(',')[1]);
+      };
+      im.onerror = falha; im.src = url;
+    });
+  }
+  function fotoRefine(inp) {
+    var arq = inp.files && inp.files[0], ra = lerRA(), marcado = document.querySelector('input[name="rfPasso"]:checked');
+    inp.value = '';
+    if (!arq) { return; }
+    if (!ra) { estadoRf('Digite o seu RA no começo da página (Fase 1) para enviar a foto.'); return; }
+    if (!marcado) { estadoRf('Marque antes em que passo estava o primeiro erro.'); return; }
+    estadoRf('Preparando a foto…');
+    reduzirFoto(arq).then(function (b64) {
+      rfMem = { tipo: 'REFINE', ra: ra, trilha: S.trilha, sessao: S.id, parada: S.parada, passo: +marcado.value,
+                foto_b64: b64, foto_mime: 'image/jpeg' };
+      guardar(P + 'refine-fila', JSON.stringify(rfMem));
+      estadoRf('Na fila…'); enviarRefine();
+    }).catch(function () { estadoRf('Não consegui ler a foto: tire de novo.'); });
+  }
+
   function iniciarPagina() {
     semLivro(ler(P + 'semlivro-' + S.id) === '1', false);
     blocoRA(); revisao(); cartoes(); marcarPassos(); desenharDuvidas(); gradativo(); cronometro();
     enviarFila(); enviarDuvidas();
+    if ($('.c-refine')) {
+      if (ler(P + 'refine-' + S.id) === 'enviada') { estadoRf('Foto já enviada ✓ Refez de novo? Pode enviar outra.'); }
+      enviarRefine();
+      document.addEventListener('change', function (ev) { if (ev.target.classList && ev.target.classList.contains('c-foto')) { fotoRefine(ev.target); } });
+    }
     document.addEventListener('click', function (ev) {
       var t = ev.target, c = t.classList;
       if (!c) { return; }

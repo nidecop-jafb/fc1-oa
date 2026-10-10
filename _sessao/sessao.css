@@ -813,3 +813,10 @@ body[data-pagina="avaliacao"] .progresso button { white-space: nowrap; flex: non
 .fecho-marcas svg { width: 30px; height: 30px; display: block; }
 .footer-line { text-align: center; font-size: .85rem; color: var(--cinza); padding: 16px 12px; line-height: 1.5; max-width: none; }
 @media (max-width: 560px) { .header h1 { font-size: 1.25rem; } }
+/* Analise e refine (F30): passo do primeiro erro + foto do caderno */
+.c-refine { margin-top: 12px; }
+.c-refine label { display: block; padding: 4px 0; cursor: pointer; }
+.c-refine .c-foto-btn { display: inline-block; margin: 10px 0 4px; padding: 10px 16px; min-height: 44px; border: 2px solid var(--verde);
+                        color: var(--forte); font-weight: 700; }
+.c-refine .c-foto-btn input { display: none; }
+.c-refine .c-rf-est { font-weight: 700; color: var(--verde); margin: 4px 0; }
