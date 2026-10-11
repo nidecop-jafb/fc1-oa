@@ -747,35 +747,35 @@ const BANCO = {
       "pts": 6,
       "tipo": "VF",
       "tipoLabel": "Pensamento Qualitativo",
-      "enunciado": "Numa visita ao Museu de Ciência e Técnica da Escola de Minas, um estudante afirmou: <em>“O ferro das rochas do Quadrilátero Ferrífero foi produzido aqui mesmo, na Terra.”<\/em> <strong>Julgue uma por uma: marque V ou F em cada afirmação.<\/strong>",
+      "enunciado": "Depois de um documentário sobre estrelas, um estudante afirmou: <em>“Um dia o Sol vai explodir como uma supernova e destruir o Sistema Solar.”<\/em> <strong>Julgue uma por uma: marque V ou F em cada afirmação.<\/strong>",
       "afirmacoes": [
         {
-          "texto": "Nos primeiros minutos do Universo, formaram-se principalmente hidrogênio e hélio.",
+          "texto": "Uma estrela passa a maior parte da vida fundindo hidrogênio em hélio no núcleo.",
           "correta": "V",
-          "just": "Nucleossíntese primordial."
+          "just": "É a fase mais longa, em que o Sol está hoje."
         },
         {
-          "texto": "Elementos mais pesados, como carbono e oxigênio, formam-se por fusão no interior das estrelas.",
+          "texto": "O fim da vida de uma estrela depende principalmente da massa dela.",
           "correta": "V",
-          "just": "Livro, Tema 12."
+          "just": "A massa define a evolução estelar."
         },
         {
-          "texto": "O ferro das rochas do Quadrilátero Ferrífero foi produzido na Terra, por processos geológicos.",
+          "texto": "O Sol vai terminar a vida explodindo como uma supernova.",
           "correta": "F",
-          "just": "Processos geológicos concentram o ferro, mas os átomos de ferro foram feitos em estrelas. Erro E5 — modelo mental."
+          "just": "O Sol tem massa pequena demais para isso: vai inchar como gigante vermelha e terminar como anã branca. Erro E5 — modelo mental."
         },
         {
-          "texto": "O ferro foi produzido em estrelas e espalhado no espaço quando elas morreram, antes de a Terra se formar.",
+          "texto": "Estrelas com massa muito maior que a do Sol podem terminar como supernovas.",
           "correta": "V",
-          "just": "Supernovas e estrelas massivas."
+          "just": "Só as estrelas massivas."
         },
         {
-          "texto": "A Terra e o Sol se formaram de uma nuvem de gás e poeira que já continha esses elementos.",
+          "texto": "Supernovas espalham no espaço elementos fabricados no interior da estrela.",
           "correta": "V",
-          "just": "Nebulosa solar."
+          "just": "Material de novas estrelas e planetas."
         }
       ],
-      "feedbackGeral": "Função pedagógica: separar a origem dos átomos (estrelas) da concentração do minério (geologia). Resolução condensada: O átomo de ferro veio das estrelas; a geologia só o concentrou. V V F V V."
+      "feedbackGeral": "Função pedagógica: ligar o destino de uma estrela à sua massa e corrigir a ideia de que o Sol vai explodir. Resolução condensada: O destino depende da massa; o Sol termina como anã branca, não como supernova. V V F V V."
     }
   ]
 };
@@ -1413,7 +1413,7 @@ function exportJSON() {
   const a = document.createElement('a');
   a.href = url;
   const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
-  a.download = `T18-PR-v1-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.download = `T18-PR-v2-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'Comprovante exportado com sucesso');
@@ -1625,11 +1625,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T18-PR-v1-estudante.html
+   Arquivo fonte: T18-PR-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T18-PR-v1-estudante.html';
+var ARQUIVO_FONTE = 'T18-PR-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;

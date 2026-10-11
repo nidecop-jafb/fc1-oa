@@ -747,35 +747,35 @@ const BANCO = {
       "pts": 6,
       "tipo": "VF",
       "tipoLabel": "Pensamento Qualitativo",
-      "enunciado": "Um ônibus desce a ladeira do Pilar, em Ouro Preto, e freia de repente. Uma passageira comentou: <em>“Na freada, uma força jogou todo mundo para a frente.”<\/em> <strong>Julgue uma por uma: marque V ou F em cada afirmação.<\/strong>",
+      "enunciado": "Na festa da escola, um colega puxou de uma vez a toalha da mesa e os copos ficaram no lugar. Outro explicou: <em>“Os copos ficaram porque, durante o puxão, nenhuma força agiu sobre eles.”<\/em> <strong>Julgue uma por uma: marque V ou F em cada afirmação.<\/strong>",
       "afirmacoes": [
         {
-          "texto": "Antes da freada, os passageiros se moviam junto com o ônibus.",
+          "texto": "Antes do puxão, os copos estavam em repouso sobre a toalha.",
           "correta": "V",
-          "just": "Tinham a mesma velocidade do ônibus."
+          "just": "Velocidade nula."
         },
         {
-          "texto": "Na freada, surge uma força para a frente que empurra os passageiros.",
+          "texto": "Durante o puxão rápido, o atrito da toalha age sobre os copos por um tempo muito curto.",
+          "correta": "V",
+          "just": "O atrito existe, mas age por pouco tempo."
+        },
+        {
+          "texto": "Os copos ficaram porque nenhuma força agiu sobre eles durante o puxão.",
           "correta": "F",
-          "just": "Não há essa força: os passageiros tendem a manter a velocidade (inércia) enquanto o ônibus freia. Erro E5 — modelo mental."
+          "just": "Agiram o atrito da toalha (por pouco tempo), o peso e a normal; o atrito curto mal muda a velocidade, e a inércia faz o resto. Erro E5 — modelo mental."
         },
         {
-          "texto": "Os passageiros tendem a manter a velocidade que tinham, enquanto o ônibus desacelera.",
+          "texto": "Por inércia, os copos tendem a continuar parados.",
           "correta": "V",
-          "just": "1.ª lei: inércia."
+          "just": "1.ª lei de Newton."
         },
         {
-          "texto": "O cinto e o banco exercem força para trás e fazem o passageiro frear junto com o ônibus.",
+          "texto": "Se a toalha for puxada devagar, o atrito age por mais tempo e arrasta os copos junto.",
           "correta": "V",
-          "just": "É essa força, para trás, que muda a velocidade do passageiro."
-        },
-        {
-          "texto": "Quanto maior a massa do passageiro, maior a força necessária para frear junto com o ônibus.",
-          "correta": "V",
-          "just": "2.ª lei: F = m·a, com a mesma desaceleração."
+          "just": "Mais tempo de força, mais mudança de velocidade."
         }
       ],
-      "feedbackGeral": "Função pedagógica: explicar o “tranco” pela inércia, sem inventar uma força para a frente. Resolução condensada: Na freada, o passageiro mantém a velocidade (inércia); quem o freia é o cinto, para trás. V F V V V."
+      "feedbackGeral": "Função pedagógica: explicar o truque pela inércia e pelo tempo curto do atrito, sem negar as forças que agem. Resolução condensada: O atrito age, mas por pouco tempo; a inércia mantém os copos parados. V V F V V."
     }
   ]
 };
@@ -1413,7 +1413,7 @@ function exportJSON() {
   const a = document.createElement('a');
   a.href = url;
   const nome = data.estudante.nome.replace(/\s+/g, '_').substring(0, 30);
-  a.download = `T11-PR-v1-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
+  a.download = `T11-PR-v2-${currentVersion}-${data.estudante.turma || 'SEM'}-${nome}-${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast('success', 'Comprovante exportado com sucesso');
@@ -1625,11 +1625,11 @@ function toast(type, msg) {
 
 /* ============================================================
    COLETA — LOGIN POR RA + ENVIO AO ENDPOINT (injetado)
-   Arquivo fonte: T11-PR-v1-estudante.html
+   Arquivo fonte: T11-PR-v2-estudante.html
    Sem COLETA_URL no coleta-config.js, o OA funciona 100%% offline.
    ============================================================ */
 var COLETA_URL = (typeof window !== 'undefined' && window.COLETA && window.COLETA.url) || '';
-var ARQUIVO_FONTE = 'T11-PR-v1-estudante.html';
+var ARQUIVO_FONTE = 'T11-PR-v2-estudante.html';
 var ALUNO_KEY = PREFIX + 'aluno';
 var aluno = null;
 var alunoPendente = null;
