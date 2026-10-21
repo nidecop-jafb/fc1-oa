@@ -208,6 +208,8 @@
         <h2>Cart&otilde;es-resposta da turma</h2>
         <label for="selTurmaK">Turma</label>
         <select id="selTurmaK"></select>
+        <label style="display:flex;gap:.5rem;align-items:center;margin:.6rem 0"><input type="checkbox" id="chkCorrecao" style="width:auto">
+        Coluna CORRE&Ccedil;&Atilde;O (prova de at&eacute; 10 quest&otilde;es: a 2.&ordf; coluna, numerada de 1 a 10, substitui a resposta errada)</label>
         <button class="btn" id="btnGerar" onclick="gerarCartoes()">Gerar cart&otilde;es</button>
         <div class="erro" id="cartaoErro" hidden></div>
         <div id="listaCartoes" hidden>
@@ -495,7 +497,8 @@ function pintarMarcas() {
   ctx.putImageData(new ImageData(ret.dados, ret.largura, ret.altura), 0, 0);
   ctx.lineWidth = Math.max(2, ret.esc * 0.5);
   for (var q = 0; q < leitura.prova.n; q++) for (var a = 0; a < 5; a++) {
-    var c = OMR.centroBolha(q, a), x = (c[0] + ret.margem) * ret.esc, y = (c[1] + ret.margem) * ret.esc;
+    var lin = leitura.r.respostas[q].linha != null ? leitura.r.respostas[q].linha : q;  /* questao corrigida: linha da coluna CORRECAO */
+    var c = OMR.centroBolha(lin, a), x = (c[0] + ret.margem) * ret.esc, y = (c[1] + ret.margem) * ret.esc;
     var marcada = leitura.resp[q] === 'ABCDE'[a];
     if (!marcada && !leitura.pend[q]) continue;
     ctx.strokeStyle = leitura.pend[q] ? '#E0A33B' : '#1F9D5B';
@@ -678,7 +681,7 @@ function imprimir() {
     html += '<div class="folha">';
     for (var j = i; j < Math.min(i + 2, sel.length); j++) {
       var a = sel[j], v = OMR.versaoDoRA(a.ra);
-      html += OMR.cartaoSVG({ nome: a.nome, turma: a.turma, ra: a.ra, versao: v }, modulosQR('FC1|' + a.ra + '|' + v));
+      html += OMR.cartaoSVG({ nome: a.nome, turma: a.turma, ra: a.ra, versao: v }, modulosQR('FC1|' + a.ra + '|' + v), { correcao: $('chkCorrecao').checked });
     }
     html += '<div class="corte"></div></div>';
   }

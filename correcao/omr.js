@@ -230,7 +230,9 @@
     return s[Math.min(s.length - 1, Math.floor(p * s.length))];
   }
 
-  function lerBolhas(g, H, n) {
+  /* linhasIdx: linhas do cartao a ler (0-based), ou um numero n = linhas 0..n-1 */
+  function lerBolhas(g, H, linhasIdx) {
+    if (typeof linhasIdx === 'number') { var nn = linhasIdx; linhasIdx = []; for (var k = 0; k < nn; k++) linhasIdx.push(k); }
     /* tinta de referencia: centro das 4 marcas dos cantos */
     var pretos = CARTAO.map(function (c) {
       var v = [];
@@ -241,8 +243,8 @@
     });
     var preto = mediana(pretos);
     var linhas = [], contraste = [];
-    for (var q = 0; q < n; q++) {
-      var base = centroBolha(q, 0);
+    for (var iq = 0; iq < linhasIdx.length; iq++) {
+      var base = centroBolha(linhasIdx[iq], 0);
       /* ajuste fino da linha: o contorno impresso das bolhas procura o
          melhor encaixe (+-1,5 mm) — absorve papel curvo e foto torta */
       var melhor = -1e9, odx = 0, ody = 0;
@@ -286,9 +288,25 @@
         st = 'duvida';
         motivo = m2 >= T_MARCA ? 'dupla marcação' : (m1 < T_MARCA ? 'marca fraca' : 'rasura ou segunda marca');
       }
-      return { q: q + 1, letra: letra, status: st, motivo: motivo, fills: adj };
+      return { q: q + 1, linha: linhasIdx[q], letra: letra, status: st, motivo: motivo, fills: adj };
     });
     return { respostas: respostas, contraste: mediana(contraste) };
+  }
+
+  /* Coluna CORRECAO (prova de ate 10 questoes): a linha 10+i do cartao
+     substitui a questao i quando foi preenchida. Em branco = vale a original;
+     marcada sem duvida = vale a correcao; duvidosa = duvida (o professor decide). */
+  var NCORR = L.N / 2;
+  function juntarCorrecao(lidas, n) {
+    var corrigidas = [];
+    var resp = lidas.slice(0, n).map(function (o, i) {
+      var c = lidas[n + i];
+      if (c.status === 'branco') return o;
+      corrigidas.push(i + 1);
+      return { q: i + 1, linha: c.linha, letra: c.letra, status: c.status === 'ok' ? 'ok' : 'duvida',
+        motivo: c.status === 'ok' ? '' : 'coluna CORREÇÃO: ' + c.motivo, fills: c.fills, corrigida: true };
+    });
+    return { respostas: resp, corrigidas: corrigidas };
   }
 
   /* ---------- leitura completa ---------- */
@@ -319,7 +337,11 @@
     }
     esc = esc || reserva;
     if (!esc) return { ok: false, erro: NAO_ACHEI };
-    var b = lerBolhas(g, esc.H, n);
+    var linhasIdx = [], comCorr = n <= NCORR;
+    for (var q = 0; q < n; q++) linhasIdx.push(q);
+    if (comCorr) for (q = 0; q < n; q++) linhasIdx.push(NCORR + q);
+    var b = lerBolhas(g, esc.H, linhasIdx), corrigidas = [];
+    if (comCorr) { var jc = juntarCorrecao(b.respostas, n); b.respostas = jc.respostas; corrigidas = jc.corrigidas; }
     /* sem QR e sem o contorno das bolhas onde deviam estar = nao e um cartao
        bem enquadrado; ler assim seria chutar */
     if (!qr && b.contraste < 12) return { ok: false, erro: NAO_ACHEI };
@@ -328,6 +350,7 @@
     if (!qr) avisos.push('QR do RA não lido — digite o RA.');
     else if (!id) avisos.push('QR lido, mas não é de um cartão FC1: ' + qr);
     if (b.contraste < 12) avisos.push('Foto com pouco contraste ou fora de foco — confira cada questão.');
+    if (corrigidas.length) avisos.push('Corrigida(s) na coluna CORREÇÃO: questão ' + corrigidas.join(', ') + ' — confira no cartão.');
     return {
       ok: true, H: esc.H, orientacao: esc.k, qr: qr,
       ra: id ? id.ra : '', versao: id ? id.versao : '',
@@ -350,8 +373,9 @@
   /* ---------- desenho do cartao (SVG, unidades em mm) ---------- */
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   var SIMBOLO = { A: '●', B: '▲', C: '■' };
-  function cartaoSVG(al, qrMod) {
-    var o = [];
+  /* opt.correcao: prova de ate 10 questoes; a 2.a coluna vira CORRECAO (1 a 10) */
+  function cartaoSVG(al, qrMod, opt) {
+    var corr = !!(opt && opt.correcao), o = [];
     o.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + L.FOLHA.w + ' ' + L.FOLHA.h +
       '" width="' + L.FOLHA.w + 'mm" height="' + L.FOLHA.h + 'mm" font-family="Arial, Helvetica, sans-serif">');
     o.push('<rect width="100%" height="100%" fill="#fff"/>');
@@ -371,12 +395,21 @@
     o.push('<text x="8" y="16" font-size="3.5">Turma: ' + esc(al.turma || '') + sep + 'RA: ' + esc(al.ra || '') +
       sep + 'Caderno: <tspan font-size="4">' + (SIMBOLO[al.versao] || '') + '</tspan></text>');
     o.push('<text x="8" y="23.5" font-size="3.3">Prova: ________________________________   Data: ____/____</text>');
-    o.push('<text x="8" y="31.5" font-size="2.7" fill="#333">Preencha a bolinha INTEIRA com caneta azul ou preta · uma por questão · não rasure: se errar, avise o professor.</text>');
+    if (corr) {
+      o.push('<text x="8" y="28" font-size="2.6" fill="#333">Preencha a bolinha INTEIRA com caneta azul ou preta · uma por questão · na coluna RESPOSTAS.</text>');
+      o.push('<text x="8" y="31.8" font-size="2.7" font-weight="bold">Atenção: só preencha a coluna CORREÇÃO se você errou no preenchimento anterior.</text>');
+      o.push('<text x="8" y="35.4" font-size="2.7" font-weight="bold">Não haverá a entrega de outro cartão de resposta.</text>');
+      var x0 = L.COL_X[1] - 12, x1 = L.COL_X[1] + 4 * L.DX + 7;
+      o.push('<rect x="' + x0 + '" y="' + (L.Y0 - 12.2) + '" width="' + (x1 - x0) + '" height="' + (9 * L.DY + 15.7) + '" fill="none" stroke="#888" stroke-width=".3" stroke-dasharray="1.2 .8"/>');
+      o.push('<text x="' + (L.COL_X[0] + 2 * L.DX) + '" y="' + (L.Y0 - 7.6) + '" font-size="2.9" font-weight="bold" text-anchor="middle">RESPOSTAS</text>');
+      o.push('<text x="' + (L.COL_X[1] + 2 * L.DX) + '" y="' + (L.Y0 - 7.6) + '" font-size="2.9" font-weight="bold" text-anchor="middle">CORREÇÃO (só se errou)</text>');
+    } else
+      o.push('<text x="8" y="31.5" font-size="2.7" fill="#333">Preencha a bolinha INTEIRA com caneta azul ou preta · uma por questão · não rasure: se errar, avise o professor.</text>');
     for (var col = 0; col < 2; col++) for (var a = 0; a < 5; a++)
       o.push('<text x="' + (L.COL_X[col] + a * L.DX) + '" y="' + (L.Y0 - 4.6) + '" font-size="3" font-weight="bold" text-anchor="middle">' + L.ALT[a] + '</text>');
     for (var q = 0; q < L.N; q++) {
       var b0 = centroBolha(q, 0);
-      o.push('<text x="' + (b0[0] - 5.2) + '" y="' + (b0[1] + 1.2) + '" font-size="3.4" font-weight="bold" text-anchor="end">' + (q + 1) + '</text>');
+      o.push('<text x="' + (b0[0] - 5.2) + '" y="' + (b0[1] + 1.2) + '" font-size="3.4" font-weight="bold" text-anchor="end">' + (corr && q >= NCORR ? q - NCORR + 1 : q + 1) + '</text>');
       for (a = 0; a < 5; a++) {
         var b = centroBolha(q, a);
         o.push('<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + L.R + '" fill="none" stroke="#444" stroke-width=".35"/>');
