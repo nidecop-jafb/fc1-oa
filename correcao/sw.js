@@ -3,7 +3,7 @@
    devolveria o HTML velho — licao de 2026-09-16), e o cache so quando cai.
    So arquivos do proprio site; as chamadas ao Apps Script passam direto.
    CACHE e carimbado pelo gerar_correcao.py a cada publicacao. */
-var CACHE = 'fc1-correcao-ed1231fc23';
+var CACHE = 'fc1-correcao-f3da48f5b9';
 var ARQUIVOS = ['./', 'index.html', 'omr.js', 'lib/jsQR.js', 'lib/qrcode.js', 'manifest.webmanifest',
   '../coleta-config.js', '../_icones/app-rap-192.png', '../_icones/app-rap-512.png'];
 

@@ -291,7 +291,14 @@ function aparelho() {
   return a;
 }
 function prova(id) { return dados.provas.filter(function (p) { return p.id === id; })[0] || null; }
-function versaoDe(p, ra) { return p && p.versoes > 1 ? OMR.versaoDoRA(ra) : 'A'; }
+/* Caderno entregue por TURMA, e nao pelo RA: na PE2 a grafica empacotou um so caderno por turma
+   (24/10/2026: MIN1 = bolinha A, MIN2 = quadrado C, MIN3 = triangulo B). Vale sobre o simbolo do cartao. */
+var VERSAO_POR_TURMA = { 'PE2-FC1-2026': { MIN1: 'A', MIN2: 'C', MIN3: 'B' } };
+function versaoDaTurma(p, ra) {
+  var m = p && VERSAO_POR_TURMA[p.id], a = porRA[ra], t = a && (String(a.turma).match(/MIN\d/) || [])[0];
+  return (m && t && m[t]) || '';
+}
+function versaoDe(p, ra) { return p && p.versoes > 1 ? (versaoDaTurma(p, ra) || OMR.versaoDoRA(ra)) : 'A'; }
 function turmas() {
   var t = {};
   dados.alunos.forEach(function (a) { if (a.turma) t[a.turma] = (t[a.turma] || 0) + 1; });
@@ -446,13 +453,16 @@ $('inFoto2').addEventListener('change', aoEscolherFoto);
 
 function montarLeitura(p, g, r) {
   leitura = {
-    prova: p, r: r, g: g, ra: r.ra, versao: r.versao,
+    prova: p, r: r, g: g, ra: r.ra, versao: versaoDaTurma(p, r.ra) || r.versao,
     resp: r.respostas.map(function (x) { return x.status === 'ok' ? x.letra : ''; }),
     pend: r.respostas.map(function (x) { return x.status !== 'ok'; }),
     revisado: false
   };
   var avisos = r.avisos.slice();
   if (r.ra && !porRA[r.ra]) avisos.push('O RA ' + r.ra + ' do QR não está na lista de estudantes baixada. Confira o RA abaixo.');
+  if (versaoDaTurma(p, r.ra) && r.versao && versaoDaTurma(p, r.ra) !== r.versao)
+    avisos.push('Caderno pela turma: ' + OMR.SIMBOLO[leitura.versao] + ' ' + leitura.versao + ' (o cartão indica ' + OMR.SIMBOLO[r.versao] + ' ' + r.versao + ').');
+  $('selVersao').value = leitura.versao || '';
   $('leituraAvisos').innerHTML = avisos.map(function (a) { return '<div class="aviso">' + esc(a) + '</div>'; }).join('');
   var manual = !r.ra || !porRA[r.ra];
   $('raManual').hidden = !manual;
