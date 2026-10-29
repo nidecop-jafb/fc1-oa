@@ -1835,7 +1835,75 @@ function aplicarAluno() {
   });
   /* CFG-OA v1: pre-carga da versao A/B/C apos identificar o RA */
   if (typeof aplicarPrecargaOA === 'function') { try { aplicarPrecargaOA(aluno); } catch (e) {} }
+  verificarEnvioServidor();
 }
+
+/* JA ENVIADO PELO SERVIDOR (briefing PRE-site-oa-ja-enviado-pelo-servidor-fc1-2026-10-28).
+   O estado "enviado" do OA mora no navegador; em outro aparelho, outro navegador ou
+   depois de limpar os dados, o OA parecia pendente. Apos o login, pergunta ao coletor
+   (?entregas=1&ra=) se este OA ja foi enviado. So o aviso: as respostas nao voltam.
+   Sem rede, coletor fora do ar ou RA da equipe: o OA fica como era. */
+var ENVIO_SRV_KEY = PREFIX + 'enviado_srv';
+function envioServidorVale_() {
+  if (typeof OA_ID === 'undefined' || !OA_ID || !OA_ID.trilha) return false;
+  var n = parseInt(String(OA_ID.trilha).replace(/\D/g, ''), 10);
+  return n >= 7;
+}
+function fmtPontos_(x) {
+  return String(Math.round(Number(x) * 10) / 10).replace('.', ',');
+}
+function avisoEnvioServidor_(e, segunda) {
+  var txt = (segunda ? '1ª tentativa enviada em ' : '✓ Já enviado em ') + e.quando +
+    (e.total ? ' · ' + fmtPontos_(e.pontos) + ' / ' + fmtPontos_(e.total) + ' pontos' : '') +
+    (segunda ? '. Esta é a 2ª tentativa.'
+             : '. Você pode rever as questões para estudar, mas não é possível enviar de novo.');
+  coletaStatusUI('ok', txt);
+  if (segunda) return;
+  var b = document.getElementById('btnSubmit');
+  if (b) { b.disabled = true; b.style.opacity = '0.45'; b.textContent = 'Já enviado'; }
+}
+/* Bloqueia o envio repetido mesmo que o OA reabilite o botao por conta propria. */
+document.addEventListener('click', function (ev) {
+  var alvo = ev.target && ev.target.closest ? ev.target.closest('#btnSubmit') : null;
+  if (!alvo || !localStorage.getItem(ENVIO_SRV_KEY)) return;
+  ev.preventDefault(); ev.stopImmediatePropagation();
+  if (typeof toast === 'function') { try { toast('info', 'Este objeto já foi enviado.'); } catch (x) {} }
+}, true);
+function verificarEnvioServidor() {
+  if (!COLETA_URL || !aluno || !aluno.ra || !envioServidorVale_()) return;
+  if (/^9000/.test(aluno.ra)) return;                        /* equipe testa sem bloqueio */
+  var salvo = null;
+  try { salvo = JSON.parse(localStorage.getItem(ENVIO_SRV_KEY)); } catch (x) {}
+  var tent = (typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1;
+  if (salvo && tent < 2) { avisoEnvioServidor_(salvo, false); return; }
+  if (localStorage.getItem(comprovanteKey_())) return;      /* enviado neste aparelho */
+  if (typeof submitted !== 'undefined' && submitted) return;
+  var ctl = (typeof AbortController === 'function') ? new AbortController() : null;
+  var tmo = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+  fetch(COLETA_URL + '?entregas=1&ra=' + encodeURIComponent(aluno.ra), ctl ? { signal: ctl.signal } : {})
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res || !res.ok || !res.entregas) return;
+      var e = null;
+      for (var i = 0; i < res.entregas.length; i++) {
+        var x = res.entregas[i];
+        if (String(x.trilha) === String(OA_ID.trilha) && String(x.oa).toUpperCase() === String(OA_ID.oa).toUpperCase()) { e = x; break; }
+      }
+      if (!e) return;
+      var max = (typeof OA_CFG !== 'undefined' && OA_CFG && OA_CFG.tentativas) ? OA_CFG.tentativas : 1;
+      if (tent >= 2) { avisoEnvioServidor_(e, true); return; }
+      if (max >= 2) {                                          /* professor liberou 2 envios */
+        try { localStorage.setItem(PREFIX + 'tentativa', '2'); } catch (x) {}
+        location.reload();
+        return;
+      }
+      try { localStorage.setItem(ENVIO_SRV_KEY, JSON.stringify(e)); } catch (x) {}
+      avisoEnvioServidor_(e, false);
+    })
+    .catch(function () {})
+    .finally(function () { clearTimeout(tmo); });
+}
+
 
 function coletaStatusUI(estado, msg) {
   var box = document.getElementById('coletaStatus');
@@ -1855,6 +1923,7 @@ function restaurarComprovante() {
 function enviarColeta(isRetry) {
   if (!COLETA_URL || coletaEnviando) return;
   if (localStorage.getItem(comprovanteKey_())) { restaurarComprovante(); return; }
+  if (localStorage.getItem(ENVIO_SRV_KEY) && ((typeof oaTentativaAtual === 'function') ? oaTentativaAtual() : 1) < 2) { verificarEnvioServidor(); return; }
   coletaEnviando = true;
   coletaStatusUI(null, 'Enviando respostas ao professor...');
 
