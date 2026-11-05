@@ -29,6 +29,9 @@
   /* Limiares de preenchimento (0 = papel, 1 = tinta como a marca do canto),
      ja descontada a linha de base do proprio cartao. */
   var T_VAZIO = 0.16, T_MARCA = 0.38;
+  /* Marca parcial DOMINANTE (X, so o contorno, bolinha pequena): vale quando passa do piso e as
+     outras quatro da linha estao limpas (ate 30% dela, minimo 0,06). Calibracao PE2, 2026-11-05. */
+  var T_DOM_MIN = 0.10, T_DOM_RAZAO = 0.3, T_DOM_PISO = 0.06;
 
   function centroBolha(q, a) {
     var col = q < 10 ? 0 : 1, i = q % 10;
@@ -282,13 +285,15 @@
       var adj = f.map(function (x) { return Math.round(Math.max(0, x - baseLinha) * 100) / 100; });
       var ord = adj.map(function (x, i) { return [x, i]; }).sort(function (a, b) { return b[0] - a[0]; });
       var m1 = ord[0][0], m2 = ord[1][0], letra = L.ALT[ord[0][1]], st, motivo = '';
-      if (m1 < T_VAZIO) { st = 'branco'; letra = ''; }
-      else if (m1 >= T_MARCA && m2 < T_VAZIO) st = 'ok';
+      var parcial = false;
+      if (m1 >= T_MARCA && m2 < T_VAZIO) st = 'ok';
+      else if (m1 >= T_DOM_MIN && m2 <= Math.max(T_DOM_PISO, T_DOM_RAZAO * m1)) { st = 'ok'; parcial = m1 < T_MARCA; }
+      else if (m1 < T_VAZIO) { st = 'branco'; letra = ''; }
       else {
         st = 'duvida';
         motivo = m2 >= T_MARCA ? 'dupla marcação' : (m1 < T_MARCA ? 'marca fraca' : 'rasura ou segunda marca');
       }
-      return { q: q + 1, linha: linhasIdx[q], letra: letra, status: st, motivo: motivo, fills: adj };
+      return { q: q + 1, linha: linhasIdx[q], letra: letra, status: st, motivo: motivo, fills: adj, parcial: parcial };
     });
     return { respostas: respostas, contraste: mediana(contraste) };
   }
@@ -351,6 +356,8 @@
     else if (!id) avisos.push('QR lido, mas não é de um cartão FC1: ' + qr);
     if (b.contraste < 12) avisos.push('Foto com pouco contraste ou fora de foco — confira cada questão.');
     if (corrigidas.length) avisos.push('Corrigida(s) na coluna CORREÇÃO: questão ' + corrigidas.join(', ') + ' — confira no cartão.');
+    var parciais = b.respostas.filter(function (x) { return x.parcial; }).map(function (x) { return x.q; });
+    if (parciais.length) avisos.push('Marca parcial (X, contorno ou bolinha pequena) aceita na questão ' + parciais.join(', ') + ' — confira no cartão.');
     return {
       ok: true, H: esc.H, orientacao: esc.k, qr: qr,
       ra: id ? id.ra : '', versao: id ? id.versao : '',
@@ -424,7 +431,7 @@
   var OMR = {
     L: L, T_VAZIO: T_VAZIO, T_MARCA: T_MARCA, SIMBOLO: SIMBOLO,
     ler: ler, retificar: retificar, cinza: cinza, aplicar: aplicar, homografia: homografia,
-    centroBolha: centroBolha, cartaoSVG: cartaoSVG, interpretarQR: interpretarQR,
+    centroBolha: centroBolha, cartaoSVG: cartaoSVG, interpretarQR: interpretarQR, acharMarcas: acharMarcas,
     versaoDoRA: function (ra) { return 'ABC'[parseInt(ra, 10) % 3]; }
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = OMR;
