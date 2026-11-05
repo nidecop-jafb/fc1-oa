@@ -73,6 +73,10 @@
   #camGuiada .moldura { position: absolute; left: 6%; right: 6%; top: 50%; transform: translateY(-50%); aspect-ratio: 210 / 148.5;
     border: 3px dashed #E0A33B; border-radius: 6px; pointer-events: none; }
   #camGuiada .moldura.pronta { border-color: #1F9D5B; border-style: solid; }
+  /* celular em pe: o cartao fica em pe na tela (como nas fotos que leem bem); moldura em pe */
+  @media (orientation: portrait) {
+    #camGuiada .moldura { left: 50%; right: auto; top: 50%; transform: translate(-50%, -50%); height: 82%; width: auto; aspect-ratio: 148.5 / 210; }
+  }
   #camGuiada .cam-barra { padding: .8rem 1rem; display: flex; gap: .6rem; align-items: center; justify-content: space-between; background: #111; }
   #camGuiada .cam-msg { color: #fff; font-family: Arial, sans-serif; font-size: .95rem; }
   #cvRet { width: 100%; height: auto; display: block; margin-top: .7rem; background: #fff; }
@@ -499,20 +503,21 @@ function analisarQuadro() {
   for (var i = 0; i < g.d.length; i += 16) soma += g.d[i];
   var luz = soma / (g.d.length / 16), quads = OMR.acharMarcas(g), ok = false, texto;
   if (luz < 70) texto = 'Pouca luz: aproxime da janela ou acenda a luz.';
-  else if (!quads.length) texto = 'Enquadre o cartão inteiro na moldura, com os 4 quadrados pretos.';
+  else if (!quads.length) texto = 'Mostre o cartão inteiro, com os 4 quadrados pretos dos cantos (não precisa encaixar na moldura exata).';
   else {
     var P = quads[0], xs = P.map(function (p) { return p[0]; }), ys = P.map(function (p) { return p[1]; });
-    var larg = (Math.max.apply(null, xs) - Math.min.apply(null, xs)) / g.w;
-    var cx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2;
-    var mov = cam.ultimo ? Math.abs(cam.ultimo - cx) / g.w : 1; cam.ultimo = cx;
-    if (larg < 0.55) texto = 'Aproxime: o cartão deve ocupar a moldura.';
-    else if (mov > 0.02) texto = 'Segure firme...';
+    /* tamanho pelo lado MAIOR do cartao na tela (cartao em pe ou deitado) */
+    var larg = Math.max((Math.max.apply(null, xs) - Math.min.apply(null, xs)) / g.w, (Math.max.apply(null, ys) - Math.min.apply(null, ys)) / g.h);
+    var cx = (Math.max.apply(null, xs) + Math.min.apply(null, xs)) / 2 / g.w, cy = (Math.max.apply(null, ys) + Math.min.apply(null, ys)) / 2 / g.h;
+    var mov = cam.ultimo ? Math.max(Math.abs(cam.ultimo[0] - cx), Math.abs(cam.ultimo[1] - cy)) : 1; cam.ultimo = [cx, cy];
+    if (larg < 0.5) texto = 'Aproxime: o cartão deve encher a moldura.';
+    else if (mov > 0.04) texto = 'Segure firme...';
     else { ok = true; texto = 'Pronto — segure firme.'; }
   }
   cam.firmes = ok ? cam.firmes + 1 : 0;
   $('camMoldura').classList.toggle('pronta', ok);
   $('camMsg').textContent = texto;
-  if (cam.firmes >= 3) capturarCamera();
+  if (cam.firmes >= 2) capturarCamera();
 }
 function capturarCamera() {
   var p = prova($('selProvaC').value); if (!p || !$('camVideo').videoWidth) return;
