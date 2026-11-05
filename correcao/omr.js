@@ -224,6 +224,16 @@
     }
     return s / DISCO.length;
   }
+  /* fracao do disco com tinta ESCURA (mais de 55% do caminho do branco ao preto): pega o
+     pontinho pequeno feito a caneta e ignora a letra clara impressa dentro da bolha vazia */
+  function fracaoEscura(g, H, cx, cy, branco, preto) {
+    var corte = branco - 0.55 * Math.max(40, branco - preto), n = 0;
+    for (var k = 0; k < DISCO.length; k++) {
+      var p = aplicar(H, cx + DISCO[k][0], cy + DISCO[k][1]);
+      if (amostra(g, p[0], p[1]) <= corte) n++;
+    }
+    return n / DISCO.length;
+  }
   function mediana(v) {
     var s = v.slice().sort(function (a, b) { return a - b; }), m = s.length >> 1;
     return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
@@ -245,7 +255,7 @@
       return mediana(v);
     });
     var preto = mediana(pretos);
-    var linhas = [], contraste = [];
+    var linhas = [], escuras = [], contraste = [];
     for (var iq = 0; iq < linhasIdx.length; iq++) {
       var base = centroBolha(linhasIdx[iq], 0);
       /* ajuste fino da linha: o contorno impresso das bolhas procura o
@@ -261,6 +271,9 @@
         if (s > melhor) { melhor = s; odx = dx; ody = dy; }
       }
       contraste.push(melhor / 5);
+      /* contorno impresso fraco demais (bolha clara na impressao): o "melhor encaixe" passa a seguir
+         a marca do estudante e foge dela; fica so a posicao das 4 marcas dos cantos (fotos da PE2) */
+      if (melhor / 5 < 12) { odx = 0; ody = 0; }
       /* branco local: papel entre as bolhas da propria linha */
       var brancos = [];
       for (a = -1; a < 5; a++) {
@@ -270,12 +283,25 @@
         }
       }
       var branco = percentil(brancos, 0.75);
-      var fills = [];
+      var fills = [], escs = [];
       for (a = 0; a < 5; a++) {
-        var v = mediaDisco(g, H, base[0] + a * L.DX + odx, base[1] + ody);
-        fills.push(Math.max(0, (branco - v) / Math.max(40, branco - preto)));
+        var cx = base[0] + a * L.DX + odx, cy = base[1] + ody;
+        /* branco LOCAL da bolha (papel dos dois lados e entre as linhas): absorve a sombra que
+           escurece a foto de um lado so (calibracao com fotos reais da PE2, 2026-11-05) */
+        var loc = [];
+        [[-0.5 * L.DX, 0], [0.5 * L.DX, 0], [0, -0.5 * L.DY], [0, 0.5 * L.DY]].forEach(function (d) {
+          for (var e2 = -1; e2 <= 1; e2++) {
+            var pp = aplicar(H, cx + d[0] + (d[1] ? e2 * 1.2 : 0), cy + d[1] + (d[0] ? e2 * 1.2 : 0));
+            loc.push(amostra(g, pp[0], pp[1]));
+          }
+        });
+        var bl = Math.min(branco, percentil(loc, 0.75));
+        var v = mediaDisco(g, H, cx, cy);
+        var esc = fracaoEscura(g, H, cx, cy, bl, preto);
+        escs.push(esc);
+        fills.push(Math.max(0, (bl - v) / Math.max(40, bl - preto), esc));
       }
-      linhas.push(fills);
+      linhas.push(fills); escuras.push(escs);
     }
     /* linha de base: a letra clara impressa dentro da bolha vazia */
     var todos = [];
@@ -293,7 +319,8 @@
         st = 'duvida';
         motivo = m2 >= T_MARCA ? 'dupla marcação' : (m1 < T_MARCA ? 'marca fraca' : 'rasura ou segunda marca');
       }
-      return { q: q + 1, linha: linhasIdx[q], letra: letra, status: st, motivo: motivo, fills: adj, parcial: parcial };
+      return { q: q + 1, linha: linhasIdx[q], letra: letra, status: st, motivo: motivo, fills: adj, parcial: parcial,
+        escura: Math.round(escuras[q][ord[0][1]] * 100) / 100 };
     });
     return { respostas: respostas, contraste: mediana(contraste) };
   }
@@ -306,8 +333,14 @@
     var corrigidas = [];
     var resp = lidas.slice(0, n).map(function (o, i) {
       var c = lidas[n + i];
-      if (c.status === 'branco') return o;
+      /* marca FRACA na coluna CORRECAO (sombra, mancha) nao apaga uma resposta: conta como vazia */
+      if (c.status === 'branco' || (c.status === 'duvida' && Math.max.apply(null, c.fills) < T_MARCA)) return o;
       corrigidas.push(i + 1);
+      /* marca so PARCIAL na coluna CORRECAO (pode ser sombra no canto da foto): nunca troca a
+         resposta sozinha; o professor confirma (caso real: PE2, cartao com sombra embaixo) */
+      /* pontinho de caneta tem pixels ESCUROS (fracao >= 0,08); sombra so tem cinza */
+      if (c.parcial && c.escura < 0.08) return { q: i + 1, linha: c.linha, letra: c.letra, status: 'duvida',
+        motivo: 'coluna CORREÇÃO: marca leve em ' + c.letra + ' (resposta original: ' + (o.status === 'ok' ? o.letra : '—') + ')', fills: c.fills, corrigida: true };
       return { q: i + 1, linha: c.linha, letra: c.letra, status: c.status === 'ok' ? 'ok' : 'duvida',
         motivo: c.status === 'ok' ? '' : 'coluna CORREÇÃO: ' + c.motivo, fills: c.fills, corrigida: true };
     });
