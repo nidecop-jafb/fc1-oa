@@ -30,6 +30,10 @@
   input:focus, select:focus { outline: none; border-color: var(--ouro); }
   .linha2 { display: flex; gap: .8rem; }
   .linha2 > div { flex: 1; }
+  [hidden] { display: none !important; }
+  .vivo { font-family: Arial, sans-serif; font-size: .8rem; margin-top: .3rem; color: var(--verde); }
+  .vivo.atrasada { color: #fff; background: var(--vermelho); padding: .45rem .6rem; font-weight: bold; }
+  .ok-manual { margin-top: .6rem; font-family: Arial, sans-serif; font-size: .88rem; color: var(--verde); }
   .btn {
     display: block; width: 100%; margin-top: .9rem; padding: .85rem;
     font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold;
@@ -63,6 +67,19 @@
   footer { border-top: 1px solid var(--borda); padding: .8rem 1rem; text-align: center;
     font-family: Arial, sans-serif; font-size: .66rem; color: var(--texto-dim); line-height: 1.6; }
   .link-dim { color: var(--texto-dim); font-family: Arial, sans-serif; font-size: .78rem; }
+  /* F33: celular sem rolagem lateral — por ultimo, para valer sobre as regras acima */
+  @media (max-width: 560px) {
+    table { table-layout: fixed; font-size: .8rem; }
+    th, td { overflow-wrap: break-word; padding: .35rem .25rem; }
+    th { letter-spacing: 0; font-size: .58rem; }
+    #cartaoRedes th:nth-child(1) { width: 48%; }
+    #cartaoRedes th:nth-child(2) { width: 24%; }
+    #cartaoRedes th:nth-child(3) { width: 28%; }
+    .ip-mono { font-size: .72rem; }
+    #cartaoLista th:nth-child(1) { width: 18%; }
+    #cartaoLista th:nth-child(4) { width: 14%; }
+    .btn-mini { display: block; width: 100%; margin: .15rem 0; font-size: .7rem; padding: .35rem .15rem; }
+  }
 </style>
 </head>
 <body>
@@ -124,26 +141,53 @@
     <div class="qr-box">
       <img alt="QR da pagina de presenca" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbwAAAG8AQAAAACNyy1yAAADLklEQVR4nO1cUW7sIAzEqP/kBnv/Y/UG4QSuMJg46a6DUhG93TejiIYUaxVjTYxtIA6XkOM1uRAg6ADKcQDlOIBy/inlBGbDrIlty6tp98N4xTw6gHJmKOerNGmtHQqB89KfUDXaELjcr3YYpsMFbHWicoiIxEjpIfaZqV179GGYDhew1Wm8asBiopVPuRjtUkn11xIM0+EAyrlFOalYZSPPLLyqnsCsXxxFHB55AAQ/ildZ+9VlLewqKH+qByvgt3zHCMHPjAOk11cH4gCfYwDxvXiVTZ8zNVLNx5bf9R0jBD9GObQ0B5XIOKiJO+s27hWL1cFv9o6XEK+JBQhO8wG4xk0l4M+r2ucq/9VudQNKtyUIMI8OoJyZa6vc1lNc6bQ+rRmBNsCstv70ixGCrwHleBAybR/6yqKdUUPnVSXV9hy8egKY3DTlZAqJiyP6MMHVpL5B91QftioA0+EAypnlA5B+9Hu75VaTUG5easoV8dUxxMFxvwDBoXoA/pZcfy8DyMKlVLq0bK5CKxiAVj3A5KblApLYocYBtppA1of9069dxAFcwFYn5q1YXdOjua77cKvErGCrZ4CtTlNO0jrVVRZWh26mHoCtLXIBZ4CtzqwHSHvyPO4C0MGVZhGzOgFsdVo9QF60WpU4Lz0IwBoQoMSU1nJtVQGYDgdQzkx/VWCrqrgHVyu0PKAtuJBj9QBbnVkPkKoZanLKmu7u0w8fYARxaNQTQHAgF6Dp/q3oOq02+M9thyCjHmAAcWTQM0DQw/ZZtze98kpjVvrpRz3ACOLQqCeA4GiOtd4URu0LKyHStuDabb+CVh1AOdP8VYPNOxV099WmsbC2OgNsddq+gA5JBLSqgLDfFFDrr6Q24O+/eAnxmliA4CdpNe1ItdxJWwpXEvdqlsax3/SW73gF8ZJUgOA9564EYc5STJUltdqPXslliAm9Yh4dQDl3nWWRS31gsOewadVKs2TsDTwBbPWOM4JIT10jDQXwFlOVHViNaTEdDqCcufWrfKhWTSY6YHdgtSeYDgdQzr3nr4Zd+tU+RMzqDLDVGcohnMH+GjA5B1COAyjHwf+gnB/9BDB5rr/CTwAAAABJRU5ErkJggg==">
       <div class="url">nidecop-jafb.github.io/fc1-oa/presenca/</div>
+      <div class="contagem" id="qrContagem" style="margin-top:.4rem"></div>
     </div>
   </div>
 
   <!-- PRESENTES DE HOJE -->
   <div class="cartao" id="cartaoLista" hidden>
     <h2>Presentes de hoje <span id="listaContagem" class="contagem"></span></h2>
+    <div class="vivo" id="listaVivo">Consultando...</div>
     <table>
       <thead><tr><th>Hora</th><th>Nome</th><th>Turma</th><th>Aula</th></tr></thead>
       <tbody id="listaCorpo"></tbody>
     </table>
-    <div class="nota">Atualiza sozinha a cada 10 segundos. O espelho completo est&aacute; na aba
+    <div class="nota">Atualiza sozinha a cada 10 segundos e na hora em que voc&ecirc; volta para esta tela. Enquanto a
+    chamada est&aacute; aberta, a tela do celular fica acesa. O espelho completo est&aacute; na aba
     <strong>presenca</strong> da planilha FC1-Respostas-2026, para lan&ccedil;amento no SUAP.</div>
     <div style="margin-top:.6rem"><a class="link-dim" href="#" onclick="sairChave(); return false;">sair (limpar chave deste aparelho)</a></div>
+  </div>
+
+  <!-- PRESENCA MANUAL (F33) -->
+  <div class="cartao" id="cartaoManual" hidden>
+    <h2>Marcar presen&ccedil;a pelo RA</h2>
+    <div class="linha2">
+      <div>
+        <label for="inRAmanual">RA do estudante (7 d&iacute;gitos)</label>
+        <input type="text" id="inRAmanual" inputmode="numeric" maxlength="7" autocomplete="off">
+      </div>
+      <div style="flex:0 0 7.5rem">
+        <label for="selAulaManual">Aula</label>
+        <select id="selAulaManual">
+          <option value="1">Aula 1</option>
+          <option value="2">Aula 2</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" id="btnManual" onclick="marcarManual()">Marcar presente</button>
+    <div class="ok-manual" id="manualOk" hidden></div>
+    <div class="erro" id="manualErro" hidden></div>
+    <div class="nota">Para o estudante que a rede recusou (por exemplo, iPhone que n&atilde;o resolveu com o ajuste do
+    Wi-Fi). Com a chamada da turma dele aberta, vale a aula da chamada; sem ela, a aula escolhida acima.
+    Na planilha, o registro fica marcado como <strong>manual</strong>.</div>
   </div>
 
   <!-- REDES DO CAMPUS AUTORIZADAS (F12) -->
   <div class="cartao" id="cartaoRedes" hidden>
     <h2>Redes do campus (IP) <span id="redesPendentes" class="contagem"></span></h2>
     <table>
-      <thead><tr><th>Rede</th><th>Status</th><th>Recusas hoje</th><th></th></tr></thead>
+      <thead><tr><th>Rede</th><th>Status</th><th></th></tr></thead>
       <tbody id="redesCorpo"></tbody>
     </table>
     <div class="nota">O Wi-Fi <strong>ESTUDANTES</strong> do IFMG tem sa&iacute;da de internet diferente da rede do
@@ -166,10 +210,10 @@ var CHAVE_KEY = 'ifmg_fc1_presenca_chave';
 var chave = null, adminTimer = null, turmasTotais = {}, janelaAberta = null;
 
 function buscarIP() {
-  return fetch('https://api.ipify.org?format=json').then(function (r) { return r.json(); })
+  return fetch('https://api.ipify.org?format=json', { cache: 'no-store' }).then(function (r) { return r.json(); })
     .then(function (d) { return d.ip; })
     .catch(function () {
-      return fetch('https://ipv4.icanhazip.com').then(function (r) { return r.text(); })
+      return fetch('https://ipv4.icanhazip.com', { cache: 'no-store' }).then(function (r) { return r.text(); })
         .then(function (t) { return t.trim(); });
     });
 }
@@ -188,8 +232,16 @@ function sairChave() {
 }
 
 /* ---------- Admin ---------- */
+/* F33: a lista mostra a hora da ultima atualizacao e avisa quando parou;
+   nao empilha consultas (cada uma leva 2-4 s no servidor) e desiste em 20 s. */
+var ultimaOk = 0, consultando = false, wakeLock = null;
 function consultarAdmin(primeira) {
-  fetch(COLETA_URL + '?presenca_admin=1&chave=' + encodeURIComponent(chave))
+  if (consultando && !primeira) return;
+  consultando = true;
+  var ctrl = window.AbortController ? new AbortController() : null;
+  var limite = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
+  fetch(COLETA_URL + '?presenca_admin=1&chave=' + encodeURIComponent(chave),
+        ctrl ? { cache: 'no-store', signal: ctrl.signal } : { cache: 'no-store' })
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) {
@@ -205,10 +257,13 @@ function consultarAdmin(primeira) {
         document.getElementById('cartaoAbrir').hidden = false;
         document.getElementById('cartaoQR').hidden = false;
         document.getElementById('cartaoLista').hidden = false;
+        document.getElementById('cartaoManual').hidden = false;
         document.getElementById('cartaoRedes').hidden = false;
         if (adminTimer) clearInterval(adminTimer);
-        adminTimer = setInterval(function () { consultarAdmin(false); }, 10000);
+        adminTimer = setInterval(function () { consultarAdmin(false); marcarVivo(); }, 10000);
       }
+      ultimaOk = Date.now();
+      marcarVivo();
       turmasTotais = res.turmas || {};
       preencherTurmas();
       atualizarJanela(res.janelas || []);
@@ -220,7 +275,67 @@ function consultarAdmin(primeira) {
         var el = document.getElementById('chaveErro');
         el.textContent = 'Falha de conexão. Tente de novo.'; el.hidden = false;
       }
-    });
+      marcarVivo();
+    })
+    .finally(function () { clearTimeout(limite); consultando = false; });
+}
+
+/* Linha "Atualizada as HH:MM:SS" — vermelha quando passa de 30 s sem resposta */
+function marcarVivo() {
+  var el = document.getElementById('listaVivo');
+  if (!el) return;
+  if (!ultimaOk) { el.textContent = 'Consultando...'; el.className = 'vivo'; return; }
+  var seg = Math.round((Date.now() - ultimaOk) / 1000);
+  var hora = new Date(ultimaOk).toLocaleTimeString('pt-BR');
+  if (seg > 30) {
+    el.className = 'vivo atrasada';
+    el.textContent = 'Lista sem atualizar há ' + seg + ' s (última às ' + hora + '). Confira a internet do celular; ela volta sozinha.';
+  } else {
+    el.className = 'vivo';
+    el.textContent = 'Atualizada às ' + hora;
+  }
+}
+
+/* Tela acesa enquanto a chamada estiver aberta (o celular apagado congela a lista) */
+function manterTelaAcesa(ligar) {
+  if (!('wakeLock' in navigator)) return;
+  if (ligar && !wakeLock && document.visibilityState === 'visible') {
+    navigator.wakeLock.request('screen').then(function (w) {
+      wakeLock = w;
+      w.addEventListener('release', function () { wakeLock = null; });
+    }).catch(function () {});
+  } else if (!ligar && wakeLock) {
+    wakeLock.release().catch(function () {});
+    wakeLock = null;
+  }
+}
+
+/* ---------- Presenca manual pelo RA (F33) ---------- */
+function marcarManual() {
+  var raw = document.getElementById('inRAmanual').value.replace(/\D/g, '');
+  var ok = document.getElementById('manualOk'), er = document.getElementById('manualErro');
+  ok.hidden = true; er.hidden = true;
+  if (raw.length < 5) { er.textContent = 'Digite os 7 dígitos do RA.'; er.hidden = false; return; }
+  var ra = ('0000000' + raw).slice(-7);
+  var btn = document.getElementById('btnManual');
+  btn.disabled = true; btn.textContent = 'Marcando...';
+  fetch(COLETA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'PRESENCA_MANUAL', chave: chave, ra: ra,
+      aula: parseInt(document.getElementById('selAulaManual').value, 10) })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'Não foi possível marcar.');
+      ok.textContent = '✓ ' + res.nome + ' (' + res.turma + ') presente na Aula ' + res.aula +
+        (res.reenvio ? ' — já estava registrado.' : '.');
+      ok.hidden = false;
+      document.getElementById('inRAmanual').value = '';
+      consultarAdmin(false);
+    })
+    .catch(function (err) { er.textContent = err.message || 'Falha de conexão.'; er.hidden = false; })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Marcar presente'; });
 }
 
 function preencherTurmas() {
@@ -251,6 +366,8 @@ function atualizarJanela(janelas) {
   } else {
     box.hidden = true; btnF.hidden = true; form.style.display = '';
   }
+  manterTelaAcesa(!!janelaAberta);
+  if (janelaAberta) document.getElementById('selAulaManual').value = String(janelaAberta.aula);
 }
 
 function atualizarLista(presentes) {
@@ -259,7 +376,8 @@ function atualizarLista(presentes) {
   presentes.sort(function (a, b) { return a.hora < b.hora ? 1 : -1; });
   presentes.forEach(function (p) {
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + p.hora + '</td><td>' + p.nome + '</td><td>' + p.turma + '</td><td>' + p.aula + '</td>';
+    tr.innerHTML = '<td>' + p.hora + '</td><td>' + p.nome + (p.manual ? ' <span class="ip-mono">(manual)</span>' : '') +
+      '</td><td>' + p.turma + '</td><td>' + p.aula + '</td>';
     corpo.appendChild(tr);
   });
   var cont = document.getElementById('listaContagem');
@@ -271,6 +389,8 @@ function atualizarLista(presentes) {
   } else {
     cont.textContent = presentes.length ? '· ' + presentes.length + ' registros' : '';
   }
+  // F33: a contagem tambem aparece sob o QR, que e o que fica na tela durante a chamada
+  document.getElementById('qrContagem').textContent = janelaAberta ? cont.textContent.replace(/^· /, '') : '';
 }
 
 /* ---------- Redes do campus autorizadas (F12) ---------- */
@@ -285,8 +405,10 @@ function atualizarRedes(redes) {
     if (r.status !== 'ativa') acoes += '<button class="btn-mini" onclick="redeAcao(\'' + r.ip + '\', \'autorizar\')">Autorizar</button> ';
     if (r.status !== 'bloqueada') acoes += '<button class="btn-mini btn-mini-vermelho" onclick="redeAcao(\'' + r.ip + '\', \'bloquear\')">Bloquear</button>';
     var tr = document.createElement('tr');
+    // F33: recusas de hoje dentro da celula do status (3 colunas cabem no celular)
     tr.innerHTML = '<td>' + nome + '</td><td class="st-' + r.status + '">' + r.status +
-      '</td><td>' + (r.recusas_hoje || 0) + '</td><td>' + acoes + '</td>';
+      (r.recusas_hoje ? '<br><span class="ip-mono">' + r.recusas_hoje + ' recusa' + (r.recusas_hoje > 1 ? 's' : '') + ' hoje</span>' : '') +
+      '</td><td>' + acoes + '</td>';
     corpo.appendChild(tr);
   });
   document.getElementById('redesPendentes').textContent =
@@ -356,6 +478,12 @@ function fecharChamada() {
 }
 
 /* ---------- Boot ---------- */
+/* F33: ao voltar para a tela (desbloqueio, troca de app) atualiza na hora e religa a tela acesa */
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState !== 'visible' || !chave || !adminTimer) return;
+  consultarAdmin(false);
+  if (janelaAberta) manterTelaAcesa(true);
+});
 (function () {
   if (!COLETA_URL) {
     document.getElementById('cartaoChave').innerHTML =

@@ -53,6 +53,10 @@
     border: 1px solid var(--borda); color: var(--texto); text-align: center;
   }
   input[type=text]:focus { outline: none; border-color: var(--ouro); }
+  [hidden] { display: none !important; }
+  .dica-ios { margin-top: .7rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace;
+    font-size: .86rem; line-height: 1.55; border-left: 3px solid var(--ouro); background: rgba(200,160,60,.10); }
+  .dica-ios ol { margin: .4rem 0 0 1.1rem; padding: 0; }
   .btn {
     display: block; width: 100%; margin-top: .8rem; padding: .85rem;
     font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
@@ -129,6 +133,7 @@
     <div id="presStatus" class="status-fechada">Consultando...</div>
     <button class="btn btn-verde" id="btnRegistrar" onclick="registrarPresenca()" hidden>Registrar presen&ccedil;a</button>
     <div class="erro" id="presErro" hidden></div>
+    <div class="dica-ios" id="presDica" hidden></div>
     <div class="ok-box" id="presOk" hidden></div>
     <div class="aluno-linha">
       <span id="alunoLinha"></span>
@@ -152,10 +157,10 @@ var aluno = null, alunoPendente = null, janelaAtual = null, enviando = false, po
 
 /* ---------- IP publico (IPv4) do aparelho — obrigatorio para o registro ---------- */
 function buscarIP() {
-  return fetch('https://api.ipify.org?format=json').then(function (r) { return r.json(); })
+  return fetch('https://api.ipify.org?format=json', { cache: 'no-store' }).then(function (r) { return r.json(); })
     .then(function (d) { return d.ip; })
     .catch(function () {
-      return fetch('https://ipv4.icanhazip.com').then(function (r) { return r.text(); })
+      return fetch('https://ipv4.icanhazip.com', { cache: 'no-store' }).then(function (r) { return r.text(); })
         .then(function (t) { return t.trim(); });
     });
 }
@@ -207,7 +212,13 @@ function trocarAluno() {
 }
 
 /* ---------- Estado da chamada ---------- */
-function comprovanteKey(data, aula) { return 'ifmg_fc1_presenca_c_' + data + '_a' + aula; }
+/* F33: a chave leva o RA — sem ele, quem entrava no celular de um colega depois
+   que o colega registrou via o recibo DO COLEGA e achava que estava presente. */
+function comprovanteKey(data, aula) { return 'ifmg_fc1_presenca_c_' + aluno.ra + '_' + data + '_a' + aula; }
+function ehIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
 
 function iniciarPresenca() {
   document.getElementById('cartaoLogin').hidden = true;
@@ -228,10 +239,27 @@ function consultarStatus() {
       janelaAtual = res;
       var c = null;
       try { c = localStorage.getItem(comprovanteKey(res.data, res.aula)); } catch (e) {}
-      if (c) { mostrarRegistrada(res.aula, c); return; }
-      mostrarStatusAberta(res.aula);
+      if (!c) { mostrarStatusAberta(res.aula); return; }
+      if (conferidos[c]) { mostrarRegistrada(res.aula, c); return; }
+      // F33: recibo guardado no aparelho so aparece depois de conferido na planilha
+      conferirRecibo(c).then(function (ok) {
+        if (ok === true) { conferidos[c] = 1; mostrarRegistrada(res.aula, c); }
+        else if (ok === false) {
+          try { localStorage.removeItem(comprovanteKey(res.data, res.aula)); } catch (e) {}
+          mostrarStatusAberta(res.aula);
+        } else mostrarStatusAberta(res.aula);   // sem resposta: deixa registrar de novo (o servidor nao duplica)
+      });
     })
     .catch(function () { /* mantem o estado atual em falha de rede */ });
+}
+var conferidos = {};
+/* true = recibo esta na planilha · false = nao esta · null = sem resposta */
+function conferirRecibo(c) {
+  return fetch(COLETA_URL + '?presenca_conferir=1&ra=' + encodeURIComponent(aluno.ra) +
+               '&comprovante=' + encodeURIComponent(c), { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (res) { return res.ok ? !!res.registrado : null; })
+    .catch(function () { return null; });
 }
 
 function mostrarStatusFechada() {
@@ -240,6 +268,7 @@ function mostrarStatusFechada() {
     'O professor abre a chamada durante a aula. Esta página atualiza sozinha — aguarde.';
   document.getElementById('btnRegistrar').hidden = true;
   document.getElementById('presOk').hidden = true;
+  document.getElementById('presDica').hidden = true;
 }
 function mostrarStatusAberta(aula) {
   document.getElementById('presStatus').innerHTML =
@@ -254,8 +283,31 @@ function mostrarRegistrada(aula, comprovante) {
   document.getElementById('btnRegistrar').hidden = true;
   var box = document.getElementById('presOk');
   box.hidden = false;
+  document.getElementById('presDica').hidden = true;
+  document.getElementById('presErro').hidden = true;
   box.innerHTML = '<strong>✓ Presença registrada — Aula ' + aula + '</strong><br>' +
-    'Comprovante: <span class="comprovante">' + comprovante + '</span>';
+    'Comprovante: <span class="comprovante">' + comprovante + '</span><br>' +
+    '<span style="font-size:.8rem;">Conferido na lista do professor.</span>';
+}
+
+/* F33: estudante recusado pela rede — no iPhone, o ajuste que costuma resolver */
+function mostrarDicaRede(ip) {
+  var el = document.getElementById('presDica');
+  var html = '';
+  if (ehIOS()) {
+    html += '<strong>No iPhone, faça isto e toque de novo em Registrar:</strong><ol>' +
+      '<li>Abra <strong>Ajustes &gt; Wi-Fi</strong>.</li>' +
+      '<li>Toque no <strong>(i)</strong> ao lado da rede <strong>ESTUDANTES</strong>.</li>' +
+      '<li>Desligue <strong>Limitar Rastreamento de Endereço IP</strong>.</li>' +
+      '<li>Se tiver iCloud+: <strong>Ajustes &gt; [seu nome] &gt; iCloud &gt; Retransmissão Privada</strong> &rarr; desligue.</li>' +
+      '<li>Volte aqui e toque em <strong>Registrar presença</strong>.</li></ol>';
+  } else {
+    html += '<strong>Confira:</strong> o Wi-Fi está ligado e conectado à rede <strong>ESTUDANTES</strong> ' +
+      '(dados móveis desligados)? Depois toque de novo em Registrar.';
+  }
+  html += '<div style="margin-top:.5rem;">Se ainda não der, mostre seu <strong>RA</strong> ao professor: ' +
+    'ele marca sua presença no painel da chamada.' + (ip ? ' (Seu IP: ' + ip + ')' : '') + '</div>';
+  el.innerHTML = html; el.hidden = false;
 }
 
 /* ---------- Registro ---------- */
@@ -265,9 +317,12 @@ function registrarPresenca() {
   var b = document.getElementById('btnRegistrar');
   b.disabled = true; b.textContent = 'Verificando a rede...';
   document.getElementById('presErro').hidden = true;
+  document.getElementById('presDica').hidden = true;
+  var ipUsado = '';
 
   buscarIP()
     .then(function (ip) {
+      ipUsado = ip;
       b.textContent = 'Registrando...';
       return fetch(COLETA_URL, {
         method: 'POST',
@@ -277,15 +332,23 @@ function registrarPresenca() {
     })
     .then(function (r) { return r.json(); })
     .then(function (res) {
-      if (!res.ok) throw new Error(res.erro || 'Registro recusado.');
+      if (!res.ok) {
+        var er = new Error(res.erro || 'Registro recusado.');
+        er.codigo = res.codigo; er.ip = res.ip;
+        throw er;
+      }
+      // F33: o servidor rele a linha antes de responder; sem essa confirmacao, nao ha recibo
+      if (!res.conferido) throw new Error('O registro não foi confirmado. Toque de novo.');
       try { localStorage.setItem(comprovanteKey(janelaAtual.data, res.aula), res.comprovante); } catch (e) {}
+      conferidos[res.comprovante] = 1;
       mostrarRegistrada(res.aula, res.comprovante);
     })
     .catch(function (err) {
       var el = document.getElementById('presErro');
-      el.textContent = (err && err.message) ? err.message :
+      el.textContent = (err && err.message && err.message !== 'Failed to fetch') ? err.message :
         'Não foi possível registrar. Confira se está no Wi-Fi do IFMG e tente de novo.';
       el.hidden = false;
+      if (err && err.codigo === 'REDE') mostrarDicaRede(err.ip || ipUsado);
       b.disabled = false; b.textContent = 'Registrar presença — Aula ' + janelaAtual.aula;
     })
     .finally(function () { enviando = false; });
@@ -300,6 +363,10 @@ function registrarPresenca() {
   }
   try { aluno = JSON.parse(localStorage.getItem(ALUNO_KEY)); } catch (e) { aluno = null; }
   if (aluno && aluno.ra) iniciarPresenca();
+  // F33: ao voltar para a pagina (tela desbloqueada, troca de app), consulta na hora
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && aluno && aluno.ra) consultarStatus();
+  });
 })();
 </script>
 <!-- CONTADOR:INICIO -->
