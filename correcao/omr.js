@@ -452,8 +452,8 @@
       o.push('<text x="' + (b0[0] - 5.2) + '" y="' + (b0[1] + 1.2) + '" font-size="3.4" font-weight="bold" text-anchor="end">' + (corr && q >= NCORR ? q - NCORR + 1 : q + 1) + '</text>');
       for (a = 0; a < 5; a++) {
         var b = centroBolha(q, a);
-        o.push('<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + L.R + '" fill="none" stroke="#444" stroke-width=".35"/>');
-        o.push('<text x="' + b[0] + '" y="' + (b[1] + 0.85) + '" font-size="2.3" fill="' + (a < 4 ? '#8c8c8c' : '#e2e2e2') + '" text-anchor="middle">' + L.ALT[a] + '</text>');
+        o.push('<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + L.R + '" fill="none" stroke="#000" stroke-width=".35"/>');
+        o.push('<text x="' + b[0] + '" y="' + (b[1] + 0.85) + '" font-size="2.3" fill="' + (a < 4 ? '#000' : '#e2e2e2') + '" text-anchor="middle">' + L.ALT[a] + '</text>');
       }
     }
     o.push('<text x="' + (L.W / 2) + '" y="' + (L.H - 1.5) + '" font-size="2.3" fill="#666" text-anchor="middle">IFMG campus Ouro Preto · CODAFIS · NIDEC · Não dobre nem amasse este cartão</text>');
