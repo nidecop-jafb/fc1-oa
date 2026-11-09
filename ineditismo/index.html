@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="/fc1-oa/_icones/app-site-192.png">
+<meta name="theme-color" content="#14120D">
+<title>Ineditismo &middot; FC1 &middot; IFMG-OP</title>
+<style>
+  /* fonte unica da pagina (autor, 2026-09-17) */
+  input, button, select, textarea { font-family: inherit; }
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fundo); color: var(--texto);
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    border-bottom: 2px solid var(--ouro); padding: 1.1rem 1rem .9rem;
+    text-align: center;
+  }
+  .header-sub {
+    font-family: 'Courier New', Courier, monospace; font-size: .72rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
+  }
+  h1 { font-size: 1.5rem; color: var(--ouro); margin-top: .3rem; }
+  .badge {
+    display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
+    border: 1px solid var(--verde); color: var(--verde);
+    font-family: 'Courier New', Courier, monospace; font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
+  .cartao {
+    background: var(--painel); border: 1px solid var(--borda);
+    padding: 1.2rem 1.1rem; margin-top: 1rem;
+  }
+  .cartao h2 {
+    font-family: 'Courier New', Courier, monospace; font-size: .8rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem;
+  }
+  .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
+  label {
+    font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim);
+    display: block; margin: .9rem 0 .3rem;
+  }
+  label .opcional { color: var(--texto-dim); opacity: .7; font-size: .74rem; }
+  input[type=text], select, textarea {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace; background: var(--fundo);
+    border: 1px solid var(--borda); color: var(--texto);
+  }
+  input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
+  textarea { resize: vertical; min-height: 7rem; font-size: 1.02rem; line-height: 1.5; }
+  .btn {
+    display: block; width: 100%; margin-top: 1rem; padding: .85rem;
+    font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none;
+  }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .btn-sec {
+    background: transparent; color: var(--texto); border: 1px solid var(--borda);
+    font-family: 'Courier New', Courier, monospace; padding: .55rem .9rem; cursor: pointer;
+    font-size: .88rem;
+  }
+  .btn-grav { border-color: var(--verde); color: var(--verde); }
+  .btn-parar { border-color: var(--vermelho); color: #F0B3AA; }
+  .audio-linha { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-top: .4rem; }
+  .grav-timer {
+    font-family: 'Courier New', monospace; font-size: 1.05rem; color: var(--vermelho);
+  }
+  .pulso { display: inline-block; width: .6rem; height: .6rem; background: var(--vermelho);
+    border-radius: 50%; margin-right: .4rem; animation: pulso 1.2s infinite; }
+  @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  audio { width: 100%; margin-top: .6rem; }
+  .erro {
+    margin-top: .8rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace;
+    font-size: .9rem; background: rgba(224,91,75,.12);
+    border-left: 3px solid var(--vermelho); color: #F0B3AA;
+  }
+  .ok-box {
+    margin-top: .8rem; padding: .9rem; font-family: 'Courier New', Courier, monospace;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde);
+    line-height: 1.5;
+  }
+  .ok-box strong { color: var(--verde); }
+  .nota {
+    margin-top: 1rem; font-family: 'Courier New', Courier, monospace; font-size: .78rem;
+    color: var(--texto-dim); line-height: 1.5;
+  }
+  .hp { position: absolute; left: -9999px; top: -9999px; }
+  footer {
+    border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
+    font-family: 'Courier New', Courier, monospace; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+  }
+  footer a { color: var(--texto-dim); }
+
+  /* pagina Ineditismo (2026-11-09) */
+  main { max-width: 680px; }
+  .texto p { margin: 0 0 1rem; line-height: 1.7; }
+  .texto p:last-child { margin-bottom: 0; }
+  .texto strong { color: var(--ouro); font-weight: normal; }
+</style>
+</head>
+<body data-pagina="ineditismo">
+
+<header>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
+  <h1>Ineditismo</h1>
+  <span class="badge">F&iacute;sica Conceitual 1 &middot; T&eacute;cnico em Minera&ccedil;&atilde;o</span>
+</header>
+
+<main>
+  <div class="cartao texto">
+  <p>Trilhas de Aprendizagem nasceu do diálogo entre docentes das Áreas de Física e de Mineração do IFMG campus Ouro Preto, com um objetivo: construir uma física aplicada ao curso Técnico em Mineração. Na Física Conceitual, o conceito e o modelo mental vêm antes de qualquer fórmula.</p>
+  <p>Cada trilha tem três paradas. A <strong>Pré-Aula</strong>, feita em casa, prepara e desafia o cérebro para o que será discutido em sala. A <strong>Aula</strong> é o encontro presencial, em que o professor conduz a construção do conhecimento. A <strong>Pós-Aula</strong>, feita no mesmo dia, consolida o que foi aprendido.</p>
+  <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
+  <p>Até onde a pesquisa dos autores alcançou, trilha de aprendizagem como metodologia aplicada ao ensino de física no curso técnico de mineração integrado ao ensino médio é algo que não existe no Brasil. Por exemplo, os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
+  <p>Boas-vindas — e sucesso na sua caminhada pelas Trilhas de Aprendizagem de Física Conceitual.</p>
+  </div>
+</main>
+
+<footer>
+  <a href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a><br>
+<a href="../agradecimentos/">Agradecimentos &middot; F&iacute;sica e Poesia</a><br>
+  IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>

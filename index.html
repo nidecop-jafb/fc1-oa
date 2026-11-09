@@ -53,11 +53,12 @@
 .aba-toggle:hover { color: #C8A84B; }
 #abaSiteT { top: 56px; }
 #abaMetodoT { top: 120px; }
-#abaDocumentosT { top: 208px; }
-#abaMusicaT { top: 344px; }
-#abaIneditismoT { top: 432px; }
-#abaProjetoT { top: 568px; }
-#abaCreditosT { top: 668px; }
+#abaMusicaT { top: 208px; }
+#abaEtapa1T { top: 296px; }
+#abaEtapa2T { top: 396px; }
+#abaEtapa3T { top: 496px; }
+#abaDocumentosT { top: 596px; }
+#abaCreditosT { top: 732px; }
 .aba-painel { position: fixed; top: 0; left: 0; z-index: 997; width: 380px; max-width: 88vw; height: 100vh; overflow-y: auto; background: #1a1b1f; border-right: 1px solid #444; padding: 24px 22px 24px 42px; transform: translateX(-100%); transition: transform .25s; font-size: .92rem; color: #c4c4c4; line-height: 1.6; }
 .aba-painel.open { transform: translateX(0); }
 .aba-painel h3 { font-family: 'Courier New', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 14px; }
@@ -178,6 +179,7 @@
   <h3>Site</h3>
   <p>Endereço: <strong>nidecop-jafb.github.io/fc1-oa</strong> — abre direto, sem senha e sem aplicativo. Nos OAs, a identificação é pelo <strong>RA</strong> (7 dígitos) com confirmação.</p>
   <a class="aba-btn" href="_qr/">QR do site e cartaz A3 · imprimir</a>
+  <a class="aba-btn" href="ineditismo/">Ineditismo · por que estas Trilhas são inéditas</a>
   <a class="aba-btn" href="https://nidecop-jafb.github.io/fe1-oa/">Disciplina irmã: FE1 — Física Experimental 1</a>
 </aside>
 
@@ -249,19 +251,6 @@
   <div class="regra"><strong>Não pule nenhum objeto de aprendizagem. Se pulou, volte.</strong><br>Cada objeto de aprendizagem prepara o terreno do seguinte: sem o Ponto de Partida o texto não encontra pergunta; sem o texto a aula vira cópia; sem a Pós-Aula do mesmo dia o que foi construído se dissolve. Pular um objeto de aprendizagem não adianta a trilha — atrasa. Se você pulou, volte ao que ficou para trás e siga dali.</div>
 </aside>
 
-<button class="aba-toggle" id="abaDocumentosT">Documentos</button>
-<aside class="aba-painel" id="abaDocumentos">
-  <h3>Documentos</h3>
-  <p>Os documentos que regem o seu curso e a Física I — em HTML, para ler no celular, cada um com PDF e QR próprios.</p>
-  <a class="aba-btn" href="documentos/ppc/">Projeto Pedagógico do Curso (PPC) · guia + PDF integral</a>
-  <a class="aba-btn" href="documentos/matriz/">Matriz Curricular · guia + PDF</a>
-  <a class="aba-btn" href="documentos/ementa/">Ementa · em vigor (PPC) e proposta</a>
-  <a class="aba-btn" href="documentos/plano/">Plano de Ensino · 2026 · proposta</a>
-  <a class="aba-btn" href="documentos/regulamento/">Regulamento de Ensino · resumo + PDF oficial</a>
-  <a class="aba-btn" href="https://ouropreto.ifmg.edu.br/ouropreto/ensino/legislacao-e-normas-de-ensino" target="_blank" rel="noopener">Legislação e Normas de Ensino · página oficial do IFMG</a>
-  <p class="aba-nota">A proposta de nova ementa e o Plano de Ensino seguem para a Coordenadoria da Área de Física (CODAFIS) e, em seguida, para a Coordenadoria da Área de Mineração (CODAMIN); até a aprovação, vale a ementa em vigor.</p>
-</aside>
-
 <button class="aba-toggle" id="abaMusicaT">Música</button>
 <aside class="aba-painel" id="abaMusica">
   <h3>Música</h3>
@@ -284,21 +273,68 @@
   <p><b>Raphael Rabello</b> (Petrópolis, 1962 — Rio de Janeiro, 1995) — primeiro registro profissional aos treze anos; discípulo de Dino 7 Cordas e parceiro de Radamés Gnattali, levou o violão de sete cordas do acompanhamento ao centro do palco. Morreu aos 32 anos, deixando uma obra relevante e inacabada: cabe a quem ouve — e a quem estuda — continuá-la.</p>
 </aside>
 
-<button class="aba-toggle" id="abaIneditismoT">Ineditismo</button>
-<aside class="aba-painel" id="abaIneditismo">
-  <h3>Ineditismo</h3>
-  <p>Trilhas de Aprendizagem nasceu do diálogo entre docentes das Áreas de Física e de Mineração do IFMG campus Ouro Preto, com um objetivo: construir uma física aplicada ao curso Técnico em Mineração. Na Física Conceitual, o conceito e o modelo mental vêm antes de qualquer fórmula.</p>
-  <p>Cada trilha tem três paradas. A <strong>Pré-Aula</strong>, feita em casa, prepara e desafia o cérebro para o que será discutido em sala. A <strong>Aula</strong> é o encontro presencial, em que o professor conduz a construção do conhecimento. A <strong>Pós-Aula</strong>, feita no mesmo dia, consolida o que foi aprendido.</p>
-  <p>Essa lógica vem da neurociência da aprendizagem: o cérebro precisa de preparação, de construção ativa e de consolidação durante o sono. Pular uma das paradas trava a trilha, como uma engrenagem sem um dos dentes.</p>
-  <p>Até onde a pesquisa dos autores alcançou, trilha de aprendizagem como metodologia aplicada ao ensino de física no curso técnico de mineração integrado ao ensino médio é algo que não existe no Brasil. Por exemplo, os livros didáticos de física aprovados pelo PNLD abordam a física do ensino médio, mas não há uma linguagem e nem aplicações em contexto de cursos técnicos em mineração.</p>
-  <p>Boas-vindas — e sucesso na sua caminhada pelas Trilhas de Aprendizagem de Física Conceitual.</p>
+<button class="aba-toggle" id="abaEtapa1T">Etapa 1</button>
+<aside class="aba-painel" id="abaEtapa1">
+  <h3>Etapa 1 &middot; A Régua do Mundo</h3>
+  <p>As trilhas desta Etapa, na ordem em que você vai fazê-las.</p>
+  <div class="etapa-tr"><span class="prep">T0A &middot; Trilhas de Aprendizagem<em>em preparação</em></span></div>
+  <div class="etapa-tr"><span class="prep">T0B &middot; Uso de Tecnologias Digitais<em>em preparação</em></span></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t01">T01 &middot; Física, uma linguagem básica da ciência</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t02">T02 &middot; Sistema de Numeração de Base 12</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t03">T03 &middot; Sistema de Numeração de Base 10</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t04">T04 &middot; O SI e a Metrologia no Brasil</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t05">T05 &middot; Notação Científica</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t06">T06 &middot; Ordem de Grandeza</a></div>
 </aside>
 
-<button class="aba-toggle" id="abaProjetoT">Projeto</button>
-<aside class="aba-painel" id="abaProjeto">
-  <h3>Projeto</h3>
-  <p>Documentos do projeto — escritos para professores, equipe, coordenação e direção. Não são material de estudo do estudante.</p>
+<button class="aba-toggle" id="abaEtapa2T">Etapa 2</button>
+<aside class="aba-painel" id="abaEtapa2">
+  <h3>Etapa 2 &middot; O Ritmo das Máquinas</h3>
+  <p>As trilhas desta Etapa, na ordem em que você vai fazê-las.</p>
+  <div class="etapa-tr"><a class="aba-btn" href="#t07">T07 &middot; Referencial, Posição e Tempo</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t08">T08 &middot; Velocidade Média e Instantânea</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t09">T09 &middot; Aceleração Média e Instantânea</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t10">T10 &middot; O Movimento Uniforme (MU)</a></div>
+</aside>
+
+<button class="aba-toggle" id="abaEtapa3T">Etapa 3</button>
+<aside class="aba-painel" id="abaEtapa3">
+  <h3>Etapa 3 &middot; Das Leis de Newton ao Universo</h3>
+  <p>As trilhas desta Etapa, na ordem em que você vai fazê-las.</p>
+  <div class="etapa-tr"><a class="aba-btn" href="#t11">T11 &middot; Leis de Newton e força</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t12">T12 &middot; Leis de Newton e força</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t13">T13 &middot; Gravitação</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t14">T14 &middot; Energia, potência e trabalho</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t15">T15 &middot; Movimento: do impulso à conservação</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t16">T16 &middot; Hidrostática e Hidrodinâmica</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t17">T17 &middot; O Sistema Solar</a></div>
+  <div class="etapa-tr"><a class="aba-btn" href="#t18">T18 &middot; O Universo</a></div>
+</aside>
+<script>
+(function () {
+  [].slice.call(document.querySelectorAll('.etapa-tr a[href^="#"]')).forEach(function (a) {
+    a.addEventListener('click', function () {
+      var d = document.getElementById(a.getAttribute('href').slice(1));
+      if (d && d.tagName === 'DETAILS') { d.open = true; }
+      var p = a.closest('.aba-painel'); if (p) { p.classList.remove('open'); }
+    });
+  });
+})();
+</script>
+
+<button class="aba-toggle" id="abaDocumentosT">Documentos</button>
+<aside class="aba-painel" id="abaDocumentos">
+  <h3>Documentos</h3>
+  <p>Os documentos que regem o seu curso e a Física I — em HTML, para ler no celular, cada um com PDF e QR próprios. No fim, o projeto das Trilhas, escrito para professores e coordenação.</p>
+  <a class="aba-btn" href="documentos/ppc/">Projeto Pedagógico do Curso (PPC) · guia + PDF integral</a>
+  <a class="aba-btn" href="documentos/matriz/">Matriz Curricular · guia + PDF</a>
+  <a class="aba-btn" href="documentos/ementa/">Ementa · em vigor (PPC) e proposta</a>
+  <a class="aba-btn" href="documentos/plano/">Plano de Ensino · 2026 · proposta</a>
+  <a class="aba-btn" href="documentos/trilhas/">Etapas e Trilhas · as 3 Etapas e as 20 trilhas</a>
+  <a class="aba-btn" href="documentos/regulamento/">Regulamento de Ensino · resumo + PDF oficial</a>
+  <a class="aba-btn" href="https://ouropreto.ifmg.edu.br/ouropreto/ensino/legislacao-e-normas-de-ensino" target="_blank" rel="noopener">Legislação e Normas de Ensino · página oficial do IFMG</a>
   <a class="aba-btn" href="projeto/">O projeto — versão executiva · 20 páginas</a>
+  <p class="aba-nota">A proposta de nova ementa e o Plano de Ensino seguem para a Coordenadoria da Área de Física (CODAFIS) e, em seguida, para a Coordenadoria da Área de Mineração (CODAMIN); até a aprovação, vale a ementa em vigor.</p>
 </aside>
 
 <button class="aba-toggle" id="abaCreditosT">Créditos</button>
@@ -349,7 +385,7 @@
     <section>
       <h2 class="intro-t">Trilhas de Aprendizagem</h2>
       <p>Trilhas de Aprendizagem são percursos de estudo construídos para orientar, apoiar e avaliar a sua caminhada pelo mundo da Física.</p>
-      <p>Nas <strong>abas da lateral esquerda</strong> estão a instalação do site, o método de estudo, os documentos da disciplina, a música para estudar, o ineditismo, o projeto executivo, os créditos e a referência para citar o site.</p>
+      <p>Nas <strong>abas da lateral esquerda</strong> estão, nesta ordem: o site (endereço, QR code e ineditismo), o método de estudo, a música para estudar, as três etapas com as suas trilhas, os documentos do curso, da disciplina e do projeto, e os créditos.</p>
       <p>Escolha uma trilha e faça os objetos de aprendizagem <strong>na ordem numerada</strong>, sem pular nenhum — a ordem segue como o cérebro aprende. Se pulou, volte.</p>
       <p class="sucesso">Sucesso no seu estudo.</p>
     </section>
@@ -376,7 +412,21 @@
 <!-- ENTREGAS:FIM -->
 
 <!-- TRILHAS:INICIO -->
-  <nav class="trilha-nav" aria-label="Ir para a trilha"><a href="#t01">T01</a> <a href="#t02">T02</a> <a href="#t03">T03</a> <a href="#t04">T04</a> <a href="#t05">T05</a> <a href="#t06">T06</a> <a href="#t07">T07</a> <a href="#t08">T08</a> <a href="#t09">T09</a> <a href="#t10">T10</a> <a href="#t11">T11</a> <a href="#t12">T12</a> <a href="#t13">T13</a> <a href="#t14">T14</a> <a href="#t15">T15</a> <a href="#t16">T16</a> <a href="#t17">T17</a> <a href="#t18">T18</a></nav>
+  <style>
+  .etapa-t { font-family: 'Courier New', monospace; font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; color: #C8A84B; border-bottom: 2px solid #4CAF7D; padding-bottom: 8px; margin: 34px 0 14px; scroll-margin-top: 64px; }
+  .trilha-prep { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; border: 1px dashed #444; padding: 12px 14px; margin-bottom: 12px; color: #9a9a9a; font-family: 'Courier New', monospace; scroll-margin-top: 64px; }
+  .trilha-prep .tag { font-size: .8rem; color: #7f7f7f; white-space: nowrap; }
+  .aba-painel .etapa-tr { margin: 0 0 12px; }
+  .aba-painel .etapa-tr a.aba-btn { margin: 0; }
+  .aba-painel .etapa-tr .prep { display: block; padding: 11px 14px; border: 1px dashed #444; color: #9a9a9a; font-size: .88rem; }
+  .aba-painel .etapa-tr .prep em { display: block; font-size: .78rem; color: #7f7f7f; margin-top: 4px; font-style: normal; }
+</style>
+
+  <h2 class="etapa-t" id="etapa1">Etapa 1 &middot; A Régua do Mundo</h2>
+
+  <div class="trilha-prep" id="t0a"><span>T0A &middot; Trilhas de Aprendizagem</span><span class="tag">em preparação</span></div>
+
+  <div class="trilha-prep" id="t0b"><span>T0B &middot; Uso de Tecnologias Digitais</span><span class="tag">em preparação</span></div>
 
   <details class="trilha" id="t01">
   <summary>T01 &middot; F&iacute;sica, uma linguagem b&aacute;sica da ci&ecirc;ncia</summary>
@@ -564,6 +614,8 @@
   </div>
   </details>
 
+  <h2 class="etapa-t" id="etapa2">Etapa 2 &middot; O Ritmo das Máquinas</h2>
+
   <details class="trilha" id="t07">
   <summary>T07 &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</summary>
   <div class="trilha-corpo">
@@ -681,6 +733,8 @@
   </ul>
   </div>
   </details>
+
+  <h2 class="etapa-t" id="etapa3">Etapa 3 &middot; Das Leis de Newton ao Universo</h2>
 
   <details class="trilha" id="t11">
   <summary>T11 &middot; Leis de Newton e força</summary>
@@ -913,10 +967,11 @@ if (location.protocol === 'file:') {
 (function () {
   var pares = [['abaSiteT', 'abaSite'],
                ['abaMetodoT', 'abaMetodo'],
-               ['abaDocumentosT', 'abaDocumentos'],
                ['abaMusicaT', 'abaMusica'],
-               ['abaIneditismoT', 'abaIneditismo'],
-               ['abaProjetoT', 'abaProjeto'],
+               ['abaEtapa1T', 'abaEtapa1'],
+               ['abaEtapa2T', 'abaEtapa2'],
+               ['abaEtapa3T', 'abaEtapa3'],
+               ['abaDocumentosT', 'abaDocumentos'],
                ['abaCreditosT', 'abaCreditos']];
   /* Espacamento UNIFORME entre as linguetas: o rotulo e vertical e a altura
      real varia com a fonte do navegador — medir e empilhar com folga fixa

@@ -85,7 +85,8 @@
   var LINGUETAS = [['abaMetodoT', 'aba:metodo'], ['abaDocumentosT', 'aba:documentos'],
                    ['abaSiteT', 'aba:site'], ['abaMusicaT', 'aba:musica'],
                    ['abaIneditismoT', 'aba:ineditismo'], ['abaCreditosT', 'aba:creditos'],
-                   ['abaProjetoT', 'aba:projeto']];
+                   ['abaProjetoT', 'aba:projeto'], ['abaEtapa1T', 'aba:etapa1'],
+                   ['abaEtapa2T', 'aba:etapa2'], ['abaEtapa3T', 'aba:etapa3']];
 
   function ligarLinguetas() {
     LINGUETAS.forEach(function (par) {
