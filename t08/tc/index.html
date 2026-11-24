@@ -1640,7 +1640,7 @@ function mostrarPendencias_(lista) {
   var el = document.getElementById('coletaPend');
   if (!el) { el = document.createElement('div'); el.id = 'coletaPend'; el.className = 'coleta-pend'; box.appendChild(el); }
   var t = String(OA_ID.trilha);
-  var h = '<p>A nota da ' + t + ' no site soma as 5 atividades da trilha, cada uma vale 0,6. Os pontos acima são só desta atividade.</p>' +
+  var h = '<p>A nota da ' + t + ' no site vale até 3,0 pontos: são 5 atividades (PP, TN, PR, TM, TC) e cada uma vale até 0,6. Os pontos acima são só desta atividade.</p>' +
     '<div class="coleta-pend-lista">';
   OAS_TRILHA_.forEach(function (o) {
     h += feitos[o] ? '<span title="' + NOMES_OA_[o] + ' enviada">✓ ' + o + '</span>'
