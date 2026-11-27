@@ -498,6 +498,19 @@ body {
 .fa-marcas + .header-left { margin-right: auto; }
 @media print { .fa-marcas svg { width: 22px; height: 22px; } }
 </style>
+<!-- CELULAR:INICIO --><style>
+@media (max-width: 560px) {
+  table { table-layout: fixed; width: 100% !important; max-width: 100%; min-width: 0 !important; }
+  table col { width: auto !important; }
+  th, td { overflow-wrap: anywhere; hyphens: auto; min-width: 0 !important; white-space: normal;
+           padding-left: 5px; padding-right: 5px; }
+  .tabela-rolagem, .quadro { overflow-x: visible; }
+  p, li, a, span, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: anywhere; }
+  .fase, .fase-oas, .oa-item { flex-wrap: wrap; min-width: 0; }
+  .campo-resultado { flex-wrap: wrap; }
+  .campo-resultado > .rot { flex: 1 1 100%; min-width: 0; }
+}
+</style><!-- CELULAR:FIM -->
 <!-- TOPO-FC1-CABECA:INICIO -->
 <script data-fc1-tema="fixo">(function () {
   var h = document.documentElement, t, l;
@@ -657,19 +670,6 @@ body {
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
-<!-- CELULAR:INICIO --><style>
-@media (max-width: 560px) {
-  table { table-layout: fixed; width: 100% !important; max-width: 100%; min-width: 0 !important; }
-  table col { width: auto !important; }
-  th, td { overflow-wrap: anywhere; hyphens: auto; min-width: 0 !important; white-space: normal;
-           padding-left: 5px; padding-right: 5px; }
-  .tabela-rolagem, .quadro { overflow-x: visible; }
-  p, li, a, span, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: anywhere; }
-  .fase, .fase-oas, .oa-item { flex-wrap: wrap; min-width: 0; }
-  .campo-resultado { flex-wrap: wrap; }
-  .campo-resultado > .rot { flex: 1 1 100%; min-width: 0; }
-}
-</style><!-- CELULAR:FIM -->
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }

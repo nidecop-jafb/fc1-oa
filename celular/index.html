@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="/fc1-oa/_icones/app-site-192.png">
+<meta name="theme-color" content="#14120D">
+<title>Site no celular &middot; FC1 &middot; IFMG-OP</title>
+<style>
+  /* fonte unica da pagina (autor, 2026-09-17) */
+  input, button, select, textarea { font-family: inherit; }
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fundo); color: var(--texto);
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    border-bottom: 2px solid var(--ouro); padding: 1.1rem 1rem .9rem;
+    text-align: center;
+  }
+  .header-sub {
+    font-family: 'Courier New', Courier, monospace; font-size: .72rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
+  }
+  h1 { font-size: 1.5rem; color: var(--ouro); margin-top: .3rem; }
+  .badge {
+    display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
+    border: 1px solid var(--verde); color: var(--verde);
+    font-family: 'Courier New', Courier, monospace; font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
+  .cartao {
+    background: var(--painel); border: 1px solid var(--borda);
+    padding: 1.2rem 1.1rem; margin-top: 1rem;
+  }
+  .cartao h2 {
+    font-family: 'Courier New', Courier, monospace; font-size: .8rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem;
+  }
+  .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
+  label {
+    font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim);
+    display: block; margin: .9rem 0 .3rem;
+  }
+  label .opcional { color: var(--texto-dim); opacity: .7; font-size: .74rem; }
+  input[type=text], select, textarea {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace; background: var(--fundo);
+    border: 1px solid var(--borda); color: var(--texto);
+  }
+  input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
+  textarea { resize: vertical; min-height: 7rem; font-size: 1.02rem; line-height: 1.5; }
+  .btn {
+    display: block; width: 100%; margin-top: 1rem; padding: .85rem;
+    font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none;
+  }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .btn-sec {
+    background: transparent; color: var(--texto); border: 1px solid var(--borda);
+    font-family: 'Courier New', Courier, monospace; padding: .55rem .9rem; cursor: pointer;
+    font-size: .88rem;
+  }
+  .btn-grav { border-color: var(--verde); color: var(--verde); }
+  .btn-parar { border-color: var(--vermelho); color: #F0B3AA; }
+  .audio-linha { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-top: .4rem; }
+  .grav-timer {
+    font-family: 'Courier New', monospace; font-size: 1.05rem; color: var(--vermelho);
+  }
+  .pulso { display: inline-block; width: .6rem; height: .6rem; background: var(--vermelho);
+    border-radius: 50%; margin-right: .4rem; animation: pulso 1.2s infinite; }
+  @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  audio { width: 100%; margin-top: .6rem; }
+  .erro {
+    margin-top: .8rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace;
+    font-size: .9rem; background: rgba(224,91,75,.12);
+    border-left: 3px solid var(--vermelho); color: #F0B3AA;
+  }
+  .ok-box {
+    margin-top: .8rem; padding: .9rem; font-family: 'Courier New', Courier, monospace;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde);
+    line-height: 1.5;
+  }
+  .ok-box strong { color: var(--verde); }
+  .nota {
+    margin-top: 1rem; font-family: 'Courier New', Courier, monospace; font-size: .78rem;
+    color: var(--texto-dim); line-height: 1.5;
+  }
+  .hp { position: absolute; left: -9999px; top: -9999px; }
+  footer {
+    border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
+    font-family: 'Courier New', Courier, monospace; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+  }
+  footer a { color: var(--texto-dim); }
+
+  .grupo { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .2rem; }
+  .grupo label { margin: 0; display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .65rem;
+    border: 1px solid var(--borda); background: var(--fundo); color: var(--texto); font-size: .9rem; cursor: pointer; }
+  .grupo input { accent-color: var(--ouro); }
+  .grupo label:has(input:checked) { border-color: var(--ouro); }
+  .conta { font-family: 'Courier New', Courier, monospace; font-size: .78rem; color: var(--texto-dim); text-align: right; margin-top: .2rem; }
+  .conta.estouro { color: #F0B3AA; }
+  #printPrev { max-width: 100%; max-height: 260px; display: block; margin-top: .6rem; border: 1px solid var(--borda); }
+  .ajuda { margin-top: .5rem; font-size: .88rem; line-height: 1.5; color: var(--texto-dim); }
+  .ajuda summary { cursor: pointer; color: var(--ouro); font-family: 'Courier New', Courier, monospace; font-size: .85rem; }
+  .ajuda ol { margin: .4rem 0 0 1.2rem; }
+  .relato { border-top: 1px solid var(--borda); padding: .7rem 0; line-height: 1.5; overflow-wrap: anywhere; }
+  .relato .st { font-family: 'Courier New', Courier, monospace; font-size: .78rem; color: var(--verde); }
+  .relato .st.recebido, .relato .st.em-analise { color: var(--ouro); }
+  input[type=file] { width: 100%; font-size: .95rem; color: var(--texto); }
+  .aviso-app { border-left: 3px solid var(--ouro); padding: .6rem .8rem; margin-top: .8rem; background: rgba(200,168,75,.1); line-height: 1.5; font-size: .92rem; }
+</style>
+<!-- TOPO-FC1-CABECA:INICIO -->
+<script data-fc1-tema="fixo">(function () {
+  var h = document.documentElement, t, l;
+  try { t = localStorage.getItem('fc1-tema'); l = localStorage.getItem('fc1-letra'); } catch (e) { /* sem localStorage */ }
+  if (t !== 'claro' && t !== 'escuro') { t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'claro' : 'escuro'; }
+  h.setAttribute('data-tema', t);
+  if (l === 'g' || l === 'gg') { h.setAttribute('data-letra', l); }
+  var vistas = [], regras = [], el = document.createElement('style'), meta = document.querySelector('meta[name="theme-color"]');
+  var metaEsc = meta ? meta.getAttribute('content') : '';
+  el.id = 'fc1Claro'; el.setAttribute('data-fc1-tema', 'fixo');
+  function hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), L = (mx + mn) / 2, d = mx - mn, H = 0, S = 0;
+    if (d) { S = d / (1 - Math.abs(2 * L - 1)); H = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; H *= 60; if (H < 0) { H += 360; } }
+    return [H, S, L];
+  }
+  function rgb(H, S, L) {
+    var c = (1 - Math.abs(2 * L - 1)) * S, x = c * (1 - Math.abs((H / 60) % 2 - 1)), m = L - c / 2, p;
+    p = H < 60 ? [c, x, 0] : H < 120 ? [x, c, 0] : H < 180 ? [0, c, x] : H < 240 ? [0, x, c] : H < 300 ? [x, 0, c] : [c, 0, x];
+    return [Math.round((p[0] + m) * 255), Math.round((p[1] + m) * 255), Math.round((p[2] + m) * 255)];
+  }
+  function lum(c) {
+    var v = c.map(function (k) { k /= 255; return k <= 0.03928 ? k / 12.92 : Math.pow((k + 0.055) / 1.055, 2.4); });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function saida(c, a) { return a < 1 ? 'rgba(' + c.join(', ') + ', ' + a + ')' : 'rgb(' + c.join(', ') + ')'; }
+  function oklch(L, C, H) {
+    var A = C * Math.cos(H * Math.PI / 180), B = C * Math.sin(H * Math.PI / 180);
+    var l = Math.pow(L + 0.3963377774 * A + 0.2158037573 * B, 3), m = Math.pow(L - 0.1055613458 * A - 0.0638541728 * B, 3),
+        s = Math.pow(L - 0.0894841775 * A - 1.2914855480 * B, 3);
+    return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+            -0.0041960863 * l - 0.7034186147 * m + 1.7076127010 * s].map(function (k) {
+      k = k <= 0.0031308 ? 12.92 * k : 1.055 * Math.pow(k, 1 / 2.4) - 0.055; return Math.round(Math.min(1, Math.max(0, k)) * 255); });
+  }
+  /* texto e borda precisam de 4,5:1 sobre o cinza-claro dos paineis (luminancia ~0,75), e entao tambem sobre o branco */
+  function escurecer(x, n, alvo) { var L = x[2], b = alvo || 0.70; while (L > 0.03 && (b / (lum(n) + 0.05)) < 4.6) { L -= 0.02; n = rgb(x[0], x[1], L); } return n; }
+  /* fundo: neutro escuro vira claro; cor de marca fica. Texto e borda: neutro inverte (e escurece se ficou
+     cinza-medio); cor de marca escurece. manter=true: texto sobre fundo de cor (botao) fica como esta. */
+  /* fundo: true = fundo; 'var' = variavel CSS (o uso e desconhecido: neutro so inverte, marca escura vira clara) */
+  function cor(c, a, fundo, manter) {
+    var x = hsl(c[0], c[1], c[2]), neutro = (Math.max(c[0], c[1], c[2]) - Math.min(c[0], c[1], c[2])) < 40;
+    if (neutro) {
+      if (manter) { return null; }
+      var y = [x[0], x[1], 1 - x[2]], n = rgb(y[0], y[1], y[2]);
+      return saida(fundo || a < 0.5 ? n : escurecer(y, n), a);
+    }
+    if (fundo === 'var' && x[2] < 0.22) { return saida(rgb(x[0], x[1], 1 - x[2]), a); }
+    if (fundo === true) { return x[2] < 0.22 ? saida(rgb(x[0], x[1], 1 - x[2]), a) : null; }
+    if (a < 0.5) { return null; }
+    var e = escurecer(x, c);
+    return e === c ? null : saida(e, a);
+  }
+  var NOMES = { white: [255, 255, 255], black: [0, 0, 0] };
+  function ler1(m, hx, nome) {
+    var c, a = 1, p;
+    if (hx) {
+      if (hx.length === 3 || hx.length === 4) { hx = hx.replace(/./g, '$&$&'); }
+      c = [0, 2, 4].map(function (i) { return parseInt(hx.substr(i, 2), 16); });
+      if (hx.length === 8) { a = parseInt(hx.substr(6, 2), 16) / 255; }
+      return [c, a];
+    }
+    if (nome) { return [NOMES[nome.toLowerCase()], 1]; }
+    p = m.replace(/^[a-z]+\(|\)$/gi, '').split(/[\s,\/]+/).filter(Boolean).map(function (k) { return /%$/.test(k) ? parseFloat(k) / 100 : parseFloat(k); });
+    if (p.length < 3 || p.slice(0, 3).some(isNaN)) { return null; }
+    if (/^oklch/i.test(m)) { c = oklch(p[0], p[1], p[2]); } else { c = p.slice(0, 3).map(Math.round); }
+    if (p.length > 3) { a = p[3]; }
+    return [c, a];
+  }
+  var COR = /#([0-9a-f]{3,8})\b|(?:rgba?|oklch)\([^)]*\)|\b(white|black)\b/gi;
+  function trocar(v, fundo, manter) {
+    return v.replace(COR, function (m, hx, nome) {
+      var x = ler1(m, hx, nome);
+      return (x && cor(x[0], x[1], fundo, manter)) || m;
+    });
+  }
+  function um(v) {     /* a primeira cor de um valor, como [rgb, alfa] */
+    var m = (v || '').match(COR); if (!m) { return null; }
+    var t = m[0]; return ler1(t, t.charAt(0) === '#' ? t.slice(1) : '', /^(white|black)$/i.test(t) ? t : '');
+  }
+  var VARS = {};       /* valor ORIGINAL (tema escuro) das variaveis da raiz, lido antes da folha clara valer */
+  function original(nome) {
+    if (!(nome in VARS)) { VARS[nome] = getComputedStyle(h).getPropertyValue(nome).trim(); }
+    return VARS[nome];
+  }
+  function deCor(v) {   /* o fundo da regra e uma cor de marca opaca (botao verde, etiqueta azul)? */
+    var k = /var\(\s*(--[\w-]+)/.exec(v || '');
+    if (k) { v = original(k[1]); }
+    var x = um(v);
+    return !!x && x[1] >= 0.5 && (Math.max.apply(null, x[0]) - Math.min.apply(null, x[0])) >= 40;
+  }
+  var PROP = /color$|^background|^border-(top|right|bottom|left)-color$|^outline-color$|^fill$|^stroke$|^--/;
+  function regra(r, sai) {
+    if (r.cssRules && r.type !== 1) {
+      var dentro = []; ler(r.cssRules, dentro);
+      if (dentro.length && r.media) { sai.push('@media ' + r.media.mediaText + ' {\n' + dentro.join('\n') + '\n}'); }
+      else if (dentro.length && r.conditionText) { sai.push('@supports ' + r.conditionText + ' {\n' + dentro.join('\n') + '\n}'); }
+      return;
+    }
+    if (r.type !== 1 || /\bimg\b/i.test(r.selectorText)) { return; }
+    /* com var() no atalho `background`, o longhand vem vazio: ler o atalho tambem */
+    var s = r.style, comCor = deCor(s.getPropertyValue('background-color') || s.getPropertyValue('background')), out = [];
+    for (var i = 0; i < s.length; i++) {
+      var n = s[i];
+      if (n === 'box-shadow') {   /* sombra preta forte faz faixa escura no fundo claro: suaviza */
+        var sv = s.getPropertyValue(n), sw = sv.replace(/rgba\(\s*0,\s*0,\s*0,\s*([\d.]+)\s*\)/g, function (m, a) { return 'rgba(0, 0, 0, ' + Math.min(+a, 0.16) + ')'; });
+        if (sw !== sv) { out.push('box-shadow: ' + sw); }
+        continue;
+      }
+      if (!PROP.test(n)) { continue; }
+      var v = s.getPropertyValue(n), f = /^background/.test(n) ? true : /^--/.test(n) ? 'var' : false;
+      var w = trocar(v, f, n === 'color' && comCor);
+      if (n === 'background-color' && comCor) {   /* botao de cor com letra branca: escurece o fundo ate ler bem */
+        var cl = um(s.getPropertyValue('color')), bx = um(v);
+        if (cl && bx && lum(cl[0]) > 0.8) { var hb = hsl(bx[0][0], bx[0][1], bx[0][2]); w = saida(escurecer(hb, bx[0], 1.05), bx[1]); }
+      }
+      if (w !== v) { out.push(n + ': ' + w + (s.getPropertyPriority(n) ? ' !important' : '')); }
+    }
+    if (comCor) {   /* botao de cor com letra escura e fundo por variavel: o fundo fica com a cor original */
+      var bv = s.getPropertyValue('background-color') || s.getPropertyValue('background'), kv = /var\(\s*(--[\w-]+)/.exec(bv),
+          lc = um(s.getPropertyValue('color'));
+      if (kv && lc && lum(lc[0]) < 0.2) { out.push('background-color: ' + original(kv[1])); }
+    }
+    if (out.length) { sai.push(r.selectorText + ' { ' + out.join('; ') + ' }'); }
+  }
+  function ler(lista, sai) { for (var i = 0; i < lista.length; i++) { regra(lista[i], sai); } }
+  function varrer() {
+    var fs = document.styleSheets;
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i], dono = f.ownerNode;
+      if (vistas.indexOf(f) >= 0 || (dono && dono.getAttribute && dono.getAttribute('data-fc1-tema'))) { continue; }
+      vistas.push(f);
+      try { ler(f.cssRules, regras); } catch (e) { /* folha de outra origem */ }
+    }
+    el.textContent = regras.join('\n');
+    [].forEach.call(document.querySelectorAll('[style]'), function (n) {
+      if (n.hasAttribute('data-fc1-esc')) { return; }
+      var v = n.getAttribute('style'), w = v.replace(/(^|;)\s*((?:background|color|border)[a-z-]*)\s*:([^;]*)/gi, function (m, a, p, val) {
+        return a + p + ':' + trocar(val, /^background/i.test(p), false); });
+      if (w !== v) { n.setAttribute('data-fc1-esc', v); n.setAttribute('data-fc1-cla', w); }
+    });
+    aplicar();
+  }
+  function aplicar() {
+    var claro = h.getAttribute('data-tema') === 'claro';
+    el.media = claro ? 'all' : 'not all';
+    if (meta) { meta.setAttribute('content', claro ? '#ffffff' : metaEsc); }
+    [].forEach.call(document.querySelectorAll('[data-fc1-esc]'), function (n) {
+      n.setAttribute('style', n.getAttribute(claro ? 'data-fc1-cla' : 'data-fc1-esc')); });
+  }
+  window.fc1Tema = function (novo) {
+    h.setAttribute('data-tema', novo);
+    try { localStorage.setItem('fc1-tema', novo); } catch (e) { /* sem localStorage */ }
+    aplicar();
+  };
+  document.head.appendChild(el);
+  varrer();
+  document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
+})();</script>
+<!-- TOPO-FC1-CABECA:FIM -->
+<!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
+@media screen {
+:root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
+/* tema claro: o cinza de apoio das paginas fixas (#A69C82 invertido) fica em 3,8:1 no fundo claro */
+html[data-tema="claro"]:root { --texto-dim: #5E5644; --cinza: oklch(0.45 0.02 260); }
+/* cinza de apoio dos OAs (oklch .55) fica em 3,4:1 no fundo escuro. So onde a cabeca do tema
+   marcou data-tema: TT e AP tem tema proprio e ficam como estao. A folha leva data-fc1-tema="fixo"
+   para o motor do tema claro nao inverter estes valores. */
+html[data-tema="escuro"]:root { --cinza: oklch(0.72 0.02 260); }
+body, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *)) { font-family: var(--fc1-sans) !important; }
+body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::before, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::after { font-family: var(--fc1-sans) !important; }
+body :is(code, pre, kbd, samp, input[type="number"], .fc1-num, .badge, .selo, .contador, .contador *, #seloAcessos, .q-num, .figura-num, .fc1-acessos-num) { font-family: var(--fc1-mono) !important; }
+/* cartao de QR (_qr/) com largura fixa de 344 px passava 4 px da tela de 375 px */
+@media (max-width: 400px) { body .qr { max-width: 100%; box-sizing: border-box; } }
+
+body :is(p, li, dd, blockquote):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary)) {
+  font-size: 1.0625rem; line-height: 1.6; }
+body p:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { max-width: 72ch; }
+body .fc1-corrido { font-size: 1.0625rem !important; line-height: 1.6 !important; }
+body :is(h1, h2, h3):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { letter-spacing: normal; line-height: 1.25; }
+body h2:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { font-weight: 700; }
+
+body :is(h1, h2):not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary, [class*="capa"]) *) { text-transform: none; }
+body h1:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.75rem; font-weight: 700; }
+body h2:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.35rem; }
+body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.15rem; font-weight: 700; }
+}
+</style><script>
+(function () {
+  var RE = /^[\s(±+\-−–]*\d[\d\s.,]*(\s*[±]\s*[\d.,]+)?\s*[)]?\s*([a-zA-Zµμ°%²³·\/]{1,8}\)?)?\s*$/;
+  var NAO = 'header, footer, nav, aside, figcaption, small, svg, table, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="legenda"], [class*="card"], [class*="header"], [class*="piazzi"], [class*="selo"], .badge, button, label, summary';
+  function marcar() {
+    var cs = document.querySelectorAll('td, th'), i, e, n, t;
+    for (i = 0; i < cs.length; i++) {
+      t = cs[i].textContent;
+      if (t && t.length < 40 && RE.test(t)) cs[i].classList.add('fc1-num');
+    }
+    if (!true) return;
+    var raiz = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var todos = document.body.querySelectorAll('div, span, p, li, dd, blockquote');
+    for (i = 0; i < todos.length; i++) {
+      e = todos[i];
+      if (e.closest(NAO)) continue;
+      t = 0;
+      for (n = e.firstChild; n; n = n.nextSibling) if (n.nodeType === 3) t += n.textContent.trim().length;
+      if (t < 60) continue;
+      if (parseFloat(getComputedStyle(e).fontSize) / raiz < 1.06) e.classList.add('fc1-corrido');
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', marcar);
+  else marcar();
+})();
+</script><!-- VISUAL:FIM -->
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
+</head>
+<body data-pagina="sugestoes">
+<!-- TOPO-FC1:INICIO -->
+<style data-fc1-tema="fixo">
+html[data-letra="g"] { font-size: 125%; }
+html[data-letra="gg"] { font-size: 137.5%; }
+.fc1-topo { position: fixed; top: 8px; right: 8px; z-index: 999; display: flex; gap: 6px; font-family: 'Courier New', Courier, monospace; }
+.fc1-topo .tb { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0;
+  background: #1a1b1f; color: #4CAF7D; border: 1px solid #444; border-radius: 6px; cursor: pointer; text-decoration: none;
+  font: 700 18px/1 'Courier New', Courier, monospace; letter-spacing: 0; }
+.fc1-topo .tb:hover, .fc1-topo .tb.ativo { border-color: #C8A84B; background: #C8A84B; color: #fff; }
+.fc1-topo .tb:disabled { opacity: .4; cursor: default; background: #1a1b1f; color: #4CAF7D; border-color: #444; }
+.fc1-topo .tb svg { width: 20px; height: 20px; display: block; }
+.fc1-topo .tb .lua, html[data-tema="claro"] .fc1-topo .tb .sol { display: none; }
+html[data-tema="claro"] .fc1-topo .tb .lua { display: block; }
+.fc1-topo .tb.crono-btn { min-width: 38px; width: auto; padding: 0 8px; font-size: 15px; }
+.fc1-topo .fc1-caixa { position: relative; }
+.fc1-menu { position: absolute; top: 44px; right: 0; min-width: 250px; background: #1a1b1f; border: 1px solid #444;
+  border-top: 3px solid #C8A84B; box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.fc1-menu[hidden] { display: none; }
+.fc1-menu a, .fc1-menu span { display: block; padding: 11px 16px; color: #e8e8e8; text-decoration: none; font-size: 15px; line-height: 1.4; }
+.fc1-menu a + a, .fc1-menu a + span, .fc1-menu span + a, .fc1-menu span + span { border-top: 1px solid #333; }
+.fc1-menu a:hover { background: #26272c; color: #4CAF7D; }
+.fc1-menu small { display: block; color: #9a9a9a; font-size: 12px; }
+.fc1-menu .off { color: #8a8a8a; cursor: default; }
+.fc1-menu .tit { color: #4CAF7D; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 6px; }
+.fc1-estilo { position: fixed; top: 54px; right: 8px; z-index: 999; width: 400px; max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 66px); overflow-y: auto; background: #1a1b1f; color: #c4c4c4; border: 1px solid #444;
+  border-top: 3px solid #C8A84B; padding: 18px 20px 16px; font-size: 15px; line-height: 1.6; box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.fc1-estilo[hidden] { display: none; }
+.fc1-estilo h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444;
+  padding: 0 30px 8px 0; margin: 0 0 14px; }
+.fc1-estilo .fechar { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: none; border: 1px solid #444;
+  color: #c4c4c4; font: 700 18px/1 'Courier New', monospace; cursor: pointer; }
+.fc1-estilo p { margin: 0 0 11px; max-width: none; }
+.fc1-estilo .est-lead { color: #e8e8e8; font-size: 16px; line-height: 1.5; }
+.fc1-estilo ul.dims { list-style: none; margin: 0 0 14px; padding: 0; }
+.fc1-estilo ul.dims li { background: #26272c; border-left: 3px solid #4CAF7D; padding: 9px 12px; margin: 0 0 8px; max-width: none; }
+.fc1-estilo ul.dims strong { display: block; color: #4CAF7D; font-weight: 700; }
+.fc1-estilo .est-ref { border-top: 1px solid #444; padding-top: 10px; margin-top: 14px; font-size: 12.5px; color: #9a9a9a; }
+.fc1-estilo a.est-btn { display: block; text-align: center; padding: 12px 14px; margin: 0 0 8px; border: 1px solid #C8A84B;
+  background: #C8A84B; color: #fff; font-weight: 700; text-decoration: none; line-height: 1.35; }
+.fc1-estilo a.est-btn small { display: block; font-weight: 400; font-size: 12.5px; opacity: .9; }
+.fc1-estilo a.est-btn-2 { background: #26272c; color: #4CAF7D; border-color: #4CAF7D; }
+.fc1-estilo a.est-btn:hover { filter: brightness(1.12); }
+html[data-tema="claro"] .fc1-topo .tb { background: #fff; color: #2E7A52; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-topo .tb:hover, html[data-tema="claro"] .fc1-topo .tb.ativo { background: #7A5F12; border-color: #7A5F12; color: #fff; }
+html[data-tema="claro"] .fc1-topo .tb:disabled { background: #fff; color: #2E7A52; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-menu, html[data-tema="claro"] .fc1-estilo { background: #fff; border-color: #d5d8dd; border-top-color: #7A5F12;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18); color: #2a2a2a; }
+html[data-tema="claro"] .fc1-menu a, html[data-tema="claro"] .fc1-menu span { color: #1c1c1c; border-top-color: #e0e2e6; }
+html[data-tema="claro"] .fc1-menu a:hover { background: #eef2f7; color: #2E7A52; }
+html[data-tema="claro"] .fc1-menu small, html[data-tema="claro"] .fc1-menu .off { color: #6a6a6a; }
+html[data-tema="claro"] .fc1-menu .tit { color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo h3 { color: #7A5F12; border-bottom-color: #d5d8dd; }
+html[data-tema="claro"] .fc1-estilo .fechar { color: #2a2a2a; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-estilo .est-lead { color: #1c1c1c; }
+html[data-tema="claro"] .fc1-estilo ul.dims li { background: #f3f5f7; border-left-color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo ul.dims strong { color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo .est-ref { border-top-color: #d5d8dd; color: #5f5f5f; }
+html[data-tema="claro"] .fc1-estilo a.est-btn { background: #7A5F12; border-color: #7A5F12; color: #fff; }
+html[data-tema="claro"] .fc1-estilo a.est-btn-2 { background: #fff; color: #2E7A52; border-color: #2E7A52; }
+/* as barras de navegacao fixas das paginas de documento descem para baixo dos icones */
+.doc-barra, .agr-barra { top: 54px !important; }
+.doc-barra:not(.vis) { transform: translateY(calc(-100% - 60px)) !important; }
+@media (max-width: 900px) { body { padding-top: 54px; } }
+@media (max-width: 420px) {
+  .fc1-topo { gap: 4px; right: 6px; }
+  .fc1-topo .tb { width: 34px; height: 34px; font-size: 16px; }
+  .fc1-topo .tb.crono-btn { min-width: 34px; width: auto; padding: 0 5px; font-size: 13px; }
+  .fc1-topo .tb svg { width: 18px; height: 18px; }
+  .fc1-menu { top: 40px; }
+}
+#fc1CronoMenu { right: auto; left: 0; }
+@media print { .fc1-topo, .fc1-estilo { display: none !important; } }
+.fc1-topo .tb:hover, .fc1-topo .tb.ativo { color: #14120D; }
+.fc1-estilo a.est-btn { color: #14120D; }
+html[data-tema="claro"] .fc1-topo .tb:hover, html[data-tema="claro"] .fc1-topo .tb.ativo, html[data-tema="claro"] .fc1-estilo a.est-btn { color: #fff; }
+.fc1-estilo a.est-btn-2 { color: #4CAF7D; }
+html[data-tema="claro"] .fc1-estilo a.est-btn-2 { color: #2E7A52; }
+body > header { padding-top: 54px !important; }
+#fc1AvaMenu { right: auto; left: 0; }
+footer a.fc1-voltar { display: inline-block; margin: 4px 0 16px; padding: 11px 20px; min-height: 44px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 1rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; }
+footer a.fc1-voltar:hover, footer a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] footer a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
+<div class="fc1-topo"><a class="tb" href="../index.html" aria-label="Início" title="Início"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg></a><div class="fc1-caixa"><button class="tb" id="fc1AvaBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fc1AvaMenu" aria-label="Fique ligado" title="Fique ligado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></button><nav class="fc1-menu" id="fc1AvaMenu" hidden><span class="tit">Fique ligado</span><a href="../presenca/">Lista de Presença<small>durante a aula · no Wi-Fi do IFMG</small></a><a href="../retorno/">Ficha de Retorno (FR)<small>o retorno da sua prova</small></a><a href="../sugestoes/">Dúvidas e Sugestões<small>texto ou áudio · para a equipe</small></a><a href="../celular/">Site no celular<small>problema de tela ou funcionamento · print, texto ou áudio</small></a><a href="../correcao/">Correção de Provas<small>professor</small></a><a href="https://nidecop-jafb.github.io/painel-ecossistema/monitoria-v1.html?de=fc1" target="_blank" rel="noopener">Monitoria<small>equipe da monitoria · registro das entregas</small></a></nav></div><div class="fc1-caixa"><button class="tb" id="fc1CronoBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fc1CronoMenu" aria-label="Cronometrar" title="Cronometrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="8"/><path d="M12 9.5v4l2.5 2.5M9.5 2.5h5M12 2.5v3"/></svg></button><nav class="fc1-menu" id="fc1CronoMenu" hidden><span class="tit">Cronometrar uma sessão</span><a href="../sessao/pre/">Pré-aula · T0A a T10<small>até 20 min</small></a><a href="../sessao/aula/">Aula · T0A a T10<small>até 45 min</small></a><a href="../sessao/pos/">Pós-aula · T0A a T10<small>até 20 min</small></a><a href="../sessao/aula-livro/">Aula · da T11 em diante<small>até 100 min</small></a><a href="../index.html#etapa3">Pré-aula e Pós-aula da T11 em diante<small>sessão de 30 min na página de cada trilha</small></a></nav></div><button class="tb" id="fc1LetraMenos" type="button" aria-label="Diminuir a letra" title="Diminuir a letra">A&minus;</button><button class="tb" id="fc1LetraMais" type="button" aria-label="Aumentar a letra" title="Aumentar a letra">A+</button><button class="tb" id="fc1TemaBtn" type="button" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12h2.5M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></button><a class="tb" href="../instalar/" aria-label="Instalar" title="Instalar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10 18h4"/></svg></a><button class="tb" id="fc1EstiloBtn" type="button" aria-controls="fc1Estilo" aria-expanded="false" aria-label="Estilo de aprendizagem" title="Estilo de aprendizagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg></button></div>
+<aside class="fc1-estilo" id="fc1Estilo" hidden aria-label="Estilo de aprendizagem"><h3>Estilo de aprendizagem</h3><button class="fechar" id="fc1EstiloFechar" type="button" aria-label="Fechar">&times;</button>
+  <p class="est-lead">Conhecer o seu estilo de aprendizagem é descobrir como você prefere receber, processar e organizar o
+  que aprende — na aula e na hora de estudar em casa. O Índice de Estilos de Aprendizagem de Felder e Soloman olha
+  para quatro dimensões, cada uma com dois polos:</p>
+  <ul class="dims">
+    <li><strong>Ativo ou Reflexivo</strong>Aprender resolvendo e discutindo com os colegas, ou pensando sozinho antes de responder.</li>
+    <li><strong>Sensorial ou Intuitivo</strong>Partir de exemplos concretos — a correia, a britagem, o dia a dia —, ou da ideia geral e do modelo.</li>
+    <li><strong>Visual ou Verbal</strong>Lembrar melhor do gráfico, do esquema e da figura, ou do texto escrito e da explicação falada.</li>
+    <li><strong>Sequencial ou Global</strong>Seguir a trilha passo a passo, ou ver o assunto inteiro antes de entrar nos detalhes.</li>
+  </ul>
+  <p>Ninguém é um polo só: cada um pende para um lado, com mais ou menos força, e isso muda com a prática. Não existe
+  estilo melhor nem pior.</p>
+  <p>Vale duas vezes: saber o seu jeito ajuda a escolher como estudar a trilha, e lembrar que cada colega tem o dele
+  ajuda no estudo em grupo — um explica pelo desenho, outro pela conta, outro pela história.</p>
+  <p>Com esse retrato, você escolhe estratégias (e usos da IA) que combinam com o seu jeito e treina, de propósito, o polo que usa menos. Responda de novo em cada Etapa e veja como o seu perfil muda.</p>
+  <a class="est-btn" href="../estilo/">Responder o questionário<small>20 perguntas · cerca de 5 min</small></a>
+  <p class="est-ref">FELDER, R. M.; SOLOMAN, B. A. <em>Index of Learning Styles Questionnaire</em>. Raleigh: North Carolina State University.</p>
+</aside>
+<script>(function () {
+  var h = document.documentElement, $ = function (id) { return document.getElementById(id); };
+  var menos = $('fc1LetraMenos'), mais = $('fc1LetraMais'), passos = ['', 'g', 'gg'];
+  function atual() { return Math.max(0, passos.indexOf(h.getAttribute('data-letra') || '')); }
+  function mostrar() { var i = atual(); menos.disabled = i === 0; mais.disabled = i === passos.length - 1; }
+  function letra(d) {
+    var i = Math.min(passos.length - 1, Math.max(0, atual() + d));
+    if (passos[i]) { h.setAttribute('data-letra', passos[i]); } else { h.removeAttribute('data-letra'); }
+    try { localStorage.setItem('fc1-letra', passos[i]); } catch (e) { /* sem localStorage */ }
+    mostrar(); window.dispatchEvent(new Event('resize'));
+  }
+  menos.addEventListener('click', function (e) { e.stopPropagation(); letra(-1); });
+  mais.addEventListener('click', function (e) { e.stopPropagation(); letra(1); });
+  mostrar();
+  var tb = $('fc1TemaBtn');
+  function rotulo() { var r = h.getAttribute('data-tema') === 'claro' ? 'Mudar para o modo escuro' : 'Mudar para o modo claro'; tb.setAttribute('aria-label', r); tb.title = r; }
+  tb.addEventListener('click', function (e) { e.stopPropagation(); if (window.fc1Tema) { window.fc1Tema(h.getAttribute('data-tema') === 'claro' ? 'escuro' : 'claro'); } rotulo(); });
+  rotulo();
+  var abertos = [['fc1CronoBtn', 'fc1CronoMenu'], ['fc1AvaBtn', 'fc1AvaMenu'], ['fc1EstiloBtn', 'fc1Estilo']];
+  function fechar(menos1) { abertos.forEach(function (p) { var b = $(p[0]), m = $(p[1]); if (b && m && p[0] !== menos1) { m.hidden = true; b.setAttribute('aria-expanded', 'false'); b.classList.remove('ativo'); } }); }
+  abertos.forEach(function (p) {
+    var b = $(p[0]), m = $(p[1]);
+    if (!b || !m) { return; }
+    b.addEventListener('click', function (e) { e.stopPropagation(); var abre = m.hidden; fechar(p[0]); m.hidden = !abre; b.setAttribute('aria-expanded', abre ? 'true' : 'false'); b.classList.toggle('ativo', abre); });
+    m.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+  var x = $('fc1EstiloFechar'); if (x) { x.addEventListener('click', function () { fechar(''); }); }
+  document.addEventListener('click', function () { fechar(''); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { fechar(''); } });
+})();</script>
+<!-- TOPO-FC1:FIM -->
+
+
+<header>
+  <a class="fc1-voltar" href="../">&larr; Voltar ao site</a>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; IFMG campus Ouro Preto</div>
+  <h1>Site no celular</h1>
+  <span class="badge">Print, texto ou &aacute;udio &middot; resposta pelo RA</span>
+</header>
+
+<main>
+
+  <div class="cartao">
+    <p class="intro">Alguma tela apareceu cortada, um botão não funcionou ou o site travou no seu celular? Conte aqui.
+    O Claude lê os relatos uma vez por dia e responde nesta mesma página: depois, é só digitar o seu RA em
+    <strong>Minhas respostas</strong>. Se for defeito do site, o professor aprova o conserto.</p>
+    <div class="aviso-app" id="avisoApp" hidden></div>
+  </div>
+
+  <div class="cartao" id="cartaoForm">
+    <h2>Seu relato</h2>
+
+    <label for="inRA">Seu RA (7 dígitos)</label>
+    <input type="text" id="inRA" inputmode="numeric" maxlength="12" autocomplete="off">
+    <input type="text" id="inSite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <label>Qual é o problema?</label>
+    <div class="grupo" role="radiogroup">
+      <label><input type="radio" name="problema" value="Visualização"> Visualização</label>
+      <label><input type="radio" name="problema" value="Funcionamento"> Funcionamento</label>
+      <label><input type="radio" name="problema" value="Outro"> Outro</label>
+    </div>
+
+    <label>Fabricante do celular</label>
+    <div class="grupo" role="radiogroup">
+      <label><input type="radio" name="fabricante" value="Samsung"> Samsung</label>
+      <label><input type="radio" name="fabricante" value="Motorola"> Motorola</label>
+      <label><input type="radio" name="fabricante" value="Outra"> Outra</label>
+    </div>
+    <input type="text" id="inFabOutra" maxlength="40" placeholder="Qual? (ex.: Xiaomi, Apple, Realme)" hidden style="margin-top:.5rem">
+
+    <label for="inModelo">Modelo do celular</label>
+    <input type="text" id="inModelo" maxlength="60" placeholder="ex.: Galaxy A15, Moto G54, iPhone 11">
+    <div class="ajuda">Não sabe? Abra <strong>Configurações &gt; Sobre o telefone</strong> (no iPhone: Ajustes &gt; Geral &gt; Sobre).</div>
+
+    <label>Onde você abriu o site?</label>
+    <div class="grupo" role="radiogroup">
+      <label><input type="radio" name="onde" value="Chrome"> Navegador Chrome</label>
+      <label><input type="radio" name="onde" value="Safari"> Navegador Safari</label>
+      <label><input type="radio" name="onde" value="Outro navegador"> Outro navegador</label>
+      <label><input type="radio" name="onde" value="WhatsApp"> WhatsApp</label>
+      <label><input type="radio" name="onde" value="Instagram"> Instagram</label>
+      <label><input type="radio" name="onde" value="Ícone na tela inicial"> Ícone instalado na tela inicial</label>
+      <label><input type="radio" name="onde" value="Site instalado"> Site instalado no celular</label>
+    </div>
+
+    <label for="inPagina">Em qual página?</label>
+    <input type="text" id="inPagina" maxlength="200">
+
+    <h2 style="margin-top:1.3rem">Mostre o problema <span class="opcional" style="text-transform:none;letter-spacing:0">(print, texto ou áudio — pelo menos um)</span></h2>
+
+    <label for="inPrint">Print da tela <span class="opcional">(até 2 MB — a página reduz sozinha)</span></label>
+    <input type="file" id="inPrint" accept="image/*">
+    <img id="printPrev" alt="Prévia do print" hidden>
+    <details class="ajuda"><summary>Como tirar o print?</summary>
+      <ol><li>Abra a tela com o problema.</li>
+      <li>Aperte ao mesmo tempo <strong>Liga + Volume&nbsp;−</strong> (no iPhone com Face ID: <strong>Lateral + Volume&nbsp;+</strong>).</li>
+      <li>Volte aqui, toque em <strong>Escolher arquivo</strong> e pegue o print na Galeria.</li></ol>
+      <p>O print não pode mostrar dados pessoais de outras pessoas.</p>
+    </details>
+
+    <label for="inTexto">Conte o que aconteceu <span class="opcional">(até 150 palavras)</span></label>
+    <textarea id="inTexto" maxlength="1500" placeholder="O que você fez, o que esperava e o que apareceu."></textarea>
+    <div class="conta" id="conta">0 / 150 palavras</div>
+
+    <label>Ou grave um áudio <span class="opcional">(até 60 segundos)</span></label>
+    <div class="audio-linha" id="audioControles">
+      <button type="button" class="btn-sec btn-grav" id="btnGravar" onclick="iniciarGravacao()">&#9679; Gravar &aacute;udio</button>
+      <button type="button" class="btn-sec btn-parar" id="btnParar" onclick="pararGravacao()" hidden>&#9632; Parar</button>
+      <span class="grav-timer" id="gravTimer" hidden><span class="pulso"></span>0:00</span>
+      <button type="button" class="btn-sec" id="btnDescartar" onclick="descartarAudio()" hidden>Descartar &aacute;udio</button>
+    </div>
+    <audio id="audioPreview" controls hidden></audio>
+    <div class="nota" id="audioNota" hidden></div>
+    <details class="ajuda"><summary>Como liberar o microfone?</summary>
+      <ol><li>Toque em <strong>Gravar áudio</strong> e, no aviso que aparecer, escolha <strong>Permitir</strong>.</li>
+      <li>Se bloqueou sem querer: no Chrome, toque no <strong>cadeado</strong> ao lado do endereço &gt; <strong>Permissões</strong> &gt; <strong>Microfone</strong> &gt; <strong>Permitir</strong> e recarregue a página.
+      No iPhone: <strong>Ajustes &gt; Safari &gt; Microfone &gt; Permitir</strong>.</li>
+      <li>Dentro do WhatsApp ou do Instagram o microfone costuma não funcionar: toque nos <strong>três pontinhos</strong> e escolha <strong>Abrir no navegador</strong>.</li>
+      <li>Fale perto do celular, em lugar silencioso. A gravação para sozinha em 60 s.</li></ol>
+    </details>
+
+    <button class="btn" id="btnEnviar" onclick="enviarRelato()">Enviar relato</button>
+    <div class="erro" id="formErro" hidden></div>
+    <div class="ok-box" id="formOk" hidden></div>
+    <div class="nota">Junto com o relato vão, sozinhos, dados técnicos da tela (tamanho, zoom, navegador e sistema),
+    para ajudar no diagnóstico. Nenhuma senha é pedida. RA, print e áudio ficam só com a equipe.</div>
+  </div>
+
+  <div class="cartao">
+    <h2>Minhas respostas</h2>
+    <label for="inRA2">Seu RA (7 dígitos)</label>
+    <div class="audio-linha">
+      <input type="text" id="inRA2" inputmode="numeric" maxlength="12" autocomplete="off" style="flex:1;min-width:8rem">
+      <button type="button" class="btn-sec" onclick="verRespostas()">Ver</button>
+    </div>
+    <div id="respostas"></div>
+  </div>
+
+</main>
+
+<footer>
+  <a class="fc1-voltar" href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a><br>
+<a href="../agradecimentos/">Agradecimentos &middot; F&iacute;sica e Poesia</a><br>
+  IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+<script src="../coleta-config.js"></script>
+<script>
+var COLETA_URL = (window.COLETA && window.COLETA.url) || '';
+var MAX_SEG = 60, MAX_AUDIO = 1400 * 1024, MAX_IMG = 2 * 1024 * 1024, MAX_PAL = 150;
+var mediaRecorder = null, gravChunks = [], gravTimerId = null, gravInicio = 0;
+var audioBlob = null, audioMime = '', printBlob = null, enviando = false;
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function val(nome) { var r = document.querySelector('input[name="' + nome + '"]:checked'); return r ? r.value : ''; }
+function mostrarErro(msg) { var el = $('formErro'); if (!msg) { el.hidden = true; return; } el.textContent = msg; el.hidden = false; }
+function palavras(t) { t = t.trim(); return t ? t.split(/\s+/).length : 0; }
+
+/* pagina de origem e app embutido */
+(function () {
+  var ref = document.referrer || '';
+  $('inPagina').value = (ref && ref.indexOf(location.host) !== -1) ? ref.replace(/^https?:\/\/[^/]+/, '') : '';
+  var ua = navigator.userAgent || '', app = /Instagram/i.test(ua) ? 'Instagram' : (/WhatsApp|WhatsApp/i.test(ua) || /; wv\)/.test(ua) ? 'WhatsApp ou outro aplicativo' : '');
+  if (app) {
+    $('avisoApp').hidden = false;
+    $('avisoApp').innerHTML = 'Você abriu o site dentro do <strong>' + esc(app) + '</strong>. Aí o microfone e o envio de print podem falhar. ' +
+      'Se falhar, toque nos <strong>três pontinhos</strong> e escolha <strong>Abrir no navegador</strong>.';
+  }
+  try { var ra = localStorage.getItem('fc1_ra'); if (ra) { $('inRA').value = ra; $('inRA2').value = ra; } } catch (e) {}
+  document.querySelectorAll('input[name="fabricante"]').forEach(function (r) {
+    r.addEventListener('change', function () { $('inFabOutra').hidden = val('fabricante') !== 'Outra'; });
+  });
+  $('inTexto').addEventListener('input', function () {
+    var n = palavras(this.value); $('conta').textContent = n + ' / ' + MAX_PAL + ' palavras';
+    $('conta').classList.toggle('estouro', n > MAX_PAL);
+  });
+  $('inPrint').addEventListener('change', reduzirPrint);
+})();
+
+function tecnico() {
+  var vv = window.visualViewport;
+  return { tela: screen.width + 'x' + screen.height, janela: innerWidth + 'x' + innerHeight, dpr: window.devicePixelRatio,
+    zoom: vv ? +vv.scale.toFixed(2) : 1, vv: vv ? Math.round(vv.width) + 'x' + Math.round(vv.height) + '+' + Math.round(vv.offsetTop) : '',
+    instalado: matchMedia('(display-mode: standalone)').matches || navigator.standalone === true,
+    tema: document.documentElement.getAttribute('data-tema') || '', letra: document.documentElement.getAttribute('data-letra') || '',
+    ua: navigator.userAgent.slice(0, 400), idioma: navigator.language };
+}
+
+/* print: reduz no celular (JPEG, lado maior <= 1600 px) ate caber em 2 MB */
+function reduzirPrint() {
+  printBlob = null; $('printPrev').hidden = true; mostrarErro('');
+  var f = $('inPrint').files[0]; if (!f) return;
+  if (!/^image\//.test(f.type)) { mostrarErro('Escolha uma imagem (o print da tela).'); return; }
+  var img = new Image(), url = URL.createObjectURL(f);
+  img.onload = function () {
+    var lado = 1600, q = .82;
+    (function tentar() {
+      var k = Math.min(1, lado / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(function (b) {
+        if (b.size > MAX_IMG && (q > .5 || lado > 900)) { q -= .1; lado -= 200; return tentar(); }
+        if (b.size > MAX_IMG) { mostrarErro('O print ficou acima de 2 MB. Corte a imagem e tente de novo.'); return; }
+        printBlob = b; $('printPrev').src = URL.createObjectURL(b); $('printPrev').hidden = false;
+      }, 'image/jpeg', q);
+    })();
+    URL.revokeObjectURL(url);
+  };
+  img.onerror = function () { mostrarErro('Não consegui abrir essa imagem. Tente outro print.'); };
+  img.src = url;
+}
+
+/* audio (MediaRecorder): WebM/Opus no Android, MP4/AAC no iPhone */
+function mimeSuportado() {
+  if (!window.MediaRecorder) return null;
+  var t = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'];
+  for (var i = 0; i < t.length; i++) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t[i])) return t[i];
+  return '';
+}
+function iniciarGravacao() {
+  mostrarErro('');
+  if (!navigator.mediaDevices || !window.MediaRecorder) { mostrarErro('Este navegador não grava áudio. Escreva o texto ou abra o site no Chrome ou no Safari.'); return; }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+    var mime = mimeSuportado();
+    try { mediaRecorder = mime ? new MediaRecorder(stream, { mimeType: mime, audioBitsPerSecond: 32000 }) : new MediaRecorder(stream); }
+    catch (e) { mediaRecorder = new MediaRecorder(stream); }
+    audioMime = mediaRecorder.mimeType || mime || 'audio/webm'; gravChunks = [];
+    mediaRecorder.ondataavailable = function (ev) { if (ev.data && ev.data.size) gravChunks.push(ev.data); };
+    mediaRecorder.onstop = function () { stream.getTracks().forEach(function (t) { t.stop(); }); finalizarGravacao(); };
+    mediaRecorder.start(); gravInicio = Date.now();
+    $('btnGravar').hidden = true; $('btnParar').hidden = false; $('btnDescartar').hidden = true; $('audioPreview').hidden = true;
+    var t = $('gravTimer'); t.hidden = false;
+    gravTimerId = setInterval(function () {
+      var s = Math.floor((Date.now() - gravInicio) / 1000);
+      t.innerHTML = '<span class="pulso"></span>' + Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2) + ' / 1:00';
+      if (s >= MAX_SEG) pararGravacao();
+    }, 250);
+  }).catch(function () { mostrarErro('Sem acesso ao microfone. Veja "Como liberar o microfone?" logo abaixo, ou escreva o texto.'); });
+}
+function pararGravacao() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (gravTimerId) { clearInterval(gravTimerId); gravTimerId = null; }
+  $('btnParar').hidden = true; $('gravTimer').hidden = true;
+}
+function finalizarGravacao() {
+  audioBlob = new Blob(gravChunks, { type: audioMime }); gravChunks = [];
+  if (audioBlob.size > MAX_AUDIO) { audioBlob = null; mostrarErro('O áudio ficou grande demais. Grave de novo, mais curto.'); $('btnGravar').hidden = false; return; }
+  $('audioPreview').src = URL.createObjectURL(audioBlob); $('audioPreview').hidden = false;
+  $('btnGravar').hidden = false; $('btnGravar').innerHTML = '&#9679; Regravar'; $('btnDescartar').hidden = false;
+  $('audioNota').hidden = false; $('audioNota').textContent = 'Áudio pronto (' + (audioBlob.size / 1024).toFixed(0) + ' KB). Ouça para conferir antes de enviar.';
+}
+function descartarAudio() {
+  audioBlob = null; $('audioPreview').hidden = true; $('audioPreview').removeAttribute('src');
+  $('btnDescartar').hidden = true; $('audioNota').hidden = true; $('btnGravar').innerHTML = '&#9679; Gravar &aacute;udio';
+}
+function b64(blob) {
+  return new Promise(function (ok, erro) { var fr = new FileReader(); fr.onload = function () { ok(String(fr.result).split(',')[1] || ''); }; fr.onerror = erro; fr.readAsDataURL(blob); });
+}
+
+function enviarRelato() {
+  if (enviando) return; mostrarErro('');
+  var ra = $('inRA').value.replace(/\D/g, ''), texto = $('inTexto').value.trim();
+  var fab = val('fabricante'); if (fab === 'Outra' && $('inFabOutra').value.trim()) fab = 'Outra: ' + $('inFabOutra').value.trim();
+  if (ra.length !== 7) return mostrarErro('Digite o seu RA com 7 dígitos.');
+  if (!val('problema')) return mostrarErro('Escolha o tipo de problema.');
+  if (!val('fabricante')) return mostrarErro('Escolha o fabricante do celular.');
+  if (!$('inModelo').value.trim()) return mostrarErro('Escreva o modelo do celular.');
+  if (!val('onde')) return mostrarErro('Diga onde você abriu o site.');
+  if (palavras(texto) > MAX_PAL) return mostrarErro('O texto passou de 150 palavras. Resuma um pouco.');
+  if (!texto && !audioBlob && !printBlob) return mostrarErro('Envie um print, um texto ou um áudio.');
+  if (!COLETA_URL) return mostrarErro('Sistema de envio indisponível no momento.');
+  enviando = true; var btn = $('btnEnviar'); btn.disabled = true; btn.textContent = 'Enviando...';
+  var p = { tipo: 'CELULAR_RELATO', ra: ra, problema: val('problema'), fabricante: fab, modelo: $('inModelo').value.trim(),
+    onde: val('onde'), pagina: $('inPagina').value.trim(), texto: texto, tecnico: tecnico(), hp: $('inSite').value };
+  Promise.all([printBlob ? b64(printBlob) : '', audioBlob ? b64(audioBlob) : '']).then(function (r) {
+    if (r[0]) p.img_b64 = r[0];
+    if (r[1]) { p.audio_b64 = r[1]; p.audio_mime = audioMime.split(';')[0]; }
+    return fetch(COLETA_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(p) });
+  }).then(function (r) { return r.json(); }).then(function (res) {
+    if (!res.ok) throw new Error(res.erro || 'Envio recusado. Tente de novo.');
+    try { localStorage.setItem('fc1_ra', ra); } catch (e) {}
+    $('cartaoForm').innerHTML = '<h2>Relato enviado</h2><div class="ok-box"><strong>✓ Recebido.</strong><br>' +
+      'O Claude lê os relatos uma vez por dia. Volte aqui e veja a resposta em <strong>Minhas respostas</strong>, com o seu RA.</div>';
+    $('inRA2').value = ra; verRespostas();
+  }).catch(function (e) {
+    mostrarErro(e && e.message ? e.message : 'Falha de conexão. Verifique a internet e tente de novo.');
+    btn.disabled = false; btn.textContent = 'Enviar relato';
+  }).finally(function () { enviando = false; });
+}
+
+function verRespostas() {
+  var ra = $('inRA2').value.replace(/\D/g, ''), box = $('respostas');
+  if (ra.length !== 7) { box.innerHTML = '<div class="erro">Digite o seu RA com 7 dígitos.</div>'; return; }
+  box.innerHTML = '<div class="nota">Buscando...</div>';
+  fetch(COLETA_URL + '?celular=1&ra=' + ra).then(function (r) { return r.json(); }).then(function (res) {
+    if (!res.ok) throw new Error(res.erro || 'Não encontrei esse RA.');
+    if (!res.relatos.length) { box.innerHTML = '<div class="nota">Você ainda não enviou nenhum relato.</div>'; return; }
+    box.innerHTML = res.relatos.map(function (x) {
+      var st = String(x.status || 'recebido');
+      return '<div class="relato"><div class="st ' + esc(st.replace(/\s+/g, '-').normalize('NFD').replace(/[̀-ͯ]/g, '')) + '">' +
+        esc(x.data) + ' · ' + esc(x.problema) + ' · ' + esc(st) + '</div>' +
+        (x.resposta ? '<div>' + esc(x.resposta).replace(/\n/g, '<br>') + '</div>' : '<div class="nota" style="margin-top:.2rem">Aguardando a leitura do Claude (uma vez por dia).</div>') + '</div>';
+    }).join('');
+  }).catch(function (e) { box.innerHTML = '<div class="erro">' + esc(e.message) + '</div>'; });
+}
+</script>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>
