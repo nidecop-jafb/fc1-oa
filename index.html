@@ -24,7 +24,6 @@
   .sub .marca { width: 100px; height: 100px; }
   .sub .vagoneta { width: 100px; height: auto; display: block; }
   .sub .sucesso { color: var(--ouro); font-weight: bold; font-family: 'Courier New', monospace; font-size: 1.12rem; margin-top: 12px; }
-  .sub .sucesso-termo { color: var(--ouro); font-weight: bold; }
   .sub p { margin-bottom: 11px; }
   .sub p:last-child { margin-bottom: 0; }
   .sub strong { color: var(--ouro); font-weight: normal; }
@@ -168,6 +167,27 @@
 .entregas .vazio { color: #8a8a8a; font-size: .9rem; font-style: italic; }
 @media (max-width: 600px) { .entregas .ent-card { flex: 1 1 100%; } }
 /* ENTREGAS:CSS-FIM */
+
+/* ENTRADA:CSS-INICIO */
+.sub, .entrada-caixa { display: flex; align-items: stretch; gap: 0; border: 1px solid #5a5a5a; padding: 0; }
+.sub { margin-bottom: 22px; }
+.sub .marcas, .entrada-col { flex: 0 0 112px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 14px; margin: 0; padding: 14px 8px; background: #1d1d1d; border-right: 1px solid #5a5a5a; }
+.sub > section, .entrada-corpo { flex: 1 1 auto; min-width: 0; padding: 14px 20px; }
+.sub .sucesso { margin-top: 22px; }
+.sub > section a { color: #7FB2D6; }
+html[data-tema="claro"] .sub > section a { color: #1F4E9E; }
+.entrada-entregas { margin: 0 0 44px; }
+.entrada-corpo { background: #161616; }
+.entrada-corpo .entregas { border: 0; border-radius: 0; padding: 0; margin: 0; background: none; }
+.entrada-corpo .entregas h2 { font-size: 1.45rem; text-transform: none; letter-spacing: 0; color: var(--ouro); margin: 0 0 8px; }
+.entrada-entregas:has(#minhasEntregas[hidden]):has(#blocoAcessos[style*="none"]) { display: none; }
+@media (max-width: 560px) {
+  .sub, .entrada-caixa { flex-direction: column; align-items: stretch; }
+  .sub .marcas, .entrada-col { flex: 0 0 auto; flex-direction: row; border-right: 0; border-bottom: 1px solid #5a5a5a; }
+  .sub > section, .entrada-corpo { padding: 14px 16px; }
+}
+/* ENTRADA:CSS-FIM */
 
 </style>
   <script src="coleta-config.js"></script>
@@ -728,6 +748,18 @@ body > header { padding-top: 54px !important; }
         </g>
       </svg>
       <img class="vagoneta" src="_icones/icon-vagoneta.png" alt="Vagoneta carregada de minério sobre trilhos" width="200" height="200">
+    </figure>
+    <section>
+      <h2 class="intro-t">Trilhas de Aprendizagem</h2>
+      <p>Trilhas de Aprendizagem são percursos de estudo construídos para orientar, apoiar e avaliar a sua caminhada pelo mundo da Física.</p>
+      <p>Escolha uma trilha, explore os objetos de aprendizagem, <a href="https://nidecop-jafb.github.io/painel-ecossistema/monitoria-v1.html" target="_blank" rel="noopener">esclareça as dúvidas</a>.</p>
+      <p class="sucesso">Sucesso no seu estudo.</p>
+    </section>
+  </div>
+
+<!-- ENTRADA2:INICIO -->
+<div class="entrada-caixa entrada-entregas">
+  <div class="entrada-col"><!-- ENTRADA2:COL -->
       <!-- ACESSOS:INICIO -->
       <style>
         .fc1-acessos { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 2px; }
@@ -742,15 +774,8 @@ body > header { padding-top: 54px !important; }
         <span class="fc1-acessos-txt"><span class="fc1-acessos-num" id="acessosNum"></span><span class="fc1-acessos-rot" id="acessosRot">acessos</span></span>
       </div>
       <!-- ACESSOS:FIM -->
-    </figure>
-    <section>
-      <h2 class="intro-t">Trilhas de Aprendizagem</h2>
-      <p>Trilhas de Aprendizagem são <span class="sucesso-termo">percursos de estudo</span> construídos para orientar, apoiar e avaliar a sua caminhada pelo mundo da Física.</p>
-      <p>Escolha uma trilha e faça os objetos de aprendizagem <strong>na ordem numerada</strong>, sem pular nenhum.</p>
-      <p class="sucesso">Sucesso no seu estudo.</p>
-    </section>
   </div>
-
+  <div class="entrada-corpo">
 <!-- ENTREGAS:INICIO -->
 <section class="entregas" id="minhasEntregas" hidden>
   <h2>Minhas entregas</h2>
@@ -770,6 +795,9 @@ body > header { padding-top: 54px !important; }
   </div>
 </section>
 <!-- ENTREGAS:FIM -->
+  </div>
+</div>
+<!-- ENTRADA2:FIM -->
 
 <!-- TRILHAS:INICIO -->
   <style>
@@ -982,7 +1010,7 @@ body > header { padding-top: 54px !important; }
 
   <h2 class="etapa-t" id="etapa2">Etapa 2 &middot; O Ritmo das Máquinas</h2>
 
-  <div class="etapa-trab"><h3>Trabalhos da Etapa 2</h3><ul><li><strong>TR2-1</strong>Resolução pela RCP (5 passos) das questões erradas na Parte 1 da prova escrita da Etapa 2.</li><li><strong>TR2-2</strong>Resolução pela RCP (5 passos) das 6 questões ligadas à prova escrita da Etapa 2.</li></ul><p>Entregue os dois na Monitoria até quinta-feira, 26/11/2026.</p></div>
+  <div class="etapa-trab"><h3>Trabalhos da Etapa 2</h3><ul><li><strong>TR2-1</strong>Resolução pela RCP (5 passos) das questões erradas na Parte 1 da prova escrita da Etapa 2.</li><li><strong>TR2-2</strong>Resolução pela RCP (5 passos) das 6 questões ligadas à prova escrita da Etapa 2.</li></ul><p>Entregue os dois na Monitoria.</p></div>
 
   <details class="trilha" id="t07">
   <summary>T07 &middot; Referencial, Posi&ccedil;&atilde;o e Tempo</summary>
