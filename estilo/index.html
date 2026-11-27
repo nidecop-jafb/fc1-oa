@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="/fc1-oa/_icones/app-site-192.png">
+<meta name="theme-color" content="#14120D">
+<title>Estilo de Aprendizagem &middot; FC1 &middot; IFMG-OP</title>
+<style>
+  /* fonte unica da pagina (autor, 2026-09-17) */
+  input, button, select, textarea { font-family: inherit; }
+  :root {
+    --ouro: #C8A84B; --verde: #4CAF7D; --vermelho: #E05B4B;
+    --fundo: #14120D; --painel: #1E1B14; --borda: #3A3423;
+    --texto: #EDE6D4; --texto-dim: #A69C82;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fundo); color: var(--texto);
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    border-bottom: 2px solid var(--ouro); padding: 1.1rem 1rem .9rem;
+    text-align: center;
+  }
+  .header-sub {
+    font-family: 'Courier New', Courier, monospace; font-size: .72rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--texto-dim);
+  }
+  h1 { font-size: 1.5rem; color: var(--ouro); margin-top: .3rem; }
+  .badge {
+    display: inline-block; margin-top: .45rem; padding: .18rem .6rem;
+    border: 1px solid var(--verde); color: var(--verde);
+    font-family: 'Courier New', Courier, monospace; font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
+  .cartao {
+    background: var(--painel); border: 1px solid var(--borda);
+    padding: 1.2rem 1.1rem; margin-top: 1rem;
+  }
+  .cartao h2 {
+    font-family: 'Courier New', Courier, monospace; font-size: .8rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ouro); margin-bottom: .7rem;
+  }
+  .intro { font-size: .98rem; line-height: 1.55; color: var(--texto-dim); }
+  label {
+    font-family: 'Courier New', Courier, monospace; font-size: .82rem; color: var(--texto-dim);
+    display: block; margin: .9rem 0 .3rem;
+  }
+  label .opcional { color: var(--texto-dim); opacity: .7; font-size: .74rem; }
+  input[type=text], select, textarea {
+    width: 100%; padding: .6rem .7rem; font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace; background: var(--fundo);
+    border: 1px solid var(--borda); color: var(--texto);
+  }
+  input[type=text]:focus, select:focus, textarea:focus { outline: none; border-color: var(--ouro); }
+  textarea { resize: vertical; min-height: 7rem; font-size: 1.02rem; line-height: 1.5; }
+  .btn {
+    display: block; width: 100%; margin-top: 1rem; padding: .85rem;
+    font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+    background: var(--ouro); color: #14120D; border: none;
+  }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .btn-sec {
+    background: transparent; color: var(--texto); border: 1px solid var(--borda);
+    font-family: 'Courier New', Courier, monospace; padding: .55rem .9rem; cursor: pointer;
+    font-size: .88rem;
+  }
+  .btn-grav { border-color: var(--verde); color: var(--verde); }
+  .btn-parar { border-color: var(--vermelho); color: #F0B3AA; }
+  .audio-linha { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-top: .4rem; }
+  .grav-timer {
+    font-family: 'Courier New', monospace; font-size: 1.05rem; color: var(--vermelho);
+  }
+  .pulso { display: inline-block; width: .6rem; height: .6rem; background: var(--vermelho);
+    border-radius: 50%; margin-right: .4rem; animation: pulso 1.2s infinite; }
+  @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  audio { width: 100%; margin-top: .6rem; }
+  .erro {
+    margin-top: .8rem; padding: .7rem .8rem; font-family: 'Courier New', Courier, monospace;
+    font-size: .9rem; background: rgba(224,91,75,.12);
+    border-left: 3px solid var(--vermelho); color: #F0B3AA;
+  }
+  .ok-box {
+    margin-top: .8rem; padding: .9rem; font-family: 'Courier New', Courier, monospace;
+    background: rgba(76,175,125,.12); border-left: 3px solid var(--verde);
+    line-height: 1.5;
+  }
+  .ok-box strong { color: var(--verde); }
+  .nota {
+    margin-top: 1rem; font-family: 'Courier New', Courier, monospace; font-size: .78rem;
+    color: var(--texto-dim); line-height: 1.5;
+  }
+  .hp { position: absolute; left: -9999px; top: -9999px; }
+  footer {
+    border-top: 1px solid var(--borda); padding: .9rem 1rem; text-align: center;
+    font-family: 'Courier New', Courier, monospace; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
+  }
+  footer a { color: var(--texto-dim); }
+
+  /* pagina Estilo de Aprendizagem (PRE-site-estilo-aprendizagem-questionario-painel-ilb-2026-10-15) */
+  body[data-pagina="estilo"] main { max-width: 720px; }
+  .est-intro p { margin: 0 0 .8rem; line-height: 1.6; }
+  .est-intro .est-lead { color: var(--texto); font-size: 1.05rem; }
+  .est-intro ul.dims { list-style: none; margin: .4rem 0 1rem; padding: 0; }
+  .est-intro ul.dims li { background: var(--fundo); border-left: 3px solid var(--azul); padding: .55rem .8rem; margin: 0 0 .5rem;
+    color: var(--texto-dim); line-height: 1.5; }
+  .est-intro ul.dims strong { display: block; color: var(--azul); }
+  .cartao h2 + .intro { margin-bottom: .6rem; }
+  .btn-sec { margin-top: .8rem; }
+  fieldset.questao { border: none; border-left: 4px solid var(--borda); background: var(--fundo); padding: .8rem .8rem .5rem;
+    margin: .9rem 0 0; min-width: 0; }
+  fieldset.questao.ok { border-left-color: var(--laranja); }
+  fieldset.questao legend { float: left; width: 100%; padding: 0; margin: 0 0 .6rem; color: var(--texto); font-weight: bold; line-height: 1.5; }
+  fieldset.questao legend + * { clear: both; }
+  fieldset.questao .q-num { display: inline-block; background: var(--painel); color: var(--azul); padding: 0 .35rem; margin-right: .35rem; }
+  fieldset.questao > label { display: flex; gap: .6rem; align-items: flex-start; border: 1px solid var(--borda); padding: .6rem .7rem;
+    margin: 0 0 .45rem; color: var(--texto); font-size: .95rem; cursor: pointer; line-height: 1.45; }
+  fieldset.questao > label:has(input:checked) { border-color: var(--azul); background: var(--painel); }
+  fieldset.questao input { width: 1.15rem; height: 1.15rem; flex: 0 0 1.15rem; margin-top: .15rem; accent-color: var(--laranja); }
+  .progresso { position: sticky; bottom: 0; z-index: 5; background: var(--painel); border-top: 2px solid var(--laranja);
+    padding: .7rem .2rem; margin-top: .8rem; display: flex; gap: .6rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .progresso button { background: var(--laranja); color: #131110; border: none; padding: .65rem 1rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; font-size: .95rem; }
+  .progresso button:disabled { background: var(--fundo); color: var(--texto-dim); border: 1px solid var(--borda); cursor: default; }
+  .dim { background: var(--fundo); border-left: 4px solid var(--azul); padding: .7rem .8rem; margin: 0 0 .7rem; }
+  .dim-polos { display: flex; justify-content: space-between; gap: .5rem; font-weight: bold; }
+  .dim-polos span:first-child { color: var(--azul); }
+  .dim-polos span:last-child { color: #7BC797; text-align: right; }
+  .dim-barra { position: relative; height: 20px; background: var(--painel); border: 1px solid var(--borda); margin: .45rem 0; }
+  .dim-barra::after { content: ''; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; background: #A99C8C; }
+  .dim-barra span { position: absolute; top: 0; bottom: 0; background: var(--azul); }
+  .dim-barra span.b { background: #7BC797; }
+  .dim-grau { color: var(--texto-dim); font-size: .9rem; }
+  .regras { border-left: 4px solid var(--laranja); background: var(--fundo); padding: .7rem .9rem; margin: .4rem 0 .6rem; }
+  .regras ol { margin: 0 0 0 1.2rem; }
+  .regras li { margin-bottom: .25rem; line-height: 1.5; font-size: .92rem; }
+  .p-rot { color: #7BC797; font-weight: bold; margin: .9rem 0 .4rem; font-size: .92rem; }
+  .regras .p-rot { margin-top: 0; }
+  .p-dim { color: var(--azul); font-size: 1.02rem; border-top: 2px solid var(--azul); padding-top: .6rem; margin: 1.2rem 0 0; }
+  .p-dim span { color: var(--texto-dim); font-weight: normal; font-size: .85rem; }
+  .prompt { background: var(--fundo); border-left: 4px solid var(--borda); padding: .7rem .8rem; margin: 0 0 .5rem; }
+  .prompt p { margin: 0 0 .5rem; line-height: 1.55; font-size: .93rem; }
+  .prompt .copiar { background: var(--painel); color: var(--azul); border: 1px solid var(--azul); padding: .4rem .9rem; cursor: pointer;
+    font-family: inherit; font-size: .85rem; }
+  .prompt.lic { border-left-color: var(--laranja); }
+  table.hist { width: 100%; border-collapse: collapse; table-layout: fixed; background: var(--fundo); font-size: .88rem; }
+  table.hist th { color: var(--azul); border-bottom: 2px solid var(--azul); font-size: .78rem; }
+  table.hist th, table.hist td { padding: .5rem .15rem; text-align: center; overflow-wrap: anywhere; }
+  table.hist th:first-child, table.hist td:first-child { width: 30%; text-align: left; padding-left: .5rem; }
+  table.hist tr + tr td { border-top: 1px solid var(--borda); }
+  table.hist td small { display: block; color: var(--texto-dim); font-size: .72rem; }
+  .est-filtro { display: flex; flex-wrap: wrap; gap: .4rem; margin: .2rem 0 .9rem; }
+  .est-filtro button { flex: 1 1 140px; background: var(--fundo); color: var(--texto); border: 1px solid var(--borda); padding: .55rem .5rem;
+    font-family: inherit; font-size: .85rem; cursor: pointer; }
+  .est-filtro button[aria-pressed="true"] { background: var(--laranja); border-color: var(--laranja); color: #131110; font-weight: bold; }
+  .grupo-n { font-size: 1rem; margin: 0 0 .7rem; }
+  .grupo-n strong { font-size: 1.8rem; color: var(--azul); margin-right: .3rem; }
+  .grupo-barra { display: flex; height: 24px; border: 1px solid var(--borda); background: var(--painel); margin: .4rem 0; }
+  .grupo-barra span { display: block; height: 100%; }
+  .grupo-barra .fa, .grupo-barra .ma { background: var(--azul); }
+  .grupo-barra .fb, .grupo-barra .mb { background: #7BC797; }
+  .grupo-barra .ma, .grupo-barra .mb { opacity: .5; }
+  .grupo-barra .eq { background: #6E655B; }
+  .grupo-leg { color: var(--texto-dim); font-size: .82rem; line-height: 1.5; margin: 0; }
+  .grupo-et { display: grid; grid-template-columns: 4.6rem 1fr; gap: .5rem; align-items: center; }
+  .grupo-et b { color: var(--texto-dim); font-size: .8rem; font-weight: normal; }
+  .grupo-et .grupo-barra { margin: .25rem 0; }
+  .est-ref { margin-top: 1.4rem; }
+
+  /* FC1 (2026-11-26): o layout da ILB usa --laranja/--azul; aqui valem o ouro e o verde da FC1 */
+  :root { --laranja: var(--ouro); --azul: var(--verde); }
+</style>
+<!-- TOPO-FC1-CABECA:INICIO -->
+<script data-fc1-tema="fixo">(function () {
+  var h = document.documentElement, t, l;
+  try { t = localStorage.getItem('fc1-tema'); l = localStorage.getItem('fc1-letra'); } catch (e) { /* sem localStorage */ }
+  if (t !== 'claro' && t !== 'escuro') { t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'claro' : 'escuro'; }
+  h.setAttribute('data-tema', t);
+  if (l === 'g' || l === 'gg') { h.setAttribute('data-letra', l); }
+  var vistas = [], regras = [], el = document.createElement('style'), meta = document.querySelector('meta[name="theme-color"]');
+  var metaEsc = meta ? meta.getAttribute('content') : '';
+  el.id = 'fc1Claro'; el.setAttribute('data-fc1-tema', 'fixo');
+  function hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), L = (mx + mn) / 2, d = mx - mn, H = 0, S = 0;
+    if (d) { S = d / (1 - Math.abs(2 * L - 1)); H = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; H *= 60; if (H < 0) { H += 360; } }
+    return [H, S, L];
+  }
+  function rgb(H, S, L) {
+    var c = (1 - Math.abs(2 * L - 1)) * S, x = c * (1 - Math.abs((H / 60) % 2 - 1)), m = L - c / 2, p;
+    p = H < 60 ? [c, x, 0] : H < 120 ? [x, c, 0] : H < 180 ? [0, c, x] : H < 240 ? [0, x, c] : H < 300 ? [x, 0, c] : [c, 0, x];
+    return [Math.round((p[0] + m) * 255), Math.round((p[1] + m) * 255), Math.round((p[2] + m) * 255)];
+  }
+  function lum(c) {
+    var v = c.map(function (k) { k /= 255; return k <= 0.03928 ? k / 12.92 : Math.pow((k + 0.055) / 1.055, 2.4); });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function saida(c, a) { return a < 1 ? 'rgba(' + c.join(', ') + ', ' + a + ')' : 'rgb(' + c.join(', ') + ')'; }
+  function oklch(L, C, H) {
+    var A = C * Math.cos(H * Math.PI / 180), B = C * Math.sin(H * Math.PI / 180);
+    var l = Math.pow(L + 0.3963377774 * A + 0.2158037573 * B, 3), m = Math.pow(L - 0.1055613458 * A - 0.0638541728 * B, 3),
+        s = Math.pow(L - 0.0894841775 * A - 1.2914855480 * B, 3);
+    return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+            -0.0041960863 * l - 0.7034186147 * m + 1.7076127010 * s].map(function (k) {
+      k = k <= 0.0031308 ? 12.92 * k : 1.055 * Math.pow(k, 1 / 2.4) - 0.055; return Math.round(Math.min(1, Math.max(0, k)) * 255); });
+  }
+  /* texto e borda precisam de 4,5:1 sobre o cinza-claro dos paineis (luminancia ~0,75), e entao tambem sobre o branco */
+  function escurecer(x, n, alvo) { var L = x[2], b = alvo || 0.70; while (L > 0.03 && (b / (lum(n) + 0.05)) < 4.6) { L -= 0.02; n = rgb(x[0], x[1], L); } return n; }
+  /* fundo: neutro escuro vira claro; cor de marca fica. Texto e borda: neutro inverte (e escurece se ficou
+     cinza-medio); cor de marca escurece. manter=true: texto sobre fundo de cor (botao) fica como esta. */
+  /* fundo: true = fundo; 'var' = variavel CSS (o uso e desconhecido: neutro so inverte, marca escura vira clara) */
+  function cor(c, a, fundo, manter) {
+    var x = hsl(c[0], c[1], c[2]), neutro = (Math.max(c[0], c[1], c[2]) - Math.min(c[0], c[1], c[2])) < 40;
+    if (neutro) {
+      if (manter) { return null; }
+      var y = [x[0], x[1], 1 - x[2]], n = rgb(y[0], y[1], y[2]);
+      return saida(fundo || a < 0.5 ? n : escurecer(y, n), a);
+    }
+    if (fundo === 'var' && x[2] < 0.22) { return saida(rgb(x[0], x[1], 1 - x[2]), a); }
+    if (fundo === true) { return x[2] < 0.22 ? saida(rgb(x[0], x[1], 1 - x[2]), a) : null; }
+    if (a < 0.5) { return null; }
+    var e = escurecer(x, c);
+    return e === c ? null : saida(e, a);
+  }
+  var NOMES = { white: [255, 255, 255], black: [0, 0, 0] };
+  function ler1(m, hx, nome) {
+    var c, a = 1, p;
+    if (hx) {
+      if (hx.length === 3 || hx.length === 4) { hx = hx.replace(/./g, '$&$&'); }
+      c = [0, 2, 4].map(function (i) { return parseInt(hx.substr(i, 2), 16); });
+      if (hx.length === 8) { a = parseInt(hx.substr(6, 2), 16) / 255; }
+      return [c, a];
+    }
+    if (nome) { return [NOMES[nome.toLowerCase()], 1]; }
+    p = m.replace(/^[a-z]+\(|\)$/gi, '').split(/[\s,\/]+/).filter(Boolean).map(function (k) { return /%$/.test(k) ? parseFloat(k) / 100 : parseFloat(k); });
+    if (p.length < 3 || p.slice(0, 3).some(isNaN)) { return null; }
+    if (/^oklch/i.test(m)) { c = oklch(p[0], p[1], p[2]); } else { c = p.slice(0, 3).map(Math.round); }
+    if (p.length > 3) { a = p[3]; }
+    return [c, a];
+  }
+  var COR = /#([0-9a-f]{3,8})\b|(?:rgba?|oklch)\([^)]*\)|\b(white|black)\b/gi;
+  function trocar(v, fundo, manter) {
+    return v.replace(COR, function (m, hx, nome) {
+      var x = ler1(m, hx, nome);
+      return (x && cor(x[0], x[1], fundo, manter)) || m;
+    });
+  }
+  function um(v) {     /* a primeira cor de um valor, como [rgb, alfa] */
+    var m = (v || '').match(COR); if (!m) { return null; }
+    var t = m[0]; return ler1(t, t.charAt(0) === '#' ? t.slice(1) : '', /^(white|black)$/i.test(t) ? t : '');
+  }
+  var VARS = {};       /* valor ORIGINAL (tema escuro) das variaveis da raiz, lido antes da folha clara valer */
+  function original(nome) {
+    if (!(nome in VARS)) { VARS[nome] = getComputedStyle(h).getPropertyValue(nome).trim(); }
+    return VARS[nome];
+  }
+  function deCor(v) {   /* o fundo da regra e uma cor de marca opaca (botao verde, etiqueta azul)? */
+    var k = /var\(\s*(--[\w-]+)/.exec(v || '');
+    if (k) { v = original(k[1]); }
+    var x = um(v);
+    return !!x && x[1] >= 0.5 && (Math.max.apply(null, x[0]) - Math.min.apply(null, x[0])) >= 40;
+  }
+  var PROP = /color$|^background|^border-(top|right|bottom|left)-color$|^outline-color$|^fill$|^stroke$|^--/;
+  function regra(r, sai) {
+    if (r.cssRules && r.type !== 1) {
+      var dentro = []; ler(r.cssRules, dentro);
+      if (dentro.length && r.media) { sai.push('@media ' + r.media.mediaText + ' {\n' + dentro.join('\n') + '\n}'); }
+      else if (dentro.length && r.conditionText) { sai.push('@supports ' + r.conditionText + ' {\n' + dentro.join('\n') + '\n}'); }
+      return;
+    }
+    if (r.type !== 1 || /\bimg\b/i.test(r.selectorText)) { return; }
+    /* com var() no atalho `background`, o longhand vem vazio: ler o atalho tambem */
+    var s = r.style, comCor = deCor(s.getPropertyValue('background-color') || s.getPropertyValue('background')), out = [];
+    for (var i = 0; i < s.length; i++) {
+      var n = s[i];
+      if (n === 'box-shadow') {   /* sombra preta forte faz faixa escura no fundo claro: suaviza */
+        var sv = s.getPropertyValue(n), sw = sv.replace(/rgba\(\s*0,\s*0,\s*0,\s*([\d.]+)\s*\)/g, function (m, a) { return 'rgba(0, 0, 0, ' + Math.min(+a, 0.16) + ')'; });
+        if (sw !== sv) { out.push('box-shadow: ' + sw); }
+        continue;
+      }
+      if (!PROP.test(n)) { continue; }
+      var v = s.getPropertyValue(n), f = /^background/.test(n) ? true : /^--/.test(n) ? 'var' : false;
+      var w = trocar(v, f, n === 'color' && comCor);
+      if (n === 'background-color' && comCor) {   /* botao de cor com letra branca: escurece o fundo ate ler bem */
+        var cl = um(s.getPropertyValue('color')), bx = um(v);
+        if (cl && bx && lum(cl[0]) > 0.8) { var hb = hsl(bx[0][0], bx[0][1], bx[0][2]); w = saida(escurecer(hb, bx[0], 1.05), bx[1]); }
+      }
+      if (w !== v) { out.push(n + ': ' + w + (s.getPropertyPriority(n) ? ' !important' : '')); }
+    }
+    if (comCor) {   /* botao de cor com letra escura e fundo por variavel: o fundo fica com a cor original */
+      var bv = s.getPropertyValue('background-color') || s.getPropertyValue('background'), kv = /var\(\s*(--[\w-]+)/.exec(bv),
+          lc = um(s.getPropertyValue('color'));
+      if (kv && lc && lum(lc[0]) < 0.2) { out.push('background-color: ' + original(kv[1])); }
+    }
+    if (out.length) { sai.push(r.selectorText + ' { ' + out.join('; ') + ' }'); }
+  }
+  function ler(lista, sai) { for (var i = 0; i < lista.length; i++) { regra(lista[i], sai); } }
+  function varrer() {
+    var fs = document.styleSheets;
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i], dono = f.ownerNode;
+      if (vistas.indexOf(f) >= 0 || (dono && dono.getAttribute && dono.getAttribute('data-fc1-tema'))) { continue; }
+      vistas.push(f);
+      try { ler(f.cssRules, regras); } catch (e) { /* folha de outra origem */ }
+    }
+    el.textContent = regras.join('\n');
+    [].forEach.call(document.querySelectorAll('[style]'), function (n) {
+      if (n.hasAttribute('data-fc1-esc')) { return; }
+      var v = n.getAttribute('style'), w = v.replace(/(^|;)\s*((?:background|color|border)[a-z-]*)\s*:([^;]*)/gi, function (m, a, p, val) {
+        return a + p + ':' + trocar(val, /^background/i.test(p), false); });
+      if (w !== v) { n.setAttribute('data-fc1-esc', v); n.setAttribute('data-fc1-cla', w); }
+    });
+    aplicar();
+  }
+  function aplicar() {
+    var claro = h.getAttribute('data-tema') === 'claro';
+    el.media = claro ? 'all' : 'not all';
+    if (meta) { meta.setAttribute('content', claro ? '#ffffff' : metaEsc); }
+    [].forEach.call(document.querySelectorAll('[data-fc1-esc]'), function (n) {
+      n.setAttribute('style', n.getAttribute(claro ? 'data-fc1-cla' : 'data-fc1-esc')); });
+  }
+  window.fc1Tema = function (novo) {
+    h.setAttribute('data-tema', novo);
+    try { localStorage.setItem('fc1-tema', novo); } catch (e) { /* sem localStorage */ }
+    aplicar();
+  };
+  document.head.appendChild(el);
+  varrer();
+  document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
+})();</script>
+<!-- TOPO-FC1-CABECA:FIM -->
+<!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
+@media screen {
+:root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
+/* tema claro: o cinza de apoio das paginas fixas (#A69C82 invertido) fica em 3,8:1 no fundo claro */
+html[data-tema="claro"]:root { --texto-dim: #5E5644; --cinza: oklch(0.45 0.02 260); }
+/* cinza de apoio dos OAs (oklch .55) fica em 3,4:1 no fundo escuro. So onde a cabeca do tema
+   marcou data-tema: TT e AP tem tema proprio e ficam como estao. A folha leva data-fc1-tema="fixo"
+   para o motor do tema claro nao inverter estes valores. */
+html[data-tema="escuro"]:root { --cinza: oklch(0.72 0.02 260); }
+body, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *)) { font-family: var(--fc1-sans) !important; }
+body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::before, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::after { font-family: var(--fc1-sans) !important; }
+body :is(code, pre, kbd, samp, input[type="number"], .fc1-num, .badge, .selo, .contador, .contador *, #seloAcessos, .q-num, .figura-num, .fc1-acessos-num) { font-family: var(--fc1-mono) !important; }
+/* cartao de QR (_qr/) com largura fixa de 344 px passava 4 px da tela de 375 px */
+@media (max-width: 400px) { body .qr { max-width: 100%; box-sizing: border-box; } }
+
+body :is(p, li, dd, blockquote):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary)) {
+  font-size: 1.0625rem; line-height: 1.6; }
+body p:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { max-width: 72ch; }
+body .fc1-corrido { font-size: 1.0625rem !important; line-height: 1.6 !important; }
+body :is(h1, h2, h3):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { letter-spacing: normal; line-height: 1.25; }
+body h2:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { font-weight: 700; }
+
+body :is(h1, h2):not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary, [class*="capa"]) *) { text-transform: none; }
+body h1:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.75rem; font-weight: 700; }
+body h2:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.35rem; }
+body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], .fase, .selos, .badge, button, label, summary) *) { font-size: 1.15rem; font-weight: 700; }
+}
+</style><script>
+(function () {
+  var RE = /^[\s(±+\-−–]*\d[\d\s.,]*(\s*[±]\s*[\d.,]+)?\s*[)]?\s*([a-zA-Zµμ°%²³·\/]{1,8}\)?)?\s*$/;
+  var NAO = 'header, footer, nav, aside, figcaption, small, svg, table, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="legenda"], [class*="card"], [class*="header"], [class*="piazzi"], [class*="selo"], .badge, button, label, summary';
+  function marcar() {
+    var cs = document.querySelectorAll('td, th'), i, e, n, t;
+    for (i = 0; i < cs.length; i++) {
+      t = cs[i].textContent;
+      if (t && t.length < 40 && RE.test(t)) cs[i].classList.add('fc1-num');
+    }
+    if (!true) return;
+    var raiz = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var todos = document.body.querySelectorAll('div, span, p, li, dd, blockquote');
+    for (i = 0; i < todos.length; i++) {
+      e = todos[i];
+      if (e.closest(NAO)) continue;
+      t = 0;
+      for (n = e.firstChild; n; n = n.nextSibling) if (n.nodeType === 3) t += n.textContent.trim().length;
+      if (t < 60) continue;
+      if (parseFloat(getComputedStyle(e).fontSize) / raiz < 1.06) e.classList.add('fc1-corrido');
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', marcar);
+  else marcar();
+})();
+</script><!-- VISUAL:FIM -->
+</head>
+<body data-pagina="estilo">
+<!-- TOPO-FC1:INICIO -->
+<style data-fc1-tema="fixo">
+html[data-letra="g"] { font-size: 125%; }
+html[data-letra="gg"] { font-size: 137.5%; }
+.fc1-topo { position: fixed; top: 8px; right: 8px; z-index: 999; display: flex; gap: 6px; font-family: 'Courier New', Courier, monospace; }
+.fc1-topo .tb { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0;
+  background: #1a1b1f; color: #4CAF7D; border: 1px solid #444; border-radius: 6px; cursor: pointer; text-decoration: none;
+  font: 700 18px/1 'Courier New', Courier, monospace; letter-spacing: 0; }
+.fc1-topo .tb:hover, .fc1-topo .tb.ativo { border-color: #C8A84B; background: #C8A84B; color: #fff; }
+.fc1-topo .tb:disabled { opacity: .4; cursor: default; background: #1a1b1f; color: #4CAF7D; border-color: #444; }
+.fc1-topo .tb svg { width: 20px; height: 20px; display: block; }
+.fc1-topo .tb .lua, html[data-tema="claro"] .fc1-topo .tb .sol { display: none; }
+html[data-tema="claro"] .fc1-topo .tb .lua { display: block; }
+.fc1-topo .tb.crono-btn { min-width: 38px; width: auto; padding: 0 8px; font-size: 15px; }
+.fc1-topo .fc1-caixa { position: relative; }
+.fc1-menu { position: absolute; top: 44px; right: 0; min-width: 250px; background: #1a1b1f; border: 1px solid #444;
+  border-top: 3px solid #C8A84B; box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.fc1-menu[hidden] { display: none; }
+.fc1-menu a, .fc1-menu span { display: block; padding: 11px 16px; color: #e8e8e8; text-decoration: none; font-size: 15px; line-height: 1.4; }
+.fc1-menu a + a, .fc1-menu a + span, .fc1-menu span + a, .fc1-menu span + span { border-top: 1px solid #333; }
+.fc1-menu a:hover { background: #26272c; color: #4CAF7D; }
+.fc1-menu small { display: block; color: #9a9a9a; font-size: 12px; }
+.fc1-menu .off { color: #8a8a8a; cursor: default; }
+.fc1-menu .tit { color: #4CAF7D; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 6px; }
+.fc1-estilo { position: fixed; top: 54px; right: 8px; z-index: 999; width: 400px; max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 66px); overflow-y: auto; background: #1a1b1f; color: #c4c4c4; border: 1px solid #444;
+  border-top: 3px solid #C8A84B; padding: 18px 20px 16px; font-size: 15px; line-height: 1.6; box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.fc1-estilo[hidden] { display: none; }
+.fc1-estilo h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: #C8A84B; border-bottom: 1px solid #444;
+  padding: 0 30px 8px 0; margin: 0 0 14px; }
+.fc1-estilo .fechar { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: none; border: 1px solid #444;
+  color: #c4c4c4; font: 700 18px/1 'Courier New', monospace; cursor: pointer; }
+.fc1-estilo p { margin: 0 0 11px; max-width: none; }
+.fc1-estilo .est-lead { color: #e8e8e8; font-size: 16px; line-height: 1.5; }
+.fc1-estilo ul.dims { list-style: none; margin: 0 0 14px; padding: 0; }
+.fc1-estilo ul.dims li { background: #26272c; border-left: 3px solid #4CAF7D; padding: 9px 12px; margin: 0 0 8px; max-width: none; }
+.fc1-estilo ul.dims strong { display: block; color: #4CAF7D; font-weight: 700; }
+.fc1-estilo .est-ref { border-top: 1px solid #444; padding-top: 10px; margin-top: 14px; font-size: 12.5px; color: #9a9a9a; }
+.fc1-estilo a.est-btn { display: block; text-align: center; padding: 12px 14px; margin: 0 0 8px; border: 1px solid #C8A84B;
+  background: #C8A84B; color: #fff; font-weight: 700; text-decoration: none; line-height: 1.35; }
+.fc1-estilo a.est-btn small { display: block; font-weight: 400; font-size: 12.5px; opacity: .9; }
+.fc1-estilo a.est-btn-2 { background: #26272c; color: #4CAF7D; border-color: #4CAF7D; }
+.fc1-estilo a.est-btn:hover { filter: brightness(1.12); }
+html[data-tema="claro"] .fc1-topo .tb { background: #fff; color: #2E7A52; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-topo .tb:hover, html[data-tema="claro"] .fc1-topo .tb.ativo { background: #7A5F12; border-color: #7A5F12; color: #fff; }
+html[data-tema="claro"] .fc1-topo .tb:disabled { background: #fff; color: #2E7A52; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-menu, html[data-tema="claro"] .fc1-estilo { background: #fff; border-color: #d5d8dd; border-top-color: #7A5F12;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18); color: #2a2a2a; }
+html[data-tema="claro"] .fc1-menu a, html[data-tema="claro"] .fc1-menu span { color: #1c1c1c; border-top-color: #e0e2e6; }
+html[data-tema="claro"] .fc1-menu a:hover { background: #eef2f7; color: #2E7A52; }
+html[data-tema="claro"] .fc1-menu small, html[data-tema="claro"] .fc1-menu .off { color: #6a6a6a; }
+html[data-tema="claro"] .fc1-menu .tit { color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo h3 { color: #7A5F12; border-bottom-color: #d5d8dd; }
+html[data-tema="claro"] .fc1-estilo .fechar { color: #2a2a2a; border-color: #c8c8c8; }
+html[data-tema="claro"] .fc1-estilo .est-lead { color: #1c1c1c; }
+html[data-tema="claro"] .fc1-estilo ul.dims li { background: #f3f5f7; border-left-color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo ul.dims strong { color: #2E7A52; }
+html[data-tema="claro"] .fc1-estilo .est-ref { border-top-color: #d5d8dd; color: #5f5f5f; }
+html[data-tema="claro"] .fc1-estilo a.est-btn { background: #7A5F12; border-color: #7A5F12; color: #fff; }
+html[data-tema="claro"] .fc1-estilo a.est-btn-2 { background: #fff; color: #2E7A52; border-color: #2E7A52; }
+/* as barras de navegacao fixas das paginas de documento descem para baixo dos icones */
+.doc-barra, .agr-barra { top: 54px !important; }
+.doc-barra:not(.vis) { transform: translateY(calc(-100% - 60px)) !important; }
+@media (max-width: 900px) { body { padding-top: 54px; } }
+@media (max-width: 420px) {
+  .fc1-topo { gap: 4px; right: 6px; }
+  .fc1-topo .tb { width: 34px; height: 34px; font-size: 16px; }
+  .fc1-topo .tb.crono-btn { min-width: 34px; width: auto; padding: 0 5px; font-size: 13px; }
+  .fc1-topo .tb svg { width: 18px; height: 18px; }
+  .fc1-menu { top: 40px; }
+}
+#fc1CronoMenu { right: auto; left: 0; }
+@media print { .fc1-topo, .fc1-estilo { display: none !important; } }
+.fc1-topo .tb:hover, .fc1-topo .tb.ativo { color: #14120D; }
+.fc1-estilo a.est-btn { color: #14120D; }
+html[data-tema="claro"] .fc1-topo .tb:hover, html[data-tema="claro"] .fc1-topo .tb.ativo, html[data-tema="claro"] .fc1-estilo a.est-btn { color: #fff; }
+.fc1-estilo a.est-btn-2 { color: #4CAF7D; }
+html[data-tema="claro"] .fc1-estilo a.est-btn-2 { color: #2E7A52; }
+body > header { padding-top: 54px !important; }
+</style>
+<div class="fc1-topo"><a class="tb" href="../index.html" aria-label="Início" title="Início"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg></a><div class="fc1-caixa"><button class="tb" id="fc1CronoBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fc1CronoMenu" aria-label="Cronometrar" title="Cronometrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="8"/><path d="M12 9.5v4l2.5 2.5M9.5 2.5h5M12 2.5v3"/></svg></button><nav class="fc1-menu" id="fc1CronoMenu" hidden><span class="tit">Cronometrar uma sessão</span><a href="../sessao/pre/">Pré-aula · T0A a T10<small>até 20 min</small></a><a href="../sessao/aula/">Aula · T0A a T10<small>até 45 min</small></a><a href="../sessao/pos/">Pós-aula · T0A a T10<small>até 20 min</small></a><a href="../sessao/aula-livro/">Aula · da T11 em diante<small>até 100 min</small></a><a href="../index.html#etapa3">Pré-aula e Pós-aula da T11 em diante<small>sessão de 30 min na página de cada trilha</small></a></nav></div><button class="tb" id="fc1LetraMenos" type="button" aria-label="Diminuir a letra" title="Diminuir a letra">A&minus;</button><button class="tb" id="fc1LetraMais" type="button" aria-label="Aumentar a letra" title="Aumentar a letra">A+</button><button class="tb" id="fc1TemaBtn" type="button" aria-label="Mudar o tema"><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12h2.5M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></button><a class="tb" href="../instalar/" aria-label="Instalar" title="Instalar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10 18h4"/></svg></a><button class="tb" id="fc1EstiloBtn" type="button" aria-controls="fc1Estilo" aria-expanded="false" aria-label="Estilo de aprendizagem" title="Estilo de aprendizagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg></button><div class="fc1-caixa"><button class="tb" id="fc1AvaBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fc1AvaMenu" aria-label="Avaliação" title="Avaliação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></button><nav class="fc1-menu" id="fc1AvaMenu" hidden><span class="tit">Avaliação</span><a href="../retorno/">Ficha de Retorno (FR)<small>o retorno da sua prova</small></a><a href="../correcao/">Correção de Provas<small>professor</small></a><a href="../sugestoes/">Enviar uma sugestão</a><a href="../agradecimentos/">Agradecimentos</a></nav></div></div>
+<aside class="fc1-estilo" id="fc1Estilo" hidden aria-label="Estilo de aprendizagem"><h3>Estilo de aprendizagem</h3><button class="fechar" id="fc1EstiloFechar" type="button" aria-label="Fechar">&times;</button>
+  <p class="est-lead">Conhecer o seu estilo de aprendizagem é descobrir como você prefere receber, processar e organizar o
+  que aprende — na aula e na hora de estudar em casa. O Índice de Estilos de Aprendizagem de Felder e Soloman olha
+  para quatro dimensões, cada uma com dois polos:</p>
+  <ul class="dims">
+    <li><strong>Ativo ou Reflexivo</strong>Aprender resolvendo e discutindo com os colegas, ou pensando sozinho antes de responder.</li>
+    <li><strong>Sensorial ou Intuitivo</strong>Partir de exemplos concretos — a correia, a britagem, o dia a dia —, ou da ideia geral e do modelo.</li>
+    <li><strong>Visual ou Verbal</strong>Lembrar melhor do gráfico, do esquema e da figura, ou do texto escrito e da explicação falada.</li>
+    <li><strong>Sequencial ou Global</strong>Seguir a trilha passo a passo, ou ver o assunto inteiro antes de entrar nos detalhes.</li>
+  </ul>
+  <p>Ninguém é um polo só: cada um pende para um lado, com mais ou menos força, e isso muda com a prática. Não existe
+  estilo melhor nem pior.</p>
+  <p>Vale duas vezes: saber o seu jeito ajuda a escolher como estudar a trilha, e lembrar que cada colega tem o dele
+  ajuda no estudo em grupo — um explica pelo desenho, outro pela conta, outro pela história.</p>
+  <p>Com esse retrato, você escolhe estratégias (e usos da IA) que combinam com o seu jeito e treina, de propósito, o polo que usa menos. Responda de novo em cada Etapa e veja como o seu perfil muda.</p>
+  <a class="est-btn" href="../estilo/">Responder o questionário<small>20 perguntas · cerca de 5 min</small></a>
+  <p class="est-ref">FELDER, R. M.; SOLOMAN, B. A. <em>Index of Learning Styles Questionnaire</em>. Raleigh: North Carolina State University.</p>
+</aside>
+<script>(function () {
+  var h = document.documentElement, $ = function (id) { return document.getElementById(id); };
+  var menos = $('fc1LetraMenos'), mais = $('fc1LetraMais'), passos = ['', 'g', 'gg'];
+  function atual() { return Math.max(0, passos.indexOf(h.getAttribute('data-letra') || '')); }
+  function mostrar() { var i = atual(); menos.disabled = i === 0; mais.disabled = i === passos.length - 1; }
+  function letra(d) {
+    var i = Math.min(passos.length - 1, Math.max(0, atual() + d));
+    if (passos[i]) { h.setAttribute('data-letra', passos[i]); } else { h.removeAttribute('data-letra'); }
+    try { localStorage.setItem('fc1-letra', passos[i]); } catch (e) { /* sem localStorage */ }
+    mostrar(); window.dispatchEvent(new Event('resize'));
+  }
+  menos.addEventListener('click', function (e) { e.stopPropagation(); letra(-1); });
+  mais.addEventListener('click', function (e) { e.stopPropagation(); letra(1); });
+  mostrar();
+  var tb = $('fc1TemaBtn');
+  function rotulo() { var r = h.getAttribute('data-tema') === 'claro' ? 'Mudar para o modo escuro' : 'Mudar para o modo claro'; tb.setAttribute('aria-label', r); tb.title = r; }
+  tb.addEventListener('click', function (e) { e.stopPropagation(); if (window.fc1Tema) { window.fc1Tema(h.getAttribute('data-tema') === 'claro' ? 'escuro' : 'claro'); } rotulo(); });
+  rotulo();
+  var abertos = [['fc1CronoBtn', 'fc1CronoMenu'], ['fc1AvaBtn', 'fc1AvaMenu'], ['fc1EstiloBtn', 'fc1Estilo']];
+  function fechar(menos1) { abertos.forEach(function (p) { var b = $(p[0]), m = $(p[1]); if (b && m && p[0] !== menos1) { m.hidden = true; b.setAttribute('aria-expanded', 'false'); b.classList.remove('ativo'); } }); }
+  abertos.forEach(function (p) {
+    var b = $(p[0]), m = $(p[1]);
+    if (!b || !m) { return; }
+    b.addEventListener('click', function (e) { e.stopPropagation(); var abre = m.hidden; fechar(p[0]); m.hidden = !abre; b.setAttribute('aria-expanded', abre ? 'true' : 'false'); b.classList.toggle('ativo', abre); });
+    m.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+  var x = $('fc1EstiloFechar'); if (x) { x.addEventListener('click', function () { fechar(''); }); }
+  document.addEventListener('click', function () { fechar(''); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { fechar(''); } });
+})();</script>
+<!-- TOPO-FC1:FIM -->
+
+<header>
+  <div class="header-sub">Trilhas de Aprendizagem &middot; F&iacute;sica Conceitual 1 &middot; T&eacute;cnico em Minera&ccedil;&atilde;o &middot; IFMG campus Ouro Preto</div>
+  <h1>Estilo de Aprendizagem</h1>
+  <span class="badge">20 perguntas &middot; cerca de 5 min &middot; o resultado fica s&oacute; no seu aparelho</span>
+</header>
+
+<main>
+
+  <div class="cartao est-intro">
+  <p class="est-lead">Conhecer o seu estilo de aprendizagem é descobrir como você prefere receber, processar e organizar o
+  que aprende — na aula e na hora de estudar em casa. O Índice de Estilos de Aprendizagem de Felder e Soloman olha
+  para quatro dimensões, cada uma com dois polos:</p>
+  <ul class="dims">
+    <li><strong>Ativo ou Reflexivo</strong>Aprender resolvendo e discutindo com os colegas, ou pensando sozinho antes de responder.</li>
+    <li><strong>Sensorial ou Intuitivo</strong>Partir de exemplos concretos — a correia, a britagem, o dia a dia —, ou da ideia geral e do modelo.</li>
+    <li><strong>Visual ou Verbal</strong>Lembrar melhor do gráfico, do esquema e da figura, ou do texto escrito e da explicação falada.</li>
+    <li><strong>Sequencial ou Global</strong>Seguir a trilha passo a passo, ou ver o assunto inteiro antes de entrar nos detalhes.</li>
+  </ul>
+  <p>Ninguém é um polo só: cada um pende para um lado, com mais ou menos força, e isso muda com a prática. Não existe
+  estilo melhor nem pior.</p>
+  <p>Vale duas vezes: saber o seu jeito ajuda a escolher como estudar a trilha, e lembrar que cada colega tem o dele
+  ajuda no estudo em grupo — um explica pelo desenho, outro pela conta, outro pela história.</p>
+  <p>Com esse retrato, você escolhe estratégias (e usos da IA) que combinam com o seu jeito e treina, de propósito, o polo que usa menos. Responda de novo em cada Etapa e veja como o seu perfil muda.</p>
+  </div>
+
+  <div class="cartao">
+    <h2>1. Questionário</h2>
+    <p class="intro">Em cada pergunta, marque a alternativa que mais combina com você. Se as duas combinarem, fique com a
+    que acontece mais vezes. Não existe resposta certa.</p>
+    <form id="estForm" onsubmit="return false;">
+      <fieldset class="questao" id="fq1"><legend><span class="q-num">01</span> Quando estou aprendendo um assunto novo, gosto de:</legend>
+        <label><input type="radio" name="q1" value="a"><span>primeiro, discuti-lo com outras pessoas.</span></label>
+        <label><input type="radio" name="q1" value="b"><span>primeiro, refletir sobre ele individualmente.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq2"><legend><span class="q-num">02</span> Se eu fosse professor(a), preferiria ensinar uma disciplina:</legend>
+        <label><input type="radio" name="q2" value="a"><span>que lide com fatos e situações reais.</span></label>
+        <label><input type="radio" name="q2" value="b"><span>que lide com ideias e teorias.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq3"><legend><span class="q-num">03</span> Prefiro obter novas informações por meio de:</legend>
+        <label><input type="radio" name="q3" value="a"><span>figuras, diagramas, gráficos ou mapas.</span></label>
+        <label><input type="radio" name="q3" value="b"><span>instruções escritas ou informações faladas.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq4"><legend><span class="q-num">04</span> Quando resolvo problemas de matemática, eu:</legend>
+        <label><input type="radio" name="q4" value="a"><span>normalmente preciso resolvê-los por etapas para então chegar à solução.</span></label>
+        <label><input type="radio" name="q4" value="b"><span>normalmente antevejo a solução, mas às vezes me complico para resolver cada uma das etapas.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq5"><legend><span class="q-num">05</span> Em um grupo de estudo, trabalhando um material difícil, eu provavelmente:</legend>
+        <label><input type="radio" name="q5" value="a"><span>tomo a iniciativa e contribuo com ideias.</span></label>
+        <label><input type="radio" name="q5" value="b"><span>assumo uma posição de observador(a) e analiso os fatos.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq6"><legend><span class="q-num">06</span> Acho mais fácil aprender:</legend>
+        <label><input type="radio" name="q6" value="a"><span>a partir de experimentos.</span></label>
+        <label><input type="radio" name="q6" value="b"><span>a partir de conceitos.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq7"><legend><span class="q-num">07</span> Ao ler um livro:</legend>
+        <label><input type="radio" name="q7" value="a"><span>primeiro observo as figuras e os desenhos.</span></label>
+        <label><input type="radio" name="q7" value="b"><span>primeiro presto atenção no texto escrito.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq8"><legend><span class="q-num">08</span> É mais importante para mim que o professor:</legend>
+        <label><input type="radio" name="q8" value="a"><span>apresente a matéria em etapas sequenciais.</span></label>
+        <label><input type="radio" name="q8" value="b"><span>apresente um quadro geral e relacione a matéria com outros assuntos.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq9"><legend><span class="q-num">09</span> Nas turmas em que já estudei, eu:</legend>
+        <label><input type="radio" name="q9" value="a"><span>fiz amizade com muitos colegas.</span></label>
+        <label><input type="radio" name="q9" value="b"><span>fui reservado(a) e fiz amizade com alguns colegas.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq10"><legend><span class="q-num">10</span> Ao ler textos técnicos ou científicos, prefiro:</legend>
+        <label><input type="radio" name="q10" value="a"><span>algo que me ensine a fazer alguma coisa.</span></label>
+        <label><input type="radio" name="q10" value="b"><span>algo que me apresente novas ideias para pensar.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq11"><legend><span class="q-num">11</span> Lembro melhor:</legend>
+        <label><input type="radio" name="q11" value="a"><span>o que vejo.</span></label>
+        <label><input type="radio" name="q11" value="b"><span>o que ouço.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq12"><legend><span class="q-num">12</span> Eu aprendo:</legend>
+        <label><input type="radio" name="q12" value="a"><span>num ritmo constante, etapa por etapa.</span></label>
+        <label><input type="radio" name="q12" value="b"><span>em saltos: fico confuso(a) por algum tempo e então, de repente, tenho um estalo e entendo tudo.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq13"><legend><span class="q-num">13</span> Prefiro estudar:</legend>
+        <label><input type="radio" name="q13" value="a"><span>em grupo.</span></label>
+        <label><input type="radio" name="q13" value="b"><span>sozinho(a).</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq14"><legend><span class="q-num">14</span> Prefiro a ideia do:</legend>
+        <label><input type="radio" name="q14" value="a"><span>concreto.</span></label>
+        <label><input type="radio" name="q14" value="b"><span>conceitual.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq15"><legend><span class="q-num">15</span> Quando vejo um diagrama ou esquema em uma aula, lembro mais facilmente:</legend>
+        <label><input type="radio" name="q15" value="a"><span>da figura.</span></label>
+        <label><input type="radio" name="q15" value="b"><span>do que o professor disse sobre ela.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq16"><legend><span class="q-num">16</span> Quando estou aprendendo um assunto novo, prefiro:</legend>
+        <label><input type="radio" name="q16" value="a"><span>concentrar-me só nesse assunto, aprendendo o máximo possível.</span></label>
+        <label><input type="radio" name="q16" value="b"><span>tentar estabelecer conexões entre esse assunto e outros relacionados a ele.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq17"><legend><span class="q-num">17</span> Normalmente sou considerado(a):</legend>
+        <label><input type="radio" name="q17" value="a"><span>extrovertido(a).</span></label>
+        <label><input type="radio" name="q17" value="b"><span>reservado(a).</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq18"><legend><span class="q-num">18</span> Prefiro disciplinas que enfatizam:</legend>
+        <label><input type="radio" name="q18" value="a"><span>material concreto (fatos, dados).</span></label>
+        <label><input type="radio" name="q18" value="b"><span>material abstrato (conceitos, teorias).</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq19"><legend><span class="q-num">19</span> Quando alguém me mostra dados, prefiro:</legend>
+        <label><input type="radio" name="q19" value="a"><span>diagramas ou gráficos.</span></label>
+        <label><input type="radio" name="q19" value="b"><span>um texto que resuma os resultados.</span></label>
+      </fieldset>
+      <fieldset class="questao" id="fq20"><legend><span class="q-num">20</span> Quando estou resolvendo um problema, eu:</legend>
+        <label><input type="radio" name="q20" value="a"><span>primeiro penso nas etapas do processo para chegar à solução.</span></label>
+        <label><input type="radio" name="q20" value="b"><span>primeiro penso nas consequências ou nas aplicações da solução.</span></label>
+      </fieldset>
+    </form>
+    <div class="progresso"><span id="estConta">0/20 respondidas</span>
+      <button type="button" id="btnEstEnviar" disabled>Ver o meu resultado</button></div>
+    <p class="erro" id="estErro" hidden></p>
+  </div>
+
+  <section id="resultado" hidden>
+  <div class="cartao">
+    <h2 id="estResTit">2. O seu resultado</h2>
+    <div id="estRes"></div>
+  </div>
+  <div class="cartao">
+    <h2>Prompts para estudar com IA</h2>
+    <p class="intro">Escolha a trilha, copie um prompt e cole na IA que você usa. Em cada dimensão,
+    <strong>Aproveite</strong> amplia o seu lado forte e <strong>Equilibre</strong> treina o lado que você usa menos.
+    <strong>No estudo em grupo</strong> ajuda a estudar junto com o colega que aprende do outro jeito.</p>
+    <div class="regras"><p class="p-rot">Regras de ouro da IA no estudo</p>
+      <ol><li><strong>Tente primeiro:</strong> escreva a sua tentativa no caderno antes de perguntar à IA.</li><li><strong>Peça o caminho,</strong> não a resposta pronta.</li><li><strong>Confira:</strong> unidade, ordem de grandeza e sentido físico. A IA também erra.</li><li><strong>O conceito vem antes:</strong> se a IA só mostrou a fórmula, peça a ideia por trás dela.</li><li><strong>Explique de volta:</strong> se você não consegue explicar a um colega, ainda não aprendeu.</li></ol></div>
+    <label for="estTema">Trilha</label>
+    <select id="estTema"><option value="">Escolha a trilha…</option><optgroup label="Etapa 1 · A Régua do Mundo"><option value="Trilhas de Aprendizagem">T0A · Trilhas de Aprendizagem</option><option value="Uso de Tecnologias Digitais">T0B · Uso de Tecnologias Digitais</option><option value="F&amp;iacute;sica, uma linguagem b&amp;aacute;sica da ci&amp;ecirc;ncia">T01 · F&amp;iacute;sica, uma linguagem b&amp;aacute;sica da ci&amp;ecirc;ncia</option><option value="Sistema de Numera&amp;ccedil;&amp;atilde;o de Base 12">T02 · Sistema de Numera&amp;ccedil;&amp;atilde;o de Base 12</option><option value="Sistema de Numera&amp;ccedil;&amp;atilde;o de Base 10">T03 · Sistema de Numera&amp;ccedil;&amp;atilde;o de Base 10</option><option value="O SI e a Metrologia no Brasil">T04 · O SI e a Metrologia no Brasil</option><option value="Nota&amp;ccedil;&amp;atilde;o Cient&amp;iacute;fica">T05 · Nota&amp;ccedil;&amp;atilde;o Cient&amp;iacute;fica</option><option value="Ordem de Grandeza">T06 · Ordem de Grandeza</option></optgroup><optgroup label="Etapa 2 · O Ritmo das Máquinas"><option value="Referencial, Posi&amp;ccedil;&amp;atilde;o e Tempo">T07 · Referencial, Posi&amp;ccedil;&amp;atilde;o e Tempo</option><option value="Velocidade M&amp;eacute;dia e Instant&amp;acirc;nea">T08 · Velocidade M&amp;eacute;dia e Instant&amp;acirc;nea</option><option value="Acelera&amp;ccedil;&amp;atilde;o M&amp;eacute;dia e Instant&amp;acirc;nea">T09 · Acelera&amp;ccedil;&amp;atilde;o M&amp;eacute;dia e Instant&amp;acirc;nea</option><option value="O Movimento Uniforme (MU)">T10 · O Movimento Uniforme (MU)</option></optgroup><optgroup label="Etapa 3 · Das Leis de Newton ao Universo"><option value="Leis de Newton e força">T11 · Leis de Newton e força</option><option value="Leis de Newton e força">T12 · Leis de Newton e força</option><option value="Gravitação">T13 · Gravitação</option><option value="Energia, potência e trabalho">T14 · Energia, potência e trabalho</option><option value="Movimento: do impulso à conservação">T15 · Movimento: do impulso à conservação</option><option value="Hidrostática e Hidrodinâmica">T16 · Hidrostática e Hidrodinâmica</option><option value="O Sistema Solar">T17 · O Sistema Solar</option><option value="O Universo">T18 · O Universo</option></optgroup><option value="*">Outro tema (digite)</option></select>
+    <input type="text" id="estTemaOutro" maxlength="80" placeholder="Ex.: correia transportadora" hidden>
+    <div id="estDicas"></div>
+  </div>
+  </section>
+
+  <p class="nota est-ref">FELDER, R. M.; SOLOMAN, B. A. <em>Index of Learning Styles Questionnaire</em>. Raleigh: North Carolina State University. Versão reduzida (20 itens) e traduzida.</p>
+
+</main>
+
+<footer>
+  <a href="../">&larr; Voltar ao &iacute;ndice das Trilhas</a><br>IFMG campus Ouro Preto - Coordenadoria da &Aacute;rea de F&iacute;sica (CODAFIS) - N&uacute;cleo de Inova&ccedil;&atilde;o e Desenvolvimento de Experimentos Cient&iacute;ficos (NIDEC) &middot; Primeira edi&ccedil;&atilde;o &middot; 2026
+</footer>
+<script>window.FC1_ESTILO_URL = ""; window.FC1_ESTILO = {"dim": [["AR", "Ativo", "Reflexivo", "At", "Rf"], ["SI", "Sensorial", "Intuitivo", "Se", "In"], ["VV", "Visual", "Verbal", "Vi", "Ve"], ["SG", "Sequencial", "Global", "Sq", "Gl"]], "prompts": {"Ativo": ["Estou no 1.º ano do Técnico em Mineração, estudando a trilha \"{tema}\" de Física Conceitual. Proponha 3 situações curtas que eu possa testar em casa, com objetos do dia a dia. Não me dê a resposta: depois que eu contar o que observei, me ajude a explicar com a Física.", "Vamos fazer um debate sobre a trilha \"{tema}\": você defende uma ideia errada de propósito, que muita gente tem, e eu tento convencer você do contrário. No fim, me mostre o que eu argumentei bem e o que faltou."], "Reflexivo": ["Vou explicar, com as minhas palavras, a ideia principal da trilha \"{tema}\". Não corrija ainda: faça 3 perguntas que me façam perceber onde a minha explicação está fraca. Minha explicação: [escreva aqui]", "Sobre \"{tema}\", me dê uma questão sem dica nenhuma. Eu resolvo sozinho(a) pelos 5 passos da RCP; depois compare a minha resolução com a sua, passo a passo."], "Sensorial": ["Na trilha \"{tema}\", me dê 3 exemplos concretos da mineração (correia transportadora, britagem, barragem) com números realistas e a grafia certa das unidades (2,5 m/s; 120 kg; 30 s).", "Monte uma questão da trilha \"{tema}\" com dados de uma mina de Ouro Preto ou do Quadrilátero Ferrífero. Eu resolvo no caderno; depois confira a minha conta, com as unidades."], "Intuitivo": ["Qual é a grande ideia de Física por trás da trilha \"{tema}\"? Explique sem fórmula primeiro, como o Hewitt faria, e só depois mostre a equação que resume a ideia.", "Ligue a trilha \"{tema}\" a duas outras trilhas da Física Conceitual 1. Descreva esse mapa de ideias e me faça uma pergunta que só dá para responder juntando tudo."], "Visual": ["Para a trilha \"{tema}\", descreva um gráfico que resume a ideia: o que vai em cada eixo, com que unidade e que forma a curva tem. Depois me pergunte o que a declividade do gráfico significa.", "Descreva, passo a passo, um desenho da situação da trilha \"{tema}\" que eu possa fazer no caderno, com setas e legendas. Depois me pergunte o que o desenho já mostra antes de qualquer conta."], "Verbal": ["Explique a trilha \"{tema}\" como um áudio de 2 minutos para um colega de turma: a ideia, um exemplo da mineração e um do dia a dia. Depois me peça para resumir em uma frase com as minhas palavras.", "Escolha um gráfico típico da trilha \"{tema}\" e descreva-o só com palavras. Em seguida, me peça para explicar em 3 frases o que ele mostra e avalie a minha explicação."], "Sequencial": ["Monte um roteiro de estudo da trilha \"{tema}\" em 5 passos numerados, do conceito até a questão resolvida, com uma pergunta de checagem em cada passo. Só avance quando eu acertar.", "Resolva comigo uma questão da trilha \"{tema}\" pelos 5 passos da RCP: mostre só o passo 1 (o que a questão quer?) e espere eu fazer o 2. Se eu errar, dê uma pista, não a resposta."], "Global": ["Antes dos detalhes: em 5 linhas, qual é a grande pergunta da trilha \"{tema}\" e onde ela aparece na mineração do Quadrilátero Ferrífero ou na história de Ouro Preto.", "Me dê a resposta final de uma questão da trilha \"{tema}\" e peça que eu descubra o caminho de volta até os dados. Depois mostre o caminho completo, em passos."]}, "lic": {"Ativo": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que aprende fazendo e discutindo. Sugira 2 atividades rápidas para ele puxar o grupo, e como eu contribuo pensando antes de responder.", "Reflexivo": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que prefere pensar sozinho antes. Sugira como dar a ele o papel de conferir a resolução do grupo, passo a passo.", "Sensorial": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que gosta de exemplos concretos. Sugira como ele pode trazer os exemplos da mineração e do dia a dia para o grupo.", "Intuitivo": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que gosta da ideia geral. Sugira como ele pode explicar ao grupo a grande ideia antes das contas.", "Visual": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que lembra melhor do que vê. Sugira como ele pode fazer o desenho da situação e o gráfico para o grupo.", "Verbal": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que lembra melhor do que lê e ouve. Sugira como ele pode ler o enunciado em voz alta e escrever a resposta final do grupo.", "Sequencial": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que gosta de passo a passo. Sugira como ele pode conduzir os 5 passos da RCP, marcando cada um.", "Global": "No meu grupo de estudo da trilha \"{tema}\" tem um colega que precisa ver o todo primeiro. Sugira como começar mostrando a ele o objetivo da questão e só então os passos."}, "etapas": []};</script>
+<script>(function () {
+  var URL_EXEC = window.FC1_ESTILO_URL || '', D = window.FC1_ESTILO || { dim: [], prompts: {}, lic: {}, etapas: [] }, enviando = false;
+  var ultimo = null, ultimaEtapa = 0, grupo = null, filtro = null;
+  function $(id) { return document.getElementById(id); }
+  function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sem localStorage */ } }
+  function ler(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function erro(id, m) { var e = $(id); e.textContent = m || ''; e.hidden = !m; }
+  function online() { return URL_EXEC && location.protocol.indexOf('http') === 0; }
+  function esc(s) { var d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+  function grau(v) { var a = Math.abs(v); return a >= 5 ? 'forte' : a >= 3 ? 'moderado' : 'equilibrado'; }
+  function nomeEtapa(n) { var e = D.etapas[n - 1]; return e ? 'Etapa ' + e[0] + ' · ' + e[1] : 'Etapa ' + n; }
+
+  function respostas() {
+    var s = '';
+    for (var i = 1; i <= 20; i++) { var r = document.querySelector('input[name="q' + i + '"]:checked'); s += r ? r.value : '-'; }
+    return s;
+  }
+  function contar() {
+    var s = respostas(), n = s.replace(/-/g, '').length;
+    for (var i = 1; i <= 20; i++) { $('fq' + i).classList.toggle('ok', s.charAt(i - 1) !== '-'); }
+    $('estConta').textContent = n + '/20 respondidas';
+    $('btnEstEnviar').disabled = n < 20 || enviando;
+  }
+  function ident() {
+    var ra = $('estRA').value.replace(/\D/g, ''), nome = $('estNome').value.replace(/\s+/g, ' ').trim();
+    if (ra.length < 4 || ra.length > 14) { return { erro: 'Digite o seu RA (só os números).' }; }
+    if (nome.length < 3) { return { erro: 'Digite o seu nome completo.' }; }
+    guardar('fc1-estilo-ra', ra); guardar('fc1-estilo-nome', nome);
+    return { ra: ra, nome: nome };
+  }
+
+  function barras(e) {
+    return D.dim.map(function (d, k) {
+      var v = e[k], pct = Math.abs(v) / 5 * 50, lado = v > 0 ? d[1] : d[2];
+      var span = v > 0 ? '<span style="right:50%;width:' + pct + '%"></span>'
+                       : '<span class="b" style="left:50%;width:' + pct + '%"></span>';
+      var txt = grau(v) === 'equilibrado' ? 'Equilibrado, pende levemente para ' + lado : lado + ' — ' + grau(v);
+      return '<div class="dim"><div class="dim-polos"><span>' + d[1] + '</span><span>' + d[2] + '</span></div>' +
+             '<div class="dim-barra" role="img" aria-label="' + esc(txt) + '">' + span + '</div>' +
+             '<div class="dim-grau">' + esc(txt) + ' (' + Math.abs(v) + ' de 5)</div></div>';
+    }).join('');
+  }
+  function tema() {
+    var s = $('estTema').value, t = s === '*' ? $('estTemaOutro').value.trim() : s;
+    return t || '[a trilha da aula]';
+  }
+  function cartao(txt, cls) {
+    return '<div class="prompt' + (cls ? ' ' + cls : '') + '"><p>' + esc(txt.replace(/\{tema\}/g, tema())) + '</p>' +
+           '<button type="button" class="copiar">Copiar</button></div>';
+  }
+  function bloco(rotulo, polo) { return '<p class="p-rot">' + rotulo + '</p>' + D.prompts[polo].map(function (x) { return cartao(x); }).join(''); }
+  /* polo forte = Aproveite, fraco = Equilibre; equilibrado = os dois polos. Sala de aula: ensinar ao polo oposto. */
+  function dicas(e) {
+    return D.dim.map(function (d, k) {
+      var v = e[k];
+      if (Math.abs(v) <= 1) {
+        return '<h3 class="p-dim">' + d[1] + ' e ' + d[2] + ' <span>(equilibrado)</span></h3>' +
+               bloco('Mantenha o lado ' + d[1] + ':', d[1]) + bloco('Mantenha o lado ' + d[2] + ':', d[2]) +
+               '<p class="p-rot">No estudo em grupo:</p>' + cartao(D.lic[d[1]], 'lic') + cartao(D.lic[d[2]], 'lic');
+      }
+      var p = v > 0 ? d[1] : d[2], o = v > 0 ? d[2] : d[1];
+      return '<h3 class="p-dim">' + p + ' <span>(' + grau(v) + ')</span></h3>' +
+             bloco('Aproveite o seu lado ' + p + ':', p) + bloco('Equilibre: treine o lado ' + o + ':', o) +
+             '<p class="p-rot">No estudo em grupo: estudar com quem é ' + o + '</p>' + cartao(D.lic[o], 'lic');
+    }).join('');
+  }
+  function redesenhar() {
+    $('estTemaOutro').hidden = $('estTema').value !== '*';
+    guardar('fc1-estilo-tema', $('estTema').value); guardar('fc1-estilo-tema-outro', $('estTemaOutro').value);
+    if (ultimo) { $('estDicas').innerHTML = dicas(ultimo); }
+  }
+  function copiar(btn) {
+    var txt = btn.previousElementSibling.textContent;
+    function ok() { btn.textContent = 'Copiado!'; setTimeout(function () { btn.textContent = 'Copiar'; }, 1800); }
+    function velho() {
+      var ta = document.createElement('textarea'); ta.value = txt; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch (e) { btn.textContent = 'Selecione e copie'; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(txt).then(ok, velho); } else { velho(); }
+  }
+  function curto(v, d) { return (v > 0 ? d[3] : d[4]) + ' ' + Math.abs(v); }
+  function historico(h) {
+    if (!h || !h.length) { return '<p class="nota">Ainda não há envios guardados para este RA.</p>'; }
+    var linhas = h.map(function (x) {
+      return '<tr><td>Etapa ' + x.etapa + '<small>' + esc(String(x.data).slice(0, 10)) + '</small></td>' +
+             D.dim.map(function (d, k) { return '<td>' + curto(x.escores[k], d) + '</td>'; }).join('') + '</tr>';
+    }).join('');
+    return '<table class="hist"><thead><tr><th>Etapa</th>' +
+           D.dim.map(function (d) { return '<th>' + d[3] + '/' + d[4] + '</th>'; }).join('') +
+           '</tr></thead><tbody>' + linhas + '</tbody></table>' +
+           '<p class="nota">' + D.dim.map(function (d) { return d[3] + ' = ' + d[1] + ', ' + d[4] + ' = ' + d[2]; }).join(' · ') +
+           '. O número vai de 1 (equilibrado) a 5 (forte). Em cada Etapa vale o seu envio mais recente; responda de novo na' +
+           ' próxima Etapa e compare.</p>';
+  }
+  function mostrar(e, h, etapa) {
+    ultimo = e; ultimaEtapa = etapa || ultimaEtapa;
+    $('estResTit').textContent = '2. O seu resultado';
+    $('estRes').innerHTML = barras(e);
+    $('estDicas').innerHTML = dicas(e);
+    $('resultado').hidden = false;
+    $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function getJSON(q) { return fetch(URL_EXEC + '?' + q, { cache: 'no-store' }).then(function (r) { return r.json(); }); }
+  function enviar() {
+    erro('estErro', '');
+    var resp = respostas();
+    if (resp.indexOf('-') >= 0) { erro('estErro', 'Responda as 20 perguntas antes de ver o resultado.'); return; }
+    /* FC1: calculado aqui no aparelho, com a regra do servidor da ILB/LME; nada e enviado */
+    var e = [0, 0, 0, 0];
+    for (var i = 0; i < 20; i++) { e[i % 4] += resp.charAt(i) === 'a' ? 1 : -1; }
+    mostrar(e, [], 0);
+  }
+  function meus() {}
+
+  function seg(cl, x, n) { return x ? '<span class="' + cl + '" style="width:' + (x / n * 100) + '%"></span>' : ''; }
+  function barraGrupo(c, n, d) {
+    var fa = c['5'], ma = c['3'], eq = c['1'] + c['-1'], mb = c['-3'], fb = c['-5'];
+    return { html: '<div class="grupo-barra" role="img" aria-label="' + d[1] + ' ' + (fa + ma) + ', equilibrado ' + eq + ', ' +
+                   d[2] + ' ' + (mb + fb) + '">' + seg('fa', fa, n) + seg('ma', ma, n) + seg('eq', eq, n) + seg('mb', mb, n) +
+                   seg('fb', fb, n) + '</div>',
+             leg: d[1] + ': ' + (fa + ma) + ' (forte ' + fa + ' · moderado ' + ma + ') · equilibrado: ' + eq + ' · ' + d[2] + ': ' +
+                  (mb + fb) + ' (moderado ' + mb + ' · forte ' + fb + ')' };
+  }
+  var LEG = '<p class="nota">Cor cheia = forte; cor clara = moderado; cinza = equilibrado.</p>';
+  function desenharGrupo() {
+    if (!grupo) { return; }
+    [].forEach.call(document.querySelectorAll('.est-filtro button'), function (b) {
+      b.setAttribute('aria-pressed', +b.getAttribute('data-etapa') === filtro ? 'true' : 'false');
+    });
+    var out = '';
+    if (filtro) {
+      var g = grupo.etapas[filtro];
+      if (!g || !g.n) { $('estGrupo').innerHTML = '<p class="nota">Ainda não há respostas na ' + nomeEtapa(filtro) + '.</p>'; return; }
+      out = '<p class="grupo-n"><strong>' + g.n + '</strong>licenciando' + (g.n > 1 ? 's' : '') + ' na ' + esc(nomeEtapa(filtro)) + '.</p>' +
+        D.dim.map(function (d) {
+          var b = barraGrupo(g.dist[d[0]], g.n, d);
+          return '<div class="dim"><div class="dim-polos"><span>' + d[1] + '</span><span>' + d[2] + '</span></div>' + b.html +
+                 '<p class="grupo-leg">' + b.leg + '</p></div>';
+        }).join('');
+    } else {
+      var ns = [1, 2, 3].map(function (k) { return (grupo.etapas[k] || { n: 0 }).n; });
+      if (!ns[0] && !ns[1] && !ns[2]) { $('estGrupo').innerHTML = '<p class="nota">Ainda não há respostas.</p>'; return; }
+      out = '<p class="grupo-n">Respondentes: Etapa 1 = ' + ns[0] + ' · Etapa 2 = ' + ns[1] + ' · Etapa 3 = ' + ns[2] + '.</p>' +
+        D.dim.map(function (d) {
+          return '<div class="dim"><div class="dim-polos"><span>' + d[1] + '</span><span>' + d[2] + '</span></div>' +
+            [1, 2, 3].map(function (k) {
+              var g = grupo.etapas[k];
+              return '<div class="grupo-et"><b>Etapa ' + k + '</b>' + (g && g.n ? barraGrupo(g.dist[d[0]], g.n, d).html
+                     : '<span class="grupo-leg">sem respostas</span>') + '</div>';
+            }).join('') + '</div>';
+        }).join('');
+    }
+    $('estGrupo').innerHTML = out + LEG;
+  }
+  function carregarGrupo() {
+    if (!online()) { $('estGrupo').innerHTML = '<p class="nota">O painel do grupo aparece com internet.</p>'; return; }
+    getJSON('estilo_painel=1&disciplina=ILB').then(function (res) {
+      if (!res.ok) { throw new Error(res.erro); }
+      grupo = res;
+      if (filtro === null) { filtro = res.etapa || 1; }
+      desenharGrupo();
+    }).catch(function () { $('estGrupo').innerHTML = '<p class="nota">Não foi possível carregar o painel agora.</p>'; });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    $('estForm').addEventListener('change', contar);
+    $('btnEstEnviar').addEventListener('click', enviar);
+    $('estTema').value = ler('fc1-estilo-tema'); if ($('estTema').selectedIndex < 0) { $('estTema').value = ''; }
+    $('estTemaOutro').value = ler('fc1-estilo-tema-outro');
+    $('estTemaOutro').hidden = $('estTema').value !== '*';
+    $('estTema').addEventListener('change', redesenhar);
+    $('estTemaOutro').addEventListener('input', redesenhar);
+    $('estDicas').addEventListener('click', function (ev) { if (ev.target.classList.contains('copiar')) { copiar(ev.target); } });
+    [].forEach.call(document.querySelectorAll('.est-filtro button'), function (b) {
+      b.addEventListener('click', function () { filtro = +b.getAttribute('data-etapa'); if (grupo) { desenharGrupo(); } else { carregarGrupo(); } });
+    });
+    contar();
+  });
+})();</script>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>

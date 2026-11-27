@@ -387,6 +387,213 @@ body {
 .fecho-marcas { display: flex; width: fit-content; gap: 14px; align-items: center; margin: 0 auto 10px; }
 .fecho-marcas svg { width: 30px; height: 30px; display: block; }
 </style>
+<!-- TOPO-FC1-CABECA:INICIO -->
+<script data-fc1-tema="fixo">(function () {
+  var h = document.documentElement, t, l;
+  try { t = localStorage.getItem('fc1-tema'); l = localStorage.getItem('fc1-letra'); } catch (e) { /* sem localStorage */ }
+  if (t !== 'claro' && t !== 'escuro') { t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'claro' : 'escuro'; }
+  h.setAttribute('data-tema', t);
+  if (l === 'g' || l === 'gg') { h.setAttribute('data-letra', l); }
+  var vistas = [], regras = [], el = document.createElement('style'), meta = document.querySelector('meta[name="theme-color"]');
+  var metaEsc = meta ? meta.getAttribute('content') : '';
+  el.id = 'fc1Claro'; el.setAttribute('data-fc1-tema', 'fixo');
+  function hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), L = (mx + mn) / 2, d = mx - mn, H = 0, S = 0;
+    if (d) { S = d / (1 - Math.abs(2 * L - 1)); H = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; H *= 60; if (H < 0) { H += 360; } }
+    return [H, S, L];
+  }
+  function rgb(H, S, L) {
+    var c = (1 - Math.abs(2 * L - 1)) * S, x = c * (1 - Math.abs((H / 60) % 2 - 1)), m = L - c / 2, p;
+    p = H < 60 ? [c, x, 0] : H < 120 ? [x, c, 0] : H < 180 ? [0, c, x] : H < 240 ? [0, x, c] : H < 300 ? [x, 0, c] : [c, 0, x];
+    return [Math.round((p[0] + m) * 255), Math.round((p[1] + m) * 255), Math.round((p[2] + m) * 255)];
+  }
+  function lum(c) {
+    var v = c.map(function (k) { k /= 255; return k <= 0.03928 ? k / 12.92 : Math.pow((k + 0.055) / 1.055, 2.4); });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function saida(c, a) { return a < 1 ? 'rgba(' + c.join(', ') + ', ' + a + ')' : 'rgb(' + c.join(', ') + ')'; }
+  function oklch(L, C, H) {
+    var A = C * Math.cos(H * Math.PI / 180), B = C * Math.sin(H * Math.PI / 180);
+    var l = Math.pow(L + 0.3963377774 * A + 0.2158037573 * B, 3), m = Math.pow(L - 0.1055613458 * A - 0.0638541728 * B, 3),
+        s = Math.pow(L - 0.0894841775 * A - 1.2914855480 * B, 3);
+    return [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+            -0.0041960863 * l - 0.7034186147 * m + 1.7076127010 * s].map(function (k) {
+      k = k <= 0.0031308 ? 12.92 * k : 1.055 * Math.pow(k, 1 / 2.4) - 0.055; return Math.round(Math.min(1, Math.max(0, k)) * 255); });
+  }
+  /* texto e borda precisam de 4,5:1 sobre o cinza-claro dos paineis (luminancia ~0,75), e entao tambem sobre o branco */
+  function escurecer(x, n, alvo) { var L = x[2], b = alvo || 0.70; while (L > 0.03 && (b / (lum(n) + 0.05)) < 4.6) { L -= 0.02; n = rgb(x[0], x[1], L); } return n; }
+  /* fundo: neutro escuro vira claro; cor de marca fica. Texto e borda: neutro inverte (e escurece se ficou
+     cinza-medio); cor de marca escurece. manter=true: texto sobre fundo de cor (botao) fica como esta. */
+  /* fundo: true = fundo; 'var' = variavel CSS (o uso e desconhecido: neutro so inverte, marca escura vira clara) */
+  function cor(c, a, fundo, manter) {
+    var x = hsl(c[0], c[1], c[2]), neutro = (Math.max(c[0], c[1], c[2]) - Math.min(c[0], c[1], c[2])) < 40;
+    if (neutro) {
+      if (manter) { return null; }
+      var y = [x[0], x[1], 1 - x[2]], n = rgb(y[0], y[1], y[2]);
+      return saida(fundo || a < 0.5 ? n : escurecer(y, n), a);
+    }
+    if (fundo === 'var' && x[2] < 0.22) { return saida(rgb(x[0], x[1], 1 - x[2]), a); }
+    if (fundo === true) { return x[2] < 0.22 ? saida(rgb(x[0], x[1], 1 - x[2]), a) : null; }
+    if (a < 0.5) { return null; }
+    var e = escurecer(x, c);
+    return e === c ? null : saida(e, a);
+  }
+  var NOMES = { white: [255, 255, 255], black: [0, 0, 0] };
+  function ler1(m, hx, nome) {
+    var c, a = 1, p;
+    if (hx) {
+      if (hx.length === 3 || hx.length === 4) { hx = hx.replace(/./g, '$&$&'); }
+      c = [0, 2, 4].map(function (i) { return parseInt(hx.substr(i, 2), 16); });
+      if (hx.length === 8) { a = parseInt(hx.substr(6, 2), 16) / 255; }
+      return [c, a];
+    }
+    if (nome) { return [NOMES[nome.toLowerCase()], 1]; }
+    p = m.replace(/^[a-z]+\(|\)$/gi, '').split(/[\s,\/]+/).filter(Boolean).map(function (k) { return /%$/.test(k) ? parseFloat(k) / 100 : parseFloat(k); });
+    if (p.length < 3 || p.slice(0, 3).some(isNaN)) { return null; }
+    if (/^oklch/i.test(m)) { c = oklch(p[0], p[1], p[2]); } else { c = p.slice(0, 3).map(Math.round); }
+    if (p.length > 3) { a = p[3]; }
+    return [c, a];
+  }
+  var COR = /#([0-9a-f]{3,8})\b|(?:rgba?|oklch)\([^)]*\)|\b(white|black)\b/gi;
+  function trocar(v, fundo, manter) {
+    return v.replace(COR, function (m, hx, nome) {
+      var x = ler1(m, hx, nome);
+      return (x && cor(x[0], x[1], fundo, manter)) || m;
+    });
+  }
+  function um(v) {     /* a primeira cor de um valor, como [rgb, alfa] */
+    var m = (v || '').match(COR); if (!m) { return null; }
+    var t = m[0]; return ler1(t, t.charAt(0) === '#' ? t.slice(1) : '', /^(white|black)$/i.test(t) ? t : '');
+  }
+  var VARS = {};       /* valor ORIGINAL (tema escuro) das variaveis da raiz, lido antes da folha clara valer */
+  function original(nome) {
+    if (!(nome in VARS)) { VARS[nome] = getComputedStyle(h).getPropertyValue(nome).trim(); }
+    return VARS[nome];
+  }
+  function deCor(v) {   /* o fundo da regra e uma cor de marca opaca (botao verde, etiqueta azul)? */
+    var k = /var\(\s*(--[\w-]+)/.exec(v || '');
+    if (k) { v = original(k[1]); }
+    var x = um(v);
+    return !!x && x[1] >= 0.5 && (Math.max.apply(null, x[0]) - Math.min.apply(null, x[0])) >= 40;
+  }
+  var PROP = /color$|^background|^border-(top|right|bottom|left)-color$|^outline-color$|^fill$|^stroke$|^--/;
+  function regra(r, sai) {
+    if (r.cssRules && r.type !== 1) {
+      var dentro = []; ler(r.cssRules, dentro);
+      if (dentro.length && r.media) { sai.push('@media ' + r.media.mediaText + ' {\n' + dentro.join('\n') + '\n}'); }
+      else if (dentro.length && r.conditionText) { sai.push('@supports ' + r.conditionText + ' {\n' + dentro.join('\n') + '\n}'); }
+      return;
+    }
+    if (r.type !== 1 || /\bimg\b/i.test(r.selectorText)) { return; }
+    /* com var() no atalho `background`, o longhand vem vazio: ler o atalho tambem */
+    var s = r.style, comCor = deCor(s.getPropertyValue('background-color') || s.getPropertyValue('background')), out = [];
+    for (var i = 0; i < s.length; i++) {
+      var n = s[i];
+      if (n === 'box-shadow') {   /* sombra preta forte faz faixa escura no fundo claro: suaviza */
+        var sv = s.getPropertyValue(n), sw = sv.replace(/rgba\(\s*0,\s*0,\s*0,\s*([\d.]+)\s*\)/g, function (m, a) { return 'rgba(0, 0, 0, ' + Math.min(+a, 0.16) + ')'; });
+        if (sw !== sv) { out.push('box-shadow: ' + sw); }
+        continue;
+      }
+      if (!PROP.test(n)) { continue; }
+      var v = s.getPropertyValue(n), f = /^background/.test(n) ? true : /^--/.test(n) ? 'var' : false;
+      var w = trocar(v, f, n === 'color' && comCor);
+      if (n === 'background-color' && comCor) {   /* botao de cor com letra branca: escurece o fundo ate ler bem */
+        var cl = um(s.getPropertyValue('color')), bx = um(v);
+        if (cl && bx && lum(cl[0]) > 0.8) { var hb = hsl(bx[0][0], bx[0][1], bx[0][2]); w = saida(escurecer(hb, bx[0], 1.05), bx[1]); }
+      }
+      if (w !== v) { out.push(n + ': ' + w + (s.getPropertyPriority(n) ? ' !important' : '')); }
+    }
+    if (comCor) {   /* botao de cor com letra escura e fundo por variavel: o fundo fica com a cor original */
+      var bv = s.getPropertyValue('background-color') || s.getPropertyValue('background'), kv = /var\(\s*(--[\w-]+)/.exec(bv),
+          lc = um(s.getPropertyValue('color'));
+      if (kv && lc && lum(lc[0]) < 0.2) { out.push('background-color: ' + original(kv[1])); }
+    }
+    if (out.length) { sai.push(r.selectorText + ' { ' + out.join('; ') + ' }'); }
+  }
+  function ler(lista, sai) { for (var i = 0; i < lista.length; i++) { regra(lista[i], sai); } }
+  function varrer() {
+    var fs = document.styleSheets;
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i], dono = f.ownerNode;
+      if (vistas.indexOf(f) >= 0 || (dono && dono.getAttribute && dono.getAttribute('data-fc1-tema'))) { continue; }
+      vistas.push(f);
+      try { ler(f.cssRules, regras); } catch (e) { /* folha de outra origem */ }
+    }
+    el.textContent = regras.join('\n');
+    [].forEach.call(document.querySelectorAll('[style]'), function (n) {
+      if (n.hasAttribute('data-fc1-esc')) { return; }
+      var v = n.getAttribute('style'), w = v.replace(/(^|;)\s*((?:background|color|border)[a-z-]*)\s*:([^;]*)/gi, function (m, a, p, val) {
+        return a + p + ':' + trocar(val, /^background/i.test(p), false); });
+      if (w !== v) { n.setAttribute('data-fc1-esc', v); n.setAttribute('data-fc1-cla', w); }
+    });
+    aplicar();
+  }
+  function aplicar() {
+    var claro = h.getAttribute('data-tema') === 'claro';
+    el.media = claro ? 'all' : 'not all';
+    if (meta) { meta.setAttribute('content', claro ? '#ffffff' : metaEsc); }
+    [].forEach.call(document.querySelectorAll('[data-fc1-esc]'), function (n) {
+      n.setAttribute('style', n.getAttribute(claro ? 'data-fc1-cla' : 'data-fc1-esc')); });
+  }
+  window.fc1Tema = function (novo) {
+    h.setAttribute('data-tema', novo);
+    try { localStorage.setItem('fc1-tema', novo); } catch (e) { /* sem localStorage */ }
+    aplicar();
+  };
+  document.head.appendChild(el);
+  varrer();
+  document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
+})();</script>
+<!-- TOPO-FC1-CABECA:FIM -->
+<!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
+@media screen {
+:root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
+/* tema claro: o cinza de apoio das paginas fixas (#A69C82 invertido) fica em 3,8:1 no fundo claro */
+html[data-tema="claro"]:root { --texto-dim: #5E5644; --cinza: oklch(0.45 0.02 260); }
+/* cinza de apoio dos OAs (oklch .55) fica em 3,4:1 no fundo escuro. So onde a cabeca do tema
+   marcou data-tema: TT e AP tem tema proprio e ficam como estao. A folha leva data-fc1-tema="fixo"
+   para o motor do tema claro nao inverter estes valores. */
+html[data-tema="escuro"]:root { --cinza: oklch(0.72 0.02 260); }
+body, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *)) { font-family: var(--fc1-sans) !important; }
+body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::before, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::after { font-family: var(--fc1-sans) !important; }
+body :is(code, pre, kbd, samp, input[type="number"], .fc1-num, .badge, .selo, .contador, .contador *, #seloAcessos, .q-num, .figura-num, .fc1-acessos-num) { font-family: var(--fc1-mono) !important; }
+/* cartao de QR (_qr/) com largura fixa de 344 px passava 4 px da tela de 375 px */
+@media (max-width: 400px) { body .qr { max-width: 100%; box-sizing: border-box; } }
+
+body :is(p, li, dd, blockquote):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary)) {
+  font-size: 1.0625rem; line-height: 1.6; }
+body p:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { max-width: 72ch; }
+body .fc1-corrido { font-size: 1.0625rem !important; line-height: 1.6 !important; }
+body :is(h1, h2, h3):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { letter-spacing: normal; line-height: 1.25; }
+body h2:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { font-weight: 700; }
+}
+</style><script>
+(function () {
+  var RE = /^[\s(±+\-−–]*\d[\d\s.,]*(\s*[±]\s*[\d.,]+)?\s*[)]?\s*([a-zA-Zµμ°%²³·\/]{1,8}\)?)?\s*$/;
+  var NAO = 'header, footer, nav, aside, figcaption, small, svg, table, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="legenda"], [class*="card"], [class*="header"], [class*="piazzi"], [class*="selo"], .badge, button, label, summary';
+  function marcar() {
+    var cs = document.querySelectorAll('td, th'), i, e, n, t;
+    for (i = 0; i < cs.length; i++) {
+      t = cs[i].textContent;
+      if (t && t.length < 40 && RE.test(t)) cs[i].classList.add('fc1-num');
+    }
+    if (!true) return;
+    var raiz = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var todos = document.body.querySelectorAll('div, span, p, li, dd, blockquote');
+    for (i = 0; i < todos.length; i++) {
+      e = todos[i];
+      if (e.closest(NAO)) continue;
+      t = 0;
+      for (n = e.firstChild; n; n = n.nextSibling) if (n.nodeType === 3) t += n.textContent.trim().length;
+      if (t < 60) continue;
+      if (parseFloat(getComputedStyle(e).fontSize) / raiz < 1.06) e.classList.add('fc1-corrido');
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', marcar);
+  else marcar();
+})();
+</script><!-- VISUAL:FIM -->
 </head>
 <body data-pagina="t09:tn">
 <div class="container">

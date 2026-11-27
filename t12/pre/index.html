@@ -13,6 +13,54 @@
   if (l === 'g' || l === 'gg') { document.documentElement.setAttribute('data-letra', l); } })();</script>
 <link rel="stylesheet" href="../../_sessao/sessao.css?v=af6c7aa2">
 <title>T12 · Leis de Newton e força — Pré-aula</title>
+<!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
+@media screen {
+:root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
+/* tema claro: o cinza de apoio das paginas fixas (#A69C82 invertido) fica em 3,8:1 no fundo claro */
+html[data-tema="claro"]:root { --texto-dim: #5E5644; --cinza: oklch(0.45 0.02 260); }
+/* cinza de apoio dos OAs (oklch .55) fica em 3,4:1 no fundo escuro. So onde a cabeca do tema
+   marcou data-tema: TT e AP tem tema proprio e ficam como estao. A folha leva data-fc1-tema="fixo"
+   para o motor do tema claro nao inverter estes valores. */
+html[data-tema="escuro"]:root { --cinza: oklch(0.72 0.02 260); }
+body, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *)) { font-family: var(--fc1-sans) !important; }
+body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::before, body *:not(:is(svg, svg *, canvas, math, math *, .katex, .katex *, .MathJax, .MathJax *))::after { font-family: var(--fc1-sans) !important; }
+body :is(code, pre, kbd, samp, input[type="number"], .fc1-num, .badge, .selo, .contador, .contador *, #seloAcessos, .q-num, .figura-num, .fc1-acessos-num) { font-family: var(--fc1-mono) !important; }
+/* cartao de QR (_qr/) com largura fixa de 344 px passava 4 px da tela de 375 px */
+@media (max-width: 400px) { body .qr { max-width: 100%; box-sizing: border-box; } }
+
+body :is(p, li, dd, blockquote):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary)) {
+  font-size: 1.0625rem; line-height: 1.6; }
+body p:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { max-width: 72ch; }
+body .fc1-corrido { font-size: 1.0625rem !important; line-height: 1.6 !important; }
+body :is(h1, h2, h3):not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { letter-spacing: normal; line-height: 1.25; }
+body h2:not(:is(header, footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="card"], [class*="cartao"], [class*="piazzi"], [class*="header"], .fase, .selos, .badge, button, label, summary) *) { font-weight: 700; }
+}
+</style><script>
+(function () {
+  var RE = /^[\s(±+\-−–]*\d[\d\s.,]*(\s*[±]\s*[\d.,]+)?\s*[)]?\s*([a-zA-Zµμ°%²³·\/]{1,8}\)?)?\s*$/;
+  var NAO = 'header, footer, nav, aside, figcaption, small, svg, table, .fc1-topo, .fc1-menu, .fc1-estilo, [class*="aba"], [class*="rodape"], [class*="footer"], [class*="legenda"], [class*="card"], [class*="header"], [class*="piazzi"], [class*="selo"], .badge, button, label, summary';
+  function marcar() {
+    var cs = document.querySelectorAll('td, th'), i, e, n, t;
+    for (i = 0; i < cs.length; i++) {
+      t = cs[i].textContent;
+      if (t && t.length < 40 && RE.test(t)) cs[i].classList.add('fc1-num');
+    }
+    if (!true) return;
+    var raiz = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var todos = document.body.querySelectorAll('div, span, p, li, dd, blockquote');
+    for (i = 0; i < todos.length; i++) {
+      e = todos[i];
+      if (e.closest(NAO)) continue;
+      t = 0;
+      for (n = e.firstChild; n; n = n.nextSibling) if (n.nodeType === 3) t += n.textContent.trim().length;
+      if (t < 60) continue;
+      if (parseFloat(getComputedStyle(e).fontSize) / raiz < 1.06) e.classList.add('fc1-corrido');
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', marcar);
+  else marcar();
+})();
+</script><!-- VISUAL:FIM -->
 </head>
 <body data-pagina="t12:pre">
 <div class="wrap">
