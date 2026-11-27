@@ -292,6 +292,12 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -345,12 +351,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
   else marcar();
 })();
 </script><!-- VISUAL:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+<!-- DESTAQUE-FL:INICIO -->
+<style data-fc1="destaque-fl">
+.fl-destaque { color: #4CAF7D; font-weight: 700; }
+html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
 </style>
+<!-- DESTAQUE-FL:FIM -->
 </head>
 <body data-pagina="retorno">
 <!-- TOPO-FC1:INICIO -->
@@ -499,8 +505,8 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
 <main>
   <div class="cartao">
     <p class="intro">Aqui você lê o retorno de cada Prova Escrita. Cada prova tem duas fichas:
-    a <strong>Ficha de Retorno da Parte 1 (FR1)</strong>, com as questões objetivas que você errou, a alternativa
-    correta e a resolução, e a <strong>Ficha de Retorno da Parte 2 (FR2)</strong>, com a nota de cada passo da
+    a <strong class="fl-destaque">Ficha de Retorno da Parte 1 (FR1)</strong>, com as questões objetivas que você errou, a alternativa
+    correta e a resolução, e a <strong class="fl-destaque">Ficha de Retorno da Parte 2 (FR2)</strong>, com a nota de cada passo da
     Resolução Científica do Problema (RCP) nas questões discursivas. Escolha a ficha nos botões. No fim, se
     quiser, deixe um recado para o professor, por texto ou áudio.</p>
     <label for="inRA">Seu RA (7 dígitos)</label>
@@ -515,7 +521,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
 
   <div class="cartao" id="cartaoRecado" hidden>
     <h2>5. Meu recado para o professor(a)</h2>
-    <p class="intro">Opcional. Conte o que entendeu, o que ainda ficou difícil ou como foi a prova para você.</p>
+    <p class="intro"><strong class="fl-destaque">Opcional.</strong> Conte o que entendeu, o que ainda ficou difícil ou como foi a prova para você.</p>
     <input type="text" id="inSite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <label for="inTexto">Escreva o recado</label>
     <textarea id="inTexto" maxlength="2000"></textarea>
@@ -563,7 +569,7 @@ function entrar() {
     var box = document.getElementById('fichas');
     if (!res.fichas.length) {
       box.innerHTML = '<div class="cartao"><p class="intro">' + esc(res.nome) + ', ainda não há Ficha de Retorno para o seu RA. ' +
-        'Se você fez a prova, fale com o professor.</p></div>';
+        'Se você fez a prova, <strong class="fl-destaque">fale com o professor</strong>.</p></div>';
       document.getElementById('cartaoRecado').hidden = true; return;
     }
     FICHAS = res.fichas.slice().sort(function (x, y) { return ordemFicha(x.prova) - ordemFicha(y.prova); });

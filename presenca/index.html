@@ -258,6 +258,12 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas e na FR */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -311,12 +317,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
   else marcar();
 })();
 </script><!-- VISUAL:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas e na FR */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+<!-- DESTAQUE-FL:INICIO -->
+<style data-fc1="destaque-fl">
+.fl-destaque { color: #4CAF7D; font-weight: 700; }
+html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
 </style>
+<!-- DESTAQUE-FL:FIM -->
 </head>
 <body data-pagina="presenca">
 <!-- TOPO-FC1:INICIO -->
@@ -478,7 +484,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
       <button class="btn" onclick="confirmarAluno()">Sou eu</button>
       <button class="btn btn-sec" onclick="negarAluno()">N&atilde;o sou eu</button>
     </div>
-    <div class="nota">Nunca digite aqui a sua senha do SUAP &mdash; este sistema n&atilde;o pede senha.</div>
+    <div class="nota"><strong class="fl-destaque">Nunca digite aqui a sua senha do SUAP</strong> &mdash; este sistema n&atilde;o pede senha.</div>
   </div>
 
   <!-- PASSO 2: PRESENCA -->
@@ -493,8 +499,8 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
       <span id="alunoLinha"></span>
       <a href="#" onclick="trocarAluno(); return false;">trocar estudante</a>
     </div>
-    <div class="nota">A presen&ccedil;a s&oacute; pode ser registrada <strong>durante a aula</strong>, com o celular conectado ao
-    <strong>Wi-Fi do IFMG</strong>. Fora da rede do campus o registro &eacute; recusado.</div>
+    <div class="nota">A presen&ccedil;a s&oacute; pode ser registrada <strong class="fl-destaque">durante a aula</strong>, com o celular conectado ao
+    <strong class="fl-destaque">Wi-Fi do IFMG</strong>. Fora da rede do campus o registro &eacute; recusado.</div>
   </div>
 
 </main>

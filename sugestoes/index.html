@@ -260,6 +260,12 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -313,12 +319,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
   else marcar();
 })();
 </script><!-- VISUAL:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+<!-- DESTAQUE-FL:INICIO -->
+<style data-fc1="destaque-fl">
+.fl-destaque { color: #4CAF7D; font-weight: 700; }
+html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
 </style>
+<!-- DESTAQUE-FL:FIM -->
 </head>
 <body data-pagina="sugestoes">
 <!-- TOPO-FC1:INICIO -->
@@ -469,7 +475,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
   <div class="cartao">
     <p class="intro">Ficou com uma dúvida, achou um erro ou teve uma ideia? Conte para a equipe —
     cada mensagem é lida: a dúvida é respondida pelo contato que você deixar no fim, e a sugestão ajuda a melhorar as Trilhas para todo mundo.
-    Você pode <strong>escrever</strong> ou, se preferir, <strong>gravar um áudio</strong> de até 2 minutos.</p>
+    Você pode <strong class="fl-destaque">escrever</strong> ou, se preferir, <strong class="fl-destaque">gravar um áudio</strong> de até 2 minutos.</p>
   </div>
 
   <div class="cartao" id="cartaoForm">
@@ -566,7 +572,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
     <div class="erro" id="formErro" hidden></div>
     <div class="ok-box" id="formOk" hidden></div>
 
-    <div class="nota">A mensagem vai direto para a equipe do projeto. Não digite senha nem dados
+    <div class="nota">A mensagem vai direto para a equipe do projeto. <strong class="fl-destaque">Não digite senha</strong> nem dados
     pessoais além do necessário — o contato é opcional e só é usado para responder você.</div>
   </div>
 

@@ -277,6 +277,12 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -330,12 +336,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
   else marcar();
 })();
 </script><!-- VISUAL:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+<!-- DESTAQUE-FL:INICIO -->
+<style data-fc1="destaque-fl">
+.fl-destaque { color: #4CAF7D; font-weight: 700; }
+html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
 </style>
+<!-- DESTAQUE-FL:FIM -->
 </head>
 <body data-pagina="sugestoes">
 <!-- TOPO-FC1:INICIO -->
@@ -486,8 +492,8 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
 
   <div class="cartao">
     <p class="intro">Alguma tela apareceu cortada, um botão não funcionou ou o site travou no seu celular? Conte aqui.
-    O Claude lê os relatos uma vez por dia e responde nesta mesma página: depois, é só digitar o seu RA em
-    <strong>Minhas respostas</strong>. Se for defeito do site, o professor aprova o conserto.</p>
+    O Claude lê os relatos <strong class="fl-destaque">uma vez por dia e responde</strong> nesta mesma página: depois, é só digitar o seu RA em
+    <strong class="fl-destaque">Minhas respostas</strong>. Se for defeito do site, o professor aprova o conserto.</p>
     <div class="aviso-app" id="avisoApp" hidden></div>
   </div>
 
@@ -540,7 +546,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
       <ol><li>Abra a tela com o problema.</li>
       <li>Aperte ao mesmo tempo <strong>Liga + Volume&nbsp;−</strong> (no iPhone com Face ID: <strong>Lateral + Volume&nbsp;+</strong>).</li>
       <li>Volte aqui, toque em <strong>Escolher arquivo</strong> e pegue o print na Galeria.</li></ol>
-      <p>O print não pode mostrar dados pessoais de outras pessoas.</p>
+      <p>O print não pode mostrar <strong class="fl-destaque">dados pessoais de outras pessoas</strong>.</p>
     </details>
 
     <label for="inTexto">Conte o que aconteceu <span class="opcional">(até 150 palavras)</span></label>
@@ -568,7 +574,7 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
     <div class="erro" id="formErro" hidden></div>
     <div class="ok-box" id="formOk" hidden></div>
     <div class="nota">Junto com o relato vão, sozinhos, dados técnicos da tela (tamanho, zoom, navegador e sistema),
-    para ajudar no diagnóstico. Nenhuma senha é pedida. RA, print e áudio ficam só com a equipe.</div>
+    para ajudar no diagnóstico. <strong class="fl-destaque">Nenhuma senha é pedida.</strong> RA, print e áudio ficam só com a equipe.</div>
   </div>
 
   <div class="cartao">

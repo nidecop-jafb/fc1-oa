@@ -119,6 +119,12 @@ a.fc1-voltar:hover, a.fc1-voltar:focus-visible { background: #C8A84B; color: #14
 html[data-tema="claro"] a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
 html[data-tema="claro"] a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
 </style>
+<!-- DESTAQUE-FL:INICIO -->
+<style data-fc1="destaque-fl">
+.fl-destaque { color: #4CAF7D; font-weight: 700; }
+html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
+</style>
+<!-- DESTAQUE-FL:FIM -->
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -189,7 +195,7 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
     <input type="password" id="inChave" autocomplete="off">
     <button class="btn" onclick="entrar()">Entrar</button>
     <div class="erro" id="chaveErro" hidden></div>
-    <div class="nota">A chave fica salva apenas neste aparelho. Nunca compartilhe com estudantes.
+    <div class="nota">A chave fica salva apenas neste aparelho. <strong class="fl-destaque">Nunca compartilhe com estudantes.</strong>
     Entre uma vez com internet: depois a corre&ccedil;&atilde;o funciona sem rede.</div>
   </div>
 
@@ -222,7 +228,7 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
             <span><button type="button" class="btn btn-sec" onclick="capturarCamera()">Capturar</button>
             <button type="button" class="btn btn-sec" onclick="fecharCamera()">Fechar</button></span></div>
         </div>
-        <div class="nota">Cart&atilde;o sobre mesa clara, inteiro na foto, com as <strong>4 marcas pretas dos cantos</strong>
+        <div class="nota">Cart&atilde;o sobre mesa clara, inteiro na foto, com as <strong class="fl-destaque">4 marcas pretas dos cantos</strong>
         vis&iacute;veis, sem sombra do celular. Um cart&atilde;o por foto.</div>
         <div class="erro" id="fotoErro" hidden></div>
       </div>
@@ -238,7 +244,7 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
           </div>
         </div>
         <canvas id="cvRet"></canvas>
-        <div class="nota">Quest&otilde;es em <span style="color:var(--ambar)">&acirc;mbar</span> precisam da sua decis&atilde;o:
+        <div class="nota">Quest&otilde;es em <span style="color:var(--ambar)">&acirc;mbar</span> <strong class="fl-destaque">precisam da sua decis&atilde;o</strong>:
         toque na letra marcada (ou em &ndash; se ficou em branco). Toque em qualquer letra para corrigir uma leitura.</div>
         <div class="grade" id="grade"></div>
         <div class="aviso" id="pendentes" hidden></div>
@@ -275,12 +281,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
         <label for="pValores">Valor de cada quest&atilde;o (opcional)</label>
         <input id="pValores" placeholder="Em branco = valor total dividido igualmente. Ex.: 1;1;2;1...">
         <div class="nota">Gabarito: uma letra por quest&atilde;o, de A a E, na ordem (ex.: <span class="gab">BDAAC</span>).
-        Use <strong>*</strong> para quest&atilde;o anulada (vale ponto para todos).</div>
+        Use <strong class="fl-destaque">*</strong> para quest&atilde;o anulada (vale ponto para todos).</div>
         <div class="erro" id="provaErro" hidden></div>
         <div class="sucesso" id="provaOk" hidden></div>
         <button class="btn" id="btnSalvarProva" onclick="salvarProva()">Salvar prova</button>
         <button class="btn btn-sec" id="btnExcluirProva" onclick="excluirProva()" hidden>Excluir esta prova</button>
-        <div class="nota">Excluir s&oacute; &eacute; poss&iacute;vel enquanto nenhum estudante foi corrigido na prova.</div>
+        <div class="nota">Excluir s&oacute; &eacute; poss&iacute;vel <strong class="fl-destaque">enquanto nenhum estudante foi corrigido</strong> na prova.</div>
       </div>
     </section>
 
@@ -301,7 +307,7 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
           <button class="btn" onclick="imprimir()">Imprimir cart&otilde;es marcados</button>
         </div>
         <div class="nota">Um cart&atilde;o por estudante, com nome, RA e QR, dois por folha A4 (cortar na linha tracejada).
-        O mesmo cart&atilde;o serve para qualquer prova. Impress&atilde;o: A4, margens <strong>Nenhuma</strong>, escala 100%.
+        O mesmo cart&atilde;o serve para qualquer prova. Impress&atilde;o: A4, margens <strong class="fl-destaque">Nenhuma</strong>, <strong class="fl-destaque">escala 100%</strong>.
         O s&iacute;mbolo do caderno (&#9679; &#9650; &#9632;) diz qual caderno da prova entregar a cada estudante.</div>
       </div>
     </section>
@@ -322,12 +328,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
         <button class="btn" onclick="baixarSUAP()">Baixar arquivo para o SUAP</button>
         <button class="btn btn-sec" onclick="copiarSUAP()">Copiar notas (colar em planilha)</button>
         <div class="nota">Arquivo .csv na ordem do di&aacute;rio (nome), com Matr&iacute;cula e Nota. Quem est&aacute; sem
-        cart&atilde;o corrigido sai com a nota em branco. O lan&ccedil;amento no SUAP continua sendo seu.</div>
+        cart&atilde;o corrigido sai com a nota em branco. <strong class="fl-destaque">O lan&ccedil;amento no SUAP continua sendo seu.</strong></div>
       </div>
       <div class="cartao" id="resQuestoes" hidden>
         <h2>Por quest&atilde;o</h2>
         <div id="tabQuestoes"></div>
-        <div class="nota">% de acerto e quantos marcaram cada letra. O <strong>distrator</strong> &eacute; a letra errada
+        <div class="nota">% de acerto e quantos marcaram cada letra. O <strong class="fl-destaque">distrator</strong> &eacute; a letra errada
         mais marcada &mdash; bom ponto de partida para o Retorno Coletivo.</div>
       </div>
     </section>
