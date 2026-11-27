@@ -118,6 +118,12 @@
   input[type=file] { width: 100%; font-size: .95rem; color: var(--texto); }
   .aviso-app { border-left: 3px solid var(--ouro); padding: .6rem .8rem; margin-top: .8rem; background: rgba(200,168,75,.1); line-height: 1.5; font-size: .92rem; }
 </style>
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- TOPO-FC1-CABECA:INICIO -->
 <script data-fc1-tema="fixo">(function () {
   var h = document.documentElement, t, l;
@@ -277,12 +283,6 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao, FR e Presenca */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
-</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -343,7 +343,7 @@ html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
 </style>
 <!-- DESTAQUE-FL:FIM -->
 </head>
-<body data-pagina="sugestoes">
+<body data-pagina="celular">
 <!-- TOPO-FC1:INICIO -->
 <style data-fc1-tema="fixo">
 html[data-letra="g"] { font-size: 125%; }
