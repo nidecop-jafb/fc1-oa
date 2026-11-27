@@ -122,6 +122,14 @@
   .fr .resp { font-size: .88rem; overflow-wrap: anywhere; }
   .fr .resp img, .fr .resp svg { max-width: 100%; height: auto; }
   .fr .fecho { text-align: center; font-weight: 800; color: #1d6464; margin-top: 1rem; }
+  /* FR1 (Ficha de Retorno da Parte 1, objetivas) e seletor de fichas — 2026-11-27 */
+  .fr .err { border: 1px solid #ccc; border-radius: 8px; padding: .5rem .7rem; margin: 0 0 .6rem; overflow-wrap: anywhere; }
+  .fr .err .q { font-weight: 700; color: #1d6464; } .fr .err p { margin: .3rem 0; }
+  .fr .err b.x { color: #a33; } .fr .err b.ok { color: #1d6e3a; }
+  .fr .parabens { border: 1px solid #9c9; background: #eef8ee; border-radius: 9px; padding: .6rem .8rem; }
+  .seletor { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+  .seletor button { flex: 1 1 9rem; padding: .55rem .6rem; border-radius: 8px; border: 2px solid currentColor; background: transparent; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
+  .seletor button[aria-pressed=true] { background: #1d6464; color: #fff; border-color: #1d6464; }
   .ra-linha { display: flex; gap: .5rem; } .ra-linha input { flex: 1; } .ra-linha .btn { width: auto; margin-top: 0; padding: .6rem 1rem; }
   input[type=text] { font-size: 1.1rem; letter-spacing: .08em; }
 </style>
@@ -556,17 +564,38 @@ function entrar() {
         'Se você fez a prova, fale com o professor.</p></div>';
       document.getElementById('cartaoRecado').hidden = true; return;
     }
-    var f = res.fichas[res.fichas.length - 1];
-    PROVA = f.prova;
-    box.innerHTML = '<div class="fr"><div class="tit">' + esc(f.titulo) + '</div>' +
+    FICHAS = res.fichas.slice().sort(function (x, y) { return ordemFicha(x.prova) - ordemFicha(y.prova); });
+    NOME = res.nome; TURMA = res.turma;
+    mostrarFicha(FICHAS.length - 1);
+  }).catch(function () { b.disabled = false; b.textContent = 'Entrar'; erroRA('Falha de conexão. Tente de novo.'); });
+}
+
+/* Seletor de fichas (2026-11-27): FR1 = Ficha de Retorno da Parte 1 (objetivas),
+   FR2 = Ficha de Retorno da Parte 2 (discursivas); a mais recente abre primeiro. */
+var FICHAS = [], NOME = '', TURMA = '';
+function ordemFicha(id) { var m = /PE(\d)/.exec(id || ''); return (m ? +m[1] * 10 : 90) + (/FR1/.test(id) ? 1 : 2); }
+function rotuloFicha(f) {
+  var pe = (/PE(\d)/.exec(f.prova) || [])[1];
+  var fr1 = /FR1/.test(f.prova);
+  return (pe ? 'Prova ' + pe + ' · ' : '') + (fr1 ? 'FR1 · Parte 1 (objetivas)' : 'FR2 · Parte 2 (discursivas)');
+}
+function mostrarFicha(i) {
+  var box = document.getElementById('fichas'), f = FICHAS[i], sel = '';
+  PROVA = f.prova;
+  if (FICHAS.length > 1) {
+    sel = '<div class="seletor" role="group" aria-label="Escolha a ficha">' + FICHAS.map(function (x, k) {
+      return '<button type="button" aria-pressed="' + (k === i) + '" onclick="mostrarFicha(' + k + ')">' + esc(rotuloFicha(x)) + '</button>';
+    }).join('') + '</div>';
+  }
+  var res = { nome: NOME, turma: TURMA };
+  box.innerHTML = sel + '<div class="fr"><div class="tit">' + esc(f.titulo) + '</div>' +
       '<div class="ident"><span><b>Nome:</b> ' + esc(res.nome) + '</span><span><b>RA:</b> ' + RA +
       '</span><span><b>Turma:</b> ' + esc(f.turma || res.turma) + '</span></div>' + f.html +
       '<div class="fecho">' + FECHO + '</div></div>';
-    document.getElementById('cartaoRecado').hidden = false;
-    var antes = document.getElementById('recadoAntes');
-    antes.hidden = !f.recado_em;
-    antes.textContent = f.recado_em ? 'Você já enviou um recado sobre esta prova em ' + f.recado_em.split('-').reverse().join('/') + '. Pode mandar outro, se quiser.' : '';
-  }).catch(function () { b.disabled = false; b.textContent = 'Entrar'; erroRA('Falha de conexão. Tente de novo.'); });
+  document.getElementById('cartaoRecado').hidden = false;
+  var antes = document.getElementById('recadoAntes');
+  antes.hidden = !f.recado_em;
+  antes.textContent = f.recado_em ? 'Você já enviou um recado sobre esta ficha em ' + f.recado_em.split('-').reverse().join('/') + '. Pode mandar outro, se quiser.' : '';
 }
 
 /* ---------- Gravacao de audio (MediaRecorder) ----------
