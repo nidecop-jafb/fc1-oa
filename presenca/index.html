@@ -99,6 +99,12 @@
     font-family: 'Courier New', Courier, monospace; font-size: .68rem; color: var(--texto-dim); line-height: 1.6;
   }
 </style>
+<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas e na FR */
+header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
+header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
+html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
+html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
+</style>
 <!-- TOPO-FC1-CABECA:INICIO -->
 <script data-fc1-tema="fixo">(function () {
   var h = document.documentElement, t, l;
@@ -258,12 +264,6 @@
   document.addEventListener('DOMContentLoaded', function () { varrer(); document.body.appendChild(el); });
 })();</script>
 <!-- TOPO-FC1-CABECA:FIM -->
-<style>/* Voltar ao site no topo (autor, 2026-11-26), como na Correcao de Provas e na FR */
-header a.fc1-voltar { display: inline-block; margin: 0 0 12px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid #C8A84B; border-radius: 6px; background: #1a1b1f; color: #E8C96B; font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; letter-spacing: 0; text-decoration: none; text-transform: none; }
-header a.fc1-voltar:hover, header a.fc1-voltar:focus-visible { background: #C8A84B; color: #14120D; }
-html[data-tema="claro"] header a.fc1-voltar { background: #fff; color: #6B5414; border-color: #9A7B22; }
-html[data-tema="claro"] header a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
-</style>
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
 @media screen {
 :root { --fc1-sans: 'Segoe UI', Arial, sans-serif; --fc1-mono: 'Courier New', Courier, monospace; }
@@ -321,6 +321,12 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
 <style data-fc1="destaque-fl">
 .fl-destaque { color: #4CAF7D; font-weight: 700; }
 html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
+.fl-caixa { margin: 0 0 1rem; padding: .8rem 1rem; border-left: 4px solid #4CAF7D;
+  background: rgba(76,175,125,.10); border-radius: 0 6px 6px 0; line-height: 1.55;
+  font-size: .95rem; overflow-wrap: break-word; }
+.fl-caixa .fl-rotulo { display: block; font-weight: 700; color: #4CAF7D; margin-bottom: .3rem; }
+html[data-tema="claro"] .fl-caixa { border-left-color: #2E7A52; background: rgba(46,122,82,.08); }
+html[data-tema="claro"] .fl-caixa .fl-rotulo { color: #2E7A52; }
 </style>
 <!-- DESTAQUE-FL:FIM -->
 </head>
@@ -469,6 +475,9 @@ html[data-tema="claro"] footer a.fc1-voltar:hover { background: #9A7B22; color: 
 </header>
 
 <main>
+<!-- FL-CAIXA:INICIO -->
+<div class="fl-caixa" role="note"><span class="fl-rotulo">Fique ligado</span>Registre a sua presen&ccedil;a <strong class="fl-destaque">durante a aula</strong>, com o celular no <strong class="fl-destaque">Wi-Fi do IFMG</strong>, digitando s&oacute; o seu Registro Acad&ecirc;mico (RA), de 7 d&iacute;gitos. Fora do hor&aacute;rio ou da rede do campus, o registro &eacute; recusado.</div>
+<!-- FL-CAIXA:FIM -->
 
   <!-- PASSO 1: IDENTIFICACAO -->
   <div class="cartao" id="cartaoLogin">

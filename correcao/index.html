@@ -123,6 +123,12 @@ html[data-tema="claro"] a.fc1-voltar:hover { background: #9A7B22; color: #fff; }
 <style data-fc1="destaque-fl">
 .fl-destaque { color: #4CAF7D; font-weight: 700; }
 html[data-tema="claro"] .fl-destaque { color: #2E7A52; }
+.fl-caixa { margin: 0 0 1rem; padding: .8rem 1rem; border-left: 4px solid #4CAF7D;
+  background: rgba(76,175,125,.10); border-radius: 0 6px 6px 0; line-height: 1.55;
+  font-size: .95rem; overflow-wrap: break-word; }
+.fl-caixa .fl-rotulo { display: block; font-weight: 700; color: #4CAF7D; margin-bottom: .3rem; }
+html[data-tema="claro"] .fl-caixa { border-left-color: #2E7A52; background: rgba(46,122,82,.08); }
+html[data-tema="claro"] .fl-caixa .fl-rotulo { color: #2E7A52; }
 </style>
 <!-- DESTAQUE-FL:FIM -->
 <!-- VISUAL:INICIO --><style id="visual-fc1" data-fc1-tema="fixo">
@@ -188,6 +194,9 @@ body h3:not(:is(footer, nav, aside, table, figcaption, .fc1-topo, .fc1-menu, .fc
 </header>
 
 <main>
+<!-- FL-CAIXA:INICIO -->
+<div class="fl-caixa" role="note"><span class="fl-rotulo">Fique ligado</span>Fotografe o cart&atilde;o, decida as quest&otilde;es em &acirc;mbar e baixe o arquivo .csv para lan&ccedil;ar no SUAP. <strong class="fl-destaque">Antes de lan&ccedil;ar as notas</strong>, confira se a prova est&aacute; cadastrada com <strong class="fl-destaque">3 cadernos (A, B e C)</strong> e se o caderno de cada turma bate com o gravado.</div>
+<!-- FL-CAIXA:FIM -->
 
   <div class="cartao" id="cartaoChave">
     <h2>Acesso da Equipe</h2>
